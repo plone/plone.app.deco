@@ -1,0 +1,1027 @@
+/* @group Tile */
+
+/* Outer border */
+.deco-tile-outer-border {
+    position: absolute;
+    border: solid 2px transparent;
+    width: auto;
+    height: auto;
+    z-index: 40;
+    right: -2px;
+    left: -2px;
+    top: -2px;
+    bottom: -2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+/* Inner border */
+.deco-tile-inner-border {
+    position: absolute;
+    border: solid 1px transparent;
+    width: auto;
+    height: auto;
+    z-index: 40;
+    right: 0px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+
+/* Border on mouse over */
+.deco-tile:hover .deco-tile-outer-border {
+    border: dashed 2px #3469d0;
+}
+
+/* Hide hover border when dragging or resizing*/
+.deco-panel-dragging .deco-tile:hover .deco-tile-outer-border {
+    border: solid 2px transparent;
+}
+
+.deco-panel-resizing .deco-tile:hover .deco-tile-outer-border {
+    border: solid 2px transparent;
+}
+
+.deco-panel-resizing .deco-selected-tile.deco-tile .deco-tile-outer-border {
+    border: solid 2px transparent;
+    background-color: transparent;
+}
+
+.deco-panel-resizing .deco-selected-tile.deco-tile:hover .deco-tile-outer-border {
+    border: solid 2px transparent;
+    background-color: transparent;
+}
+
+.deco-panel-resizing .deco-selected-tile.deco-tile .deco-tile-control {
+    display: none !important;
+}
+
+/* Selected tile */
+.deco-selected-tile .deco-tile-outer-border {
+    border: 2px solid #3469d0;
+    background-color: #FFFFE1;
+}
+
+.deco-selected-tile.deco-read-only-tile .deco-tile-outer-border {
+    border: 2px solid #3469d0;
+    background-color: #F0F0EE;
+}
+
+.deco-selected-tile.deco-read-only-tile:hover .deco-tile-outer-border {
+    border: 2px solid #3469d0;
+    background-color: #F0F0EE;
+}
+
+/* Selected tile hover */
+.deco-selected-tile:hover .deco-tile-outer-border {
+    border: 2px solid #3469d0;
+    background-color: #FFFFE1;
+}
+
+/* Other tiles while dragging */
+.deco-panel-dragging .deco-tile .deco-tile-inner-border {
+    border: 1px dotted #888;
+}
+
+/* Hide inner border of helper while dragging */
+.deco-panel-dragging .deco-helper-tile .deco-tile-inner-border {
+    border: 1px transparent;
+}
+
+.deco-panel-dragging-new {
+    cursor: crosshair !important;
+}
+
+.deco-panel-dragging-new:hover {
+    cursor: crosshair !important;
+}
+
+/* Helper border */
+.deco-tile.deco-helper-tile {
+    border: 2px solid #3469d0;
+    z-index: 1000;
+    opacity: 0.5;
+    position: absolute;
+}
+
+.deco-empty-row .deco-tile-outer-border {
+    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-position: 0px -12px;
+    border: 0px;
+    height: 12px;
+    width: auto;
+    left: -5px;
+    right: 0px;
+}
+
+.deco-empty-row .deco-tile-outer-border .deco-divider-dot {
+    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    width: 12px;
+    height: 12px;
+}
+
+.deco-tile {
+    position: relative;
+    z-index: 100;
+}
+
+.deco-tile .deco-tile-content {
+    position: relative;
+    z-index: 100;
+}
+
+.deco-tile-content textarea, .deco-tile-content input {
+    width: 100%;
+}
+
+.deco-tile-align-left {
+    float: left;
+    z-index: 200;
+}
+
+.deco-tile-align-right {
+    float: right;
+    z-index: 200;
+}
+
+.deco-panel-dragging .deco-tile-align-left {
+    z-index: 50;
+}
+
+.deco-panel-dragging .deco-tile-align-right {
+    z-index: 50;
+}
+
+.deco-original-tile {
+    opacity: 0.5;
+}
+
+/* Empty row */
+.deco-empty-row {
+    height: 12px;
+}
+
+.deco-empty-row .deco-grid-cell {
+    height: 12px;
+    display: none;
+}
+
+.deco-empty-row .deco-grid-cell > div {
+    position: relative;
+    height: 12px;
+}
+
+/* @end */
+
+/* @group Opacity icons */
+
+.deco-blur .deco-grid-cell > * {
+/*    opacity: 0.4; */
+}
+
+.deco-blur .deco-grid-cell > .deco-panel, .deco-blur .deco-grid-cell > .deco-toolbar, .deco-blur .deco-panel .deco-grid-cell > * {
+/*    opacity: 1.0; */
+}
+
+/* @end */
+
+/* @group Hover icons */
+
+.deco-tile-control {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    z-index: 500;
+    display: none;
+}
+
+.deco-drag-handle {
+    background-image: none;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    top: 0px;
+    bottom: 0px;
+    height: auto;
+    width: auto;
+    left: 0px;
+    right: 0px;
+    cursor: move;
+}
+
+.deco-selected-tile .deco-drag-handle {
+    z-index: 1;
+}
+
+.deco-close-icon {
+    right: -2px;
+    left: auto;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    background-image: url(++resource++experimental.deco.images/window.png);
+    background-position: -12px 0px;
+    cursor: pointer;
+    z-index: 501;
+}
+
+.deco-info-icon {
+    right: 0px;
+    top: auto;
+    bottom: 0px;
+    background-image: url(++resource++experimental.deco.images/window.png);
+    background-position: -12px -56px;
+    cursor: pointer;
+}
+
+.deco-field-label {
+    top: -2px;
+    left: -152px;
+    width: 150px;
+    color: white;
+    height: 24px;
+    text-align: right;
+}
+
+.deco-field-label-left {
+    float: right;
+    width: 6px;
+    height: 24px;
+    background-image: url(++resource++experimental.deco.images/toolbar.png);
+    background-position: 0px -84px;
+}
+
+.deco-field-label-content {
+    height: 24px;
+    font-size: 80%;
+    font-weight: bold;
+    line-height: 24px;
+    background-image: url(++resource++experimental.deco.images/toolbar.png);
+    background-position: 0px -108px;
+    float: right;
+    position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.deco-info-icon:hover {
+    background-position: -28px -56px;
+}
+
+.deco-tile:hover .deco-tile-control {
+    display: none;
+}
+
+.deco-selected-tile .deco-tile-control {
+    display: block !important;
+}
+
+/* Show move icon while hovering over a tile */
+.deco-tile:hover .deco-drag-handle {
+    display: block;
+}
+
+/* Hide icons while dragging or resizing*/
+.deco-panel-dragging .deco-tile:hover .deco-tile-control {
+    display: none;
+}
+
+.deco-panel-resizing .deco-tile:hover .deco-tile-control {
+    display: none;
+}
+
+/* Show move icon on helper */
+.deco-helper-tile .deco-drag-handle {
+    display: block !important;
+}
+
+/* @end */
+
+/* @group Resize */
+
+.deco-panel-dragging .deco-resize-handle {
+    display: none;
+}
+
+.deco-panel-resizing .deco-resize-handle-one:hover {
+    display: none;
+}
+
+.deco-panel-resizing .deco-resize-handle-two:hover {
+    display: none;
+}
+
+.deco-panel-resizing {
+    cursor: ew-resize;
+}
+
+.deco-row-resizing .deco-tile {
+    opacity: 0.5 !important;
+}
+
+.deco-resize-handle {
+    position: absolute;
+    height: auto;
+    top: 0px;
+    bottom: 0px;
+    width: 12px;
+    left: -6px;
+    z-index: 500;
+    cursor: ew-resize;
+}
+
+.deco-resize-handle:hover {
+    background-image: url(++resource++experimental.deco.images/window.png);
+}
+
+.deco-resize-handle-left:hover {
+    background-position: -40px 0px;
+}
+
+.deco-resize-handle-center:hover {
+    background-position: -45px 0px;
+}
+
+.deco-resize-handle-right:hover {
+    background-position: -50px 0px;
+}
+
+.deco-resize-handle.deco-resize-handle-helper {
+    background-image: url(++resource++experimental.deco.images/window.png);
+    background-position: 0px 0px;
+}
+
+.deco-resize-placeholder {
+    position: absolute;
+    height: 100%;
+}
+
+.deco-resize-placeholder-inner-border {
+    position: absolute;
+    border: dotted 1px #888;
+    width: auto;
+    height: auto;
+    z-index: 40;
+    right: 0px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+
+.deco-resize-leftmost {
+    margin-left: 0%;
+}
+
+.deco-resize-third {
+    margin-left: 33.33%;
+}
+
+.deco-resize-two-thirds {
+    margin-left: 66.67%;
+}
+
+.deco-resize-quarter {
+    margin-left: 25%;
+}
+
+.deco-resize-half {
+    margin-left: 50%;
+}
+
+.deco-resize-three-quarters {
+    margin-left: 75%;
+}
+
+/* @end */
+
+/* @group Dividers */
+
+.deco-divider {
+    position: absolute;
+    z-index: 600;
+    display: none;
+}
+
+.deco-divider-top {
+    width: auto;
+    height: 12px;
+    top: -6px;
+    left: -5px;
+    right: 0px;
+    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-position: 0px -12px;
+}
+
+.deco-divider-bottom {
+    width: auto;
+    height: 12px;
+    left: -5px;
+    right: 0px;
+    top: auto;
+    bottom: -6px;
+    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-position: 0px -12px;
+}
+
+.deco-divider-right {
+    width: 12px;
+    height: auto;
+    left: auto;
+    right: -6px;
+    top: -5px;
+    bottom: 0px;
+    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    background-position: -12px 0px;
+}
+
+.deco-divider-left {
+    width: 12px;
+    height: auto;
+    left: -6px;
+    top: -5px;
+    bottom: 0px;
+    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    background-position: -12px 0px;
+}
+
+.deco-divider-left .deco-divider-dot, .deco-divider-right .deco-divider-dot {
+    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    width: 12px;
+    height: 12px;
+}
+
+.deco-divider-top .deco-divider-dot, .deco-divider-bottom .deco-divider-dot {
+    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    width: 12px;
+    height: 12px;
+}
+
+.deco-selected-divider {
+    display: block !important;
+}
+
+/* @end */
+
+/* @group Notifications */
+
+.deco-notifications {
+    display: block;
+    top: 10px;
+    right: 10px;
+    position: fixed;
+    _position: absolute;
+    _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
+    z-index: 1100;
+}
+
+.deco-notification {
+    width: 300px;
+    position: absolute;
+    right: 0px;
+}
+
+.deco-notification-header {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: 0px 0px;
+    width: 300px;
+    height: 10px;
+}
+
+.deco-notification:hover .deco-notification-header {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: 0px -10px;
+}
+
+.deco-notification-footer {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -300px 0px;
+    width: 300px;
+    height: 10px;
+}
+
+.deco-notification:hover .deco-notification-footer {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -300px -10px;
+}
+
+.deco-notification-content {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -600px 0px;
+    width: 300px;
+    position: relative;
+}
+
+.deco-notification:hover .deco-notification-content {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -900px 0px;
+}
+
+.deco-notification-close {
+    position: absolute;
+    top: -6px;
+    left: auto;
+    right: 3px;
+    width: 30px;
+    height: 30px;
+    background-image: url(++resource++experimental.deco.images/window.png);
+    background-position: -12px 0px;
+    cursor: pointer;
+    z-index: 1101;
+    display: none;
+}
+
+.deco-notification:hover .deco-notification-close {
+    display: block;
+}
+
+.deco-notification-type {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+
+.deco-notification-type-error {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -1200px 0px;
+}
+
+.deco-notification-type-warning {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -1232px 0px;
+}
+
+.deco-notification-type-info {
+    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-position: -1264px 0px;
+}
+
+.deco-notification-text {
+    width: 240px;
+    position: relative;
+    margin-left: 60px;
+}
+
+.deco-notification-title {
+    color: #FFF;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.deco-notification-message {
+    color: #FFF;
+}
+
+/* @end */
+
+/* @group Toolbar */
+
+.deco-toolbar .deco-toolbar-content {
+    background:#DEDEDE url(++resource++experimental.deco.images/toolbar_background.png) repeat-x scroll 0 1px;
+    border-bottom:1px solid #515151;
+    -webkit-box-shadow: 0 3px 4px rgba(0,0,0,0.5);
+    bottom:0;
+    color:white;
+    height:36px;
+    z-index: 800;
+    position: relative;
+    font-family:"Lucida Grande",Lucida,Verdana,sans-serif;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.deco-toolbar fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0px;
+}
+
+.deco-inline-toolbar {
+    position: relative;
+}
+
+.deco-external-toolbar {
+    display: block;
+    top: 0px;
+    position: fixed;
+    _position: absolute;
+    _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
+    z-index: 501;
+}
+
+.deco-toolbar-primary-functions {
+    float:left;
+    padding-left:9px;
+}
+
+.deco-toolbar-secondary-functions {
+    float:right;
+}
+
+.deco-toolbar select,
+.deco-toolbar button {
+    float: left;
+    text-shadow: 0 1px 0 rgba(255,255,255,1);
+}
+
+.deco-toolbar button,
+.deco-toolbar label.deco-icon {
+    padding: 1px 15px 4px;
+    margin-top: 8px;
+    text-transform: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 11px;
+    border: 1px solid #3f3f3f;
+    color: #000;
+    background: #ccc url(++resource++experimental.deco.images/button.png) repeat-x 0 center;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    margin-right: 8px;
+    height: 22px;
+    line-height: 17px;
+    -webkit-transition: color 0.4s;
+}
+
+.deco-toolbar button.deco-icon,
+.deco-toolbar label.deco-icon {
+    background-color: #262626;
+    -webkit-transition: background-color 0.4s;
+    width: 30px;
+    text-indent: -1000px;
+    overflow: hidden;
+    background-image: url(++resource++experimental.deco.images/icons.png);
+}
+
+.deco-toolbar button.active,
+.deco-toolbar label.deco-icon.active {
+    background-color: #217efb;
+    color: #217efb;
+}
+
+.deco-toolbar select {
+    margin-top: 8px;
+    background-color: #d0d0d0;
+    color: #303030;
+    border: 1px solid #585858;
+    font-size: 11px;
+    height: 22px;
+    margin-right: 8px;
+    padding: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+/* @group Button Group */
+
+.deco-toolbar .deco-button-group {
+    margin-right: 8px;
+    float: left;
+}
+
+.deco-toolbar .deco-button-group button,
+.deco-toolbar .deco-button-group label.deco-icon {
+    margin-right: -1px;
+    margin-left: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+.deco-toolbar .deco-button-group > :first-child {
+    -moz-border-radius-topleft: 3px !important;
+    -webkit-border-top-left-radius: 3px !important;
+    border-top-left-radius: 3px !important;
+    -moz-border-radius-bottomleft: 3px !important;
+    -webkit-border-bottom-left-radius: 3px !important;
+    border-bottom-left-radius: 3px !important;
+    margin-right: -1px;
+}
+
+.deco-toolbar .deco-button-group > :last-child {
+    -moz-border-radius-topright: 3px !important;
+    -webkit-border-top-right-radius:  3px !important;
+    border-top-right-radius: 3px !important;
+    -moz-border-radius-bottomright: 3px !important;
+    -webkit-border-bottom-right-radius: 3px !important;
+    border-bottom-right-radius: 3px !important;
+    margin-right: 0;
+}
+
+.deco-toolbar button.deco-first-half,
+.deco-toolbar label.deco-first-half {
+    -moz-border-radius-topright: 0;
+    -webkit-border-top-right-radius: 0;
+    border-top-right-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    -webkit-border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+}
+
+.deco-toolbar button.deco-last-half,
+.deco-toolbar label.deco-last-half {
+    -moz-border-radius-topleft: 0;
+    -webkit-border-top-left-radius: 0;
+    border-top-left-radius: 0;
+    -moz-border-radius-bottomleft: 0;
+    -webkit-border-bottom-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+}
+
+/* @end */
+
+/* @group Selects */
+
+.deco-toolbar label.deco-icon {
+    padding: 0;
+    width: 35px;
+    position: relative;
+    float: left;
+    overflow: hidden;
+    text-indent: -1000px;
+    height: 20px;
+    background-position: 0 -1px;
+}
+
+.deco-toolbar .deco-icon select {
+    opacity: 0;
+    width: 35px;
+    height: 22px;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+
+.deco-toolbar select option {
+}
+
+/* @end */
+
+/* @group Icons */
+
+.deco-button-save {
+    background-position: -96px 0px;
+}
+
+.deco-button-cancel {
+    background-position: -120px 0px;
+}
+
+.deco-button-strong {
+    font-weight: bold;
+    padding-right: 0!important;
+    padding-left: 0 !important;
+    width: 30px;
+    text-align: center;
+}
+
+.deco-button-em {
+    font-style: italic;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    text-transform: lowercase !important;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    padding-right: 0!important;
+    padding-left: 0 !important;
+}
+
+.deco-toolbar .deco-button-undo {
+    background-position: -240px -1px;
+}
+
+.deco-toolbar .deco-button-redo {
+    background-position: -240px -1px;
+}
+
+.deco-toolbar .deco-button-ol {
+    background-position: -300px -1px;
+}
+
+.deco-toolbar .deco-button-ul {
+    background-position: -270px -1px;
+}
+
+.deco-toolbar .deco-button-tile-align-block {
+    background-position: -240px 0px;
+}
+
+.deco-toolbar .deco-button-tile-align-left {
+    background-position: -240px 0px;
+}
+
+.deco-toolbar .deco-button-tile-align-right {
+    background-position: -240px 0px;
+}
+
+.deco-toolbar .deco-button-page-properties {
+    background-position: -240px -1px
+}
+
+.deco-toolbar .deco-icon-menu-insert {
+    background-position: -27px -1px !important;
+}
+
+.deco-toolbar .deco-icon-menu-style {
+    background-position: -357px -1px !important;
+}
+
+.deco-toolbar .deco-icon-menu-actions {
+    background-position: 2px -1px !important;
+}
+
+.deco-toolbar .deco-icon-menu-save-options {
+    background-position: -45px -1px !important;
+}
+
+.deco-toolbar .deco-icon-menu-contentview-add {
+    background-position: -27px -1px !important;
+}
+
+.deco-toolbar .deco-icon-menu-save-options,
+.deco-toolbar .deco-menu-save-options {
+    width: 15px !important;
+}
+
+/* @end */
+
+/* Dialog window */
+
+.deco-dialog-blocker {
+    z-index: 2999;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background-color: black;
+    display: none;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    _position: absolute;
+    _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
+}
+
+.dialog .field {
+    clear: both;
+    position: relative;
+    left: -1px;
+    margin: 0 0 1em 0;
+    top: 0;
+}
+
+.dialog label {
+font-weight: bold;
+}
+
+.dialog .formHelp:hover {
+    color: #000;
+    cursor: default;
+}
+
+.dialog input {
+    vertical-align: middle;
+    margin: 0px;
+}
+
+.dialog .field img {
+    vertical-align: middle;
+}
+.dialog .field input.date {
+    vertical-align: middle;
+    width: 280px;
+}
+
+.dialog .field input {
+    border: solid 1px #999999;
+}
+
+.dialog .field input.text {
+    width: 100%;
+}
+.dialog .field .sortable {
+    margin: 0px;
+    cursor: move;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    border: solid 1px #999999;
+    width: 100%;
+}
+.dialog .field .drawer {
+    border: solid 1px #999999;
+    clear: both;
+    padding-left: 8px;
+    cursor: default; 
+}
+.dialog .field .drawer img {
+    margin-left: 4px;
+}
+.dialog .field input.text:focus, .field input.date:focus {
+    background-color: #FFFFE1;
+    border: solid 1px #000;
+}
+
+.dialog .field textarea:focus {
+    background-color: #FFFFE1;
+    border: solid 1px #000;
+}
+
+.dialog .field textarea {
+    width: 100%;
+    border: solid 1px #999999;
+}
+
+.dialog .formHelp {
+    color: #76797C;
+    font-size: 90%;
+    margin: 0 0 0.2em;
+}
+
+.dialog fieldset {
+    padding: 1em;
+}
+.dialog table.listing {
+    border-bottom:1px solid #8CACBB;
+    border-collapse:collapse;
+    border-left:1px solid #8CACBB;
+    border-spacing:0;
+    font-size:90%;
+    margin:1em 0;
+}
+.dialog table.listing th {
+    background:#DEE7EC none repeat scroll 0 0;
+    border-bottom:1px solid #8CACBB;
+    border-right:1px solid #8CACBB;
+    border-top:1px solid #8CACBB;
+    font-weight:normal;
+    padding:0.25em 0.5em;
+    text-transform:none;
+}
+.dialog table.listing td {
+    border-right:1px solid #8CACBB;
+    padding:0.25em 0.5em;
+}
+
+.dialog table.listing img {
+    vertical-align:middle;
+}
+
+.dialog .odd {
+    background-color:transparent;
+}
+
+.dialog .even {
+    background-color:#EEF3F5;
+}
+.dialog  label {
+    vertical-align: middle;
+ }
+ 
+#info-dialog .breadcrumbs,
+#info-dialog .search {
+    font-size: 80%;
+    float: left;
+    margin: 0 0 3px 0;
+}
+
+#info-dialog .search {
+    float: right;
+}
+
+#info-dialog input{
+    margin: 0px;
+}
+#info-dialog .noradio {
+    margin-left: 18px;
+}
+
+.dialog .deco-text-button:hover {
+    background-color:#666 !important;
+}
+.dialog .deco-text-button {
+    cursor: pointer;
+    -moz-border-radius-bottomleft:1em;
+    -moz-border-radius-bottomright:1em;
+    -moz-border-radius-topleft:1em;
+    -moz-border-radius-topright:1em;
+    background-color:#AAA !important;
+    border-style:none;
+    color:white !important;
+    cursor:pointer;
+    font-size:0.9em;
+    line-height:1.4em;
+    margin-right:0px;
+    margin-top: 3px;
+    padding:1px 20px;
+}
+
+/* @end */

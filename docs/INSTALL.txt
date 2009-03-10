@@ -1,0 +1,88 @@
+experimental.deco Installation
+==============================
+
+experimental.deco is only tested with Plone 3.2, but should work with other
+versions. To install experimental.deco checkout the package from the plone svn
+in your src directory.
+
+experimental.deco depends on experimental.blocks which can be found here:
+http://svn.plone.org/svn/collective/experimental.blocks/ also put this package
+in src.
+
+experimental.blocks depends on lxml 2.1.5. The easiest to install this is to
+use the z3c.recipe.staticlxml recipe, this recipe can be found here:
+http://pypi.python.org/pypi/z3c.recipe.staticlxml/0.3
+
+Here's an example buildout for Plone 3.2:
+
+[buildout]
+parts = 
+    lxml
+    pylxml
+    zope2
+    instance
+
+log-level = DEBUG
+
+download-directory = downloads
+download-cache = downloads
+
+find-links =
+    http://dist.plone.org/release/3.2
+
+extends = http://dist.plone.org/release/3.2/versions.cfg
+versions = versions
+
+develop =
+    src/experimental.blocks
+    src/experimental.deco
+
+eggs =
+    Plone
+    experimental.blocks
+    experimental.deco
+
+[versions]
+lxml = 2.1.5
+
+[pylxml]
+recipe=zc.recipe.egg
+interpreter=pylxml
+eggs=
+    lxml
+
+[lxml]
+recipe = z3c.recipe.staticlxml
+egg = lxml
+
+[zope2]
+recipe = plone.recipe.zope2install
+url = http://www.zope.org/Products/Zope/2.10.6/Zope-2.10.6-final.tgz
+fake-zope-eggs = true
+additional-fake-eggs =
+    ZConfig
+    pytz
+
+[instance]
+recipe = plone.recipe.zope2instance
+zope2-location = ${zope2:location}
+user = admin:admin
+http-address = 8080
+debug-mode = off
+
+eggs =
+    ${buildout:eggs}
+
+zcml =
+    experimental.blocks
+    experimental.deco
+
+
+When the instance is started add a Plone site and install experimental.blocks
+and experimental.deco using the quickinstaller.
+
+Now go to the site and add an ATFile and upload the deco.html file which can be
+found in the experimental.deco package in the content folder.
+
+To view and edit the page using Deco go to:
+http://localhost:8080/<yoursitename>/deco.html/@@blockView

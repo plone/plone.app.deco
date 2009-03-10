@@ -1,0 +1,28 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="experimental.deco">
+
+    <browser:resourceDirectory
+        name="experimental.deco.stylesheets"
+        directory="stylesheets"
+        />
+
+    <browser:resourceDirectory
+        name="experimental.deco.images"
+        directory="images"
+        />
+
+    <browser:resourceDirectory
+        name="experimental.deco.javascripts"
+        directory="javascripts"
+        />
+
+    <browser:page
+        for="*"
+        name="deco-config"
+        class=".browser.DecoConfigView"
+        permission="zope.Public"
+        />
+
+</configure>

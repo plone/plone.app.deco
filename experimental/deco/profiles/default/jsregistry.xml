@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/jquery-1.3.1.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.core.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.draggable.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.droppable.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.sortable.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.dialog.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/ui.tabs.min.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.core.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.dialog.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.layout.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.toolbar.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.actions.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/deco.notify.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/tiny_mce.js"
+              inline="False"/>
+
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++experimental.deco.javascripts/tiny_mce_theme.js"
+              inline="False"/>
+
+</object>
