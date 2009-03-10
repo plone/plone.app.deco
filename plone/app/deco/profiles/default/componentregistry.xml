@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<componentregistry>
+  <utilities>
+    <utility interface="plone.app.deco.interfaces.IDecoSettingsStorage"
+             factory="plone.app.deco.storage.DecoSettingsStorage"/>
+  </utilities>
+</componentregistry>
