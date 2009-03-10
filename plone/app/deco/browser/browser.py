@@ -286,7 +286,7 @@ class DecoConfigView(BrowserView):
                 'image': {
                     'label': 'Image',
                     'type': 'app',
-                    'default_value': '<img src="++resource++experimental.deco.images/image-placeholder.png" alt="New image"/>',
+                    'default_value': '<img src="++resource++plone.app.deco.images/image-placeholder.png" alt="New image"/>',
                     'read_only': True,
                     'settings': True,
                     'favorite': False,

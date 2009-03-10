@@ -3,9 +3,9 @@ import os
 
 version = '0.1'
 
-setup(name='experimental.deco',
+setup(name='plone.app.deco',
       version=version,
-      description="Experimental package for Deco functionality",
+      description="Package for Deco UI functionality",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
@@ -17,10 +17,10 @@ setup(name='experimental.deco',
       keywords='deco plone4',
       author='Rob Gietema',
       author_email='rob@fourdigits.nl',
-      url='http://plone.org/products/plone',
+      url='http://plone.org',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['experimental'],
+      namespace_packages=['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[

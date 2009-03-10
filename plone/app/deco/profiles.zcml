@@ -1,13 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="experimental.deco">
+    i18n_domain="plone.app.deco">
 
     <genericsetup:registerProfile
         name="default"
-        title="Experimental Deco"
+        title="Plone Deco"
         directory="profiles/default"
-        description='Extension profile for the "Experimental Deco" package.'
+        description='Extension profile for the "Plone Deco" package.'
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 

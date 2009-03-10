@@ -106,7 +106,7 @@
 }
 
 .deco-empty-row .deco-tile-outer-border {
-    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-image: url(++resource++plone.app.deco.images/divider_horizontal.png);
     background-position: 0px -12px;
     border: 0px;
     height: 12px;
@@ -116,7 +116,7 @@
 }
 
 .deco-empty-row .deco-tile-outer-border .deco-divider-dot {
-    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-image: url(++resource++plone.app.deco.images/divider_horizontal.png);
     width: 12px;
     height: 12px;
 }
@@ -220,7 +220,7 @@
     top: -2px;
     width: 30px;
     height: 30px;
-    background-image: url(++resource++experimental.deco.images/window.png);
+    background-image: url(++resource++plone.app.deco.images/window.png);
     background-position: -12px 0px;
     cursor: pointer;
     z-index: 501;
@@ -230,7 +230,7 @@
     right: 0px;
     top: auto;
     bottom: 0px;
-    background-image: url(++resource++experimental.deco.images/window.png);
+    background-image: url(++resource++plone.app.deco.images/window.png);
     background-position: -12px -56px;
     cursor: pointer;
 }
@@ -248,7 +248,7 @@
     float: right;
     width: 6px;
     height: 24px;
-    background-image: url(++resource++experimental.deco.images/toolbar.png);
+    background-image: url(++resource++plone.app.deco.images/toolbar.png);
     background-position: 0px -84px;
 }
 
@@ -257,7 +257,7 @@
     font-size: 80%;
     font-weight: bold;
     line-height: 24px;
-    background-image: url(++resource++experimental.deco.images/toolbar.png);
+    background-image: url(++resource++plone.app.deco.images/toolbar.png);
     background-position: 0px -108px;
     float: right;
     position: relative;
@@ -332,7 +332,7 @@
 }
 
 .deco-resize-handle:hover {
-    background-image: url(++resource++experimental.deco.images/window.png);
+    background-image: url(++resource++plone.app.deco.images/window.png);
 }
 
 .deco-resize-handle-left:hover {
@@ -348,7 +348,7 @@
 }
 
 .deco-resize-handle.deco-resize-handle-helper {
-    background-image: url(++resource++experimental.deco.images/window.png);
+    background-image: url(++resource++plone.app.deco.images/window.png);
     background-position: 0px 0px;
 }
 
@@ -409,7 +409,7 @@
     top: -6px;
     left: -5px;
     right: 0px;
-    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-image: url(++resource++plone.app.deco.images/divider_horizontal.png);
     background-position: 0px -12px;
 }
 
@@ -420,7 +420,7 @@
     right: 0px;
     top: auto;
     bottom: -6px;
-    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-image: url(++resource++plone.app.deco.images/divider_horizontal.png);
     background-position: 0px -12px;
 }
 
@@ -431,7 +431,7 @@
     right: -6px;
     top: -5px;
     bottom: 0px;
-    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    background-image: url(++resource++plone.app.deco.images/divider_vertical.png);
     background-position: -12px 0px;
 }
 
@@ -441,18 +441,18 @@
     left: -6px;
     top: -5px;
     bottom: 0px;
-    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    background-image: url(++resource++plone.app.deco.images/divider_vertical.png);
     background-position: -12px 0px;
 }
 
 .deco-divider-left .deco-divider-dot, .deco-divider-right .deco-divider-dot {
-    background-image: url(++resource++experimental.deco.images/divider_vertical.png);
+    background-image: url(++resource++plone.app.deco.images/divider_vertical.png);
     width: 12px;
     height: 12px;
 }
 
 .deco-divider-top .deco-divider-dot, .deco-divider-bottom .deco-divider-dot {
-    background-image: url(++resource++experimental.deco.images/divider_horizontal.png);
+    background-image: url(++resource++plone.app.deco.images/divider_horizontal.png);
     width: 12px;
     height: 12px;
 }
@@ -482,38 +482,38 @@
 }
 
 .deco-notification-header {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: 0px 0px;
     width: 300px;
     height: 10px;
 }
 
 .deco-notification:hover .deco-notification-header {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: 0px -10px;
 }
 
 .deco-notification-footer {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -300px 0px;
     width: 300px;
     height: 10px;
 }
 
 .deco-notification:hover .deco-notification-footer {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -300px -10px;
 }
 
 .deco-notification-content {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -600px 0px;
     width: 300px;
     position: relative;
 }
 
 .deco-notification:hover .deco-notification-content {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -900px 0px;
 }
 
@@ -524,7 +524,7 @@
     right: 3px;
     width: 30px;
     height: 30px;
-    background-image: url(++resource++experimental.deco.images/window.png);
+    background-image: url(++resource++plone.app.deco.images/window.png);
     background-position: -12px 0px;
     cursor: pointer;
     z-index: 1101;
@@ -546,17 +546,17 @@
 }
 
 .deco-notification-type-error {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -1200px 0px;
 }
 
 .deco-notification-type-warning {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -1232px 0px;
 }
 
 .deco-notification-type-info {
-    background-image: url(++resource++experimental.deco.images/notify.png);
+    background-image: url(++resource++plone.app.deco.images/notify.png);
     background-position: -1264px 0px;
 }
 
@@ -581,7 +581,7 @@
 /* @group Toolbar */
 
 .deco-toolbar .deco-toolbar-content {
-    background:#DEDEDE url(++resource++experimental.deco.images/toolbar_background.png) repeat-x scroll 0 1px;
+    background:#DEDEDE url(++resource++plone.app.deco.images/toolbar_background.png) repeat-x scroll 0 1px;
     border-bottom:1px solid #515151;
     -webkit-box-shadow: 0 3px 4px rgba(0,0,0,0.5);
     bottom:0;
@@ -640,7 +640,7 @@
     font-size: 11px;
     border: 1px solid #3f3f3f;
     color: #000;
-    background: #ccc url(++resource++experimental.deco.images/button.png) repeat-x 0 center;
+    background: #ccc url(++resource++plone.app.deco.images/button.png) repeat-x 0 center;
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.2);
     margin-right: 8px;
     height: 22px;
@@ -655,7 +655,7 @@
     width: 30px;
     text-indent: -1000px;
     overflow: hidden;
-    background-image: url(++resource++experimental.deco.images/icons.png);
+    background-image: url(++resource++plone.app.deco.images/icons.png);
 }
 
 .deco-toolbar button.active,

@@ -1,20 +1,20 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="experimental.deco">
+    i18n_domain="plone.app.deco">
 
     <browser:resourceDirectory
-        name="experimental.deco.stylesheets"
+        name="plone.app.deco.stylesheets"
         directory="stylesheets"
         />
 
     <browser:resourceDirectory
-        name="experimental.deco.images"
+        name="plone.app.deco.images"
         directory="images"
         />
 
     <browser:resourceDirectory
-        name="experimental.deco.javascripts"
+        name="plone.app.deco.javascripts"
         directory="javascripts"
         />
 
