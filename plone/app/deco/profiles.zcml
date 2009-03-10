@@ -5,7 +5,7 @@
 
     <genericsetup:registerProfile
         name="default"
-        title="Plone Deco"
+        title="Deco"
         directory="profiles/default"
         description='Extension profile for the "Plone Deco" package.'
         provides="Products.GenericSetup.interfaces.EXTENSION"
