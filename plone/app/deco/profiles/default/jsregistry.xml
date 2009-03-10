@@ -26,34 +26,6 @@
               compression="none"
               cookable="False"
               enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.droppable.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.sortable.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.dialog.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.tabs.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.core.js"
               inline="False"/>
 
