@@ -1,28 +1,24 @@
-from zope.interface import implements
-from zope.i18nmessageid import MessageFactory
-from plone.fieldsets.fieldsets import FormFieldsets
+from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
+from plone.app.deco.interfaces import IDecoStyleSettings
+from plone.app.deco.interfaces import IDecoTileSettings
+from plone.z3cform import layout
+from zope import schema
+from plone.directives import form
 
-from plone.app.controlpanel.form import ControlPanelForm
+class IDecoSettings(form.Schema, IDecoStyleSettings, IDecoTileSettings):
 
-from plone.app.deco.interfaces import IDecoStyleSettingsStorage, IDecoTileSettingsStorage, IDecoSettingsStorage
-from plone.app.deco.browser.interfaces import IDecoControlPanelForm
+    form.fieldset('style', 
+            label=u"Style",
+            fields=['styles']
+        )
 
-_ = MessageFactory('plone.app.deco')
+    form.fieldset('tile', 
+            label=u"Tile",
+            fields=['tiles']
+        )
 
-class DecoControlPanelForm(ControlPanelForm):
-    """Deco Control Panel Form"""
-    implements(IDecoControlPanelForm)
+class DecoControlPanelForm(RegistryEditForm):
+    schema = IDecoSettings
 
-    decostylesettings = FormFieldsets(IDecoStyleSettingsStorage)
-    decostylesettings.id = 'decostylesettings'
-    decostylesettings.label = _(u'decostylesettings', default=u'Styles')
-
-    decotilesettings = FormFieldsets(IDecoTileSettingsStorage)
-    decotilesettings.id = 'decotilesettings'
-    decotilesettings.label = _(u'decotilesettings', default=u'Tiles')
-
-    form_fields = FormFieldsets(decostylesettings, decotilesettings)
-
-    label = _(u"Layout and Content editing")
-    description = _(u"Settings for Layout and Content editing.")
-    form_name = _("Layout and Content editing")
+DecoControlPanelFormView = layout.wrap_form(DecoControlPanelForm, ControlPanelFormWrapper)
