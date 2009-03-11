@@ -32,10 +32,4 @@
         permission="cmf.ManagePortal"
         />
 
-    <adapter
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        provides="plone.app.deco.interfaces.IDecoSettingsStorage"
-        factory="plone.app.deco.storage.DecoSettingsStorage"
-        />
-
 </configure>

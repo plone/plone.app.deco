@@ -9,4 +9,10 @@
 
     <include file="profiles.zcml" />
 
+    <adapter
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="plone.app.deco.interfaces.IDecoSettingsStorage"
+        factory="plone.app.deco.storage.form_adapter"
+        />
+
 </configure>

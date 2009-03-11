@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="deco_add_utility"
+               version="20090311-01"
+               handler="plone.app.deco.setuphandlers.add_utility"
+               title="Deco Add Utility">
+  </import-step>
+</import-steps>
