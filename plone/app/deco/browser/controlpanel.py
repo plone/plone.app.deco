@@ -15,7 +15,7 @@ class IDecoSettings(form.Schema, IDecoStyleSettings, IDecoTileSettings):
 
     form.fieldset('tile', 
             label=u"Tile",
-            fields=['tiles']
+            fields=['structure_tiles']
         )
 
 class DecoControlPanelForm(RegistryEditForm):
