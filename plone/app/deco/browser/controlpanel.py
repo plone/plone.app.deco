@@ -1,24 +1,13 @@
 from plone.app.registry.browser.controlpanel import RegistryEditForm
 from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
-from plone.app.deco.interfaces import IDecoStyleSettings
-from plone.app.deco.interfaces import IDecoTileSettings
+from plone.app.deco.interfaces import IDecoSettings
 from plone.z3cform import layout
-from zope import schema
-from plone.directives import form
+from zope.i18nmessageid import MessageFactory
 
-class IDecoSettings(form.Schema, IDecoStyleSettings, IDecoTileSettings):
-
-    form.fieldset('style', 
-            label=u"Style",
-            fields=['styles']
-        )
-
-    form.fieldset('tile', 
-            label=u"Tile",
-            fields=['structure_tiles']
-        )
+_ = MessageFactory('plone.app.deco')
 
 class DecoControlPanelForm(RegistryEditForm):
     schema = IDecoSettings
+    label = _(u'label_deco_settings', default=u'Layout and Content editing settings'),
 
 DecoControlPanelFormView = layout.wrap_form(DecoControlPanelForm, ControlPanelFormWrapper)

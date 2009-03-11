@@ -374,7 +374,6 @@ class DecoConfigView(BrowserView):
 
         config['default_available_actions'] = ['save', 'save-options', 'cancel', 'page-properties', 'undo', 'redo', 'style', 'insert']
 
-
         testing.setUpJSONConverter()
         jsonWriter = getUtility(interfaces.IJSONWriter)
         return jsonWriter.write(config)

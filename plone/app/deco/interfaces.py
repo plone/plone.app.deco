@@ -1,20 +1,28 @@
 from zope.interface import Interface
 from zope import schema
 from zope.i18nmessageid import MessageFactory
+from plone.directives import form
 
 _ = MessageFactory('plone.app.deco')
 
-class IDecoStyleSettings(Interface):
-    """This interface defines the style settings."""
+class IDecoSettings(form.Schema):
+    """This interface defines the deco settings."""
 
-    styles = schema.Text(
+    form.fieldset('style', 
+            label=u"Style",
+            fields=['styles']
+        )
+
+    styles = schema.List(
         title=_(u'label_styles', default=u'Styles'),
         description=_(u'help_styles', default=u"Enter a list of styles. Format is name|category|label|action|icon|favorite|menu|items, one style per line."),
-        default=u'strong|Text|B|strong|true|true|false|',
-        required=False) 
+        value_type=schema.TextLine(title=u'test'),
+        required=False)
 
-class IDecoTileSettings(Interface):
-    """This interface defines the tile settings."""
+    form.fieldset('tile', 
+            label=u"Tile",
+            fields=['structure_tiles']
+        )
 
     structure_tiles = schema.Text(
         title=_(u'label_structure_tiles', default=u'Structure tiles'),
