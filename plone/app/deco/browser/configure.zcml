@@ -25,11 +25,4 @@
         permission="zope.Public"
         />
 
-    <browser:page
-        name="deco-controlpanel"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.DecoControlPanelForm"
-        permission="cmf.ManagePortal"
-        />
-
 </configure>

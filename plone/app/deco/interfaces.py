@@ -4,7 +4,7 @@ from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('plone.app.deco')
 
-class IDecoStyleSettingsStorage(Interface):
+class IDecoStyleSettings(Interface):
     """This interface defines the style settings."""
 
     styles = schema.Text(
@@ -13,7 +13,7 @@ class IDecoStyleSettingsStorage(Interface):
         default=u'strong|Text|B|strong|true|true|false|',
         required=False) 
 
-class IDecoTileSettingsStorage(Interface):
+class IDecoTileSettings(Interface):
     """This interface defines the tile settings."""
 
     structure_tiles = schema.Text(
@@ -21,9 +21,3 @@ class IDecoTileSettingsStorage(Interface):
         description=_(u'help_structure_tiles', default=u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one style per line."),
         default=u'text|Structure|Text|text|<p>New block</p>|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left',
         required=False) 
-
-class IDecoSettingsStorage(
-    IDecoStyleSettingsStorage,
-    IDecoTileSettingsStorage,
-    ):
-    """Stores settings for Deco."""

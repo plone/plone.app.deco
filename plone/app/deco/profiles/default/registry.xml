@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<registry>
+  <record interface="plone.app.deco.interfaces.IDecoStyleSettings" field="styles" />
+  <record interface="plone.app.deco.interfaces.IDecoTileSettings" field="structure_tiles" />
+</registry>
