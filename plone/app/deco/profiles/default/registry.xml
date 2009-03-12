@@ -1,5 +1,21 @@
 <?xml version="1.0"?>
 <registry>
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="default_available_actions">
+    <value>
+      <element>save</element>
+      <element>cancel</element>
+      <element>page-properties</element>
+      <element>undo</element>
+      <element>redo</element>
+      <element>style</element>
+      <element>insert</element>
+    </value>
+  </record>
+
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles" />
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles" />
+
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
+    <value>text|Structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</value>
+  </record>
+
 </registry>

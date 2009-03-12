@@ -5,6 +5,8 @@ from z3c.json import testing
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolve_dotted_name
+from plone.registry.interfaces import IRegistry
+from plone.app.deco.interfaces import IDecoSettings
 from Products.CMFPlone.utils import log
 from Acquisition import aq_inner
 
@@ -15,6 +17,9 @@ class DecoConfigView(BrowserView):
 
     def getConfiguration(self):
         """Get the configuration of current content type"""
+
+        settings = getUtility(IRegistry).for_interface(IDecoSettings)
+        log(settings.structure_tiles)
 
         fti = getUtility(IDexterityFTI, name=self.context.portal_type)
         for x in fti.lookup_schema():
@@ -372,7 +377,7 @@ class DecoConfigView(BrowserView):
             }
         }
 
-        config['default_available_actions'] = ['save', 'save-options', 'cancel', 'page-properties', 'undo', 'redo', 'style', 'insert']
+        config['default_available_actions'] = ['save', 'cancel', 'page-properties', 'undo', 'redo', 'style', 'insert']
 
         testing.setUpJSONConverter()
         jsonWriter = getUtility(interfaces.IJSONWriter)
