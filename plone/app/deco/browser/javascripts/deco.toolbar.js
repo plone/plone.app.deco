@@ -56,21 +56,21 @@
             for (var a in actions) {
 
                 // Add actions to toolbar
-                for (var x in $.deco.options[a]) {
+                for (var x = 0; x < $.deco.options[a].length; x++) {
 
                     // If single action
                     if ($.deco.options[a][x].actions == undefined) {
 
                         // Add control
-                        AddControl (actions[a], $.deco.options[a][x], x);
+                        AddControl (actions[a], $.deco.options[a][x]);
 
                     // If fieldset
                     } else {
                         var action_group = $.deco.options[a][x];
                         actions[a].append($(document.createElement("fieldset"))
-                            .addClass("deco-button-group deco-button-group-" + x.replace(/_/g, "-"))
+                            .addClass("deco-button-group deco-button-group-" + $.deco.options[a][x].replace(/_/g, "-"))
                         );
-                        var elm_action_group = actions[a].children(".deco-button-group-" + x.replace(/_/g, "-"));
+                        var elm_action_group = actions[a].children(".deco-button-group-" + $.deco.options[a][x].replace(/_/g, "-"));
                         for (var y in action_group.actions) {
 
                             // Add control
@@ -320,9 +320,8 @@
      * @id AddControl
      * @param {Object} parent Parent object to append control to
      * @param {Object} action Object of the action
-     * @param {String} name Name of the action
      */
-    function AddControl (parent, action, name) {
+    function AddControl (parent, action) {
 
         // Check if button or menu
         if ((typeof (action.menu) != undefined) &&
@@ -333,11 +332,11 @@
 
                 // Create menu
                 parent.append($(document.createElement("label"))
-                    .addClass("deco-icon-menu deco-icon-menu-" + name.replace(/_/g, "-") + ' deco-icon')
+                    .addClass("deco-icon-menu deco-icon-menu-" + action.name.replace(/_/g, "-") + ' deco-icon')
                     .html(action.label)
                     .attr("title", action.label)
                     .append($(document.createElement("select"))
-                        .addClass("deco-menu-" + name.replace(/_/g, "-"))
+                        .addClass("deco-menu-" + action.name.replace(/_/g, "-"))
                         .data("action", action.action)
                         .change(function () {
                             $(this).decoExecAction();
@@ -382,7 +381,7 @@
 
                 // Create menu
                 parent.append($(document.createElement("select"))
-                    .addClass("deco-menu deco-menu-" + name.replace(/_/g, "-"))
+                    .addClass("deco-menu deco-menu-" + action.name.replace(/_/g, "-"))
                     .data("action", action.action)
                     .change(function () {
                         $(this).decoExecAction();
@@ -425,7 +424,7 @@
         } else {
             // Create button
             parent.append($(document.createElement("button"))
-                .addClass("deco-button deco-button-" + name.replace(/_/g, "-") + (action.icon ? ' deco-icon' : ''))
+                .addClass("deco-button deco-button-" + action.name.replace(/_/g, "-") + (action.icon ? ' deco-icon' : ''))
                 .html(action.label)
                 .attr("title", action.label)
                 .attr("type", "button")

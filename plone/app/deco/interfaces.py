@@ -23,7 +23,9 @@ class IDecoSettings(form.Schema):
     styles = schema.List(
         title=_(u"Styles"),
         description=_(u"Enter a list of styles. Format is name|category|label|action|icon|favorite|menu|items, one style per line."),
-        value_type=schema.TextLine(),
+        value_type=schema.List(
+            value_type= schema.TextLine(),
+            ),
         required=False)
     form.widget(styles='plone.z3cform.textlines.TextLinesFieldWidget')
 

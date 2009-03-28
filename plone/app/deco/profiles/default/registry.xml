@@ -12,7 +12,18 @@
     </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles" />
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles">
+    <value>
+      <value>
+        <element>bla1</element>
+        <element>bla2</element>
+      </value>
+      <value>
+        <element>bla3</element>
+        <element>bla4</element>
+      </value>
+    </value>
+  </record>
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
     <value>text|Structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</value>
