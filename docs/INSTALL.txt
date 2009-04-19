@@ -2,26 +2,34 @@ plone.app.deco Installation
 ===========================
 
 plone.app.deco is only tested with Plone 3.2, but should work with other
-versions. To install plone.app.deco checkout the package from the plone svn
-in your src directory.
+versions.
 
-plone.app.deco depends on plone.formwidget.layout and plone.behavior.layout
-which can be found at https://svn.plone.org/svn/plone/sandbox
-
-Since plone.app.deco depends on Dexterity also start by using this buildout:
+Since plone.app.deco depends on Dexterity start by using this buildout:
 http://svn.plone.org/svn/plone/plone.dexterity/buildouts/dev
+Extend the buildout with the following buildout:
+http://svn.plone.org/svn/plone/sandbox/plone.app.deco/buildouts/deco.cfg
+
+Checkout plone.app.deco, plone.formwidget.layout and plone.behavior.layout
+in your src folder which can be found at https://svn.plone.org/svn/plone/sandbox
 
 In the collective there is an example package called example.deco which
 contains an example contenttype to test Deco with. It can be found here:
 http://svn.plone.org/svn/collective/example.deco
 
-After putting all these packages in your src folder add plone.formwidget.layout,
-plone.behavior.layout, plone.app.deco and example.deco to the eggs, develop and
-zcml options in your buildout.cfg, followed by runing buildout and starting
-the instance.
+Also checkout plone.registry, plone.app.registry and plone.tiles from
+http://svn.plone.org/svn/plone into your src folder.
 
-When the instance is started add a Plone Site and install plone.app.deco
-and example.deco using the quickinstaller.
+After putting all these packages in your src folder add plone.formwidget.layout,
+plone.behavior.layout, plone.app.deco, example.deco, plone.registry,
+plone.app.registry and plone.tiles to the eggs, develop and zcml options in your
+buildout.cfg, followed by running ./bin/buildout -c deco.cfg and starting the
+instance.
+
+When the instance is started add a Plone Site and install all the Deco,
+Dexterity and Configuration registry packages using the quickinstaller.
+
+Now go to the your Personal Preferences view and set the wysiwyg editor to
+Basic HTML textarea.
 
 Now go to the site and add an "Example Deco Page". In the Layout tab add the
 content of the "example.html" file which can be found in the example.deco
