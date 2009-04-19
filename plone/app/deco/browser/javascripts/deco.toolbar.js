@@ -82,13 +82,13 @@
 
             // Add styles to toolbar
             if ($.deco.options.styles != undefined) {
-                for (x in $.deco.options.styles) {
+                for (var x = 0; x < $.deco.options.styles.length; x++) {
                     var action_group = $.deco.options.styles[x];
                     actions['primary_actions'].append($(document.createElement("fieldset"))
-                        .addClass("deco-button-group deco-button-group-" + x.replace(/_/g, "-"))
+                        .addClass("deco-button-group deco-button-group-" + action_group.name.replace(/_/g, "-"))
                     );
-                    var elm_action_group = actions['primary_actions'].children(".deco-button-group-" + x.replace(/_/g, "-"));
-                    for (y in action_group.actions) {
+                    var elm_action_group = actions['primary_actions'].children(".deco-button-group-" + action_group.name.replace(/_/g, "-"));
+                    for (var y = 0; y < action_group.actions.length; y++) {
                         if (action_group.actions[y].favorite) {
 
                             // Add control
@@ -104,18 +104,19 @@
             // Add items to the insert menu
             if ($.deco.options.tiles != undefined) {
                 var elm_select_insert = actions['secondary_actions'].find(".deco-menu-insert");
-                for (x in $.deco.options.tiles) {
+                for (var x = 0; x < $.deco.options.tiles.length; x++) {
                     var action_group = $.deco.options.tiles[x];
                     elm_select_insert.append($(document.createElement("optgroup"))
-                        .addClass("deco-option-group deco-option-group-" + x.replace(/_/g, "-"))
-                        .attr("label", $.deco.options.tiles[x].label)
+                        .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))
+                        .attr("label", action_group.label)
                     );
-                    var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + x.replace(/_/g, "-"));
-                    for (y in action_group.tiles) {
+                    var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + action_group.name.replace(/_/g, "-"));
+                    for (var y = 0; y < action_group.tiles.length; y++) {
+                        var tile = action_group.tiles[y];
                         elm_action_group.append($(document.createElement("option"))
-                            .addClass("deco-option deco-option-" + y.replace(/_/g, "-"))
-                            .attr("value", y)
-                            .html(action_group.tiles[y].label)
+                            .addClass("deco-option deco-option-" + tile.name.replace(/_/g, "-"))
+                            .attr("value", tile.name)
+                            .html(tile.label)
                         );
                     }
                     if (elm_action_group.children().length == 0) {
@@ -127,20 +128,21 @@
             // Add items to the style menu
             if ($.deco.options.styles != undefined) {
                 var elm_select_style = actions['secondary_actions'].find(".deco-menu-style");
-                for (x in $.deco.options.styles) {
+                for (var x; x < $.deco.options.styles.length; x++) {
                     var action_group = $.deco.options.styles[x];
                     elm_select_style.append($(document.createElement("optgroup"))
-                        .addClass("deco-option-group deco-option-group-" + x.replace(/_/g, "-"))
-                        .attr("label", $.deco.options.styles[x].label)
+                        .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))
+                        .attr("label", action_group.label)
                     );
-                    var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + x.replace(/_/g, "-"));
-                    for (y in action_group.actions) {
-                        if (action_group.actions[y].favorite == false) {
+                    var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + action_group.name.replace(/_/g, "-"));
+                    for (var y = 0; y <  action_group.actions.length; y++) {
+                        var action = action_group.actions[y];
+                        if (action.favorite == false) {
                             elm_action_group.append($(document.createElement("option"))
-                                .addClass("deco-option deco-option-" + y.replace(/_/g, "-"))
-                                .attr("value", y)
-                                .html(action_group.actions[y].label)
-                                .data("action", action_group.actions[y].action)
+                                .addClass("deco-option deco-option-" + action.name.replace(/_/g, "-"))
+                                .attr("value", action.name)
+                                .html(action.label)
+                                .data("action", action.action)
                             );
                         }
                     }
@@ -215,10 +217,10 @@
 
                 // Get actions
                 var actions = $.deco.options.default_available_actions;
-                for (x in $.deco.options.tiles) {
+                for (var x = 0; x < $.deco.options.tiles.length; x++) {
                     var tile_group = $.deco.options.tiles[x];
-                    for (y in tile_group.tiles) {
-                        if (y == tiletype) {
+                    for (var y = 0; y <  tile_group.tiles.length; y++) {
+                        if (tile_group.tiles[y].name == tiletype) {
                             actions = actions.concat(tile_group.tiles[y].available_actions);
                         }
                     }
