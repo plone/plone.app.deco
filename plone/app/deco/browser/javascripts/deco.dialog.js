@@ -95,9 +95,15 @@
             form.find('#form-widgets-ILayout-layout').parents('.row').hide();
 
             // Hide field which are on the wysiwyg area
-            for (x in $.deco.options.tiles.fields.tiles) {
-                var field_tile = $.deco.options.tiles.fields.tiles[x];
-                if ($.deco.options.panels.find(".deco-" + x + "-tile").length == 0) {
+            var tile_group;
+            for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                if ($.deco.options.tiles[x].name == 'fields') {
+                    tile_group = $.deco.options.tiles[x];
+                }
+            }
+            for (var x = 0; x < tile_group.tiles.length; x++) {
+                var field_tile = tile_group.tiles[x];
+                if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length == 0) {
                     $(document.getElementById(field_tile.id)).parents('.row').show();
                 } else {
                     $(document.getElementById(field_tile.id)).parents('.row').hide();

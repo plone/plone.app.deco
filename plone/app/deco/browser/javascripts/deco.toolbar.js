@@ -68,13 +68,13 @@
                     } else {
                         var action_group = $.deco.options[a][x];
                         actions[a].append($(document.createElement("fieldset"))
-                            .addClass("deco-button-group deco-button-group-" + $.deco.options[a][x].replace(/_/g, "-"))
+                            .addClass("deco-button-group deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"))
                         );
-                        var elm_action_group = actions[a].children(".deco-button-group-" + $.deco.options[a][x].replace(/_/g, "-"));
+                        var elm_action_group = actions[a].children(".deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"));
                         for (var y in action_group.actions) {
 
                             // Add control
-                            AddControl (elm_action_group, action_group.actions[y], y);
+                            AddControl (elm_action_group, action_group.actions[y]);
                         }
                     }
                 }
@@ -92,7 +92,7 @@
                         if (action_group.actions[y].favorite) {
 
                             // Add control
-                            AddControl (elm_action_group, action_group.actions[y], y);
+                            AddControl (elm_action_group, action_group.actions[y]);
                         }
                     }
                     if (elm_action_group.children().length == 0) {
@@ -324,8 +324,7 @@
     function AddControl (parent, action) {
 
         // Check if button or menu
-        if ((typeof (action.menu) != undefined) &&
-            (action.menu)) {
+        if ((typeof (action.menu) != undefined) && (action.menu)) {
 
             // Check if icon menu
             if (action.icon) {

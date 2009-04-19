@@ -422,11 +422,11 @@
 
             // Get tile config
             var tile_config;
-            for (x in $.deco.options.tiles) {
+            for (var x = 0; x < $.deco.options.tiles.length; x++) {
                 var tile_group = $.deco.options.tiles[x];
-                for (y in tile_group.tiles) {
-                    if (y == tiletype) {
-                       tile_config = tile_group.tiles[y];
+                for (var y = 0; y < tile_group.tiles.length; y++) {
+                    if (tile_group.tiles[y].name == tiletype) {
+                        tile_config = tile_group.tiles[y];
                     }
                 }
             }

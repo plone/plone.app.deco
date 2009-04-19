@@ -14,14 +14,10 @@
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles">
     <value>
-      <value>
-        <element>bla1</element>
-        <element>bla2</element>
-      </value>
-      <value>
-        <element>bla3</element>
-        <element>bla4</element>
-      </value>
+      <element>test1</element>
+      <element>test2</element>
+      <element>test3</element>
+      <element>test4</element>
     </value>
   </record>
 
