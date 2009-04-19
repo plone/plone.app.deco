@@ -31,7 +31,7 @@ class IDecoSettings(form.Schema):
 
     form.fieldset('tile', 
             label=_(u"Tile"),
-            fields=['structure_tiles']
+            fields=['structure_tiles, app_tiles']
         )
 
     structure_tiles = schema.Text(
@@ -39,3 +39,9 @@ class IDecoSettings(form.Schema):
         description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one style per line."),
         default=u'text|Structure|Text|text|<p>New block</p>|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left',
         required=False) 
+
+    app_tiles = schema.List(
+        title=_(u"Application tiles"),
+        description=_(u"Enter a list of application tiles, one per line."),
+        value_type= schema.TextLine(),
+        required=False)
