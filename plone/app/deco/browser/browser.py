@@ -9,6 +9,22 @@ from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoSettings
 from Products.CMFPlone.utils import log
 from Acquisition import aq_inner
+from plone.tiles.interfaces import ITileType
+
+def GetBool(value):
+    if value == 'False' or value == 'false':
+        return False
+    else:
+        return True
+
+def GetCategoryIndex(tiles, category):
+    index = 0
+    count = 0
+    for tile in tiles:
+        if tile['name'] == category:
+            index = count
+        count += 1
+    return index
 
 class DecoConfigView(BrowserView):
 
@@ -18,6 +34,128 @@ class DecoConfigView(BrowserView):
     def getConfiguration(self):
         """Get the configuration of current content type"""
 
+        # Get the settings from the Registry
+        settings = getUtility(IRegistry).for_interface(IDecoSettings)
+
+        # Create empty configuration
+        config = {}
+
+        # Primary / Secondary Actions
+        for action_type in ['primary_actions', 'secondary_actions']:
+            config[action_type] = []
+            for action in getattr(settings, action_type):
+                action_fields = action.split('|')
+                items = []
+                if GetBool(action_fields[6]):
+                    for i in range(7, len(action_fields), 2):
+                        items.append({
+                            'value': action_fields[i],
+                            'label': action_fields[i+1]
+                        })
+
+                record = {
+                    'name': action_fields[0],
+                    'label': action_fields[3],
+                    'action': action_fields[4],
+                    'icon': GetBool(action_fields[5]),
+                    'menu': GetBool(action_fields[6]),
+                    'items': items
+                }
+
+                # If no fieldset
+                if action_fields[1] == '':
+                    config[action_type].append(record)
+    
+                # Fieldset
+                else:
+
+                    # Find fieldset
+                    fieldset_index = -1
+                    count = 0
+                    for config_action in config[action_type]:
+                        if config_action['name'] == action_fields[1]:
+                            fieldset_index = count
+                        count += 1
+
+                    # Fieldset not found
+                    if fieldset_index == -1:
+                        config[action_type].append({
+                            'name': action_fields[1],
+                            'label': action_fields[2],
+                            'actions': [record]
+                        })
+
+                    # Fieldset not found
+                    else:
+                        config[action_type][fieldset_index]['actions'].append(record)
+
+        # Styles
+        config['styles'] = []
+
+        # Style Categories
+        for style_category in settings.style_categories:
+            config['styles'].append({
+                'name': style_category.split('|')[0],
+                'label': style_category.split('|')[1],
+                'actions': []
+            })
+
+        # Styles
+        for style in settings.styles:
+            style_fields = style.split('|')
+            config['style'][GetCategoryIndex(config['styles'], style_fields[1])]['actions'].append({
+                'name': style_fields[0],
+                'label': style_fields[2],
+                'action': style_fields[3],
+                'icon': GetBool(style_fields[4]),
+                'favorite': GetBool(style_fields[5])
+            })
+
+        # Default Available Actions
+        config['default_available_actions'] = settings.default_available_actions
+
+        # Tiles
+        config['tiles'] = []
+
+        # Tile Categories
+        for tile_category in settings.tile_categories:
+            config['tiles'].append({
+                'name': tile_category.split('|')[0],
+                'label': tile_category.split('|')[1],
+                'tiles': []
+            })
+
+        # Structure Tiles
+        for structure_tile in settings.structure_tiles:
+            tile_fields = structure_tile.split('|')
+            config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
+                'name': tile_fields[0],
+                'label': tile_fields[2],
+                'type': tile_fields[3],
+                'default_value': tile_fields[4],
+                'read_only': GetBool(tile_fields[5]),
+                'settings': GetBool(tile_fields[6]),
+                'favorite': GetBool(tile_fields[7]),
+                'rich_text': GetBool(tile_fields[8]),
+                'available_actions': tile_fields[9:-1]
+            })
+
+        # Application Tiles
+        for app_tile_name in settings.app_tiles:
+            app_tile_type = getUtility(ITileType, name=app_tile_name)
+            config['tiles'][GetCategoryIndex(config['tiles'], 'media')]['tiles'].append({
+                'name': app_tile_name,
+                'label': app_tile_type.title,
+                'type': 'app',
+                'default_value': '',
+                'read_only': True,
+                'settings': True,
+                'favorite': False,
+                'rich_text': False,
+                'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+            })
+
+        # Field Tiles
         fti = getUtility(IDexterityFTI, name=self.context.portal_type)
         for x in fti.lookup_schema():
             log(x)
@@ -32,318 +170,6 @@ class DecoConfigView(BrowserView):
                 if behavior_schema is not None:
                     for x in behavior_schema:
                         log(x)
-
-        config = {}
-
-        config['primary_actions'] = [
-            {
-                'name': 'save',
-                'label': 'Save',
-                'actions': [
-                    {
-                        'name': 'save',
-                        'label': 'Save',
-                        'action': 'save',
-                        'icon': False
-                    }
-                ]
-            },
-            {
-                'name':'cancel',
-                'label': 'Cancel',
-                'action': 'cancel',
-                'icon': False
-            },
-            {
-                'name': 'page_properties',
-                'label': 'Page properties',
-                'action': 'page-properties',
-                'icon': False
-            }
-        ]
-
-        config['secondary_actions'] = [
-            {
-                'name': 'layout',
-                'label': 'Layout...',
-                'action': 'layout',
-                'icon': False,
-                'menu': True,
-                'items': [
-                    {
-                        'value': 'none',
-                        'label': 'Layout...'
-                    },
-                    {
-                        'value': 'newslisting',
-                        'label': 'News listing'
-                    },
-                    {
-                        'value': 'projectdetails',
-                        'label': 'Project details'
-                    },
-                    {
-                        'value': 'gallery',
-                        'label': 'Gallery'
-                    },
-                    {
-                        'value': 'another',
-                        'label': 'Choose another...'
-                    },
-                    {
-                        'value': 'template',
-                        'label': 'Save as template...'
-                    }
-                ]
-            },
-            {
-                'name': 'style',
-                'label': 'Style...',
-                'action': 'style',
-                'icon': False,
-                'menu': True,
-                'items': [
-                    {
-                        'value': 'none',
-                        'label': 'Style...'
-                    }
-                ]
-            },
-            {
-                'name': 'insert',
-                'label': 'Insert...',
-                'action': 'insert',
-                'icon': False,
-                'menu': True,
-                'items': [
-                    {
-                        'value': 'none',
-                        'label': 'Insert...'
-                    }
-                ]
-            }
-        ]
-
-        config['styles'] = [
-            {
-                'name': 'text',
-                'label': 'Text',
-                'actions': [
-                    {
-                        'name': 'strong',
-                        'label': 'B',
-                        'action': 'strong',
-                        'icon': False,
-                        'favorite': True
-                    },
-                    {
-                        'name': 'em',
-                        'label': 'I',
-                        'action': 'em',
-                        'icon': False,
-                        'favorite': True
-                    },
-                    {
-                        'name': 'paragraph',
-                        'label': 'Paragraph',
-                        'action': 'paragraph',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'heading',
-                        'label': 'Heading',
-                        'action': 'heading',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'subheading',
-                        'label': 'Subheading',
-                        'action': 'subheading',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'discreet',
-                        'label': 'Discreet',
-                        'action': 'discreet',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'literal',
-                        'label': 'Literal',
-                        'action': 'literal',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'quote',
-                        'label': 'Quote',
-                        'action': 'quote',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'callout',
-                        'label': 'Callout',
-                        'action': 'callout',
-                        'icon': True,
-                        'favorite': False
-                    }
-                ]
-            },
-            {
-                'name': 'selection',
-                'label': 'Selection',
-                'actions': [
-                    {
-                        'name': 'highlight',
-                        'label': 'Highlight',
-                        'action': 'highlight',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'sub',
-                        'label': 'Subscript',
-                        'action': 'sub',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'sup',
-                        'label': 'Superscript',
-                        'action': 'sup',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'remove-style',
-                        'label': '(remove style)',
-                        'action': 'remove-style',
-                        'icon': True,
-                        'favorite': False
-                    }
-                ]
-            },
-            {
-                'name': 'lists',
-                'label': 'Lists',
-                'actions': [
-                    {
-                        'name': 'ul',
-                        'label': 'Unordered list',
-                        'action': 'ul',
-                        'icon': True,
-                        'favorite': True
-                    },
-                    {
-                        'name': 'ol',
-                        'label': 'Ordered list',
-                        'action': 'ol',
-                        'icon': True,
-                        'favorite': True
-                    }
-                ]
-            },
-            {
-                'name': 'justify',
-                'label': 'Justify',
-                'actions': [
-                    {
-                        'name': 'justify-left',
-                        'label': 'Left-aligned',
-                        'action': 'justify-left',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'justify-center',
-                        'label': 'Center',
-                        'action': 'justify-center',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'justify-right',
-                        'label': 'Right-aligned',
-                        'action': 'justify-right',
-                        'icon': True,
-                        'favorite': False
-                    },
-                    {
-                        'name': 'justify-justify',
-                        'label': 'Justified',
-                        'action': 'justify-justify',
-                        'icon': True,
-                        'favorite': False
-                    }
-                ]
-            },
-            {
-                'name': 'print',
-                'label': 'Print',
-                'actions': [
-                    {
-                        'name': 'pagebreak',
-                        'label': 'Page break',
-                        'action': 'pagebreak',
-                        'icon': True,
-                        'favorite': False
-                    }
-                ]
-            }
-        ]
-
-        config['tiles'] = []
-        config['tiles'].append({
-            'name': 'structure',
-            'label': 'Structure',
-            'tiles': [
-                {
-                    'name': 'text',
-                    'label': 'Text',
-                    'type': 'text',
-                    'default_value': '<p>New block</p>',
-                    'read_only': False,
-                    'settings': True,
-                    'favorite': False,
-                    'rich_text': True,
-                    'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-style', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
-                }
-            ]
-        })
-
-        config['tiles'].append({
-            'name': 'media',
-            'label': 'Media',
-            'tiles': [
-                {
-                    'name': 'image',
-                    'label': 'Image',
-                    'type': 'app',
-                    'default_value': '<img src="++resource++plone.app.deco.images/image-placeholder.png" alt="New image"/>',
-                    'read_only': True,
-                    'settings': True,
-                    'favorite': False,
-                    'rich_text': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                },
-                {
-                    'name': 'pony',
-                    'label': 'Pony',
-                    'type': 'app',
-                    'default_value': "<pre>\n        .,,.\n     ,;;*;;;;,\n    .-'``;-');;.\n   /'  .-.  /*;;\n .'    \d    \;;               .;;;,\n/ o      `    \;    ,__.     ,;*;;;*;,\n\__, _.__,'   \_.-') __)--.;;;;;*;;;;,\n `\"\"`;;;\       /-')_) __)  `\' ';;;;;;\n    ;*;;;        -') `)_)  |\ |  ;;;;*;\n    ;;;;|        `---`    O | | ;;*;;;\n    *;*;\|                 O  / ;;;;;*\n   ;;;;;/|    .-------\      / ;*;;;;;\n  ;;;*;/ \    |        '.   (`. ;;;*;;;\n  ;;;;;'. ;   |          )   \ | ;;;;;;\n  ,;*;;;;\/   |.        /   /` | ';;;*;\n   ;;;;;;/    |/       /   /__/   ';;;\n   '*jgs/     |       /    |      ;*;\n        `\"\"\"\"`        `\"\"\"\"`     ;'\n</pre>",
-                    'read_only': True,
-                    'settings': True,
-                    'favorite': False,
-                    'rich_text': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                }
-            ]
-        })
 
         config['tiles'].append({
             'name': 'fields',
@@ -415,10 +241,7 @@ class DecoConfigView(BrowserView):
             ]
         })
 
-        settings = getUtility(IRegistry).for_interface(IDecoSettings)
-
-        config['default_available_actions'] = settings.default_available_actions
-
+        # Write JSON structure
         testing.setUpJSONConverter()
         jsonWriter = getUtility(interfaces.IJSONWriter)
         return jsonWriter.write(config)

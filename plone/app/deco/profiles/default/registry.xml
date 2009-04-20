@@ -1,5 +1,21 @@
 <?xml version="1.0"?>
 <registry>
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="primary_actions">
+    <value>
+      <element>save|save|Save|Save|save|false|false</element>
+      <element>cancel|||Cancel|cancel|false|false</element>
+      <element>page_properties|||Page properties|page-properties|false|false</element>
+    </value>
+  </record>
+
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="secondary_actions">
+    <value>
+      <element>layout|||Layout...|layout|false|true|none|Layout...|newslisting|News listing|projectdetails|Project details|gallery|Gallery|another|Choose another...|template|Save as template...</element>
+      <element>style|||Style...|style|false|true|none|Style...</element>
+      <element>insert|||Insert...|insert|false|true|none|Insert...</element>
+    </value>
+  </record>
+
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="default_available_actions">
     <value>
       <element>save</element>
@@ -12,17 +28,53 @@
     </value>
   </record>
 
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="style_categories">
+    <value>
+      <element>text|Text</element>
+      <element>selection|Selection</element>
+      <element>lists|Lists</element>
+      <element>justify|Justify</element>
+      <element>print|Print</element>
+    </value>
+  </record>
+
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles">
     <value>
-      <element>test1</element>
-      <element>test2</element>
-      <element>test3</element>
-      <element>test4</element>
+      <element>strong|text|B|strong|false|true</element>
+      <element>em|text|I|em|false|true</element>
+      <element>paragraph|text|Paragraph|paragraph|true|false</element>
+      <element>heading|text|Heading|heading|true|false</element>
+      <element>subheading|text|Subheading|subheading|true|false</element>
+      <element>discreet|text|Discreet|discreet|true|false</element>
+      <element>literal|text|Literal|literal|true|false</element>
+      <element>quote|text|Quote|quote|true|false</element>
+      <element>callout|text|Callout|callout|true|false</element>
+      <element>highlight|selection|Highlight|highlight|true|false</element>
+      <element>sub|selection|Subscript|sub|true|false</element>
+      <element>sup|selection|Superscript|sup|true|false</element>
+      <element>remove-style|selection|(Remove style)|remove-style|true|false</element>
+      <element>ul|lists|Unordered list|ul|true|true</element>
+      <element>ol|lists|Ordered list|ol|true|true</element>
+      <element>justify-left|justify|Left-aligned|justify-left|true|false</element>
+      <element>justify-center|justify|Center|justify-center|true|false</element>
+      <element>justify-right|justify|Right-aligned|justify-right|true|false</element>
+      <element>justify-justify|justify|Justified|justify-justify|true|false</element>
+      <element>pagebreak|print|Page break|pagebreak|true|false</element>
+    </value>
+  </record>
+
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="tile_categories">
+    <value>
+      <element>structure|Structure</element>
+      <element>media|Media</element>
+      <element>fields|Fields</element>
     </value>
   </record>
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
-    <value>text|Structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</value>
+    <value>
+      <element>text|structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</element>
+    </value>
   </record>
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles"></record>
