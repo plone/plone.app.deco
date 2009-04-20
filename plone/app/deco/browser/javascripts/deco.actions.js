@@ -456,9 +456,6 @@
                 // Set actions
                 $.deco.options.panels.trigger("selectedtilechange");
 
-                // Set dragging state
-                $.deco.options.panels.addClass("deco-panel-dragging deco-panel-dragging-new");
-
                 // Get tile config
                 var tile_config;
                 for (var x = 0; x < $.deco.options.tiles.length; x++) {
@@ -470,47 +467,58 @@
                     }
                 }
 
-                // Add helper
-                $($.deco.options.panels.get(0)).append(
-                    $(document.createElement("div"))
-                        .addClass("deco-grid-row")
-                        .append($(document.createElement("div"))
-                            .addClass("deco-grid-cell deco-width-half deco-position-leftmost")
-                            .append($(document.createElement("div"))
-                                .addClass("movable removable deco-tile deco-" + $(source).val() + "-tile")
-                                .append($(document.createElement("div"))
-                                    .addClass("deco-tile-content")
-                                    .html($.deco.getDefaultValue(tile_config))
-                                )
-                                .addClass("deco-helper-tile deco-helper-tile-new deco-original-tile")
-                            )
-                        )
-                )
+                if (tile_config.type == 'app') {
 
-                // Set helper min size
-                var helper = $.deco.options.panels.find(".deco-helper-tile-new");
+                    // Open dialog
+                    $.deco.dialog.openIframe($.deco.options.parent + '++addtile++' + $(source).val());
 
-                // Get max width
-                var width = 0;
-                $.deco.options.panels.each(function () {
-                    if ($(this).width() > width) {
-                        width = $(this).width();
-                    }
-                });
-
-                // Set width
-                if (helper.width() < (width / 4)) {
-                    helper.width(width / 4);
                 } else {
-                    helper.width(helper.width());
+
+                    // Set dragging state
+                    $.deco.options.panels.addClass("deco-panel-dragging deco-panel-dragging-new");
+
+                    // Add helper
+                    $($.deco.options.panels.get(0)).append(
+                        $(document.createElement("div"))
+                            .addClass("deco-grid-row")
+                            .append($(document.createElement("div"))
+                                .addClass("deco-grid-cell deco-width-half deco-position-leftmost")
+                                .append($(document.createElement("div"))
+                                    .addClass("movable removable deco-tile deco-" + $(source).val() + "-tile")
+                                    .append($(document.createElement("div"))
+                                        .addClass("deco-tile-content")
+                                        .html($.deco.getDefaultValue(tile_config))
+                                    )
+                                    .addClass("deco-helper-tile deco-helper-tile-new deco-original-tile")
+                                )
+                            )
+                    )
+
+                    // Set helper min size
+                    var helper = $.deco.options.panels.find(".deco-helper-tile-new");
+
+                    // Get max width
+                    var width = 0;
+                    $.deco.options.panels.each(function () {
+                        if ($(this).width() > width) {
+                            width = $(this).width();
+                        }
+                    });
+
+                    // Set width
+                    if (helper.width() < (width / 4)) {
+                        helper.width(width / 4);
+                    } else {
+                        helper.width(helper.width());
+                    }
+                    helper.decoInitTile();
+
+                    // Notify user
+                    $.deco.notify("info", "Inserting new tile", "Select the location for the new tile");
+
+                    // Reset menu
+                    $(source).val("none");
                 }
-                helper.decoInitTile();
-
-                // Notify user
-                $.deco.notify("info", "Inserting new tile", "Select the location for the new tile");
-
-                // Reset menu
-                $(source).val("none");
             }
         });
     });

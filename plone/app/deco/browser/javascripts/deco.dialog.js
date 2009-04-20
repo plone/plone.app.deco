@@ -163,4 +163,28 @@
         $("#region-content").hide();
     };
 
+    /**
+     * Open an iframe dialog
+     *
+     * @id jQuery.deco.dialog.openIframe
+     * @param {String} url of the iframe
+     */
+    $.deco.dialog.openIframe = function(url) {
+
+        $(".deco-dialog-blocker").show();
+        
+        $(document.body).append($(document.createElement("iframe"))
+            .css({
+                'position': 'absolute',
+                'width': '800px',
+                'height': '600px',
+                'top': '50px',
+                'z-index': '3000',
+                'left': (($(window).width() - 800) / 2),
+                'border': '0px'
+            })
+            .attr('src', url)
+        );
+    };
+
 })(jQuery);

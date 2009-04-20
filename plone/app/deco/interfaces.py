@@ -21,7 +21,7 @@ class IDecoSettings(form.Schema):
     form.widget(primary_actions='plone.z3cform.textlines.TextLinesFieldWidget')
 
     secondary_actions = schema.List(
-        title=_(u"Primary actions"),
+        title=_(u"Secondary actions"),
         description=_(u"Enter a list of secondary actions. Format is name|fieldsetname|fieldsetlable|label|action|icon|menu|item1value|item1label|item2value... one per line."),
         value_type=schema.TextLine(),
         required=False)

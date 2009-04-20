@@ -10,6 +10,7 @@ from plone.app.deco.interfaces import IDecoSettings
 from Products.CMFPlone.utils import log
 from Acquisition import aq_inner
 from plone.tiles.interfaces import ITileType
+from Products.CMFCore.interfaces._content import IFolderish
 
 def GetBool(value):
     if value == 'False' or value == 'false':
@@ -103,7 +104,7 @@ class DecoConfigView(BrowserView):
         # Styles
         for style in settings.styles:
             style_fields = style.split('|')
-            config['style'][GetCategoryIndex(config['styles'], style_fields[1])]['actions'].append({
+            config['styles'][GetCategoryIndex(config['styles'], style_fields[1])]['actions'].append({
                 'name': style_fields[0],
                 'label': style_fields[2],
                 'action': style_fields[3],
@@ -240,6 +241,13 @@ class DecoConfigView(BrowserView):
                 }
             ]
         })
+
+        # URLs
+        config['document_url'] = self.context.absolute_url()
+        if IFolderish.providedBy(self.context):
+            config['parent'] = self.context.absolute_url() + "/"
+        else:
+            config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
 
         # Write JSON structure
         testing.setUpJSONConverter()
