@@ -24,6 +24,8 @@
 
             // Get current object
             var obj = $(this);
+            var offset_left = obj.offset().left;
+            var offset_top = obj.offset().top;
 
             // Init dialog
             obj
@@ -31,9 +33,9 @@
                 .css({
                     'position': 'absolute',
                     'width': '800px',
-                    'top': '50px',
+                    'top': 50 - offset_top,
                     'z-index': '3000',
-                    'left': (($(window).width() - 800) / 2),
+                    'left': (($(window).width() - 800) / 2) - offset_left,
                     'border': '0px'
                 })
 
