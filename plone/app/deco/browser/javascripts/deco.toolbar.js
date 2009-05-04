@@ -128,7 +128,7 @@
             // Add items to the style menu
             if ($.deco.options.styles != undefined) {
                 var elm_select_style = actions['secondary_actions'].find(".deco-menu-style");
-                for (var x; x < $.deco.options.styles.length; x++) {
+                for (var x = 0; x < $.deco.options.styles.length; x++) {
                     var action_group = $.deco.options.styles[x];
                     elm_select_style.append($(document.createElement("optgroup"))
                         .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))

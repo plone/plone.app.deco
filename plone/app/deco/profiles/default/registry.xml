@@ -53,8 +53,8 @@
       <element>sub|selection|Subscript|sub|true|false</element>
       <element>sup|selection|Superscript|sup|true|false</element>
       <element>remove-style|selection|(Remove style)|remove-style|true|false</element>
-      <element>ul|lists|Unordered list|ul|true|true</element>
-      <element>ol|lists|Ordered list|ol|true|true</element>
+      <element>ul|lists|Unordered list|ul|true|false</element>
+      <element>ol|lists|Ordered list|ol|true|false</element>
       <element>justify-left|justify|Left-aligned|justify-left|true|false</element>
       <element>justify-center|justify|Center|justify-center|true|false</element>
       <element>justify-right|justify|Right-aligned|justify-right|true|false</element>
