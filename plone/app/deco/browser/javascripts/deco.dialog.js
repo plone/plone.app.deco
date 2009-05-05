@@ -33,7 +33,7 @@
                 .css({
                     'position': 'absolute',
                     'width': '800px',
-                    'top': 50 - offset_top,
+                    'top': 0 - offset_top,
                     'z-index': '3000',
                     'left': (($(window).width() - 800) / 2) - offset_left,
                     'border': '0px'
@@ -152,7 +152,11 @@
             form.find(".formTabs").hide();
         }
         $(".deco-dialog-blocker").show();
-        $("#region-content").show();
+        var offset_top = parseInt($("#region-content").css('top'));
+        $("#region-content")
+            .css({'top': offset_top - 300})
+            .show()
+            .animate({'top': offset_top}, 300);
     };
 
     /**
@@ -163,6 +167,7 @@
     $.deco.dialog.close = function() {
         $(".deco-dialog-blocker").hide();
         $("#region-content").hide();
+        $(".deco-iframe-dialog").remove();
     };
 
     /**
@@ -180,12 +185,15 @@
                 'position': 'absolute',
                 'width': '800px',
                 'height': '600px',
-                'top': '50px',
+                'top': '0px',
                 'z-index': '3000',
                 'left': (($(window).width() - 800) / 2),
                 'border': '0px'
             })
-            .attr('src', url)
+            .attr({
+                'src': url
+            })
+            .addClass("deco-iframe-dialog")
         );
     };
 

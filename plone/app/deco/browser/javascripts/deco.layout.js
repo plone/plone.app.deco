@@ -1556,6 +1556,64 @@
     };
 
     /**
+     * Add an apptile with the given value
+     *
+     * @id jQuery.deco.addAppTile
+     * @param {String} type Type of the application tile
+     * @param {String} value Value of the application tile
+     */
+    $.deco.addAppTile = function(type, value) {
+
+        // Close dialog
+        $.deco.dialog.close();
+
+        // Focus on current window
+        window.focus();
+
+        // Set dragging state
+        $.deco.options.panels.addClass("deco-panel-dragging deco-panel-dragging-new");
+
+        // Add helper
+        $($.deco.options.panels.get(0)).append(
+            $(document.createElement("div"))
+                .addClass("deco-grid-row")
+                .append($(document.createElement("div"))
+                    .addClass("deco-grid-cell deco-width-half deco-position-leftmost")
+                    .append($(document.createElement("div"))
+                        .addClass("movable removable deco-tile deco-" + type + "-tile")
+                        .append($(document.createElement("div"))
+                            .addClass("deco-tile-content")
+                            .html(value)
+                        )
+                        .addClass("deco-helper-tile deco-helper-tile-new deco-original-tile")
+                    )
+                )
+        )
+
+        // Set helper min size
+        var helper = $.deco.options.panels.find(".deco-helper-tile-new");
+
+        // Get max width
+        var width = 0;
+        $.deco.options.panels.each(function () {
+            if ($(this).width() > width) {
+                width = $(this).width();
+            }
+        });
+
+        // Set width
+        if (helper.width() < (width / 4)) {
+            helper.width(width / 4);
+        } else {
+            helper.width(helper.width());
+        }
+        helper.decoInitTile();
+
+        // Notify user
+        $.deco.notify("info", "Inserting new tile", "Select the location for the new tile");
+    };
+
+    /**
      * Get the default value of the given tile
      *
      * @id jQuery.deco.getDefaultValue

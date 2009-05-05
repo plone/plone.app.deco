@@ -159,8 +159,8 @@
                         var left = obj.offset().left;
 
                         // Fix bug in Firefox when margin auto is used
-                        if ($.browser.mozilla && $(window).width() % 2 == 1)
-                            left++;
+//                        if ($.browser.mozilla && $(window).width() % 2 == 1)
+//                            left++;
                         obj
                             .width(obj.width())
                             .css({
