@@ -26,6 +26,7 @@ setup(name='plone.app.deco',
       install_requires=[
           'setuptools',
           'z3c.json',
+          'plone.registry',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
