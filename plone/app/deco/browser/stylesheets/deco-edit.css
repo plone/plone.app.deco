@@ -878,6 +878,15 @@
     _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
 }
 
+.deco-dialog {
+    display: block;
+    top: 0px;
+    position: fixed;
+    _position: absolute;
+    _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
+    z-index: 3000;
+}
+
 .dialog .field {
     clear: both;
     position: relative;

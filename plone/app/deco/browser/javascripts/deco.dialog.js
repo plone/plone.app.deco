@@ -24,20 +24,15 @@
 
             // Get current object
             var obj = $(this);
-            var offset_left = obj.offset().left;
-            var offset_top = obj.offset().top;
 
             // Init dialog
             obj
                 .hide()
                 .css({
-                    'position': 'absolute',
                     'width': '800px',
-                    'top': 0 - offset_top,
-                    'z-index': '3000',
-                    'left': (($(window).width() - 800) / 2) - offset_left,
-                    'border': '0px'
+                    'left': (($(window).width() - 800) / 2)
                 })
+                .addClass("deco-dialog")
 
             // Add lightbox
             $(document.body).prepend($(document.createElement("div"))

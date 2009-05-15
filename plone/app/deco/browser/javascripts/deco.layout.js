@@ -64,6 +64,9 @@
                     // Remove helper
                     $(this).remove();
                 });
+
+                // Hide dialog
+                $.deco.dialog.close();
             }
         };
 
