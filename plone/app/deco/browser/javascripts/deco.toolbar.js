@@ -247,19 +247,19 @@
                         .attr("disabled", "");
                 });
 
-                // Hide option group if no visible items
-                obj.find(".deco-option-group").each(function () {
-                    if ($(this).children(":enabled").length == 0) {
-                        $(this).hide();
-                    }
-                });
-
                 // Set available fields
                 obj.find(".deco-menu-insert").children(".deco-option-group-fields").children().each(function () {
                     if ($.deco.options.panels.find(".deco-" + $(this).attr("value") + "-tile").length == 0) {
                         $(this).show().attr("disabled", "");
                     } else {
                         $(this).hide().attr("disabled", "disabled");
+                    }
+                });
+
+                // Hide option group if no visible items
+                obj.find(".deco-option-group").each(function () {
+                    if ($(this).children(":enabled").length == 0) {
+                        $(this).hide();
                     }
                 });
 
