@@ -89,7 +89,33 @@
                 $.deco.options.panels.decoLayout();
 
                 // Add blur to the rest of the content
-                $(document.body).addClass("deco-blur");
+                $("*").each(function() {
+
+                    var obj = $(this);
+
+                    // Check if block element
+                    if (obj.css('display') == 'block') {
+
+                        // Check if panel or toolbar
+                        if (!obj.hasClass('.deco-panel') && !obj.hasClass('.deco-toolbar')) {
+
+                            // Check if inside panel or toolbar
+                            if (obj.parents('.deco-panel, .deco-toolbar').length == 0) {
+
+                                // Check if parent of a panel or toolbar
+                                if (obj.find('.deco-panel, .deco-toolbar').length == 0) {
+
+                                    // Check if parent has a child who is a panel or a toolbar
+                                    if (obj.parent().find('.deco-panel, .deco-toolbar').length != 0) {
+
+                                        // Add blur class
+                                        obj.addClass('deco-blur');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
     };

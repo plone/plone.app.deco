@@ -176,12 +176,8 @@
 
 /* @group Opacity icons */
 
-.deco-blur .deco-grid-cell > * {
-/*    opacity: 0.4; */
-}
-
-.deco-blur .deco-grid-cell > .deco-panel, .deco-blur .deco-grid-cell > .deco-toolbar, .deco-blur .deco-panel .deco-grid-cell > * {
-/*    opacity: 1.0; */
+.deco-blur {
+    opacity: 0.4;
 }
 
 /* @end */
