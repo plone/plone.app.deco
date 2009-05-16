@@ -25,9 +25,6 @@
       <element>redo</element>
       <element>format</element>
       <element>insert</element>
-      <element>tile-align-block</element>
-      <element>tile-align-left</element>
-      <element>tile-align-right</element>
     </value>
   </record>
 
