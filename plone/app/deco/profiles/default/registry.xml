@@ -10,9 +10,9 @@
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="secondary_actions">
     <value>
-      <element>layout|||Layout...|layout|false|true|none|Layout...|newslisting|News listing|projectdetails|Project details|gallery|Gallery|another|Choose another...|template|Save as template...</element>
-      <element>style|||Style...|style|false|true|none|Style...</element>
-      <element>insert|||Insert...|insert|false|true|none|Insert...</element>
+      <element>layout|||Layout|layout|false|true|none|Layout|newslisting|News listing|projectdetails|Project details|gallery|Gallery|another|Choose another...|template|Save as template...</element>
+      <element>format|||Format|format|false|true|none|Format</element>
+      <element>insert|||Insert|insert|false|true|none|Insert</element>
     </value>
   </record>
 
@@ -23,7 +23,7 @@
       <element>page-properties</element>
       <element>undo</element>
       <element>redo</element>
-      <element>style</element>
+      <element>format</element>
       <element>insert</element>
       <element>tile-align-block</element>
       <element>tile-align-left</element>
@@ -31,7 +31,7 @@
     </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="style_categories">
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="format_categories">
     <value>
       <element>text|Text</element>
       <element>selection|Selection</element>
@@ -41,7 +41,7 @@
     </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="styles">
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="formats">
     <value>
       <element>strong|text|B|strong|false|true</element>
       <element>em|text|I|em|false|true</element>
@@ -55,7 +55,7 @@
       <element>highlight|selection|Highlight|highlight|true|false</element>
       <element>sub|selection|Subscript|sub|true|false</element>
       <element>sup|selection|Superscript|sup|true|false</element>
-      <element>remove-style|selection|(Remove style)|remove-style|true|false</element>
+      <element>remove-format|selection|(Remove format)|remove-format|true|false</element>
       <element>ul|lists|Unordered list|ul|true|false</element>
       <element>ol|lists|Ordered list|ol|true|false</element>
       <element>justify-left|justify|Left-aligned|justify-left|true|false</element>
@@ -79,7 +79,7 @@
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
     <value>
-      <element>text|structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-style|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</element>
+      <element>text|structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-format|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</element>
     </value>
   </record>
 

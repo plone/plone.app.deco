@@ -223,8 +223,8 @@
             }
         });
 
-        // Register remove style action
-        $.deco.registerAction('remove-style', {
+        // Register remove format action
+        $.deco.registerAction('remove-format', {
             exec: function() {
                 tinyMCE.execCommand("RemoveFormat");
                 $.deco.fixWebkitSpan();
@@ -416,8 +416,8 @@
             }
         });
 
-        // Register style action
-        $.deco.registerAction('style', {
+        // Register format action
+        $.deco.registerAction('format', {
             exec: function(source) {
 
                 // Execute the action

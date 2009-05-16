@@ -90,26 +90,26 @@ class DecoConfigView(BrowserView):
                     else:
                         config[action_type][fieldset_index]['actions'].append(record)
 
-        # Styles
-        config['styles'] = []
+        # Formats
+        config['formats'] = []
 
-        # Style Categories
-        for style_category in settings.style_categories:
-            config['styles'].append({
-                'name': style_category.split('|')[0],
-                'label': style_category.split('|')[1],
+        # Format Categories
+        for format_category in settings.format_categories:
+            config['formats'].append({
+                'name': format_category.split('|')[0],
+                'label': format_category.split('|')[1],
                 'actions': []
             })
 
-        # Styles
-        for style in settings.styles:
-            style_fields = style.split('|')
-            config['styles'][GetCategoryIndex(config['styles'], style_fields[1])]['actions'].append({
-                'name': style_fields[0],
-                'label': style_fields[2],
-                'action': style_fields[3],
-                'icon': GetBool(style_fields[4]),
-                'favorite': GetBool(style_fields[5])
+        # Formats
+        for format in settings.formats:
+            format_fields = format.split('|')
+            config['formats'][GetCategoryIndex(config['formats'], format_fields[1])]['actions'].append({
+                'name': format_fields[0],
+                'label': format_fields[2],
+                'action': format_fields[3],
+                'icon': GetBool(format_fields[4]),
+                'favorite': GetBool(format_fields[5])
             })
 
         # Default Available Actions
@@ -224,7 +224,7 @@ class DecoConfigView(BrowserView):
                     'read_only': False,
                     'settings': True,
                     'favorite': False,
-                    'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-style', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
+                    'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
                 },
                 {
                     'name': 'recurrence',

@@ -231,6 +231,10 @@
     cursor: pointer;
 }
 
+.deco-tile:hover .deco-field-label {
+    display: block !important;
+}
+
 .deco-field-label {
     top: -2px;
     left: -152px;
@@ -832,7 +836,7 @@
     background-position: -27px -1px !important;
 }
 
-.deco-toolbar .deco-icon-menu-style {
+.deco-toolbar .deco-icon-menu-format {
     background-position: -357px -1px !important;
 }
 

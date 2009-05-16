@@ -80,10 +80,10 @@
                 }
             }
 
-            // Add styles to toolbar
-            if ($.deco.options.styles != undefined) {
-                for (var x = 0; x < $.deco.options.styles.length; x++) {
-                    var action_group = $.deco.options.styles[x];
+            // Add formats to toolbar
+            if ($.deco.options.formats != undefined) {
+                for (var x = 0; x < $.deco.options.formats.length; x++) {
+                    var action_group = $.deco.options.formats[x];
                     actions['primary_actions'].append($(document.createElement("fieldset"))
                         .addClass("deco-button-group deco-button-group-" + action_group.name.replace(/_/g, "-"))
                     );
@@ -125,12 +125,12 @@
                 }
             }
 
-            // Add items to the style menu
-            if ($.deco.options.styles != undefined) {
-                var elm_select_style = actions['secondary_actions'].find(".deco-menu-style");
-                for (var x = 0; x < $.deco.options.styles.length; x++) {
-                    var action_group = $.deco.options.styles[x];
-                    elm_select_style.append($(document.createElement("optgroup"))
+            // Add items to the format menu
+            if ($.deco.options.formats != undefined) {
+                var elm_select_format = actions['secondary_actions'].find(".deco-menu-format");
+                for (var x = 0; x < $.deco.options.formats.length; x++) {
+                    var action_group = $.deco.options.formats[x];
+                    elm_select_format.append($(document.createElement("optgroup"))
                         .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))
                         .attr("label", action_group.label)
                     );
@@ -233,7 +233,7 @@
                 obj.find(".deco-button").hide();
                 obj.find(".deco-menu").hide();
                 obj.find(".deco-icon-menu").hide();
-                obj.find(".deco-menu-style").find(".deco-option")
+                obj.find(".deco-menu-format").find(".deco-option")
                     .hide()
                     .attr("disabled", "disabled");
 

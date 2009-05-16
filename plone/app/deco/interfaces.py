@@ -34,24 +34,24 @@ class IDecoSettings(form.Schema):
         required=False)
     form.widget(default_available_actions='plone.z3cform.textlines.TextLinesFieldWidget')
 
-    form.fieldset('styles', 
+    form.fieldset('formats', 
             label=_(u"Styles"),
-            fields=['style_categories', 'styles']
+            fields=['format_categories', 'formats']
         )
 
-    style_categories = schema.List(
+    format_categories = schema.List(
         title=_(u"Style categories"),
-        description=_(u"Enter a list of style categories. Format is name|label, one style per line."),
+        description=_(u"Enter a list of format categories. Format is name|label, one format per line."),
         value_type= schema.TextLine(),
         required=False)
-    form.widget(style_categories='plone.z3cform.textlines.TextLinesFieldWidget')
+    form.widget(format_categories='plone.z3cform.textlines.TextLinesFieldWidget')
 
-    styles = schema.List(
+    formats = schema.List(
         title=_(u"Styles"),
-        description=_(u"Enter a list of styles. Format is name|category|label|action|icon|favorite, one style per line."),
+        description=_(u"Enter a list of formats. Format is name|category|label|action|icon|favorite, one format per line."),
         value_type= schema.TextLine(),
         required=False)
-    form.widget(styles='plone.z3cform.textlines.TextLinesFieldWidget')
+    form.widget(formats='plone.z3cform.textlines.TextLinesFieldWidget')
 
     form.fieldset('tiles', 
             label=_(u"Tiles"),
@@ -60,14 +60,14 @@ class IDecoSettings(form.Schema):
 
     tile_categories = schema.List(
         title=_(u"Tile categories"),
-        description=_(u"Enter a list of tile categories. Format is name|title, one style per line."),
+        description=_(u"Enter a list of tile categories. Format is name|title, one format per line."),
         value_type= schema.TextLine(),
         required=False)
     form.widget(tile_categories='plone.z3cform.textlines.TextLinesFieldWidget')
 
     structure_tiles = schema.List(
         title=_(u"Structure tiles"),
-        description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one style per line."),
+        description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one format per line."),
         value_type= schema.TextLine(),
         required=False)
     form.widget(structure_tiles='plone.z3cform.textlines.TextLinesFieldWidget')
