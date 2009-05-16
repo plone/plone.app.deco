@@ -236,6 +236,9 @@
                 obj.find(".deco-menu-format").find(".deco-option")
                     .hide()
                     .attr("disabled", "disabled");
+                $(obj.find(".deco-menu-format").find(".deco-option").get(0))
+                    .show()
+                    .attr("disabled", "");
 
                 // Show actions
                 $(actions).each(function () {
@@ -265,7 +268,7 @@
 
                 // Hide menu if no enabled items
                 $(".deco-menu, .deco-icon-menu").each(function () {
-                    if ($(this).find(".deco-option:enabled").length == 0) {
+                    if ($(this).find(".deco-option:enabled").length == 1) {
                         $(this).hide();
                     }
                 });
