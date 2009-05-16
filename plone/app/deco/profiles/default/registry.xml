@@ -25,6 +25,9 @@
       <element>redo</element>
       <element>style</element>
       <element>insert</element>
+      <element>tile-align-block</element>
+      <element>tile-align-left</element>
+      <element>tile-align-right</element>
     </value>
   </record>
 
@@ -59,6 +62,9 @@
       <element>justify-center|justify|Center|justify-center|true|false</element>
       <element>justify-right|justify|Right-aligned|justify-right|true|false</element>
       <element>justify-justify|justify|Justified|justify-justify|true|false</element>
+      <element>tile-align-block|justify|Tile block|tile-align-block|true|false</element>
+      <element>tile-align-left|justify|Tile left|tile-align-left|true|false</element>
+      <element>tile-align-right|justify|Tile right|tile-align-right|true|false</element>
       <element>pagebreak|print|Page break|pagebreak|true|false</element>
     </value>
   </record>
