@@ -881,6 +881,8 @@
     _position: absolute;
     _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
     z-index: 3000;
+    padding: 1em;
+    background-color: white;
 }
 
 .dialog .field {
