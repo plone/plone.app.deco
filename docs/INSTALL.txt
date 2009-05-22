@@ -1,32 +1,17 @@
 plone.app.deco Installation
 ===========================
 
-plone.app.deco is only tested with Plone 3.2, but should work with other
-versions.
+Start by using the buildout located at the following url:
+https://svn.plone.org/svn/plone/sandbox/plone.app.deco/buildouts/dev
 
-Since plone.app.deco depends on Dexterity start by using this buildout:
-http://svn.plone.org/svn/plone/plone.dexterity/buildouts/dev
-Extend the buildout with the following buildout:
-http://svn.plone.org/svn/plone/sandbox/plone.app.deco/buildouts/deco.cfg
-
-Checkout plone.app.deco, plone.formwidget.layout and plone.behavior.layout
-in your src folder which can be found at https://svn.plone.org/svn/plone/sandbox
-
-In the collective there is an example package called example.deco which
-contains an example contenttype to test Deco with. It can be found here:
-http://svn.plone.org/svn/collective/example.deco
-
-Also checkout plone.registry, plone.app.registry and plone.tiles from
-http://svn.plone.org/svn/plone into your src folder.
-
-After putting all these packages in your src folder add plone.formwidget.layout,
-plone.behavior.layout, plone.app.deco, example.deco, plone.registry,
-plone.app.registry and plone.tiles to the eggs, develop and zcml options in your
-buildout.cfg, followed by running ./bin/buildout -c deco.cfg and starting the
-instance.
-
-When the instance is started add a Plone Site and install all the Deco,
-Dexterity and Configuration registry packages using the quickinstaller.
+Run python2.4 bootstrap.py then ./bin/buildout and start the instance. When the
+instance is started add a Plone Site and install the following packages using
+the quickinstaller:
+- Configuration registry
+- Plone z3c.form support
+- Dexterity Content Types
+- Deco
+- Example Deco content
 
 Now go to the your Personal Preferences view and set the wysiwyg editor to
 Basic HTML textarea.
