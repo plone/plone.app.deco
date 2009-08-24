@@ -7,9 +7,6 @@ https://svn.plone.org/svn/plone/sandbox/plone.app.deco/buildouts/dev
 Run python2.4 bootstrap.py then ./bin/buildout and start the instance. When the
 instance is started add a Plone Site and install the following packages using
 the quickinstaller:
-- Configuration registry
-- Plone z3c.form support
-- Dexterity Content Types
 - Deco
 - Example Deco content
 
