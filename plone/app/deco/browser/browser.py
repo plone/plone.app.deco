@@ -4,7 +4,7 @@ from z3c.json import interfaces
 from z3c.json import testing
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityFTI
-from plone.dexterity.utils import resolve_dotted_name
+from plone.dexterity.utils import resolveDottedName
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoSettings
 from Products.CMFPlone.utils import log
@@ -36,7 +36,7 @@ class DecoConfigView(BrowserView):
         """Get the configuration of current content type"""
 
         # Get the settings from the Registry
-        settings = getUtility(IRegistry).for_interface(IDecoSettings)
+        settings = getUtility(IRegistry).forInterface(IDecoSettings)
 
         # Create empty configuration
         config = {}
@@ -158,12 +158,12 @@ class DecoConfigView(BrowserView):
 
         # Field Tiles
         fti = getUtility(IDexterityFTI, name=self.context.portal_type)
-        for x in fti.lookup_schema():
+        for x in fti.lookupSchema():
             log(x)
 
         for behavior_name in fti.behaviors:
             try:
-                behavior_interface = resolve_dotted_name(behavior_name)
+                behavior_interface = resolveDottedName(behavior_name)
             except ValueError:
                 continue
             if behavior_interface is not None:
