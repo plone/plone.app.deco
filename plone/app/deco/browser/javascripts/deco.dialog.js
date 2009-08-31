@@ -73,10 +73,10 @@
             var formtabs = form.find(".formTabs");
 
             // Show form tabs
-            form.find(".formTabs").show();
+            form.find(".formTabs").removeClass('deco-hidden');
 
             // Show all fields
-            form.find("fieldset").children().show();
+            form.find("fieldset").children().removeClass('deco-hidden');
 
             // Hide all fieldsets
             form.find('fieldset').addClass('hidden');
@@ -89,7 +89,7 @@
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
-            form.find('#form-widgets-ILayout-layout').parents('.row').hide();
+            form.find('#formfield-form-widgets-ILayout-layout').parents('.row').addClass('deco-hidden');
 
             // Hide field which are on the wysiwyg area
             var tile_group;
@@ -100,22 +100,20 @@
             }
             for (var x = 0; x < tile_group.tiles.length; x++) {
                 var field_tile = tile_group.tiles[x];
-                if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length == 0) {
-                    $(document.getElementById(field_tile.id)).parents('.row').show();
-                } else {
-                    $(document.getElementById(field_tile.id)).parents('.row').hide();
+                if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length != 0) {
+                    $(document.getElementById(field_tile.id)).parents('.row').addClass('deco-hidden');
                 }
             };
 
             // Hide tab if fieldset has no visible items
             form.find("fieldset").each(function () {
-                if ($(this).children(":visible").length == 0) {
-                    $('#fieldsetlegend-' + $(this).attr('id').split('-')[1]).parent().hide();
+                if ($(this).children(":not(.deco-hidden)").length == 0) {
+                    $('#fieldsetlegend-' + $(this).attr('id').split('-')[1]).parent().addClass('deco-hidden');
                 }
             });
 
             // Get visible tabs
-            var visible_tabs = formtabs.children(':visible');
+            var visible_tabs = formtabs.children(':not(.deco-hidden)');
 
             // Add first and last form tab
             visible_tabs.eq(0).addClass('firstFormTab');
@@ -138,13 +136,13 @@
             fieldset.removeClass('hidden');
 
             // Hide all fields in current fieldset
-            fieldset.children().hide();
+            fieldset.children().addClass('deco-hidden');
 
             // Show current field
-            field.parents(".row").show();
+            field.parents(".row").removeClass('deco-hidden');
 
             // Hide form tabs
-            form.find(".formTabs").hide();
+            form.find(".formTabs").addClass('deco-hidden');
         }
         $(".deco-dialog-blocker").show();
         var offset_top = parseInt($("#region-content").css('top'));

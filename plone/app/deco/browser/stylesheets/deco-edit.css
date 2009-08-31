@@ -886,4 +886,8 @@
     background-color: white;
 }
 
+.deco-hidden {
+    display: none !important;
+}
+
 /* @end */
