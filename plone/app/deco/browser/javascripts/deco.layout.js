@@ -684,8 +684,10 @@
                 );
 
                 // Select node and delete the selection
-                ed.execCommand("mceSelectNode", false, tile_content.find(".deco-tile-selection-end").get(0));
-                ed.execCommand("Delete");
+                if (typeof ed != 'undefined') {
+                    ed.execCommand("mceSelectNode", false, tile_content.find(".deco-tile-selection-end").get(0));
+                    ed.execCommand("Delete");
+                }
 
                 // Fallback remove selection
                 $(".deco-tile-selection-end").remove();
