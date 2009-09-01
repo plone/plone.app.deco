@@ -57,18 +57,4 @@
               id="++resource++plone.app.deco.javascripts/deco.notify.js"
               inline="False"/>
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/tiny_mce.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/tiny_mce_theme.js"
-              inline="False"/>
-
 </object>

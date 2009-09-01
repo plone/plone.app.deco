@@ -458,7 +458,7 @@
                     mode : "exact",
                     elements : "deco-rich-text-init-" + random_id,
                     content_editable : true,
-                    theme : "plone"
+                    theme : "deco"
                 });
             }
 
