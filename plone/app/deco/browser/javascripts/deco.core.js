@@ -137,4 +137,15 @@
             $.deco.options.panels.decoLayout.uninit();
         }
     };
+
+    // Init Deco on load
+    $(window).load(function () {
+
+        // Check if layout exists
+        if ($('#form-widgets-ILayout-layout').length > 0) {
+
+            // Init Deco
+            $.deco.init({mode: 'edit', content: true});
+        }
+    });
 })(jQuery);
