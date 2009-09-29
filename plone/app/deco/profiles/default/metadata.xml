@@ -5,7 +5,7 @@
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.z3cform:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
-    <dependency>profile-plone.app.jqtools:default</dependency>
+    <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.tinymce:default</dependency>
   </dependencies>
 </metadata>
