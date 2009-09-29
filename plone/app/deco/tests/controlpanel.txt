@@ -2,3 +2,27 @@
 Controlpanel
 ============
 
+First we'll create a browser and login as manager.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> self.app.acl_users.userFolderAddUser('root', 'secret', ['Manager'], [])
+    >>> browser.addHeader('Authorization', 'Basic root:secret')
+
+Now let's open the Deco control panel.
+
+    >>> browser.open('http://nohost/plone/@@deco-controlpanel')
+
+We add a pony application tile to the application tiles and press save.
+
+    >>> browser.getControl(name='form.widgets.app_tiles').value = 'pony'
+    >>> browser.getControl(name='form.buttons.save').click()
+
+When the control panel is submitted we can check if the values is set.
+
+    >>> from zope.component import getUtility
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from plone.app.deco.interfaces import IDecoSettings
+    >>> settings = getUtility(IRegistry).forInterface(IDecoSettings)
+    >>> settings.app_tiles
+    [u'pony']
