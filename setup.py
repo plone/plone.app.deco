@@ -3,6 +3,11 @@ import os
 
 version = '0.1'
 
+if sys.version_info[0] == 2 and sys.version_info[1] < 6:
+    requires = ['simplejson']
+else:
+    requires = []
+
 setup(name='plone.app.deco',
       version=version,
       description="Package for Deco UI functionality",
@@ -25,11 +30,8 @@ setup(name='plone.app.deco',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'z3c.json',
           'plone.registry',
-          # -*- Extra requirements: -*-
-      ],
+      ] + requires,
       entry_points="""
-      # -*- Entry points: -*-
       """,
       )

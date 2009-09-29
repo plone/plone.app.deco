@@ -1,7 +1,9 @@
 from Products.Five import BrowserView
 from zope.component import getUtility
-from z3c.json import interfaces
-from z3c.json import testing
+try:
+    import json
+except:
+    import simplejson as json
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
@@ -250,6 +252,4 @@ class DecoConfigView(BrowserView):
             config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
 
         # Write JSON structure
-        testing.setUpJSONConverter()
-        jsonWriter = getUtility(interfaces.IJSONWriter)
-        return jsonWriter.write(config)
+        return json.dumps(config)
