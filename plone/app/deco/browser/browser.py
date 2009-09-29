@@ -144,19 +144,20 @@ class DecoConfigView(BrowserView):
             })
 
         # Application Tiles
-        for app_tile_name in settings.app_tiles:
-            app_tile_type = getUtility(ITileType, name=app_tile_name)
-            config['tiles'][GetCategoryIndex(config['tiles'], 'media')]['tiles'].append({
-                'name': app_tile_name,
-                'label': app_tile_type.title,
-                'type': 'app',
-                'default_value': '',
-                'read_only': True,
-                'settings': True,
-                'favorite': False,
-                'rich_text': False,
-                'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-            })
+        if settings.app_tiles:
+            for app_tile_name in settings.app_tiles:
+                app_tile_type = getUtility(ITileType, name=app_tile_name)
+                config['tiles'][GetCategoryIndex(config['tiles'], 'media')]['tiles'].append({
+                    'name': app_tile_name,
+                    'label': app_tile_type.title,
+                    'type': 'app',
+                    'default_value': '',
+                    'read_only': True,
+                    'settings': True,
+                    'favorite': False,
+                    'rich_text': False,
+                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+                })
 
         # Field Tiles
         fti = getUtility(IDexterityFTI, name=self.context.portal_type)
