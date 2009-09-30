@@ -248,7 +248,7 @@
     float: right;
     width: 6px;
     height: 24px;
-    background-image: url(++resource++plone.app.deco.images/toolbar.png);
+    background-image: url(++resource++plone.app.deco.images/label.png);
     background-position: 0px -84px;
 }
 
@@ -257,7 +257,7 @@
     font-size: 80%;
     font-weight: bold;
     line-height: 24px;
-    background-image: url(++resource++plone.app.deco.images/toolbar.png);
+    background-image: url(++resource++plone.app.deco.images/label.png);
     background-position: 0px -108px;
     float: right;
     position: relative;
@@ -581,18 +581,15 @@
 /* @group Toolbar */
 
 .deco-toolbar .deco-toolbar-content {
-    background:#DEDEDE url(++resource++plone.app.deco.images/toolbar_background.png) repeat-x scroll 0 1px;
-    border-bottom:1px solid #515151;
-    -webkit-box-shadow: 0 3px 4px rgba(0,0,0,0.5);
+    background:#858585 url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 0;
+    border-bottom:1px solid #393939;
+    border-top:1px solid #858585;
     bottom:0;
     color:white;
-    height:36px;
+    height:27px;
     z-index: 800;
     position: relative;
     font-family:"Lucida Grande",Lucida,Verdana,sans-serif;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
 }
 
 .deco-toolbar fieldset {
@@ -626,7 +623,8 @@
 .deco-toolbar select,
 .deco-toolbar button {
     float: left;
-    text-shadow: 0 1px 0 rgba(255,255,255,1);
+    text-shadow: 0 1px 0 rgba(0,0,0,1);
+    font-weight: bold;
 }
 
 .deco-toolbar select optgroup {
@@ -640,20 +638,20 @@
 .deco-toolbar button,
 .deco-toolbar label.deco-icon {
     padding: 1px 15px 4px;
-    margin-top: 8px;
+    margin-top: 3px;
     text-transform: none;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     font-size: 11px;
-    border: 1px solid #3f3f3f;
-    color: #000;
-    background: #ccc url(++resource++plone.app.deco.images/button.png) repeat-x 0 center;
-    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    border: 1px solid #1d1d1d;
+    color: #FFF;
+    background: #5a5a5a url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 -27px;
     margin-right: 8px;
-    height: 22px;
+    height: 20px;
     line-height: 17px;
-    -webkit-transition: color 0.4s;
+    -moz-box-shadow: 0px 1px 0px #5a5a5a;
+    -webkit-box-shadow: 0px 1px 0px #5a5a5a;
 }
 
 .deco-toolbar button.deco-icon,
@@ -666,24 +664,28 @@
     background-image: url(++resource++plone.app.deco.images/icons.png);
 }
 
+.deco-toolbar select:hover,
+.deco-toolbar button:hover,
+.deco-toolbar label.deco-icon:hover,
 .deco-toolbar button.active,
 .deco-toolbar label.deco-icon.active {
-    background-color: #217efb;
-    color: #217efb;
+    background: url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 -45px;
 }
 
 .deco-toolbar select {
-    margin-top: 8px;
-    background-color: #d0d0d0;
-    color: #303030;
-    border: 1px solid #585858;
+    margin-top: 3px;
+    background: url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 -27px;
+    color: #FFF;
+    border: 1px solid #1d1d1d;
     font-size: 11px;
-    height: 22px;
+    height: 20px;
     margin-right: 8px;
-    padding: 2px;
+    padding: 1px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    -moz-box-shadow: 0px 1px 0px #5a5a5a;
+    -webkit-box-shadow: 0px 1px 0px #5a5a5a;
 }
 
 /* @group Button Group */
@@ -829,7 +831,7 @@
 }
 
 .deco-toolbar .deco-button-page-properties {
-    background-position: -240px -1px
+    /* background-position: -240px 0px */
 }
 
 .deco-toolbar .deco-icon-menu-insert {
