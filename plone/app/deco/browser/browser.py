@@ -162,7 +162,8 @@ class DecoConfigView(BrowserView):
         # Field Tiles
         fti = getUtility(IDexterityFTI, name=self.context.portal_type)
         for x in fti.lookupSchema():
-            log(x)
+            pass
+            #log(x)
 
         for behavior_name in fti.behaviors:
             try:
@@ -173,7 +174,8 @@ class DecoConfigView(BrowserView):
                 behavior_schema = IFormFieldProvider(behavior_interface, None)
                 if behavior_schema is not None:
                     for x in behavior_schema:
-                        log(x)
+                        pass
+                        #log(x)
 
         config['tiles'].append({
             'name': 'fields',
