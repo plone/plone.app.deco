@@ -42,7 +42,7 @@
             var content = obj.children(".deco-toolbar-content");
 
             // Add primary and secondary function div's
-            var actions = [];
+            var actions = {};
             content.append($(document.createElement("div"))
                 .addClass("deco-toolbar-primary-functions")
             );
@@ -71,7 +71,7 @@
                             .addClass("deco-button-group deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"))
                         );
                         var elm_action_group = actions[a].children(".deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"));
-                        for (var y in action_group.actions) {
+                        for (var y = 0; y < action_group.actions.length; y++) {
 
                             // Add control
                             AddControl (elm_action_group, action_group.actions[y]);
@@ -391,7 +391,7 @@
                         $(this).decoExecAction();
                     })
                     .each(function () {
-                        for (var z in action.items) {
+                        for (var z = 0; z < action.items.length; z++) {
 
                             // Check if child objects
                             if (action.items[z].items != undefined) {
