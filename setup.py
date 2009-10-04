@@ -30,8 +30,15 @@ setup(name='plone.app.deco',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'plone.registry',
+          'plone.tiles',
+          'plone.app.registry',
+          'plone.app.dexterity',
+          'plone.app.tinymce',
+          'plone.app.jquerytools',
+          'plone.behavior.layout',
       ] + requires,
       entry_points="""
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )

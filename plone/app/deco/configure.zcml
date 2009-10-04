@@ -6,6 +6,13 @@
 
     <five:registerPackage package="." initialize=".initialize" />
 
+    <include package="plone.tiles" />
+    <include package="plone.app.registry" />
+    <include package="plone.app.dexterity" />
+    <include package="plone.app.tinymce" />
+    <include package="plone.app.jquerytools" />
+    <include package="plone.behavior.layout" />
+
     <include package=".browser" />
 
     <include file="profiles.zcml" />
