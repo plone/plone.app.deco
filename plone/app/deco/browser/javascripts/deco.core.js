@@ -81,6 +81,7 @@
                 );
                 $("#content-views").hide();
                 $(".contentActions").hide();
+                $("#edit-bar").hide();
 
                 // Add panel and toolbar to the options
                 $.deco.options.panels = $(".deco-panel");
