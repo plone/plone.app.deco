@@ -1668,7 +1668,7 @@
         if (tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')) {
             switch (tile_config.widget) {
                 case 'TextFieldWidget':
-                    $("#" + tile_config.id).attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
+                    $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
                     break;
                 case 'TextAreaFieldWidget':
                     var value = "";
@@ -1676,10 +1676,10 @@
                         value += $(this).html() + "\n";
                     })
                     value = value.replace (/<br[^>]*>/ig);
-                    $("#" + tile_config.id).attr('value', value);
+                    $("#" + tile_config.id).find('textarea').attr('value', value);
                     break;
                 case 'WysiwygFieldWidget':
-                    $(document.getElementById(tile_config.id)).attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
+                    $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
                     break;
             }
         }
