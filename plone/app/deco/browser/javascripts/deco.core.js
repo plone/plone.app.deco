@@ -40,6 +40,13 @@
 
                 var content = $('#form-widgets-ILayout-layout').attr('value');
 
+                // Check if no layout
+                if (content == '') {
+
+                    // Exit
+                    return;
+                }
+
                 // Remove doctype and replace html, head and body tag since the are stripped when converting to jQuery object
                 content = content.replace(/<!DOCTYPE[^>]+>/, '');
                 content = content.replace(/<html/, "<div");
