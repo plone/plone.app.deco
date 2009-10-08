@@ -89,7 +89,7 @@
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
-            form.find('#formfield-form-widgets-ILayout-layout').parents('.row').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayout-layout').parent('.row').addClass('deco-hidden');
 
             // Hide field which are on the wysiwyg area
             var tile_group;
@@ -101,13 +101,13 @@
             for (var x = 0; x < tile_group.tiles.length; x++) {
                 var field_tile = tile_group.tiles[x];
                 if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length != 0) {
-                    $(document.getElementById(field_tile.id)).parents('.row').addClass('deco-hidden');
+                    $(document.getElementById(field_tile.id)).parent('.row').addClass('deco-hidden');
                 }
             };
 
             // Hide tab if fieldset has no visible items
             form.find("fieldset").each(function () {
-                if ($(this).children(":not(.deco-hidden)").length == 0) {
+                if ($(this).children("div:not(.deco-hidden)").length == 0) {
                     $('#fieldsetlegend-' + $(this).attr('id').split('-')[1]).parent().addClass('deco-hidden');
                 }
             });
