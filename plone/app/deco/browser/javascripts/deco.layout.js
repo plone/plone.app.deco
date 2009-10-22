@@ -1644,7 +1644,7 @@
                         return $(document.getElementById(tile_config.id)).attr('value');
                         break;
                     default:
-                        return 'Placeholder for field:<br/><br/>' + tile_config.label + '<br/><br/>';
+                        return '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
                         break;
                 }
                 break;
