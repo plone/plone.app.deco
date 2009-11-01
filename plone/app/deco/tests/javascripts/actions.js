@@ -185,5 +185,34 @@ test("initActions", function() {
     // Clean up
     $(".deco-selected-tile").remove();
 
+    // Create save button and register event
+    $(document.body).append(
+        $(document.createElement("input"))
+            .attr({
+                id: "form-buttons-save",
+                type: "button"
+            })
+            .click(function () {
+                $(this).val('saved');
+            })
+    );
+    $.deco.actionManager.actions["save"].exec();
+    equals($("#form-buttons-save").val(), 'saved', "Test saving action");
+    $("#form-buttons-save").remove();
+
+    // Create cancel button and register event
+    $(document.body).append(
+        $(document.createElement("input"))
+            .attr({
+                id: "form-buttons-cancel",
+                type: "button"
+            })
+            .click(function () {
+                $(this).val('cancelled');
+            })
+    );
+    $.deco.actionManager.actions["cancel"].exec();
+    equals($("#form-buttons-cancel").val(), 'cancelled', "Test cancel action");
+    $("#form-buttons-cancel").remove();
 
 });
