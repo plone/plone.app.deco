@@ -19,8 +19,9 @@
         options = $.extend({
         }, options);
 
-        // Initialize actions
+        // Initialize modules
         $.deco.initActions();
+        $.deco.initNotify();
 
         // Get the url of the page
         var url = document.location.href;

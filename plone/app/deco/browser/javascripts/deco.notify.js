@@ -6,8 +6,12 @@
  */
 ;(function($) {
 
-    // Initialize the notification plugin
-    $(document).ready(function() {
+    /**
+     * Initialize the notify module
+     *
+     * @id jQuery.deco.initNotify
+     */
+    $.deco.initNotify = function() {
 
         // Check if not already initialized
         if ($(".deco-notification").length == 0) {
@@ -18,7 +22,7 @@
                     .addClass("deco-notifications")
             )
         }
-    });
+    };
 
     /**
      * Display a notification

@@ -6,7 +6,7 @@ module("actions", {
 });
 
 test("Basic requirements", function() {
-    expect(4)
+    expect(4);
 
     ok($.deco, "$.deco");
     ok($.deco.actionManager, "$.deco.actionManager");
@@ -15,7 +15,7 @@ test("Basic requirements", function() {
 });
 
 test("registerAction", function() {
-    expect(6)
+    expect(6);
 
     // We register a simple action first without any options
     $.deco.registerAction("simple", {});
