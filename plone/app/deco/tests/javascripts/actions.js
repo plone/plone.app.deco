@@ -27,7 +27,7 @@ test("registerAction", function() {
     $.deco.registerAction("advanced", {
 
         exec: function () {
-            return 'custom exec';
+            return "custom exec";
         },
 
         shortcut: {
@@ -44,7 +44,7 @@ test("registerAction", function() {
 
     ok($.deco.actionManager.actions["advanced"], "Register advanced action");
     equals($.deco.actionManager.actions["advanced"].visible(), false, "Add custom visible function");
-    equals($.deco.actionManager.actions["advanced"].exec(), 'custom exec', "Add custom exec function");
+    equals($.deco.actionManager.actions["advanced"].exec(), "custom exec", "Add custom exec function");
     equals($.deco.actionManager.shortcuts.length, 1, "Shortcut is registered");
 });
 
@@ -52,13 +52,13 @@ test("decoExecAction", function() {
     expect(1);
 
     // We'll create a div element first
-    var div = $(document.createElement('div')).html('foo');
+    var div = $(document.createElement("div")).html("foo");
 
     // We'll register an action
     $.deco.registerAction("execaction", {
 
         exec: function () {
-            div.html('bar');
+            div.html("bar");
         }
     });
 
@@ -73,22 +73,25 @@ test("fixWebkitSpan", function() {
 
     // We'll create a div element containing a span with the Apple style span
     $(document.body).append(
-        $(document.createElement('div'))
-            .addClass('styletest')
+        $(document.createElement("div"))
+            .addClass("styletest")
             .append(
-                $(document.createElement('span'))
-                    .html('foo')
-                    .addClass('Apple-style-span')
+                $(document.createElement("span"))
+                    .html("foo")
+                    .addClass("Apple-style-span")
             )
     );
 
     // Clean up the html
     $.deco.fixWebkitSpan();
-    equals($('.styletest').html(), "foo", "Remove webkit style spans");
+    equals($(".styletest").html(), "foo", "Remove webkit style spans");
+
+    // Clean up after test
+    $(".styletest").remove();
 });
 
 test("initActions", function() {
-    expect(22);
+    expect(28);
 
     // Init the actions
     $.deco.initActions();
@@ -158,5 +161,29 @@ test("initActions", function() {
 
     $.deco.actionManager.actions["justify-justify"].exec();
     equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Justify justify action");
+
+    // Create selected tile div
+    $(document.body).append(
+        $(document.createElement("div"))
+            .addClass("deco-selected-tile")
+    );
+
+    $(".deco-selected-tile").addClass('deco-tile-align-right deco-tile-align-left')
+    $.deco.actionManager.actions["tile-align-block"].exec();
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-right'), false, "Align right is removed after tile align block action");
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-left'), false, "Align left is removed after tile align block action");
+
+    $(".deco-selected-tile").addClass('deco-tile-align-right')
+    $.deco.actionManager.actions["tile-align-left"].exec();
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-right'), false, "Align right is removed after tile align left action");
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-left'), true, "Align left is added after tile align left action");
+
+    $.deco.actionManager.actions["tile-align-right"].exec();
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-left'), false, "Align left is removed after tile align right action");
+    equals($(".deco-selected-tile").hasClass('deco-tile-align-right'), true, "Align right is added after tile align right action");
+
+    // Clean up
+    $(".deco-selected-tile").remove();
+
 
 });
