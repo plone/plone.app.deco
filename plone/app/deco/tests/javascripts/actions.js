@@ -91,7 +91,7 @@ test("fixWebkitSpan", function() {
 });
 
 test("initActions", function() {
-    expect(28);
+    expect(31);
 
     // Init the actions
     $.deco.initActions();
@@ -215,4 +215,15 @@ test("initActions", function() {
     equals($("#form-buttons-cancel").val(), 'cancelled', "Test cancel action");
     $("#form-buttons-cancel").remove();
 
+    // Create dummy dialog method
+    var backup = $.deco.dialog.open;
+    var dialogopened = false;
+    $.deco.dialog.open = function () {
+        dialogopened = true;
+    };
+    $.deco.actionManager.actions["page-properties"].exec();
+    equals(dialogopened, true, "Test page properties action");
+
+    // Cleanup
+    $.deco.dialog.open = backup;
 });

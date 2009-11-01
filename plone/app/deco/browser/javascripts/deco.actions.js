@@ -366,17 +366,6 @@
             }
         });
 
-        // Register layout action
-        $.deco.registerAction('layout', {
-            exec: function(source) {
-                // Notify user
-                $.deco.notify("info", "Layout", "Not yet implemented");
-
-                // Reset menu
-                $(source).val("none");
-            }
-        });
-
         // Register page-insert action
         $.deco.registerAction('insert', {
             exec: function(source) {
