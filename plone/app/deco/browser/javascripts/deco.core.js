@@ -19,6 +19,9 @@
         options = $.extend({
         }, options);
 
+        // Initialize actions
+        $.deco.initActions();
+
         // Get the url of the page
         var url = document.location.href;
         var match = url.match(/^(.*)\/edit/)

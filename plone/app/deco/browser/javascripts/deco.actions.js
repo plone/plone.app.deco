@@ -87,10 +87,10 @@
         var webkit_span = $(".Apple-style-span");
         webkit_span.after(webkit_span.html());
         webkit_span.remove();
-    }
+    };
 
     // Initialize the action manager
-    $(document).ready(function() {
+    $.deco.initActions = function() {
 
         // Register strong action
         $.deco.registerAction('strong', {
@@ -527,39 +527,39 @@
                 }
             }
         });
-    });
 
-    // Handle keypress event, check for shortcuts
-    $(document).keypress(function(e) {
+        // Handle keypress event, check for shortcuts
+        $(document).keypress(function(e) {
 
-        // Action name
-        var action = "";
+            // Action name
+            var action = "";
 
-        // Loop through shortcuts
-        $($.deco.actionManager.shortcuts).each(function() {
+            // Loop through shortcuts
+            $($.deco.actionManager.shortcuts).each(function() {
 
-            // Check if shortcut matched
-            if (((e.ctrlKey == this.ctrl) || (navigator.userAgent.toLowerCase().indexOf('macintosh') != -1 && e.metaKey == this.ctrl)) &&
-                ((e.altKey == this.alt) || (e.altKey == undefined)) &&
-                (e.shiftKey == this.shift) &&
-                (e.charCode && String.fromCharCode(e.charCode).toUpperCase().charCodeAt(0) == this.charCode)) {
+                // Check if shortcut matched
+                if (((e.ctrlKey == this.ctrl) || (navigator.userAgent.toLowerCase().indexOf('macintosh') != -1 && e.metaKey == this.ctrl)) &&
+                    ((e.altKey == this.alt) || (e.altKey == undefined)) &&
+                    (e.shiftKey == this.shift) &&
+                    (e.charCode && String.fromCharCode(e.charCode).toUpperCase().charCodeAt(0) == this.charCode)) {
 
-                // Found action
-                action = this.action;
+                    // Found action
+                    action = this.action;
+                }
+            });
+
+            // Check if shortcut found
+            if (action != "") {
+
+                // Exec actions
+                $.deco.actionManager.actions[action].exec();
+
+                // Prevent other actions
+                return false;
             }
+
+            // Normal exit
+            return true;
         });
-
-        // Check if shortcut found
-        if (action != "") {
-
-            // Exec actions
-            $.deco.actionManager.actions[action].exec();
-
-            // Prevent other actions
-            return false;
-        }
-
-        // Normal exit
-        return true;
-    });
+    };
 })(jQuery);
