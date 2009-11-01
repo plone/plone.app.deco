@@ -28,11 +28,16 @@
      * Display a notification
      *
      * @id jQuery.deco.notify
-     * @param {String} type Notification type; info, warning, error.
-     * @param {String} title Title of the notification.
-     * @param {String} message Message of the notification.
+     * @param {Object} options Object containing all the options of the action
      */
-    $.deco.notify = function(type, title, message) {
+    $.deco.notify = function(options) {
+
+        // Extend default settings
+        options = $.extend({
+            type: "info",
+            title: "",
+            message: ""
+        }, options);
 
         // Get last notification
         var last_notification = $(".deco-notifications").children("div:last");
@@ -58,7 +63,7 @@
 
                     // Add type icon
                     .append($(document.createElement("div"))
-                        .addClass("deco-notification-type deco-notification-type-" + type)
+                        .addClass("deco-notification-type deco-notification-type-" + options.type)
                     )
 
                     // Add close icon
@@ -80,11 +85,11 @@
                         .addClass("deco-notification-text")
                         .append($(document.createElement("div"))
                             .addClass("deco-notification-title")
-                            .html(title)
+                            .html(options.title)
                         )
                         .append($(document.createElement("div"))
                             .addClass("deco-notification-message")
-                            .html(message)
+                            .html(options.message)
                         )
                     )
                 )

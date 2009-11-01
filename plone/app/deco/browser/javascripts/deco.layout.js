@@ -1003,7 +1003,10 @@
             }
 
             // Notify user
-            $.deco.notify("info", "Info", "You can't have more then 4 columns");
+            $.deco.notify({
+                title: "Info",
+                message: "You can't have more then 4 columns"
+            });
 
         // Dropped on row
         } else {
@@ -1628,7 +1631,10 @@
         helper.decoInitTile();
 
         // Notify user
-        $.deco.notify("info", "Inserting new tile", "Select the location for the new tile");
+        $.deco.notify({
+            title: "Inserting new tile",
+            message: "Select the location for the new tile"
+        });
     };
 
     /**
