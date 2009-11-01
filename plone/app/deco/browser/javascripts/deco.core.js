@@ -146,6 +146,8 @@
         }
     };
 
+//#JSCOVERAGE_IF 0
+
     // Init Deco on load
     $(window).load(function () {
 
@@ -156,4 +158,7 @@
             $.deco.init({mode: 'edit', content: true});
         }
     });
+
+//#JSCOVERAGE_ENDIF
+
 })(jQuery);
