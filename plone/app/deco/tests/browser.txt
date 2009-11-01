@@ -28,7 +28,7 @@ We can now add the layout behavior to our content type.
 
 Our new type should have the layout behavior assigned.
 
-    >>> 'plone.behavior.layout.ILayout' in self.portal.portal_types.pony.behaviors
+    >>> 'plone.layoutbehavior.ILayout' in self.portal.portal_types.pony.behaviors
     True
 
 Next step is to add a content item.
