@@ -47,3 +47,23 @@ test("registerAction", function() {
     equals($.deco.actionManager.actions["advanced"].exec(), 'custom exec', "Add custom exec function");
     equals($.deco.actionManager.shortcuts.length, 1, "Shortcut is registered");
 });
+
+test("decoExecAction", function() {
+    expect(1);
+
+    // We'll create a div element first and append it to the document
+    var div = $(document.createElement('div')).html('foo');
+
+    // We'll register an action
+    $.deco.registerAction("execaction", {
+
+        exec: function () {
+            div.html('bar');
+        }
+    });
+
+    // Now set the action for the div and call the action
+    div.data("action", "execaction");
+    div.decoExecAction();
+    equals(div.html(), "bar", "Add custom visible function");
+});
