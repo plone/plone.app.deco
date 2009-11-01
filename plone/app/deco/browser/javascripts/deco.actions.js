@@ -105,7 +105,7 @@
             }
         });
 
-        // Register italic action
+        // Register emphasis action
         $.deco.registerAction('em', {
             exec: function() {
                 tinyMCE.execCommand("Italic");
@@ -338,23 +338,6 @@
             }
         });
 
-        // Register save action
-        $.deco.registerAction('save-options', {
-            exec: function(source) {
-
-                // Check the selected option
-                switch ($(source).val()) {
-                    case "save_close":
-                        break;
-                    case "revert_changes":
-                        break;
-                }
-
-                // Reset menu
-                $(source).val("none");
-            }
-        });
-
         // Register cancel action
         $.deco.registerAction('cancel', {
             exec: function() {
@@ -368,54 +351,6 @@
         $.deco.registerAction('page-properties', {
             exec: function() {
                 $.deco.dialog.open('all');
-            }
-        });
-
-        // Register page-action action
-        $.deco.registerAction('contentview-action', {
-            exec: function(source) {
-
-                // Notify user
-                $.deco.notify("info", "Action", "Not yet implemented");
-
-                // Reset menu
-                $(source).val("none");
-            }
-        });
-
-        // Register page-navigate action
-        $.deco.registerAction('contentview-navigate', {
-            exec: function(source) {
-
-                // Notify user
-                $.deco.notify("info", "Navigation", "Not yet implemented");
-
-                // Reset menu
-                $(source).val("none");
-            }
-        });
-
-        // Register page-add action
-        $.deco.registerAction('contentview-add', {
-            exec: function(source) {
-
-                // Notify user
-                $.deco.notify("info", "Add", "Not yet implemented");
-
-                // Reset menu
-                $(source).val("none");
-            }
-        });
-
-        // Register edit item action
-        $.deco.registerAction('contentview-edit', {
-            exec: function(source) {
-
-                // Uninit
-                $.deco.uninit();
-
-                // Init deco in edit mode
-                $.deco.init();
             }
         });
 
