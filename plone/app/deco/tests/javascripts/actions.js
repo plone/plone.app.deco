@@ -51,7 +51,7 @@ test("registerAction", function() {
 test("decoExecAction", function() {
     expect(1);
 
-    // We'll create a div element first and append it to the document
+    // We'll create a div element first
     var div = $(document.createElement('div')).html('foo');
 
     // We'll register an action
@@ -66,4 +66,23 @@ test("decoExecAction", function() {
     div.data("action", "execaction");
     div.decoExecAction();
     equals(div.html(), "bar", "Add custom visible function");
+});
+
+test("fixWebkitSpan", function() {
+    expect(1);
+
+    // We'll create a div element containing a span with the Apple style span
+    $(document.body).append(
+        $(document.createElement('div'))
+            .addClass('styletest')
+            .append(
+                $(document.createElement('span'))
+                    .html('foo')
+                    .addClass('Apple-style-span')
+            )
+    );
+
+    // Clean up the html
+    $.deco.fixWebkitSpan();
+    equals($('.styletest').html(), "foo", "Remove webkit style spans");
 });
