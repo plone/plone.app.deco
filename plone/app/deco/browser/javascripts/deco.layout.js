@@ -1575,6 +1575,19 @@
         // Focus on current window
         window.focus();
 
+        // Add tile
+        $.deco.addTile(type, value);
+    }
+
+    /**
+     * Add a tile with the given value
+     *
+     * @id jQuery.deco.addTile
+     * @param {String} type Type of the application tile
+     * @param {String} value Value of the application tile
+     */
+    $.deco.addTile = function(type, value) {
+
         // Set dragging state
         $.deco.options.panels.addClass("deco-panel-dragging deco-panel-dragging-new");
 

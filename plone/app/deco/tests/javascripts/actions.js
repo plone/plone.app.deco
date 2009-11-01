@@ -91,7 +91,7 @@ test("fixWebkitSpan", function() {
 });
 
 test("initActions", function() {
-    expect(32);
+    expect(39);
 
     // Init the actions
     $.deco.initActions();
@@ -243,4 +243,108 @@ test("initActions", function() {
 
     // Cleanup
     $(".formattest").remove();
+
+    // We'll create an insert menu
+    $(document.body).append(
+        $(document.createElement("select"))
+            .addClass("inserttest")
+            .append(
+                $(document.createElement("option"))
+                    .attr("value", "none")
+            )
+            .append(
+                $(document.createElement("option"))
+                    .attr("value", "text")
+            )
+            .append(
+                $(document.createElement("option"))
+                    .attr("value", "title")
+            )
+            .append(
+                $(document.createElement("option"))
+                    .attr("value", "pony")
+            )
+    );
+
+    // Create selected tile
+    $(document.body).append(
+        $(document.createElement("div"))
+            .addClass("deco-selected-tile")
+    );
+
+    var lastcommand;
+    var selectedtile = $(".deco-selected-tile");
+    var optionsBackup = typeof($.deco.options) == "undefined" ? {} : $.deco.options;
+    var openIframeBackup = typeof($.deco.dialog.openIframe) == "undefined" ? function () {} : $.deco.dialog.openIframe;
+    var addTileBackup = typeof($.deco.addTile) == "undefined" ? function () {} : $.deco.addTile;
+    $.deco.addTile = function () {
+        lastcommand = "addTile";
+    };
+    $.deco.dialog.openIframe = function () {
+        lastcommand = "openIframe";
+    };
+    $.deco.options = {
+        panels: $(document.body),
+        tiles: [{
+            'name': 'fields',
+            'label': 'Fields',
+            'tiles': [
+                {
+                    'name': 'title',
+                    'type': 'field'
+                },
+                {
+                    'name': 'pony',
+                    'type': 'app'
+                },
+                {
+                    'name': 'text',
+                    'type': 'structure'
+                },
+            ]
+        }]
+    };
+
+    equals($.deco.actionManager.actions["insert"].exec($(".inserttest")), false, "Test insert menu when none is selected.");
+
+    // Set insert menu to text and exec insert again
+    $(".inserttest").val("text");
+    $.deco.actionManager.actions["insert"].exec($(".inserttest"));
+    equals(lastcommand, "addTile", "Test if addTile is called");
+    equals($(".inserttest").val(), "none", "Test if menu is reset after insert of text tile");
+
+    $(".inserttest").val("title");
+    $.deco.actionManager.actions["insert"].exec($(".inserttest"));
+    equals(lastcommand, "addTile", "Test if addTile is called");
+    equals($(".inserttest").val(), "none", "Test if menu is reset after insert of field tile");
+
+    $(".inserttest").val("pony");
+    $.deco.actionManager.actions["insert"].exec($(".inserttest"));
+    equals(lastcommand, "openIframe", "Test if openIframe is called");
+    equals($(".inserttest").val(), "none", "Test if menu is reset after insert of app tile");
+
+    // Cleanup
+    $(".inserttest").remove();
+    selectedtile.remove();
+    $.deco.options = optionsBackup;
+    $.deco.addTile = addTileBackup;
+    $.deco.dialog.openIframe = openIframeBackup;
+});
+
+test("Shortcuts", function() {
+    expect(2);
+
+    // Reset lastexecuted
+    tinyMCE.lastexecuted = "";
+
+    var event = jQuery.Event("keypress");
+    $(document).trigger(event);
+    equals(tinyMCE.lastexecuted, "", "Test none existing shortcut.");
+
+    event.ctrlKey = true;
+    event.altKey = false;
+    event.shiftKey = false;
+    event.charCode = "B".charCodeAt(0);
+    $(document).trigger(event);
+    equals(tinyMCE.lastexecuted, "Bold", "Test strong shortcut.");
 });
