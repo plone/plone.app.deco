@@ -91,7 +91,7 @@ test("fixWebkitSpan", function() {
 });
 
 test("initActions", function() {
-    expect(31);
+    expect(32);
 
     // Init the actions
     $.deco.initActions();
@@ -226,4 +226,21 @@ test("initActions", function() {
 
     // Cleanup
     $.deco.dialog.open = backup;
+
+    // We'll create a format menu
+    $(document.body).append(
+        $(document.createElement("select"))
+            .addClass("formattest")
+            .append(
+                $(document.createElement("option"))
+                    .attr("value", "strong")
+                    .data("action", "strong")
+            )
+    );
+
+    $.deco.actionManager.actions["format"].exec($(".formattest"));
+    equals(tinyMCE.lastexecuted, "Bold", "Format action");
+
+    // Cleanup
+    $(".formattest").remove();
 });
