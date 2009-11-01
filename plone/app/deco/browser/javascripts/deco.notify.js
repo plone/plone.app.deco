@@ -36,7 +36,9 @@
         options = $.extend({
             type: "info",
             title: "",
-            message: ""
+            message: "",
+            fadeSpeed: "slow",
+            duration: 3000
         }, options);
 
         // Get last notification
@@ -74,7 +76,7 @@
                         .click(function() {
                             $(this).parents(".deco-notification")
                                 .data('close', true)
-                                .fadeOut("slow", function() {
+                                .fadeOut(options.fadeSpeed, function() {
                                     $(this).remove();
                                 })
                         })
@@ -106,7 +108,7 @@
                 .css("top", offset_top)
 
                 // Fadein the notification
-                .fadeIn("slow", function() {
+                .fadeIn(options.fadeSpeed, function() {
                     var elm = $(this);
 
                     // Set timeout to hide notification
@@ -114,12 +116,12 @@
 
                         // If not mouseover fadeout and remove the message
                         if (elm.data("mouseover") == false) {
-                            elm.fadeOut("slow", function() {
+                            elm.fadeOut(options.fadeSpeed, function() {
                                 elm.remove();
                             });
                         }
                         elm.data("timeout", true);
-                    }, 3000);
+                    }, options.duration);
 
                     // Set initial state
                     elm.data("timeout", false);
@@ -136,7 +138,7 @@
                         // Clear fadeout timeout and fade to full opacity
                         window.clearTimeout($(this).data('fade'));
                         $(this).stop();
-                        $(this).fadeTo("slow", 1);
+                        $(this).fadeTo(options.fadeSpeed, 1);
                         $(this).data('mouseover', true);
                     }
                 })
@@ -151,7 +153,7 @@
                     if ((elm.data("timeout") == true) && (elm.data("close") == false)) {
 
                         // Fadeout and remove the notification
-                        elm.fadeOut("slow", function() {
+                        elm.fadeOut(options.fadeSpeed, function() {
                             elm.remove();
                         });
                     }
