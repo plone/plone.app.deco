@@ -6,7 +6,7 @@
  */
 ;(function($) {
 
-    // Define the toolbar namespace
+    // Define the dialog namespace
     $.deco.dialog = {
     };
 
@@ -48,10 +48,10 @@
                         'value': 'Ok'
                     })
                     .addClass('button-field context')
+                    .click(function () {
+                        $.deco.dialog.close();
+                    })
                 )
-                .click(function () {
-                    $.deco.dialog.close();
-                })
         });
     };
 
@@ -65,7 +65,7 @@
     $.deco.dialog.open = function(mode, tile_config) {
 
         // Get form
-        var form = $("#region-content").find("form");
+        var form = $(".deco-dialog").find("form");
 
         if (mode == 'all') {
 
@@ -145,8 +145,8 @@
             form.find(".formTabs").addClass('deco-hidden');
         }
         $(".deco-dialog-blocker").show();
-        var offset_top = parseInt($("#region-content").css('top'));
-        $("#region-content")
+        var offset_top = parseInt($(".deco-dialog").css('top'));
+        $(".deco-dialog")
             .css({'top': offset_top - 300})
             .show()
             .animate({'top': offset_top}, 300);
@@ -159,7 +159,7 @@
      */
     $.deco.dialog.close = function() {
         $(".deco-dialog-blocker").hide();
-        $("#region-content").hide();
+        $(".deco-dialog").hide();
         $(".deco-iframe-dialog").remove();
     };
 
