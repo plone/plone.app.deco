@@ -6,6 +6,11 @@
  */
 ;(function($) {
 
+    // Define deco namespace if it doesn't exist
+    if (typeof($.deco) == "undefined") {
+        $.deco = {};
+    }
+
     // Define the dialog namespace
     $.deco.dialog = {
     };

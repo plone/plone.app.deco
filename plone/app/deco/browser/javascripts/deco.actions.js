@@ -6,6 +6,11 @@
  */
 ;(function($) {
 
+    // Define deco namespace if it doesn't exist
+    if (typeof($.deco) == "undefined") {
+        $.deco = {};
+    }
+
     // Global array containing actions and shortcuts
     $.deco.actionManager = {
         actions: [],                // Array with all the actions
