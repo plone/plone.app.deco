@@ -57,6 +57,7 @@ test("Click close", function() {
 test("Mouseover", function() {
     expect(2);
     stop();
+
     // Show notification
     $.deco.notify({
         title: "mousetest",

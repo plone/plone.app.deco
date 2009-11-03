@@ -1,7 +1,48 @@
+// Create tinyMCE stub object
+var tinyMCE = {
+    execCommand: function (cmd) {
+        tinyMCE.lastexecuted = cmd;
+    },
+    lastexecuted: ''
+};
+
+// Create last executed method
+$.deco.lastexecuted = "";
+
+// Create getPageContent stub function
+$.deco.getPageContent = function () {
+    return "test content";
+};
+
+// Create addTile stub function
+$.deco.addTile = function () {
+    $.deco.lastexecuted = "addTile";
+};
+
+// Create getDefaultValue stub function
+$.deco.getDefaultValue = function () {
+    return "test value";
+};
+
+// Create dialog stub object
+$.deco.dialog = {
+    open: function () {
+        $.deco.lastexecuted = "dialog.open";
+    },
+    openIframe: function () {
+        $.deco.lastexecuted = "dialog.openIframe";
+    }
+};
+
 module("actions", {
     setup: function () {
     },
     teardown: function () {
+        // Reset last executed
+        $.deco.lastexecuted = "";
+
+        // Reset tinymce stub
+        tinyMCE.lastexecuted = "";
     }
 });
 
@@ -56,7 +97,6 @@ test("decoExecAction", function() {
 
     // We'll register an action
     $.deco.registerAction("execaction", {
-
         exec: function () {
             div.html("bar");
         }
@@ -215,17 +255,8 @@ test("initActions", function() {
     equals($("#form-buttons-cancel").val(), 'cancelled', "Test cancel action");
     $("#form-buttons-cancel").remove();
 
-    // Create dummy dialog method
-    var backup = $.deco.dialog.open;
-    var dialogopened = false;
-    $.deco.dialog.open = function () {
-        dialogopened = true;
-    };
     $.deco.actionManager.actions["page-properties"].exec();
-    equals(dialogopened, true, "Test page properties action");
-
-    // Cleanup
-    $.deco.dialog.open = backup;
+    equals($.deco.lastexecuted, "dialog.open", "Test page properties action");
 
     // We'll create a format menu
     $(document.body).append(
@@ -272,17 +303,7 @@ test("initActions", function() {
             .addClass("deco-selected-tile")
     );
 
-    var lastcommand;
     var selectedtile = $(".deco-selected-tile");
-    var optionsBackup = typeof($.deco.options) == "undefined" ? {} : $.deco.options;
-    var openIframeBackup = typeof($.deco.dialog.openIframe) == "undefined" ? function () {} : $.deco.dialog.openIframe;
-    var addTileBackup = typeof($.deco.addTile) == "undefined" ? function () {} : $.deco.addTile;
-    $.deco.addTile = function () {
-        lastcommand = "addTile";
-    };
-    $.deco.dialog.openIframe = function () {
-        lastcommand = "openIframe";
-    };
     $.deco.options = {
         panels: $(document.body),
         tiles: [{
@@ -310,32 +331,26 @@ test("initActions", function() {
     // Set insert menu to text and exec insert again
     $(".inserttest").val("text");
     $.deco.actionManager.actions["insert"].exec($(".inserttest"));
-    equals(lastcommand, "addTile", "Test if addTile is called");
+    equals($.deco.lastexecuted, "addTile", "Test if addTile is called");
     equals($(".inserttest").val(), "none", "Test if menu is reset after insert of text tile");
 
     $(".inserttest").val("title");
     $.deco.actionManager.actions["insert"].exec($(".inserttest"));
-    equals(lastcommand, "addTile", "Test if addTile is called");
+    equals($.deco.lastexecuted, "addTile", "Test if addTile is called");
     equals($(".inserttest").val(), "none", "Test if menu is reset after insert of field tile");
 
     $(".inserttest").val("pony");
     $.deco.actionManager.actions["insert"].exec($(".inserttest"));
-    equals(lastcommand, "openIframe", "Test if openIframe is called");
+    equals($.deco.lastexecuted, "dialog.openIframe", "Test if openIframe is called");
     equals($(".inserttest").val(), "none", "Test if menu is reset after insert of app tile");
 
     // Cleanup
     $(".inserttest").remove();
     selectedtile.remove();
-    $.deco.options = optionsBackup;
-    $.deco.addTile = addTileBackup;
-    $.deco.dialog.openIframe = openIframeBackup;
 });
 
 test("Shortcuts", function() {
     expect(2);
-
-    // Reset lastexecuted
-    tinyMCE.lastexecuted = "";
 
     var event = jQuery.Event("keypress");
     $(document).trigger(event);
