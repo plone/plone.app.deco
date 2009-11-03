@@ -78,7 +78,7 @@
             var formtabs = form.find(".formTabs");
 
             // Show form tabs
-            form.find(".formTabs").removeClass('deco-hidden');
+            form.find(".formTab").removeClass('deco-hidden');
 
             // Show all fields
             form.find("fieldset").children().removeClass('deco-hidden');
