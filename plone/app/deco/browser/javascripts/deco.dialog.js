@@ -113,7 +113,7 @@
             // Hide tab if fieldset has no visible items
             form.find("fieldset").each(function () {
                 if ($(this).children("div:not(.deco-hidden)").length == 0) {
-                    $('#fieldsetlegend-' + $(this).attr('id').split('-')[1]).parent().addClass('deco-hidden');
+                    $('a[href=#fieldsetlegend-' + $(this).attr('id').split('-')[1] + ']').parent().addClass('deco-hidden');
                 }
             });
 
