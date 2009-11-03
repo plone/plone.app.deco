@@ -126,7 +126,7 @@
 
             // Select first tab
             visible_tabs.eq(0).children('a').addClass('selected');
-            form.find('#fieldset-' + visible_tabs.eq(0).children('a').attr('id').split('-')[1]).removeClass('hidden');
+            form.find('#fieldset-' + visible_tabs.eq(0).children('a').attr('href').split('-')[1]).removeClass('hidden');
 
         } else if (mode == 'field') {
 
