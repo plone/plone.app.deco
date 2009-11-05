@@ -42,7 +42,7 @@
                 // Add global options
                 $.deco.options = configdata;
 
-                var content = $('#form-widgets-ILayout-layout').attr('value');
+                var content = $('#form-widgets-ILayout-layout').val();
 
                 // Check if no layout
                 if (content == '') {
@@ -132,24 +132,6 @@
         });
     };
 
-    /**
-     * Uninitialize the Deco UI
-     *
-     * @id jQuery.deco.uninit
-     */
-    $.deco.uninit = function() {
-
-        // Deinit the toolbar
-        $.deco.options.toolbar.decoToolbar.uninit();
-
-        // Check if content is initialized
-        if ($.deco.options.content) {
-
-            // Deinit the layout
-            $.deco.options.panels.decoLayout.uninit();
-        }
-    };
-
 //#JSCOVERAGE_IF 0
 
     // Init Deco on load
@@ -159,7 +141,7 @@
         if ($('#form-widgets-ILayout-layout').length > 0) {
 
             // Init Deco
-            $.deco.init({mode: 'edit', content: true});
+            $.deco.init();
         }
     });
 

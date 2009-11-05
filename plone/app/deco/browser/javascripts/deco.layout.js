@@ -379,24 +379,6 @@
     };
 
     /**
-     * Uninitialize the layout
-     *
-     * @id jQuery.fn.decoLayout.uninit
-     */
-    $.fn.decoLayout.uninit = function() {
-
-        // Loop through events
-        for (var x in $.deco.layout.events) {
-
-            // Unbind events
-            $.deco.layout.events[x].object.unbind(
-                $.deco.layout.events[x].event,
-                $.deco.layout.events[x].handler
-            )
-        }
-    }
-
-    /**
      * Initialize the matched tiles
      *
      * @id jQuery.decoInitTile

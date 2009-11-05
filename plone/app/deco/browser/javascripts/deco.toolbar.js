@@ -6,6 +6,11 @@
  */
 ;(function($) {
 
+    // Define deco namespace if it doesn't exist
+    if (typeof($.deco) == "undefined") {
+        $.deco = {};
+    }
+
     // Define the toolbar namespace
     $.deco.toolbar = {
         events: new Array()
@@ -158,9 +163,6 @@
                     if (obj.hasClass("deco-inline-toolbar")) {
                         var left = obj.offset().left;
 
-                        // Fix bug in Firefox when margin auto is used
-//                        if ($.browser.mozilla && $(window).width() % 2 == 1)
-//                            left++;
                         obj
                             .width(obj.width())
                             .css({
@@ -286,38 +288,6 @@
             $(this).trigger("selectedtilechange");
         });
     };
-
-    /**
-     * Uninitialize the toolbar
-     *
-     * @id jQuery.fn.decoToolbar.uninit
-     */
-    $.fn.decoToolbar.uninit = function() {
-
-        // Loop through events
-        for (var x in $.deco.toolbar.events) {
-
-            // Unbind events
-            $.deco.toolbar.events[x].object.unbind(
-                $.deco.toolbar.events[x].event,
-                $.deco.toolbar.events[x].handler
-            )
-        }
-
-        // Reset external toolbar
-        var toolbar_content = $.deco.options.toolbar.children(":first");
-        if (toolbar_content.hasClass("deco-external-toolbar")) {
-            toolbar_content
-                .css({
-                    'width': '',
-                    'left': '',
-                    'margin-left': ''
-                })
-                .removeClass("deco-external-toolbar")
-                .addClass("deco-inline-toolbar")
-                .parent().css('height','');
-        }
-    }
 
     /**
      * Adds a control to the toolbar
