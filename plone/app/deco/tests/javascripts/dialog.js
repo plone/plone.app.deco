@@ -1,3 +1,26 @@
+$.deco.options = {
+    panels: $(document.body),
+    tiles: [{
+        'name': 'fields',
+        'label': 'Fields',
+        'tiles': [
+            {
+                'name': 'title',
+                'type': 'field',
+                'id': 'title-field'
+            },
+            {
+                'name': 'pony',
+                'type': 'app'
+            },
+            {
+                'name': 'text',
+                'type': 'structure'
+            },
+        ]
+    }]
+};
+
 module("dialog", {
     setup: function () {
         // We'll create a div element for the dialog
@@ -9,15 +32,20 @@ module("dialog", {
                         .addClass("formTab firstFormTab")
                         .append($(document.createElement("a"))
                             .addClass("selected")
+                            .attr("href", "#fieldsetlegend-default")
                         )
                     )
                     .append($(document.createElement("li"))
                         .addClass("formTab")
-                        .append($(document.createElement("a")))
+                        .append($(document.createElement("a"))
+                            .attr("href", "#fieldsetlegend-1")
+                        )
                     )
                     .append($(document.createElement("li"))
                         .addClass("formTab lastFormTab")
-                        .append($(document.createElement("a")))
+                        .append($(document.createElement("a"))
+                            .attr("href", "#fieldsetlegend-2")
+                        )
                     )
                 )
                 .append($(document.createElement("fieldset"))
@@ -26,6 +54,24 @@ module("dialog", {
                         .addClass("row")
                         .append($(document.createElement("div"))
                             .attr("id", "title-field")
+                        )
+                    )
+                )
+                .append($(document.createElement("fieldset"))
+                    .attr("id", "fieldset-1")
+                    .append($(document.createElement("div"))
+                        .addClass("row")
+                        .append($(document.createElement("div"))
+                            .attr("id", "some-field")
+                        )
+                    )
+                )
+                .append($(document.createElement("fieldset"))
+                    .attr("id", "fieldset-2")
+                    .append($(document.createElement("div"))
+                        .addClass("row")
+                        .append($(document.createElement("div"))
+                            .attr("id", "formfield-form-widgets-ILayout-layout")
                         )
                     )
                 )
@@ -40,9 +86,12 @@ module("dialog", {
             .append($(document.createElement("div"))
                 .addClass("deco-title-tile")
             );
+        dialog.decoDialog();
     },
     teardown: function () {
         $("#region-content").remove();
+        $(".deco-dialog-blocker").remove();
+        $(".deco-title-tile").remove();
     }
 });
 
@@ -56,59 +105,51 @@ test("decoDialog", function() {
     expect(3);
 
     // Init dialog
-    var dialog = $("#region-content");
-    dialog.decoDialog();
-    dialog.find(".button-field").trigger("click");
+    $("#region-content").find(".button-field").trigger("click");
 
     equals($(".deco-dialog").length, 1, "Dialog added");
     equals($(".deco-dialog-blocker").length, 1, "Dialog blocker added");
-    equals(dialog.find("input:visible").length, 0, "Inputs are hidden");
+    equals($("#region-content").find("input:visible").length, 0, "Inputs are hidden");
 });
 
 test("dialog.open", function() {
-    expect(0);
-    var optionsBackup = typeof($.deco.options) == "undefined" ? {} : $.deco.options;
-    $.deco.options = {
-        panels: $(document.body),
-        tiles: [{
-            'name': 'fields',
-            'label': 'Fields',
-            'tiles': [
-                {
-                    'name': 'title',
-                    'type': 'field',
-                    'id': 'title-field'
-                },
-                {
-                    'name': 'pony',
-                    'type': 'app'
-                },
-                {
-                    'name': 'text',
-                    'type': 'structure'
-                },
-            ]
-        }]
-    };
+    expect(20);
 
-    $("#region-content").decoDialog();
     $.deco.dialog.open("all", {});
 
-    // TODO
+    equals($("a[href=#fieldsetlegend-default]").hasClass("selected"), false, "First tab is deselected");
+    equals($("a[href=#fieldsetlegend-default]").parent().hasClass("firstFormTab"), false, "First tab marker is removed");
+    equals($("a[href=#fieldsetlegend-default]").parent().hasClass("deco-hidden"), true, "First tab is hidden");
+
+    equals($("a[href=#fieldsetlegend-1]").hasClass("selected"), true, "Second tab is selected");
+    equals($("a[href=#fieldsetlegend-1]").parent().hasClass("firstFormTab"), true, "Second tab has firstTab marker");
+    equals($("a[href=#fieldsetlegend-1]").parent().hasClass("lastFormTab"), true, "Second tab has lastTab marker");
+    equals($("a[href=#fieldsetlegend-1]").parent().hasClass("deco-hidden"), false, "Second tab is shown");
+
+    equals($("a[href=#fieldsetlegend-2]").parent().hasClass("lastFormTab"), false, "Last tab marker is removed");
+    equals($("a[href=#fieldsetlegend-2]").parent().hasClass("deco-hidden"), true, "Last tab is hidden");
+
+    equals($('#formfield-form-widgets-ILayout-layout').parent('.row').hasClass('deco-hidden'), true, "Row with layoutfield is hidden");
+
+    equals($('#fieldset-1').hasClass('hidden'), false, "Second fieldset is shown");
 
     $.deco.dialog.close();
     equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
     equals($("#region-content:visible").length, 0, "Dialog removed");
 
-    $.deco.dialog.open("field", {});
+    $.deco.dialog.open("field", {id: "title-field"});
 
-    // TODO
+    equals($('#fieldset-default').hasClass('hidden'), false, "First fieldset is shown");
+    equals($('#fieldset-1').hasClass('hidden'), true, "Second fieldset is hidden");
+    equals($('#fieldset-2').hasClass('hidden'), true, "Third fieldset is shown");
+
+    equals($('#title-field').parents(".row").hasClass('deco-hidden'), false, "Title field is shown");
+
+    equals($('.formTabs').hasClass('deco-hidden'), true, "Tabs are hidden");
 
     $.deco.dialog.close();
     equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
     equals($("#region-content:visible").length, 0, "Dialog removed");
-
-    $.deco.options = optionsBackup;
 });
 
 test("dialog.openIframe", function() {
