@@ -331,11 +331,6 @@
 
         // Bind event and add to array
         $(document).bind('mouseup', DocumentMouseup);
-        $.deco.layout.events.push({
-            object: $(document),
-            event: 'mouseup',
-            handler: DocumentMouseup
-        });
 
         // Loop through matched elements
         var total = this.length;

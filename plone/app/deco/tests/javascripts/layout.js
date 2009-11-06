@@ -1,6 +1,57 @@
 // Create executed property
 $.deco.executed = [];
 
+$.deco.options = {
+    "tiles": [{
+        'name': 'fields',
+        'label': 'Fields',
+        'tiles': [
+            {
+                "name": "title",
+                "label": "Title",
+                "type": "field",
+                "id": "title-field",
+                "available_actions": ["strong"]
+            },
+            {
+                "name": "description",
+                "type": "field",
+                "label": "Description",
+                "id": "description-field",
+                "available_actions": []
+            }
+        ]
+    },
+    {
+        'name': 'app',
+        'label': 'App',
+        'tiles': [
+            {
+                'name': 'pony',
+                "label": "Pony",
+                'type': 'app'
+            },
+            {
+                'name': 'text',
+                "label": "Text",
+                'type': 'structure'
+            },
+        ]
+    },
+    {
+        'name': 'other',
+        'label': 'Other',
+        'tiles': []
+    }],
+    "default_available_actions": [
+        "save",
+        "cancel",
+        "page-properties",
+        "format",
+        "insert"
+    ]
+};
+
 module("layout", {
     setup: function () {
         // We'll create a div element for the dialog
@@ -8,17 +59,35 @@ module("layout", {
             .append(
                 $(document.createElement("div"))
                     .attr("id", "region-content")
+                    .addClass("deco-panel")
+                    .append(
+                        $(document.createElement("div"))
+                            .addClass("deco-text-tile deco-tile")
+                            .html("text content")
+                            .append(
+                                $(document.createElement("div"))
+                                    .addClass("deco-tile-content")
+                                    .append(
+                                        $(document.createElement("p"))
+                                            .html("text content")
+                                    )
+                            )
+                    )
             );
         $(document.body)
             .append(
                 $(document.createElement("div"))
                     .attr("id", "portal-column-one")
+                    .addClass("deco-panel")
             );
         $(document.body)
-            .append($(document.createElement("textarea"))
-                .attr('id', 'form-widgets-ILayout-layout')
-                .val('<html><div class="deco-panel" id="region-content">region-content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></html>')
+            .append(
+                $(document.createElement("div"))
+                    .addClass("deco-toolbar")
             );
+
+        $.deco.options.panels = $(".deco-panel");
+        $.deco.options.toolbar = $(".deco-toolbar");
 
         // Empty executed
         $.deco.executed = [];
@@ -42,5 +111,8 @@ test("Initialisation", function() {
 
 test("Init without data", function() {
     expect(0);
+
+    // Init panel
+    $.deco.options.panels.decoLayout();
 
 });
