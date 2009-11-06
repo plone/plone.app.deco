@@ -23,6 +23,7 @@
         // Initialize modules
         $.deco.initActions();
         $.deco.initNotify();
+        $.deco.initUpload();
 
         // Get the url of the page
         var match = options.url.match(/^(.*)\/edit/)

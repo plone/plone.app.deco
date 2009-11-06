@@ -11,4 +11,12 @@
         $.deco = {};
     }
 
+    /**
+     * Initialize the upload module
+     *
+     * @id jQuery.deco.initUpload
+     */
+    $.deco.initUpload = function() {
+
+    };
 })(jQuery);
