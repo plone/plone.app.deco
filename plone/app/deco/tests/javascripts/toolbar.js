@@ -59,6 +59,7 @@ $.deco.options = {
     "formats": [
         {
             "name": "text",
+            "label": "Text",
             "actions": [
                 {
                     "action": "strong",
@@ -78,6 +79,7 @@ $.deco.options = {
         },
         {
             "name": "empty",
+            "label": "Empty",
             "actions": []
         }
     ],
@@ -90,7 +92,7 @@ $.deco.options = {
                 "label": "Title",
                 "type": "field",
                 "id": "title-field",
-                "available_actions": []
+                "available_actions": ["strong"]
             },
             {
                 "name": "description",
@@ -160,15 +162,8 @@ module("toolbar", {
     }
 });
 
-test("Initialisation", function() {
-    expect(2);
-
-    ok($.deco.toolbar, "$.deco.toolbar");
-    ok($.deco.toolbar.events, "$.deco.toolbar.events");
-});
-
 test("Init with just the title field", function() {
-    expect(0);
+    expect(4);
 
     // Backup tiles and remove description
     var tiles_backup = $.deco.options.tiles;
@@ -189,15 +184,37 @@ test("Init with just the title field", function() {
     // Setup toolbar
     $(".deco-toolbar").decoToolbar();
 
+    equals($(".deco-inline-toolbar").length, 1, 'Inline toolbar div is added');
+    equals($(".deco-toolbar-content").length, 1, 'Content toolbar div is added');
+    equals($(".deco-toolbar-primary-functions").length, 1, 'Primary functions div is added');
+    equals($(".deco-toolbar-secondary-functions").length, 1, 'Secondary functions div is added');
+
     // Restore tiles
     $.deco.options.tiles = tiles_backup;
 });
 
 test("Init with multiple fields", function() {
-    expect(0);
+    expect(14);
 
     // Setup toolbar
     $(".deco-toolbar").decoToolbar();
+
+    equals($(".deco-button-strong").length, 1, 'Strong button is added');
+    equals($(".deco-button-group-save").length, 1, 'Save group is added');
+    equals($(".deco-button-save").length, 1, 'Save button is added');
+
+    equals($(".deco-button-save").length, 1, 'Save button is added');
+
+    equals($(".deco-button-group-text").length, 1, 'Format text group is added');
+    equals($(".deco-button-group-empty").length, 0, 'Empty group is removed');
+
+    equals($(".deco-button-strong:visible").length, 1, 'Strong button is shown');
+    equals($(".deco-button-heading:visible").length, 0, 'Heading button is hidden');
+
+    equals($(".deco-option-title").attr("disabled"), true, 'Title option is disabled');
+    equals($(".deco-option-description").attr("disabled"), "", 'Description option is enabled');
+
+    equals($(".deco-menu-empty").length, 0, 'Empty menu is removed');
 
     // Trigger action
     $.deco.executed = [];
@@ -219,7 +236,7 @@ test("Init with multiple fields", function() {
 });
 
 test("Window scroll", function() {
-    expect(0);
+    expect(2);
 
     // Setup toolbar
     $(".deco-toolbar").decoToolbar();
