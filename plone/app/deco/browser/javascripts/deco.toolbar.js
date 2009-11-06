@@ -11,11 +11,6 @@
         $.deco = {};
     }
 
-    // Define the toolbar namespace
-    $.deco.toolbar = {
-        events: new Array()
-    };
-
     /**
      * Create a new instance of a deco toolbar.
      *
@@ -190,11 +185,6 @@
 
             // Bind method and add to array
             $(window).bind('scroll', RepositionToolbar);
-            $.deco.toolbar.events.push({
-                object: $(window),
-                event: 'scroll',
-                handler: RepositionToolbar
-            });
 
             // Bind selected tile change event
             var SelectedTileChange = function () {
@@ -278,11 +268,6 @@
 
             // Bind method and add to array
             $(this).bind("selectedtilechange", SelectedTileChange);
-            $.deco.toolbar.events.push({
-                object: $(this),
-                event: 'selectedtilechange',
-                handler: SelectedTileChange
-            });
 
             // Set default actions
             $(this).trigger("selectedtilechange");
