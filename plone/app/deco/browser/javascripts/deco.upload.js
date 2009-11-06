@@ -18,5 +18,41 @@
      */
     $.deco.initUpload = function() {
 
+        // Bind dragover
+        $(".deco-panel").bind("dragover", function (e) {
+
+            // Check if drag not already loaded
+            if ($(".deco-panel-dragging").length == 0) {
+
+                // Deselect tiles
+                $(".deco-selected-tile")
+                    .removeClass("deco-selected-tile")
+                    .children(".deco-tile-content").blur();
+
+                // Set actions
+                $.deco.options.toolbar.trigger("selectedtilechange");
+                $.deco.options.panels.decoSetResizeHandleLocation();
+
+                // Add dummy tile
+                $.deco.addTile('upload', 'hoeba');
+            }
+        });
+
+        //$(".deco-panel").bind(
+        document.addEventListener(
+            "drop",
+            function (event) {
+                var dt = event.dataTransfer;
+                files = dt.files;
+
+                // Prevent default actions
+                event.stopPropagation();
+                event.preventDefault();
+
+                // Drop tile
+                $(document).trigger("mousedown");
+            },
+            false
+        );
     };
 })(jQuery);

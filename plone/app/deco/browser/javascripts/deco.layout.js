@@ -289,6 +289,7 @@
 
         // Bind event and add to array
         $(document).bind('mousemove', DocumentMousemove);
+        $(document).bind('dragover', DocumentMousemove);
 
         // Handle mouse up event
         var DocumentMouseup = function(e) {
@@ -401,16 +402,17 @@
             }
 
             // Check read only
-            if (tile_config.read_only) {
+            if (tile_config && tile_config.read_only) {
 
                 // Set read only
                 $(this).addClass("deco-read-only-tile");
             }
 
             // Init rich text
-            if ((tile_config.type == 'text' && tile_config.rich_text) ||
-                (tile_config.type == 'app' && tile_config.rich_text) ||
-                (tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget'))) {
+            if (tile_config &&
+                ((tile_config.type == 'text' && tile_config.rich_text) ||
+                 (tile_config.type == 'app' && tile_config.rich_text) ||
+                 (tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')))) {
 
                 // Generate random id
                 var random_id = 1 + Math.floor(100000 * Math.random());
@@ -439,7 +441,7 @@
             );
 
             // If tile is field tile
-            if (tile_config.type == "field") {
+            if (tile_config && tile_config.type == "field") {
 
                 // Add label
                 $(this).prepend(
@@ -502,8 +504,9 @@
             }
 
             // Add settings icon
-            if ((tile_config.type == 'app') ||
-                (tile_config.type == 'field' && tile_config.widget != 'TextFieldWidget' && tile_config.widget != 'TextAreaFieldWidget' && tile_config.widget != 'WysiwygFieldWidget')) {
+            if (tile_config &&
+               ((tile_config.type == 'app') ||
+                (tile_config.type == 'field' && tile_config.widget != 'TextFieldWidget' && tile_config.widget != 'TextAreaFieldWidget' && tile_config.widget != 'WysiwygFieldWidget'))) {
 
                 $(this).prepend(
                     $(document.createElement("div"))
@@ -517,7 +520,7 @@
             }
 
             // Handle mousemove on tile
-            $(this).mousemove(function(e) {
+            var TileMousemove = function(e) {
 
                 // Check if dragging
                 if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
@@ -552,7 +555,11 @@
                         divider.addClass("deco-selected-divider");
                     }
                 }
-            });
+            };
+
+            // Bind events
+            $(this).bind("mousemove", TileMousemove);
+            $(this).bind("dragover", TileMousemove);
 
             // On click select the current tile
             $(this).click(function() {
