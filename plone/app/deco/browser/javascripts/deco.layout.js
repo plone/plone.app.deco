@@ -6,9 +6,13 @@
  */
 ;(function($) {
 
+    // Define deco namespace if it doesn't exist
+    if (typeof($.deco) == "undefined") {
+        $.deco = {};
+    }
+
     // Define the layout namespace
     $.deco.layout = {
-        events: new Array(),
         widthClasses: ['deco-width-quarter', 'deco-width-third', 'deco-width-half', 'deco-width-two-thirds', 'deco-width-three-quarters', 'deco-width-full'],
         positionClasses: ['deco-position-leftmost', 'deco-position-quarter', 'deco-position-third', 'deco-position-half', 'deco-position-two-thirds', 'deco-position-three-quarters']
     };
@@ -72,11 +76,6 @@
 
         // Bind event and add to array
         $(document).bind('keydown', DocumentKeydown);
-        $.deco.layout.events.push({
-            object: $(document),
-            event: 'keydown',
-            handler: DocumentKeydown
-        });
 
         // Add deselect
         var DocumentMousedown = function(e) {
@@ -118,11 +117,6 @@
 
         // Bind event and add to array
         $(document).bind('mousedown', DocumentMousedown);
-        $.deco.layout.events.push({
-            object: $(document),
-            event: 'mousedown',
-            handler: DocumentMousedown
-        });
 
         // Handle mouse move event
         var DocumentMousemove = function(e) {
@@ -295,11 +289,6 @@
 
         // Bind event and add to array
         $(document).bind('mousemove', DocumentMousemove);
-        $.deco.layout.events.push({
-            object: $(document),
-            event: 'mousemove',
-            handler: DocumentMousemove
-        });
 
         // Handle mouse up event
         var DocumentMouseup = function(e) {
