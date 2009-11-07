@@ -34,7 +34,7 @@
                 $.deco.options.panels.decoSetResizeHandleLocation();
 
                 // Add dummy tile
-                $.deco.addTile('upload', 'hoeba');
+                $.deco.addTile('upload', '<img src="++resource++plone.app.deco.images/files.png" border="0" />');
             }
         });
 
@@ -51,6 +51,10 @@
 
                 // Drop tile
                 $(document).trigger("mousedown");
+
+                // Set image
+                $(".deco-selected-tile").children(".deco-tile-content").children("img").get(0).src = files[0].getAsDataURL();
+
             },
             false
         );
