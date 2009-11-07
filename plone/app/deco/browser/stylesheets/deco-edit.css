@@ -296,6 +296,11 @@
     display: block !important;
 }
 
+/* Images will never be bigger then a tile */
+.deco-panel img {
+    max-width: 100%;
+}
+
 /* @end */
 
 /* @group Resize */
