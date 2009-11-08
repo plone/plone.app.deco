@@ -29,6 +29,12 @@ def GetCategoryIndex(tiles, category):
         count += 1
     return index
 
+class DecoUploadView(BrowserView):
+    """Handle file uploads"""
+
+    def __call__(self):
+        return "todo"
+
 class DecoConfigView(BrowserView):
 
     def __call__(self):

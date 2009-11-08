@@ -22,7 +22,14 @@
         for="*"
         name="deco-config"
         class=".browser.DecoConfigView"
-        permission="zope.Public"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <browser:page
+        for="*"
+        name="deco-upload"
+        class=".browser.DecoUploadView"
+        permission="cmf.ModifyPortalContent"
         />
 
     <browser:page
