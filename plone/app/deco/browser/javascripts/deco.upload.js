@@ -97,6 +97,41 @@
                         // Set image values
                         img.get(0).src = file.getAsDataURL();
                         img.css('opacity', 0.5);
+
+                        // Create new ajax request
+                        var xhr = new XMLHttpRequest();
+
+                        // Set progress handler
+                        xhr.upload.addEventListener("progress", function (event) {
+                            if (event.lengthComputable) {
+                                var percentage = Math.round((event.loaded * 100) / event.total);
+                                if (percentage < 100) {
+                                    console.log(percentage);
+                                }
+                            }
+                        }
+                        , false);
+
+                        // Added load handler
+                        xhr.addEventListener("load", function (event) {
+                            console.log(event);
+                        }
+                        , false);
+
+                        // Set error handler
+                        xhr.upload.addEventListener("error", function (error) {
+                            $.deco.notify({
+                                type: "error",
+                                title: "Error",
+                                message: "Error uploading file: " + error
+                            });
+                        }
+                        , false);
+
+                        xhr.open("POST", $.deco.options.url + "/@@deco-upload");
+                        xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+                        xhr.sendAsBinary(file.getAsBinary());
+
                     } else {
                         $.deco.notify({
                             type: "warning",

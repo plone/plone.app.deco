@@ -41,6 +41,7 @@
 
                 // Add global options
                 $.deco.options = configdata;
+                $.deco.options.url = options.url;
 
                 var content = $('#form-widgets-ILayout-layout').val();
 
