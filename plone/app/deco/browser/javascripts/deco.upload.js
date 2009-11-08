@@ -34,7 +34,7 @@
                 $.deco.options.panels.decoSetResizeHandleLocation();
 
                 // Add dummy tile
-                $.deco.addTile('upload', '<img src="++resource++plone.app.deco.images/files.png" border="0" />');
+                $.deco.addTile('image', '<img src="++resource++plone.app.deco.images/files.png" border="0" />');
             }
         });
 
@@ -62,24 +62,41 @@
                     // Check if supported mimetype
                     if (file.mediaType.indexOf('image') == 0) {
 
-                        // Check if first supported
+                        // New image
+                        var img;
+
+                        // Check if first
                         if (first) {
 
-                            // Set tile type
-                            $(".deco-selected-tile").removeClass("deco-upload-tile");
-                            $(".deco-selected-tile").addClass("deco-image-tile");
-
                             // Set image
-                            var img = $(".deco-selected-tile").children(".deco-tile-content").children("img")
-                            img.get(0).src = file.getAsDataURL();
-                            img.css('opacity', 0.5);
+                            img = $(".deco-selected-tile").children(".deco-tile-content").children("img")
 
                             // Set first to false
                             first = false;
+
+                        // Not the first
                         } else {
 
-                            // Todo
+                            // Create new tile
+                            var newtile = $(document.createElement("div"))
+                                    .addClass("movable removable deco-tile deco-image-tile")
+                                    .append($(document.createElement("div"))
+                                        .addClass("deco-tile-content")
+                                        .append($(document.createElement("img"))
+                                            .attr("border", 0)
+                                        )
+                                    )
+                            // Insert new tile
+                            $(".deco-selected-tile").after(newtile);
+                            newtile.decoInitTile();
+
+                            // Get image object
+                            img = newtile.children(".deco-tile-content").children("img");
                         }
+
+                        // Set image values
+                        img.get(0).src = file.getAsDataURL();
+                        img.css('opacity', 0.5);
                     } else {
                         $.deco.notify({
                             type: "warning",
