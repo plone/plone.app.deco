@@ -1657,7 +1657,7 @@
     $.deco.saveTileValueToForm = function(tiletype, tile_config) {
 
         // Update field values if type is rich text
-        if (tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')) {
+        if (tile_config && tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')) {
             switch (tile_config.widget) {
                 case 'TextFieldWidget':
                     $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());

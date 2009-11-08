@@ -52,9 +52,47 @@
                 // Drop tile
                 $(document).trigger("mousedown");
 
-                // Set image
-                $(".deco-selected-tile").children(".deco-tile-content").children("img").get(0).src = files[0].getAsDataURL();
+                // Check filetypes
+                var first = true;
+                for (var i = 0; i < files.length; i++) {
 
+                    // Get file
+                    var file = files.item(i);
+
+                    // Check if supported mimetype
+                    if (file.mediaType.indexOf('image') == 0) {
+
+                        // Check if first supported
+                        if (first) {
+
+                            // Set tile type
+                            $(".deco-selected-tile").removeClass("deco-upload-tile");
+                            $(".deco-selected-tile").addClass("deco-image-tile");
+
+                            // Set image
+                            var img = $(".deco-selected-tile").children(".deco-tile-content").children("img")
+                            img.get(0).src = file.getAsDataURL();
+                            img.css('opacity', 0.5);
+
+                            // Set first to false
+                            first = false;
+                        } else {
+
+                            // Todo
+                        }
+                    } else {
+                        $.deco.notify({
+                            type: "warning",
+                            title: "Warning",
+                            message: "The filetype of file " + file.fileName + " is unsupported"
+                        });
+                    }
+                }
+
+                // Remove tile if no supported filetypes
+                if (first) {
+                    $(".deco-selected-tile").find(".deco-close-icon").trigger("click");
+                }
             },
             false
         );
