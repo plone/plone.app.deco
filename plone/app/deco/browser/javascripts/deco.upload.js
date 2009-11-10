@@ -102,6 +102,7 @@
                         var xhr = new XMLHttpRequest();
 
                         // Set progress handler
+                        xhr.upload.log = img
                         xhr.upload.addEventListener("progress", function (event) {
                             if (event.lengthComputable) {
                                 var percentage = Math.round((event.loaded * 100) / event.total);
@@ -130,7 +131,9 @@
 
                             // No error
                             } else {
-                                img.attr({
+
+                                // Set url and alt and fadein
+                                $(event.target.upload.log).attr({
                                     'src': response.url,
                                     'alt': response.title
                                 })
