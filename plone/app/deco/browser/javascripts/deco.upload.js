@@ -115,7 +115,24 @@
 
                         // Added load handler
                         xhr.addEventListener("load", function (event) {
-                            console.log(event);
+
+                            // Get response
+                            var response = eval(event.target.responseText);
+
+                            // Check if error
+                            if (response.status == 1) {
+
+                                // Raise error
+                                $.deco.notify({
+                                    type: "error",
+                                    title: "Error",
+                                    message: response.message
+                                });
+
+                            // No error
+                            } else {
+                                
+                            }
                         }
                         , false);
 
