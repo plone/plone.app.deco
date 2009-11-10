@@ -90,6 +90,7 @@
                             // Insert new tile
                             $(".deco-selected-tile").after(newtile);
                             newtile.decoInitTile();
+                            newtile.decoAddDrag();
 
                             // Get image object
                             img = newtile.children(".deco-tile-content").children("img");
