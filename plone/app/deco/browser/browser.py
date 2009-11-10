@@ -13,6 +13,8 @@ from Products.CMFPlone.utils import log
 from Acquisition import aq_inner
 from plone.tiles.interfaces import ITileType
 from Products.CMFCore.interfaces._content import IFolderish
+from Products.CMFCore.utils import getToolByName
+import base64
 
 def GetBool(value):
     if value == 'False' or value == 'false':
@@ -33,7 +35,79 @@ class DecoUploadView(BrowserView):
     """Handle file uploads"""
 
     def __call__(self):
-        return "todo"
+        context = self.context
+        request = context.REQUEST
+
+        ctr_tool = getToolByName(self.context, 'content_type_registry')
+        id = request['uploadfile'].filename
+
+        content_type = request['uploadfile'].headers["Content-Type"]
+        typename = ctr_tool.findTypeName(id, content_type, "")
+
+        # 1) check if we are allowed to create an Image in folder 
+        if not typename in [t.id for t in context.getAllowedTypes()]: 
+            return '{"status":"1", "message": "Not allowed to upload a file of this type to this folder"}'
+
+        # 2) check if the current user has permissions to add stuff 
+        if not context.portal_membership.checkPermission('Add portal content',context): 
+            return '{"status":"1", "message": "You do not have permission to upload files in this folder"}'
+
+        # Get an unused filename without path
+        id = self.cleanupFilename(id)
+
+        title = request['uploadfile'].filename
+
+        newid = context.invokeFactory(type_name=typename, id=id)
+
+        if newid is None or newid == '':
+            newid = id 
+
+        obj = getattr(context,newid, None)
+
+        # Set title
+        # Attempt to use Archetypes mutator if there is one, in case it uses a custom storage
+        if title:
+            try:
+                obj.setTitle(title)
+            except AttributeError:
+                obj.title = title
+
+        # set primary field
+        pf = obj.getPrimaryField()
+        pf.set(obj, request['uploadfile'])
+
+        if not obj:
+            return '{"status":"1", "message": "Could not upload the file"}'
+
+        obj.reindexObject()
+        return obj.absolute_url()
+
+    def cleanupFilename(self, name):
+        """Generate a unique id which doesn't match the system generated ids"""
+
+        context = self.context
+        id = ''
+        name = name.replace('\\', '/') # Fixup Windows filenames
+        name = name.split('/')[-1] # Throw away any path part.
+        for c in name:
+            if c.isalnum() or c in '._':
+                id += c
+
+        # Raise condition here, but not a lot we can do about that
+        if context.check_id(id) is None and getattr(context,id,None) is None:
+            return id
+
+        # Now make the id unique
+        count = 1
+        while 1:
+            if count==1:
+                sc = ''
+            else:
+                sc = str(count)
+            newid = "copy%s_of_%s" % (sc, id)
+            if context.check_id(newid) is None and getattr(context,newid,None) is None:
+                return newid
+            count += 1
 
 class DecoConfigView(BrowserView):
 

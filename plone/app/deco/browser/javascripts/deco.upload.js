@@ -58,6 +58,7 @@
 
                     // Get file
                     var file = files.item(i);
+                    console.log(file);
 
                     // Check if supported mimetype
                     if (file.mediaType.indexOf('image') == 0) {
@@ -128,11 +129,32 @@
                         }
                         , false);
 
-                        xhr.open("POST", $.deco.options.url + "/@@deco-upload");
-                        xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-                        xhr.sendAsBinary(file.getAsBinary());
+                        // Set boundary
+                        var boundary = "AJAX---------------------------AJAX";
 
+                        // Open xhr and set content type
+                        xhr.open("POST", $.deco.options.url + "/@@deco-upload", true);
+                        xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+
+                        // Add start boundary
+                        var data = "--" + boundary + "\r\n";
+
+                        // Add file
+                        data += 'Content-Disposition: form-data; ';
+                        data += 'name="uploadfile"; ';
+                        data += 'filename="'+ file.fileName + '"' + "\r\n";
+                        data += "Content-Type: " + file.mediaType;
+                        data += "\r\n\r\n";
+                        data += file.getAsBinary() + "\r\n";
+
+                        // Add end boundary
+                        data += "--" + boundary + "--" + "\r\n";
+
+                        // Sent data
+                        xhr.sendAsBinary(data);
                     } else {
+
+                        // Notify unsupported
                         $.deco.notify({
                             type: "warning",
                             title: "Warning",
