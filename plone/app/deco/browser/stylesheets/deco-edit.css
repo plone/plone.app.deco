@@ -301,6 +301,18 @@
     max-width: 100%;
 }
 
+.deco-tile-uploadprogress {
+    background: rgba(0,0,0,0.6) url(++resource++plone.app.deco.images/loading.gif) no-repeat center;
+    position: absolute;
+    z-index: 501;
+    width: auto;
+    height: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
 /* @end */
 
 /* @group Resize */

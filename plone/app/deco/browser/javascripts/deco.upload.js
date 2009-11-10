@@ -38,7 +38,6 @@
             }
         });
 
-        //$(".deco-panel").bind(
         document.addEventListener(
             "drop",
             function (event) {
@@ -62,14 +61,16 @@
                     // Check if supported mimetype
                     if (file.mediaType.indexOf('image') == 0) {
 
-                        // New image
+                        // New image and tile
                         var img;
+                        var tile;
 
                         // Check if first
                         if (first) {
 
-                            // Set image
+                            // Set image and tile
                             img = $(".deco-selected-tile").children(".deco-tile-content").children("img")
+                            tile = $(".deco-selected-tile");
 
                             // Set first to false
                             first = false;
@@ -92,11 +93,15 @@
 
                             // Get image object
                             img = newtile.children(".deco-tile-content").children("img");
+                            tile = newtile;
                         }
 
+                        // Setup progress div
+                        tile.append($(document.createElement("div"))
+                            .addClass("deco-tile-uploadprogress")
+                        )
                         // Set image values
                         img.get(0).src = file.getAsDataURL();
-                        img.css('opacity', 0.5);
 
                         // Create new ajax request
                         var xhr = new XMLHttpRequest();
@@ -137,7 +142,10 @@
                                     'src': response.url,
                                     'alt': response.title
                                 })
-                                .animate({"opacity": 1}, { duration: "slow" });
+                                .parents(".deco-tile").children(".deco-tile-uploadprogress")
+                                    .fadeOut("slow", function () {
+                                        $(this).remove();
+                                    });
                             }
                         }
                         , false);
