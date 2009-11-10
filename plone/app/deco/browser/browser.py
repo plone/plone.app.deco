@@ -46,11 +46,17 @@ class DecoUploadView(BrowserView):
 
         # 1) check if we are allowed to create an Image in folder 
         if not typename in [t.id for t in context.getAllowedTypes()]: 
-            return '{"status": 1, "message": "Not allowed to upload a file of this type to this folder"}'
+            error = {}
+            error['status'] = 1
+            error['message'] = "Not allowed to upload a file of this type to this folder"
+            return json.dumps(error)
 
         # 2) check if the current user has permissions to add stuff 
         if not context.portal_membership.checkPermission('Add portal content',context): 
-            return '{"status": 1, "message": "You do not have permission to upload files in this folder"}'
+            error = {}
+            error['status'] = 1
+            error['message'] = "You do not have permission to upload files in this folder"
+            return json.dumps(error)
 
         # Get an unused filename without path
         id = self.cleanupFilename(id)
@@ -77,10 +83,17 @@ class DecoUploadView(BrowserView):
         pf.set(obj, request['uploadfile'])
 
         if not obj:
-            return '{"status": 1, "message": "Could not upload the file"}'
+            error = {}
+            error['status'] = 1
+            error['message'] = "Could not upload the file"
+            return json.dumps(error)
 
         obj.reindexObject()
-        return '{"status":0, "url": "' + obj.absolute_url() + '", "title": "' + title + '"}'
+        message = {}
+        message['status'] = 0
+        message['url'] = obj.absolute_url()
+        message['title'] = title
+        return json.dumps(message)
 
     def cleanupFilename(self, name):
         """Generate a unique id which doesn't match the system generated ids"""
