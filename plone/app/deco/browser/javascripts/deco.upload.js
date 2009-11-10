@@ -58,7 +58,6 @@
 
                     // Get file
                     var file = files.item(i);
-                    console.log(file);
 
                     // Check if supported mimetype
                     if (file.mediaType.indexOf('image') == 0) {
@@ -107,7 +106,7 @@
                             if (event.lengthComputable) {
                                 var percentage = Math.round((event.loaded * 100) / event.total);
                                 if (percentage < 100) {
-                                    console.log(percentage);
+                                    // console.log(percentage);
                                 }
                             }
                         }
@@ -117,7 +116,7 @@
                         xhr.addEventListener("load", function (event) {
 
                             // Get response
-                            var response = eval(event.target.responseText);
+                            var response = eval('(' + event.target.responseText + ')');
 
                             // Check if error
                             if (response.status == 1) {
@@ -131,7 +130,11 @@
 
                             // No error
                             } else {
-                                
+                                img.attr({
+                                    'src': response.url,
+                                    'alt': response.title
+                                })
+                                .animate({"opacity": 1}, { duration: "slow" });
                             }
                         }
                         , false);
