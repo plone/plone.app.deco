@@ -838,30 +838,61 @@
         // Loop through matched elements
         return this.each(function() {
 
-            // Add ui.adraggable
-            $(this).draggable({
-                helper: 'clone',
-                handle: 'div.deco-drag-handle',
-                cursor: 'move',
-                cursorAt: {top: -1},
-                opacity: 0.5,
-                scroll: true,
-                appendTo: "body",
-                start: function(e,ui) {
+            var tile = $(this);
 
-                    // Add dragging class to content area
-                    $.deco.options.panels.addClass("deco-panel-dragging");
-                    $(this).addClass("deco-original-tile");
-                    ui.helper
-                        .addClass("deco-helper-tile")
-                        .width($(this).width());
-                    $(".deco-selected-tile").removeClass("deco-selected-tile").children(".deco-tile-content").blur();
-                },
-                stop: function(e,ui) {
+            var DragMove = function(event){
+                var helper = $('.deco-helper-tile');
+                var offset = helper.parents(".deco-panel").offset();
+                helper.css("top", event.pageY + 3 - offset.top);
+                helper.css("left", event.pageX + 3 - offset.left);
+            };
+            var DragStop = function(){
+                var helper = $('.deco-helper-tile');
+                $()
+                    .unbind('mousemove', DragMove)
+                    .unbind('mouseup', DragStop);
 
-                    // Handle drag end
-                    $(this).decoHandleDragEnd();
-                }
+                // Handle drag end
+                helper.decoHandleDragEnd();
+                helper.remove();
+            };
+            return tile.each(function(){
+                tile.find('div.deco-drag-handle').bind('mousedown', function(event){
+                    var downX = event.pageX;
+                    var downY = event.pageY;
+                    var DragCheckMove = function (event) {
+                        if (Math.max(
+                            Math.abs(downX - event.pageX),
+                            Math.abs(downY - event.pageY)
+                        ) >= 1) {
+
+                            // Add dragging class to content area
+                            $.deco.options.panels.addClass("deco-panel-dragging");
+                            $(".deco-selected-tile").removeClass("deco-selected-tile").children(".deco-tile-content").blur();
+
+                            var originaltile = $(event.target).parents(".deco-tile");
+
+                            var clone = originaltile.clone(true);
+                            originaltile.addClass("deco-original-tile");
+
+                            originaltile.parents(".deco-panel").append(clone);
+                            clone
+                                .css({
+                                    "width": originaltile.width(),
+                                    "position": "absolute",
+                                    "opacity": 0.5
+                                })
+                                .addClass("deco-helper-tile");
+                            $().mousemove(DragMove);
+                            $().mouseup(DragStop);
+                            $().unbind('mousemove', DragCheckMove);
+                        }
+                    }
+                    $().bind('mousemove', DragCheckMove);
+                    $().bind('mouseup', function () {
+                        $().unbind('mousemove', DragCheckMove);
+                    });
+                });
             });
         });
     };
