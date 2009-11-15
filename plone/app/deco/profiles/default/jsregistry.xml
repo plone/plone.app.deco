@@ -5,20 +5,6 @@
               compression="none"
               cookable="False"
               enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.core.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/ui.draggable.min.js"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.core.js"
               inline="False"/>
 
