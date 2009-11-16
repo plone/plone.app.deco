@@ -857,7 +857,10 @@
                 helper.remove();
             };
             return tile.each(function(){
-                tile.find('div.deco-drag-handle').bind('mousedown', function(event){
+                tile.find('div.deco-drag-handle')
+                    .unbind('mousedown')
+                    .bind('mousedown', function(event){
+
                     var downX = event.pageX;
                     var downY = event.pageY;
                     var DragCheckMove = function (event) {
