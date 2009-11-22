@@ -238,18 +238,18 @@ class DecoConfigView(BrowserView):
 
         # Application Tiles
         if settings.app_tiles:
-            for app_tile_name in settings.app_tiles:
-                app_tile_type = getUtility(ITileType, name=app_tile_name)
-                config['tiles'][GetCategoryIndex(config['tiles'], 'media')]['tiles'].append({
-                    'name': app_tile_name,
-                    'label': app_tile_type.title,
+            for app_tile in settings.app_tiles:
+                tile_fields = app_tile.split('|')
+                config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
+                    'name': tile_fields[0],
+                    'label': tile_fields[2],
                     'type': 'app',
                     'default_value': '',
-                    'read_only': True,
-                    'settings': True,
-                    'favorite': False,
-                    'rich_text': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+                    'read_only': GetBool(tile_fields[3]),
+                    'settings': GetBool(tile_fields[4]),
+                    'favorite': GetBool(tile_fields[5]),
+                    'rich_text': GetBool(tile_fields[6]),
+                    'available_actions': tile_fields[7:-1]
                 })
 
         # Field Tiles

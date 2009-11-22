@@ -67,6 +67,6 @@ class IDecoSettings(form.Schema):
 
     app_tiles = schema.List(
         title=_(u"Application tiles"),
-        description=_(u"Enter a list of application tiles, one per line."),
+        description=_(u"Enter a list of application tiles. Format is name|category|label|read_only|settings|favorite|rich_text|available_actions, one format per line."),
         value_type= schema.TextLine(),
         required=False)
