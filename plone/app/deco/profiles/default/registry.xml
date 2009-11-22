@@ -30,6 +30,7 @@
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="format_categories">
     <value>
+      <element>actions|Actions</element>
       <element>text|Text</element>
       <element>selection|Selection</element>
       <element>lists|Lists</element>
@@ -63,6 +64,7 @@
       <element>tile-align-left|justify|Tile left|tile-align-left|true|false</element>
       <element>tile-align-right|justify|Tile right|tile-align-right|true|false</element>
       <element>pagebreak|print|Page break|pagebreak|true|false</element>
+      <element>blur|actions|Blur|blur|true|false</element>
     </value>
   </record>
 
