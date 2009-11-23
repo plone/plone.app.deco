@@ -11,6 +11,11 @@ $.deco.initNotify = function () {
     $.deco.executed.push("initNotify");
 };
 
+// Create initUpload stub function
+$.deco.initUpload = function () {
+    $.deco.executed.push("initUpload");
+};
+
 // Create decoDialog stub function
 $.fn.decoDialog = function () {
     $.deco.executed.push("decoDialog");
@@ -89,7 +94,7 @@ test("Init without data", function() {
 });
 
 test("Init with data", function() {
-    expect(16);
+    expect(17);
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
@@ -117,4 +122,6 @@ test("Init with data", function() {
 
     equals($(".deco-panel").hasClass('deco-blur'), false, "Panels are not blurred");
     equals($(".deco-toolbar").hasClass('deco-blur'), false, "Toolbar is not blurred");
+
+    equals($.deco.executed.indexOf("initUpload") != -1, true, 'Init upload is called');
 });
