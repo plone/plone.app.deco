@@ -439,7 +439,7 @@
                 if (tile_config.type == 'app') {
 
                     // Open dialog
-                    $.deco.dialog.openIframe($.deco.options.parent + '++addtile++' + $(source).val() +  '?id=random');
+                    $.deco.dialog.openIframe($.deco.options.parent + '@@add-tile/' + $(source).val() +  '?id=random');
 
                 } else {
 
