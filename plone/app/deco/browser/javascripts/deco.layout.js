@@ -1576,8 +1576,9 @@
      * @id jQuery.deco.addAppTile
      * @param {String} type Type of the application tile
      * @param {String} url Url of the application tile
+     * @param {String} id Id of the application tile
      */
-    $.deco.addAppTile = function(type, url) {
+    $.deco.addAppTile = function(type, url, id) {
 
         // Close dialog
         $.deco.dialog.close();
@@ -1591,7 +1592,7 @@
             success: function(value) {
 
                 // Add tile
-                $.deco.addTile(type, value);
+                $.deco.addTile(type, '<span class="hiddenStructure tileUrl">' + url + '</span>' + value);
             }
         });
     }
@@ -1734,7 +1735,7 @@
         var links = new Array();
         var tilecount = 0;
         var id = "";
-        links.push({type: "theme", target: "", href: "layout.html"})
+        links.push({type: "rel", target: "", href: "./@@test-layout"})
 
         // Add body tag
         body += "  <body>\n";

@@ -147,6 +147,15 @@
             // Init Deco
             $.deco.init();
         }
+
+        // Check if tiledata is available and valid
+        if (typeof(tiledata) !== 'undefined') {
+            if (typeof(tiledata.url) !== 'undefined') {
+
+                // Insert app tile
+                window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+            }
+        }
     });
 
 //#JSCOVERAGE_ENDIF
