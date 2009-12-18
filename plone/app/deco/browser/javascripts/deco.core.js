@@ -150,10 +150,21 @@
 
         // Check if tiledata is available and valid
         if (typeof(tiledata) !== 'undefined') {
-            if (typeof(tiledata.url) !== 'undefined') {
 
-                // Insert app tile
-                window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+            // Check action
+            if (tiledata.action == 'cancel') {
+
+                // Close dialog
+                window.parent.jQuery.deco.dialog.close();
+
+            } else if (tiledata.action == 'save') {
+
+                // Check url
+                if (typeof(tiledata.url) !== 'undefined') {
+
+                    // Insert app tile
+                    window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+                }
             }
         }
     });

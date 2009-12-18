@@ -1586,6 +1586,7 @@
         // Focus on current window
         window.focus();
 
+        // Get value
         $.ajax({
             type: "GET",
             url: url,
