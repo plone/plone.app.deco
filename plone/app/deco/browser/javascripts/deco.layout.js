@@ -1575,9 +1575,9 @@
      *
      * @id jQuery.deco.addAppTile
      * @param {String} type Type of the application tile
-     * @param {String} value Value of the application tile
+     * @param {String} url Url of the application tile
      */
-    $.deco.addAppTile = function(type, value) {
+    $.deco.addAppTile = function(type, url) {
 
         // Close dialog
         $.deco.dialog.close();
@@ -1585,8 +1585,15 @@
         // Focus on current window
         window.focus();
 
-        // Add tile
-        $.deco.addTile(type, value);
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(value) {
+
+                // Add tile
+                $.deco.addTile(type, value);
+            }
+        });
     }
 
     /**
