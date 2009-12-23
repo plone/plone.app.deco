@@ -438,8 +438,15 @@
 
                 if (tile_config.type == 'app') {
 
+                    // Generate random id
+                    var random_id = 1 + Math.floor(100000 * Math.random());
+                    while ($("#deco-rich-text-init-" + random_id).length > 0) {
+                        random_id = 1 + Math.floor(100000 * Math.random());
+                    }
+                    random_id = 't' + random_id;
+
                     // Open dialog
-                    $.deco.dialog.openIframe($.deco.options.parent + '@@add-tile/' + $(source).val() +  '?id=random');
+                    $.deco.dialog.openIframe($.deco.options.parent + '@@add-tile/' + $(source).val() +  '/' + random_id);
 
                 } else {
 
