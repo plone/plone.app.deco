@@ -94,6 +94,7 @@
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
+            form.find('#formfield-form-widgets-ILayout-content').parent('.row').addClass('deco-hidden');
             form.find('#formfield-form-widgets-ILayout-layout').parent('.row').addClass('deco-hidden');
 
             // Hide field which are on the wysiwyg area

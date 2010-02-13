@@ -366,7 +366,7 @@
         // Register save action
         $.deco.registerAction('save', {
             exec: function() {
-                $("#form-widgets-ILayout-layout").attr("value", $.deco.getPageContent());
+                $("#form-widgets-ILayout-content").attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
                 window.onbeforeunload = null;

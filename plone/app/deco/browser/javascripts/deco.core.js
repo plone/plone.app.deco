@@ -52,7 +52,7 @@
                 $.deco.options.url = options.url;
                 $.deco.options.tileheadelements = [];
 
-                var content = $('#form-widgets-ILayout-layout').val();
+                var content = $('#form-widgets-ILayout-content').val();
 
                 // Check if no layout
                 if (content == '') {
@@ -237,7 +237,7 @@
     $(window).load(function () {
 
         // Check if layout exists
-        if ($('#form-widgets-ILayout-layout').length > 0) {
+        if ($('#form-widgets-ILayout-content').length > 0) {
 
             // Init Deco
             $.deco.init();
