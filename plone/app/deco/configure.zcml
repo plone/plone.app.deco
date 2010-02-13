@@ -3,7 +3,7 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="plone.app.deco">
 
-    <include package="plone.tiles" />
+    <include package="plone.app.tiles" />
     <include package="plone.app.registry" />
     <include package="plone.app.dexterity" />
     <include package="plone.app.tinymce" />

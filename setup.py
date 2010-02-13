@@ -30,7 +30,7 @@ setup(name='plone.app.deco',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'plone.tiles',
+          'plone.app.tiles',
           'plone.app.registry',
           'plone.app.dexterity',
           'plone.app.tinymce',
