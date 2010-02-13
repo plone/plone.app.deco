@@ -478,6 +478,32 @@
                         .addClass("deco-tile-control deco-close-icon")
                         .click(function() {
 
+                            // Check if app tile
+                            if (tile_config.type == 'app') {
+
+                                // Get url
+                                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
+
+                                // Calc delete url
+                                var url = tile_url.split('?')[0];
+                                url = url.split('@@');
+                                var tile_type_id = url[1].split('/');
+                                url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
+
+                                // Ajax call to remove tile
+                                $.ajax({
+                                    type: "GET",
+                                    url: url,
+                                    success: function(value) {
+
+                                        $.deco.notify({
+                                            title: "Info",
+                                            message: "Application tile removed"
+                                        });
+                                    }
+                                });
+                            }
+
                             // Remove empty rows
                             $.deco.options.panels.find(".deco-empty-row").remove();
 
