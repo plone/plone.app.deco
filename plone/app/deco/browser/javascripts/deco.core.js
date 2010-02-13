@@ -50,6 +50,7 @@
                 // Add global options
                 $.deco.options = configdata;
                 $.deco.options.url = options.url;
+                $.deco.options.tileheadelements = [];
 
                 var content = $('#form-widgets-ILayout-layout').val();
 
@@ -60,15 +61,8 @@
                     return;
                 }
 
-                // Remove doctype and replace html, head and body tag since the are stripped when converting to jQuery object
-                content = content.replace(/<!DOCTYPE[^>]+>/, '');
-                content = content.replace(/<html/, "<div");
-                content = content.replace(/<\/html/, "</div");
-                content = content.replace(/<head/, "<div");
-                content = content.replace(/<\/head/, "</div");
-                content = content.replace(/<body/, "<div");
-                content = content.replace(/<\/body/, "</div");
-                content = $($(content)[0]);
+                // Get dom tree
+                content = $.deco.getDomTreeFromHtml (content);
 
                 // Find panels
                 content.find("link[rel=panel]").each(function () {
@@ -96,8 +90,14 @@
                         url: href,
                         success: function(value) {
 
+                            // Get dom tree
+                            value = $.deco.getDomTreeFromHtml (value);
+
+                            // Add head tags
+                            $.deco.addHeadTags(href, value);
+
                             // Update tile
-                            $('#' + target).parent().html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value);
+                            $('#' + target).parent().html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value.find('.temp_body_tag').html());
                         }
                     });
                 });
@@ -158,6 +158,76 @@
                 // Init upload
                 $.deco.initUpload();
             }
+        });
+    };
+
+    /**
+     * Get the dom tree of the specified content
+     *
+     * @id jQuery.deco.getDomTreeFromHtml
+     * @param {String} content Html content
+     * @return {Object} Dom tree of the html
+     */
+    $.deco.getDomTreeFromHtml = function (content) {
+
+        // Remove doctype and replace html, head and body tag since the are stripped when converting to jQuery object
+        content = content.replace(/<!DOCTYPE[^>]+>/, '');
+        content = content.replace(/<html/, "<div class=\"temp_html_tag\"");
+        content = content.replace(/<\/html/, "</div");
+        content = content.replace(/<head/, "<div class=\"temp_head_tag\"");
+        content = content.replace(/<\/head/, "</div");
+        content = content.replace(/<body/, "<div class=\"temp_body_tag\"");
+        content = content.replace(/<\/body/, "</div");
+        return $($(content)[0]);
+    };
+
+    /**
+     * Remove head tags based on tile url
+     *
+     * @id jQuery.deco.removeHeadTags
+     * @param {String} url Url of the tile
+     */
+    $.deco.removeHeadTags = function (url) {
+
+        // Calc delete url
+        url = url.split('?')[0];
+        url = url.split('@@');
+        var tile_type_id = url[1].split('/');
+        url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
+        var html_id = tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
+
+        // Remove head elements
+        var headelements = $.deco.options.tileheadelements[html_id];
+        for (var i = 0; i < headelements.length; i++) {
+            $(headelements[i]).remove();
+        }
+        $.deco.options.tileheadelements[html_id] = [];
+    }
+
+    /**
+     * Remove head tags based on tile url
+     *
+     * @id jQuery.deco.removeHeadTags
+     * @param {String} url Url of the tile
+     * @param {Object} dom Dom object of the tile
+     */
+    $.deco.addHeadTags = function (url, dom) {
+
+        // Calc url
+        url = url.split('?')[0];
+        url = url.split('@@');
+        var tile_type_id = url[1].split('/');
+        var html_id = tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
+        $.deco.options.tileheadelements[html_id] = [];
+
+        // Get head items
+        dom.find(".temp_head_tag").children().each(function () {
+
+            // Add element
+            $.deco.options.tileheadelements[html_id].push(this);
+
+            // Add head elements
+            $('head').append(this);
         });
     };
 

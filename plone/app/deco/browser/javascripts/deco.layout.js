@@ -484,6 +484,9 @@
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
 
+                                // Remove tags
+                                $.deco.removeHeadTags(tile_url);
+
                                 // Calc delete url
                                 var url = tile_url.split('?')[0];
                                 url = url.split('@@');
@@ -1633,8 +1636,14 @@
             url: url,
             success: function(value) {
 
+                // Get dom tree
+                value = $.deco.getDomTreeFromHtml (value);
+
+                // Add head tags
+                $.deco.addHeadTags(url, value);
+
                 // Add tile
-                $.deco.addTile(type, '<span class="hiddenStructure tileUrl">' + url + '</span>' + value);
+                $.deco.addTile(type, '<span class="hiddenStructure tileUrl">' + url + '</span>' + value.find('.temp_body_tag').html());
             }
         });
     };
@@ -1661,8 +1670,17 @@
             url: url,
             success: function(value) {
 
+                // Get dom tree
+                value = $.deco.getDomTreeFromHtml (value);
+
+                // Remove head tags
+                $.deco.removeHeadTags(url);
+
+                // Add head tags
+                $.deco.addHeadTags(url, value);
+
                 // Update tile
-                $('.deco-selected-tile .deco-tile-content').html('<span class="hiddenStructure tileUrl">' + url + '</span>' + value);
+                $('.deco-selected-tile .deco-tile-content').html('<span class="hiddenStructure tileUrl">' + url + '</span>' + value.find('.temp_body_tag').html());
             }
         });
     };
