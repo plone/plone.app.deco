@@ -159,11 +159,19 @@
 
             } else if (tiledata.action == 'save') {
 
-                // Check url
-                if (typeof(tiledata.url) !== 'undefined') {
+                // Check mode
+                if (tiledata.mode == 'add') {
 
-                    // Insert app tile
-                    window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+                    // Check url
+                    if (typeof(tiledata.url) !== 'undefined') {
+
+                        // Insert app tile
+                        window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+                    }
+                } else {
+
+                    // Update app tile
+                    window.parent.jQuery.deco.editAppTile(tiledata.url);
                 }
             }
         }

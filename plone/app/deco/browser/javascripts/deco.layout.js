@@ -540,7 +540,22 @@
 
                         // On click open dialog
                         .click(function() {
-                            $.deco.dialog.open('field', tile_config);
+
+                            // Check if application tile
+                            if (tile_config.type == 'app') {
+
+                                // Get url
+                                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
+                                tile_url = tile_url.replace(/@@/, '@@edit-tile/');
+
+                                // Open dialog
+                                $.deco.dialog.openIframe(tile_url);
+
+                            } else {
+
+                                // Edit field
+                                $.deco.dialog.open('field', tile_config);
+                            }
                         })
                 );
             }
@@ -1622,7 +1637,35 @@
                 $.deco.addTile(type, '<span class="hiddenStructure tileUrl">' + url + '</span>' + value);
             }
         });
-    }
+    };
+
+    /**
+     * Edit an apptile with the given value
+     *
+     * @id jQuery.deco.addAppTile
+     * @param {String} type Type of the application tile
+     * @param {String} url Url of the application tile
+     * @param {String} id Id of the application tile
+     */
+    $.deco.editAppTile = function(url) {
+
+        // Close dialog
+        $.deco.dialog.close();
+
+        // Focus on current window
+        window.focus();
+
+        // Get new value
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(value) {
+
+                // Update tile
+                $('.deco-selected-tile .deco-tile-content').html('<span class="hiddenStructure tileUrl">' + url + '</span>' + value);
+            }
+        });
+    };
 
     /**
      * Add a tile with the given value
