@@ -110,7 +110,7 @@
                     if (obj.css('display') == 'block') {
 
                         // Check if panel or toolbar
-                        if (!obj.hasClass('.deco-panel') && !obj.hasClass('.deco-toolbar') && !obj.hasClass('.deco-notifications')) {
+                        if (!obj.hasClass('deco-panel') && !obj.hasClass('deco-toolbar') && !obj.hasClass('deco-notifications')) {
 
                             // Check if inside panel or toolbar
                             if (obj.parents('.deco-panel, .deco-toolbar').length == 0) {
