@@ -253,7 +253,10 @@ class DecoConfigView(BrowserView):
                 })
 
         # Field Tiles
-        fti = getUtility(IDexterityFTI, name=self.context.portal_type)
+        type = self.context.portal_type
+        if hasattr(self.context.REQUEST, 'type'):
+            type = self.context.REQUEST['type']
+        fti = getUtility(IDexterityFTI, name=type)
         for x in fti.lookupSchema():
             pass
             #log(x)

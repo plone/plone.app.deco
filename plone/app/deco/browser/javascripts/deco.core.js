@@ -17,7 +17,8 @@
      */
     $.deco.init = function(options) {
         options = $.extend({
-            url: document.location.href
+            url: document.location.href,
+            type: ''
         }, options);
 
         // Initialize modules
@@ -25,15 +26,22 @@
         $.deco.initNotify();
 
         // Get the url of the page
-        var match = options.url.match(/^(.*)\/edit/)
+        var match = options.url.match(/^(.*)\/edit/);
         if (match) {
             options.url = match[1];
+        }
+
+        // Chop add
+        var match = options.url.match(/^(.*)\/\+\+add\+\+(.*)$/);
+        if (match) {
+            options.url = match[1];
+            options.type = match[2];
         }
 
         // Get the configuration from the backend
         $.ajax({
             type: "GET",
-            url: options.url + "/@@deco-config",
+            url: options.url + "/@@deco-config" + (options.type == '' ? '' : "?type=" + options.type),
             success: function(configdata) {
 
                 // Get the config data
