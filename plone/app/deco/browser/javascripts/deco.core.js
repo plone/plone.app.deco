@@ -71,18 +71,35 @@
                 content = $($(content)[0]);
 
                 // Find panels
-                content.find(".deco-panel").each(function () {
-                    var id = $(this).attr("id");
+                content.find("link[rel=panel]").each(function () {
+                    var target = $(this).attr("target");
+                    var rev = $(this).attr("rev");
 
                     // If region content, create a new div since the form data is in this panel
-                    if (id == 'region-content') {
+                    if (target == 'region-content') {
                         $("#region-content").before($(document.createElement("div"))
                             .attr("id", "region-content-edit")
                         );
-                        id += '-edit';
+                        target += '-edit';
                     }
-                    $("#" + id).addClass('deco-panel');
-                    $("#" + id).html($(this).html());
+                    $("#" + target).addClass('deco-panel');
+                    $("#" + target).html(content.find("#" + rev).html());
+                });
+
+                // Init app tiles
+                content.find("link[rel=tile]").each(function () {
+                    var target = $(this).attr("target");
+                    var href = $(this).attr("href");
+
+                    $.ajax({
+                        type: "GET",
+                        url: href,
+                        success: function(value) {
+
+                            // Update tile
+                            $('#' + target).parent().html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value);
+                        }
+                    });
                 });
 
                 // Init dialog

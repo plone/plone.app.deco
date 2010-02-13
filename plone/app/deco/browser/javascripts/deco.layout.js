@@ -1805,7 +1805,7 @@
         var links = new Array();
         var tilecount = 0;
         var id = "";
-        links.push({type: "rel", target: "", href: "./@@test-layout"})
+        links.push({rel: "layout", rev: "", target: "", href: "./@@test-layout"})
 
         // Add body tag
         body += "  <body>\n";
@@ -1818,7 +1818,10 @@
             if (id == "region-content-edit") {
                 id = "region-content";
             }
-            body += '    <div id="' + id + '" class="' + $(this).attr("class") + '">\n';
+            body += '    <div id="' + id + '">\n';
+
+            // Add panel link
+            links.push({rel: "panel", rev: id, target: id, href: ""})
 
             // Loop through rows
             $(this).children(".deco-grid-row").each(function () {
@@ -1861,39 +1864,52 @@
                                 }
                             }
 
-                            body += '          <div class="' + $(this).attr("class") + '">\n';
-                            body += '          <div class="deco-tile-content">\n';
-                            body += $(this).children(".deco-tile-content").html();
-                            body += '\n          </div>\n';
-                            body += '\n          </div>\n';
-
-                            // Update field values if type is rich text
-                            $.deco.saveTileValueToForm(tiletype, tile_config);
-/*
                             switch (tile_config.type) {
                                 case "text":
-                                    body += '          <div class="deco-tile">\n';
+                                    body += '          <div class="' + $(this).attr("class") + '">\n';
+                                    body += '          <div class="deco-tile-content">\n';
                                     body += $(this).children(".deco-tile-content").html();
+                                    body += '\n          </div>\n';
                                     body += '\n          </div>\n';
                                     break;
                                 case "app":
-                                    switch (tiletype) {
-                                        case "image":
-                                            body += '          <div class="deco-tile" id="tile-image-' + tilecount + '">\n';
-                                            body += $(this).children(".deco-tile-content").html();
-                                            var image = $(this).find("img");
-                                            links.push({
-                                                type: "replace",
-                                                target: "tile-image-" + tilecount,
-                                                href: "@@includeImage?src=" + image.attr("src") + "&amp;alt=" + image.attr("alt") + "&amp;width=" + image.attr("width") + "&amp;height=" + image.attr("height")
-                                            });
-                                            $(this).children(".deco-tile-content").html();
-                                            body += '\n          </div>\n';
-                                            tilecount++;
-                                            break;
-                                    }
+                                    body += '          <div class="' + $(this).attr("class") + '">\n';
+                                    body += '          <div class="deco-tile-content">\n';
+
+                                    // Get url
+                                    var tile_url = $(this).find('.tileUrl').html();
+
+                                    // Calc delete url
+                                    var url = tile_url.split('?')[0];
+                                    url = url.split('@@');
+                                    var tile_type_id = url[1].split('/');
+                                    var html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
+
+                                    url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
+
+                                    body += '          <span id="' + html_id + '"></span>\n';
+
+                                    links.push({
+                                        rel: "tile",
+                                        rev: "",
+                                        target: html_id,
+                                        href: tile_url
+                                    });
+
+                                    body += '\n          </div>\n';
+                                    body += '\n          </div>\n';
                                     break;
                                 case "field":
+                                    body += '          <div class="' + $(this).attr("class") + '">\n';
+                                    body += '          <div class="deco-tile-content">\n';
+                                    body += $(this).children(".deco-tile-content").html();
+                                    body += '\n          </div>\n';
+                                    body += '\n          </div>\n';
+
+                                    // Update field values if type is rich text
+                                    $.deco.saveTileValueToForm(tiletype, tile_config);
+
+                                /*
                                     links.push({
                                         type: "replace",
                                         target: "field-" + tiletype,
@@ -1905,9 +1921,9 @@
                                     body += match[1] + id_attr + match[2];
 //                                    body += $(this).children(".deco-tile-content").html();
                                     body += '\n          </div>\n';
+                                */
                                     break;
                             }
-*/
                         });
 
                         // Add cell end tag
@@ -1931,8 +1947,11 @@
         content += '  <head>\n';
         $(links).each(function () {
             content += '    <link ';
-            if (this.type != "") {
-                content += ' class="' + this.type + '"';
+            if (this.rel != "") {
+                content += ' rel="' + this.rel + '"';
+            }
+            if (this.rev != "") {
+                content += ' rev="' + this.rev + '"';
             }
             if (this.target != "") {
                 content += ' target="' + this.target + '"';
