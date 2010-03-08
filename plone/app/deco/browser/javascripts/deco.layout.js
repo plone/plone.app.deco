@@ -1887,8 +1887,8 @@
                                     body += '          <div class="' + $(this).attr("class") + '">\n';
                                     body += '          <div class="deco-tile-content">\n';
                                     body += $(this).children(".deco-tile-content").html();
-                                    body += '\n          </div>\n';
-                                    body += '\n          </div>\n';
+                                    body += '          </div>\n';
+                                    body += '          </div>\n';
                                     break;
                                 case "app":
                                     body += '          <div class="' + $(this).attr("class") + '">\n';
@@ -1897,13 +1897,11 @@
                                     // Get url
                                     var tile_url = $(this).find('.tileUrl').html();
 
-                                    // Calc delete url
+                                    // Calc url
                                     var url = tile_url.split('?')[0];
                                     url = url.split('@@');
                                     var tile_type_id = url[1].split('/');
                                     var html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
-
-                                    url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
 
                                     body += '          <span id="' + html_id + '"></span>\n';
 
@@ -1914,15 +1912,28 @@
                                         href: tile_url
                                     });
 
-                                    body += '\n          </div>\n';
-                                    body += '\n          </div>\n';
+                                    body += '          </div>\n';
+                                    body += '          </div>\n';
                                     break;
                                 case "field":
                                     body += '          <div class="' + $(this).attr("class") + '">\n';
                                     body += '          <div class="deco-tile-content">\n';
-                                    body += $(this).children(".deco-tile-content").html();
-                                    body += '\n          </div>\n';
-                                    body += '\n          </div>\n';
+
+                                    // Calc url
+                                    var url = './@@example.deco.field?field=' + tiletype;
+                                    var html_id = 'tile-' + tiletype;
+
+                                    body += '          <span id="' + html_id + '"></span>\n';
+
+                                    links.push({
+                                        rel: "tile",
+                                        rev: "",
+                                        target: html_id,
+                                        href: url
+                                    });
+
+                                    body += '          </div>\n';
+                                    body += '          </div>\n';
 
                                     // Update field values if type is rich text
                                     $.deco.saveTileValueToForm(tiletype, tile_config);
