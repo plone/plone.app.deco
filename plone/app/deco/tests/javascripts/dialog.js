@@ -80,7 +80,7 @@ module("dialog", {
                     .append($(document.createElement("input")))
                 )
             )
-            .attr("id", "region-content");
+            .attr("id", "content");
         $(document.body).append(dialog);
         $(document.body)
             .append($(document.createElement("div"))
@@ -89,7 +89,7 @@ module("dialog", {
         dialog.decoDialog();
     },
     teardown: function () {
-        $("#region-content").remove();
+        $("#content").remove();
         $(".deco-dialog-blocker").remove();
         $(".deco-title-tile").remove();
     }
@@ -105,11 +105,11 @@ test("decoDialog", function() {
     expect(3);
 
     // Init dialog
-    $("#region-content").find(".button-field").trigger("click");
+    $("#content").find(".button-field").trigger("click");
 
     equals($(".deco-dialog").length, 1, "Dialog added");
     equals($(".deco-dialog-blocker").length, 1, "Dialog blocker added");
-    equals($("#region-content").find("input:visible").length, 0, "Inputs are hidden");
+    equals($("#content").find("input:visible").length, 0, "Inputs are hidden");
 });
 
 test("dialog.open", function() {
@@ -135,7 +135,7 @@ test("dialog.open", function() {
 
     $.deco.dialog.close();
     equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
-    equals($("#region-content:visible").length, 0, "Dialog removed");
+    equals($("#content:visible").length, 0, "Dialog removed");
 
     $.deco.dialog.open("field", {id: "title-field"});
 
@@ -149,7 +149,7 @@ test("dialog.open", function() {
 
     $.deco.dialog.close();
     equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
-    equals($("#region-content:visible").length, 0, "Dialog removed");
+    equals($("#content:visible").length, 0, "Dialog removed");
 });
 
 test("dialog.openIframe", function() {

@@ -58,7 +58,7 @@ module("layout", {
         $(document.body)
             .append(
                 $(document.createElement("div"))
-                    .attr("id", "region-content")
+                    .attr("id", "content")
                     .addClass("deco-panel")
                     .append(
                         $(document.createElement("div"))
@@ -93,8 +93,8 @@ module("layout", {
         $.deco.executed = [];
     },
     teardown: function () {
-        $("#region-content").remove();
-        $("#region-content-edit").remove();
+        $("#content").remove();
+        $("#content-edit").remove();
         $("#portal-column-one").remove();
         $("#form-widgets-ILayout-layout").remove();
     }

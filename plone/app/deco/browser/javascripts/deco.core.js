@@ -69,10 +69,10 @@
                     var target = $(this).attr("target");
                     var rev = $(this).attr("rev");
 
-                    // If region content, create a new div since the form data is in this panel
-                    if (target == 'region-content') {
-                        $("#region-content").before($(document.createElement("div"))
-                            .attr("id", "region-content-edit")
+                    // If content, create a new div since the form data is in this panel
+                    if (target == 'content') {
+                        $("#content").before($(document.createElement("div"))
+                            .attr("id", "content-edit")
                         );
                         target += '-edit';
                     }
@@ -103,10 +103,10 @@
                 });
 
                 // Init dialog
-                $('#region-content').decoDialog();
+                $('#content').decoDialog();
 
                 // Add toolbar div below content view and hide content view/contentActions
-                $("#region-content-edit").before($(document.createElement("div"))
+                $("#content-edit").before($(document.createElement("div"))
                     .addClass("deco-toolbar")
                 );
                 $("#content-views").hide();

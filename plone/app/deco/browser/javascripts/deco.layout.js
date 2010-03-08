@@ -1833,8 +1833,8 @@
 
             // Add open panel tag
             id = $(this).attr("id");
-            if (id == "region-content-edit") {
-                id = "region-content";
+            if (id == "content-edit") {
+                id = "content";
             }
             body += '    <div id="' + id + '">\n';
 

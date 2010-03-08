@@ -45,8 +45,8 @@
             );
 
             // Clear actions
-            $(".formFields").children("input").hide();
-            $(".formFields")
+            $(".formControls").children("input").hide();
+            $(".formControls")
                 .append($(document.createElement("input"))
                     .attr({
                         'type': 'button',

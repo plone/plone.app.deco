@@ -42,7 +42,7 @@ module("core", {
         $(document.body)
             .append(
                 $(document.createElement("div"))
-                    .attr("id", "region-content")
+                    .attr("id", "content")
             );
         $(document.body)
             .append(
@@ -52,7 +52,7 @@ module("core", {
         $(document.body)
             .append($(document.createElement("textarea"))
                 .attr('id', 'form-widgets-ILayout-layout')
-                .val('<html><div class="deco-panel" id="region-content">region-content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></html>')
+                .val('<html><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></html>')
             );
         $(document.body).append($(document.createElement("div")).attr("id", "content-views"));
         $(document.body).append($(document.createElement("div")).addClass("contentActions"));
@@ -62,8 +62,8 @@ module("core", {
         $.deco.executed = [];
     },
     teardown: function () {
-        $("#region-content").remove();
-        $("#region-content-edit").remove();
+        $("#content").remove();
+        $("#content-edit").remove();
         $("#portal-column-one").remove();
         $(".deco-toolbar").remove();
         $("#form-widgets-ILayout-layout").remove();
@@ -87,7 +87,7 @@ test("Init without data", function() {
     $("#form-widgets-ILayout-layout").val('');
 
     $.deco.init({url: 'http://nohost/test/edit'});
-    equals($("#region-content").html(), "", 'Region content is still empty');
+    equals($("#content").html(), "", 'Region content is still empty');
     equals($("#portal-column-one").html(), "", 'Portal column one is still empty');
     equals($.deco.executed.indexOf("initActions") != -1, true, 'Init actions is called');
     equals($.deco.executed.indexOf("initNotify") != -1, true, 'Init notify is called');
@@ -98,10 +98,10 @@ test("Init with data", function() {
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
-    equals($("#region-content-edit").html(), "region-content text", 'Region content is populated');
+    equals($("#content-edit").html(), "content text", 'Region content is populated');
     equals($("#portal-column-one").html(), "portal-column-one text", 'Portal column one is populated');
 
-    equals($("#region-content-edit").hasClass('deco-panel'), true, 'Region content has deco-panel class');
+    equals($("#content-edit").hasClass('deco-panel'), true, 'Region content has deco-panel class');
     equals($("#portal-column-one").hasClass('deco-panel'), true, 'Portal column one has deco-panel class');
 
     equals($.deco.options.test, 1, 'Options are stored');
