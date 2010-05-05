@@ -125,3 +125,15 @@ test("Init with data", function() {
 
     equals($.deco.executed.indexOf("initUpload") != -1, true, 'Init upload is called');
 });
+
+test("Add/remove head tags", function() {
+    expect(2);
+
+    // Add head tag
+    $.deco.addHeadTags('http://nohost/site/@@example.deco.pony/tile-1', $.deco.getDomTreeFromHtml('<html><head><link href="test.css" media="screen" type="text/css" rel="stylesheet"/></head></html>'));
+    equals($("head link[href=test.css]").length, 1, 'Stylesheet is added to the head');
+
+    // Remove head tag
+    $.deco.removeHeadTags('http://nohost/site/@@example.deco.pony/tile-1');
+    equals($("head link[href=test.css]").length, 0, 'Stylesheet is removed from the head');
+});
