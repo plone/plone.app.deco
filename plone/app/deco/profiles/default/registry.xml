@@ -64,7 +64,6 @@
       <element>tile-align-left|justify|Tile left|tile-align-left|true|false</element>
       <element>tile-align-right|justify|Tile right|tile-align-right|true|false</element>
       <element>pagebreak|print|Page break|pagebreak|true|false</element>
-      <element>blur|actions|Blur|blur|true|false</element>
     </value>
   </record>
 
