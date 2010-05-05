@@ -892,7 +892,7 @@
             };
             var DragStop = function(){
                 var helper = $('.deco-helper-tile');
-                $()
+                $(document)
                     .unbind('mousemove', DragMove)
                     .unbind('mouseup', DragStop);
 
@@ -930,14 +930,14 @@
                                     "opacity": 0.5
                                 })
                                 .addClass("deco-helper-tile");
-                            $().mousemove(DragMove);
-                            $().mouseup(DragStop);
-                            $().unbind('mousemove', DragCheckMove);
+                            $(document).mousemove(DragMove);
+                            $(document).mouseup(DragStop);
+                            $(document).unbind('mousemove', DragCheckMove);
                         }
                     }
-                    $().bind('mousemove', DragCheckMove);
-                    $().bind('mouseup', function () {
-                        $().unbind('mousemove', DragCheckMove);
+                    $(document).bind('mousemove', DragCheckMove);
+                    $(document).bind('mouseup', function () {
+                        $(document).unbind('mousemove', DragCheckMove);
                     });
                 });
             });
