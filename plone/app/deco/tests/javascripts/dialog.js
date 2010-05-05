@@ -51,28 +51,19 @@ module("dialog", {
                 .append($(document.createElement("fieldset"))
                     .attr("id", "fieldset-default")
                     .append($(document.createElement("div"))
-                        .addClass("row")
-                        .append($(document.createElement("div"))
-                            .attr("id", "title-field")
-                        )
+                        .attr("id", "title-field")
                     )
                 )
                 .append($(document.createElement("fieldset"))
                     .attr("id", "fieldset-1")
                     .append($(document.createElement("div"))
-                        .addClass("row")
-                        .append($(document.createElement("div"))
-                            .attr("id", "some-field")
-                        )
+                        .attr("id", "some-field")
                     )
                 )
                 .append($(document.createElement("fieldset"))
                     .attr("id", "fieldset-2")
                     .append($(document.createElement("div"))
-                        .addClass("row")
-                        .append($(document.createElement("div"))
-                            .attr("id", "formfield-form-widgets-ILayout-layout")
-                        )
+                        .attr("id", "formfield-form-widgets-ILayout-layout")
                     )
                 )
                 .append($(document.createElement("div"))
@@ -129,7 +120,7 @@ test("dialog.open", function() {
     equals($("a[href=#fieldsetlegend-2]").parent().hasClass("lastFormTab"), false, "Last tab marker is removed");
     equals($("a[href=#fieldsetlegend-2]").parent().hasClass("deco-hidden"), true, "Last tab is hidden");
 
-    equals($('#formfield-form-widgets-ILayout-layout').parent('.row').hasClass('deco-hidden'), true, "Row with layoutfield is hidden");
+    equals($('#formfield-form-widgets-ILayout-layout').hasClass('deco-hidden'), true, "Row with layoutfield is hidden");
 
     equals($('#fieldset-1').hasClass('hidden'), false, "Second fieldset is shown");
 
@@ -143,7 +134,7 @@ test("dialog.open", function() {
     equals($('#fieldset-1').hasClass('hidden'), true, "Second fieldset is hidden");
     equals($('#fieldset-2').hasClass('hidden'), true, "Third fieldset is shown");
 
-    equals($('#title-field').parents(".row").hasClass('deco-hidden'), false, "Title field is shown");
+    equals($('#title-field').hasClass('deco-hidden'), false, "Title field is shown");
 
     equals($('.formTabs').hasClass('deco-hidden'), true, "Tabs are hidden");
 
