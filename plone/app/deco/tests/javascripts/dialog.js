@@ -67,7 +67,7 @@ module("dialog", {
                     )
                 )
                 .append($(document.createElement("div"))
-                    .addClass("formFields")
+                    .addClass("formControls")
                     .append($(document.createElement("input")))
                 )
             )
@@ -138,7 +138,7 @@ test("dialog.open", function() {
 
     equals($('.formTabs').hasClass('deco-hidden'), true, "Tabs are hidden");
 
-    $.deco.dialog.close();
+    $(".formControls input[value=Ok]").trigger("click");
     equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
     equals($("#content:visible").length, 0, "Dialog removed");
 });
