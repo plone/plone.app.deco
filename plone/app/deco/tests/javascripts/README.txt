@@ -16,7 +16,7 @@ buildout:
   $ jscoverage-server -v --ip-address=0.0.0.0 --port=8080 --encoding=UTF-8 --document-root=src/plone.app.deco/plone/app/deco/ --no-instrument=/tests
 
 Then point your browser to the now running `coverage server
-<http://localhost:8080/jscoverage.html?/tests/javascripts/index.html>`__, and
+<http://localhost:8080/jscoverage.html?/tests/javascripts/test_core.html>`__, and
 the test suite will run instrumented in an iframe. Select the Summary tab to see
 the results.
 
