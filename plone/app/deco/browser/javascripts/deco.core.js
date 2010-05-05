@@ -205,9 +205,9 @@
     }
 
     /**
-     * Remove head tags based on tile url
+     * Add head tags based on tile url and dom
      *
-     * @id jQuery.deco.removeHeadTags
+     * @id jQuery.deco.addHeadTags
      * @param {String} url Url of the tile
      * @param {Object} dom Dom object of the tile
      */

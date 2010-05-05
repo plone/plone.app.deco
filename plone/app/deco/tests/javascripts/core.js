@@ -51,8 +51,8 @@ module("core", {
             );
         $(document.body)
             .append($(document.createElement("textarea"))
-                .attr('id', 'form-widgets-ILayout-layout')
-                .val('<html><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></html>')
+                .attr('id', 'form-widgets-ILayout-content')
+                .val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><link rel="layout" href="./@@test-layout" /><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></body></html>')
             );
         $(document.body).append($(document.createElement("div")).attr("id", "content-views"));
         $(document.body).append($(document.createElement("div")).addClass("contentActions"));
@@ -66,7 +66,7 @@ module("core", {
         $("#content-edit").remove();
         $("#portal-column-one").remove();
         $(".deco-toolbar").remove();
-        $("#form-widgets-ILayout-layout").remove();
+        $("#form-widgets-ILayout-content").remove();
         $("#content-views").remove();
         $(".contentActions").remove();
         $("#edit-bar").remove();
@@ -84,7 +84,7 @@ test("Init without data", function() {
     expect(4);
 
     // Empty data
-    $("#form-widgets-ILayout-layout").val('');
+    $("#form-widgets-ILayout-content").val('');
 
     $.deco.init({url: 'http://nohost/test/edit'});
     equals($("#content").html(), "", 'Region content is still empty');
