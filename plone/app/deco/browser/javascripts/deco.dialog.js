@@ -94,8 +94,8 @@
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
-            form.find('#formfield-form-widgets-ILayout-content').parent('.row').addClass('deco-hidden');
-            form.find('#formfield-form-widgets-ILayout-layout').parent('.row').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayout-content').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayout-layout').addClass('deco-hidden');
 
             // Hide field which are on the wysiwyg area
             var tile_group;
@@ -107,7 +107,7 @@
             for (var x = 0; x < tile_group.tiles.length; x++) {
                 var field_tile = tile_group.tiles[x];
                 if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length != 0) {
-                    $(document.getElementById(field_tile.id)).parent('.row').addClass('deco-hidden');
+                    $(document.getElementById(field_tile.id)).addClass('deco-hidden');
                 }
             };
 
@@ -145,7 +145,7 @@
             fieldset.children().addClass('deco-hidden');
 
             // Show current field
-            field.parents(".row").removeClass('deco-hidden');
+            field.removeClass('deco-hidden');
 
             // Hide form tabs
             form.find(".formTabs").addClass('deco-hidden');
