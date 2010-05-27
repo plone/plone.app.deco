@@ -35,7 +35,7 @@ setup(name='plone.app.deco',
           'plone.app.dexterity',
           'plone.app.tinymce',
           'plone.app.jquerytools',
-          'plone.layoutbehavior',
+          'plone.app.layoutbehavior',
       ] + requires,
       entry_points="""
       [z3c.autoinclude.plugin]
