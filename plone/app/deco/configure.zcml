@@ -8,7 +8,7 @@
     <include package="plone.app.dexterity" />
     <include package="plone.app.tinymce" />
     <include package="plone.app.jquerytools" />
-    <include package="plone.layoutbehavior" />
+    <include package="plone.app.layoutbehavior" />
 
     <include package=".browser" />
 
