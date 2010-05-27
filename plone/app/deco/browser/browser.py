@@ -38,6 +38,9 @@ class DecoUploadView(BrowserView):
         context = self.context
         request = context.REQUEST
 
+        # Set header to json
+        self.request.RESPONSE.setHeader('Content-Type','application/json');
+
         ctr_tool = getToolByName(self.context, 'content_type_registry')
         id = request['uploadfile'].filename
 
