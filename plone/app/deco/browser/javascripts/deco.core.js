@@ -95,6 +95,16 @@
 
                             // Update tile
                             $('#' + target).parent().html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value.find('.temp_body_tag').html());
+
+                            // Remove tile url span from field tiles
+                            for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                                var tile_group = $.deco.options.tiles[x];
+                                for (var y = 0; y < tile_group.tiles.length; y++) {
+                                    if (tile_group.tiles[y].type == 'field') {
+                                        $('.deco-' + tile_group.tiles[y].name + '-tile .tileUrl').remove();
+                                    }
+                                }
+                            }
                         }
                     });
                 });
