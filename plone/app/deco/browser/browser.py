@@ -350,5 +350,8 @@ class DecoConfigView(BrowserView):
         else:
             config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
 
+        # Set header to json
+        self.request.RESPONSE.setHeader('Content-Type','application/json');
+
         # Write JSON structure
         return json.dumps(config)

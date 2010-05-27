@@ -44,9 +44,6 @@
             url: options.url + "/@@deco-config" + (options.type == '' ? '' : "?type=" + options.type),
             success: function(configdata) {
 
-                // Get the config data
-                configdata = eval("(" + configdata + ")");
-
                 // Add global options
                 $.deco.options = configdata;
                 $.deco.options.url = options.url;
