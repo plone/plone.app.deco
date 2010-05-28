@@ -1,5 +1,9 @@
 /* @group Tile */
 
+.deco-panel {
+    position: relative;
+}
+
 /* Outer border */
 .deco-tile-outer-border {
     position: absolute;
