@@ -1752,10 +1752,10 @@
             case "field":
                 switch (tile_config.widget) {
                     case "TextFieldWidget":
-                        return '<' + tile_config.tag + '>' + $("#" + tile_config.id).attr('value') + '</' + tile_config.tag + '>';
+                        return '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
                         break;
                     case "TextAreaFieldWidget":
-                        var lines = $("#" + tile_config.id).attr('value').split('\n');
+                        var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
                         var return_string = "";
                         for (var i = 0; i < lines.length; i++) {
                             return_string += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
@@ -1763,7 +1763,7 @@
                         return return_string;
                         break;
                     case "WysiwygFieldWidget":
-                        return $(document.getElementById(tile_config.id)).attr('value');
+                        return $("#" + tile_config.id).find('textarea').attr('value');
                         break;
                     default:
                         return '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
