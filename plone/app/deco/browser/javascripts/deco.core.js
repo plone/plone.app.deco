@@ -82,31 +82,71 @@
                     var target = $(this).attr("target");
                     var href = $(this).attr("href");
 
-                    $.ajax({
-                        type: "GET",
-                        url: href,
-                        success: function(value) {
-
-                            // Get dom tree
-                            value = $.deco.getDomTreeFromHtml (value);
-
-                            // Add head tags
-                            $.deco.addHeadTags(href, value);
-
-                            // Update tile
-                            $('#' + target).parent().html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value.find('.temp_body_tag').html());
-
-                            // Remove tile url span from field tiles
-                            for (var x = 0; x < $.deco.options.tiles.length; x++) {
-                                var tile_group = $.deco.options.tiles[x];
-                                for (var y = 0; y < tile_group.tiles.length; y++) {
-                                    if (tile_group.tiles[y].type == 'field') {
-                                        $('.deco-' + tile_group.tiles[y].name + '-tile .tileUrl').remove();
-                                    }
-                                }
+                    // Get tile type
+                    var tile_content = $('#' + target).parent();
+                    var tiletype = '';
+                    var classes = tile_content.parents('.deco-tile').attr('class').split(" ");
+                    $(classes).each(function() {
+                        var classname = this.match(/^deco-(.*)-tile$/);
+                        if (classname != null) {
+                            if ((classname[1] != 'selected') && (classname[1] != 'new') && (classname[1] != 'read-only') && (classname[1] != 'helper') && (classname[1] != 'original')) {
+                                tiletype = classname[1];
                             }
                         }
                     });
+
+                    // Get tile config
+                    var tile_config;
+                    for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                        var tile_group = $.deco.options.tiles[x];
+                        for (var y = 0; y < tile_group.tiles.length; y++) {
+                            if (tile_group.tiles[y].name == tiletype) {
+                                tile_config = tile_group.tiles[y];
+                            }
+                        }
+                    }
+
+                    // Check if a field tile
+                    if (tile_config.type == 'field') {
+
+                        var fieldhtml = '';
+
+                        switch (tile_config.widget) {
+                            case "TextFieldWidget":
+                                fieldhtml = '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';;
+                                break;
+                            case "TextAreaFieldWidget":
+                                var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
+                                for (var i = 0; i < lines.length; i++) {
+                                    fieldhtml += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
+                                }
+                                break;
+                            case "WysiwygFieldWidget":
+                                fieldhtml = $("#" + tile_config.id).find('textarea').attr('value');
+                                break;
+                            default:
+                                fieldhtml = '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
+                                break;
+                        }
+                        tile_content.html(fieldhtml);
+
+                    // Get data from app tile
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            url: href,
+                            success: function(value) {
+
+                                // Get dom tree
+                                value = $.deco.getDomTreeFromHtml (value);
+
+                                // Add head tags
+                                $.deco.addHeadTags(href, value);
+
+                                tile_content.html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value.find('.temp_body_tag').html());
+                            }
+                        });
+                    }
                 });
 
                 // Init dialog
