@@ -1914,6 +1914,17 @@
 
                                     body += '          </div>\n';
                                     body += '          </div>\n';
+
+                                    // Save title and description
+                                    if (tile_config.name == 'example.deco.title') {
+                                        $('.deco-example\\.deco\\.title-tile .deco-tile-content .hiddenStructure').remove();
+                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $('.deco-example\\.deco\\.title-tile .deco-tile-content').text());
+                                    }
+                                    if (tile_config.name == 'example.deco.description') {
+                                        $('.deco-example\\.deco\\.description-tile .deco-tile-content .hiddenStructure').remove();
+                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $('.deco-example\\.deco\\.description-tile .deco-tile-content').text());
+                                    }
+
                                     break;
                                 case "field":
                                     body += '          <div class="' + $(this).attr("class") + '">\n';
@@ -1937,20 +1948,6 @@
 
                                     // Update field values if type is rich text
                                     $.deco.saveTileValueToForm(tiletype, tile_config);
-
-                                /*
-                                    links.push({
-                                        type: "replace",
-                                        target: "field-" + tiletype,
-                                        href: "#field-" + tiletype
-                                    });
-                                    body += '          <div class="deco-tile">\n';
-                                    var id_attr = ' id="field-' + tiletype + '"';
-                                    var match = $(this).children(".deco-tile-content").html().match (/(<\w+)(.*)/);
-                                    body += match[1] + id_attr + match[2];
-//                                    body += $(this).children(".deco-tile-content").html();
-                                    body += '\n          </div>\n';
-                                */
                                     break;
                             }
                         });

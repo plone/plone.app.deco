@@ -81,5 +81,10 @@
     </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles"></record>
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">
+    <value>
+      <element>example.deco.title|field|Title|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>example.deco.description|field|Description|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
+    </value>
+  </record>
 </registry>

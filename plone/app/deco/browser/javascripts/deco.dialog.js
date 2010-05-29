@@ -97,6 +97,10 @@
             form.find('#formfield-form-widgets-ILayout-content').addClass('deco-hidden');
             form.find('#formfield-form-widgets-ILayout-layout').addClass('deco-hidden');
 
+            // Hide title and description
+            form.find('#formfield-form-widgets-IDublinCore-title').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-IDublinCore-description').addClass('deco-hidden');
+
             // Hide field which are on the wysiwyg area
             var tile_group;
             for (var x = 0; x < $.deco.options.tiles.length; x++) {

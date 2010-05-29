@@ -281,32 +281,6 @@ class DecoConfigView(BrowserView):
             'label': 'Fields',
             'tiles': [
                 {
-                    'name': 'title',
-                    'label': 'Title',
-                    'type': 'field',
-                    'field_type': 'Text line',
-                    'widget': 'TextFieldWidget',
-                    'tag': 'h1',
-                    'id': 'formfield-form-widgets-IDublinCore-title',
-                    'read_only': False,
-                    'settings': True,
-                    'favorite': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                },
-                {
-                    'name': 'description',
-                    'label': 'Description',
-                    'type': 'field',
-                    'field_type': 'Text',
-                    'widget': 'TextAreaFieldWidget',
-                    'tag': 'p',
-                    'id': 'formfield-form-widgets-IDublinCore-description',
-                    'read_only': False,
-                    'settings': True,
-                    'favorite': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                },
-                {
                     'name': 'date',
                     'label': 'Date',
                     'type': 'field',

@@ -18,7 +18,8 @@
     $.deco.init = function(options) {
         options = $.extend({
             url: document.location.href,
-            type: ''
+            type: '',
+            ignore_context: false
         }, options);
 
         // Initialize modules
@@ -36,6 +37,7 @@
         if (match) {
             options.url = match[1];
             options.type = match[2];
+            options.ignore_context = true;
         }
 
         // Get the configuration from the backend
@@ -47,6 +49,7 @@
                 // Add global options
                 $.deco.options = configdata;
                 $.deco.options.url = options.url;
+                $.deco.options.ignore_context = options.ignore_context;
                 $.deco.options.tileheadelements = [];
 
                 var content = $('#form-widgets-ILayout-content').val();
@@ -134,7 +137,7 @@
                     } else {
                         $.ajax({
                             type: "GET",
-                            url: href,
+                            url: href + (tile_config.name == 'example.deco.title' || tile_config.name == 'example.deco.description' ? '?ignore_context=' + $.deco.options.ignore_context : ''),
                             success: function(value) {
 
                                 // Get dom tree
