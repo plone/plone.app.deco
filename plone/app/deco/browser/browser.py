@@ -276,48 +276,44 @@ class DecoConfigView(BrowserView):
                         pass
                         #log(x)
 
-        config['tiles'].append({
-            'name': 'fields',
-            'label': 'Fields',
-            'tiles': [
-                {
-                    'name': 'date',
-                    'label': 'Date',
-                    'type': 'field',
-                    'field_type': 'Datetime',
-                    'widget': 'DateTimePickerFieldWidget',
-                    'id': 'formfield-form-widgets-date',
-                    'read_only': False,
-                    'settings': True,
-                    'favorite': False,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                },
-                {
-                    'name': 'agenda',
-                    'label': 'Agenda',
-                    'type': 'field',
-                    'field_type': 'Text',
-                    'widget': 'WysiwygFieldWidget',
-                    'id': 'formfield-form-widgets-agenda',
-                    'read_only': False,
-                    'settings': True,
-                    'favorite': False,
-                    'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
-                },
-                {
-                    'name': 'recurrence',
-                    'label': 'Recurrence',
-                    'type': 'field',
-                    'field_type': 'Choice',
-                    'widget': 'SelectFieldWidget',
-                    'id': 'formfield-form-widgets-recurrence',
-                    'read_only': True,
-                    'settings': False,
-                    'favorite': False,
-                    'rich_text': True,
-                    'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
-                }
-            ]
+        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
+            'name': 'date',
+            'label': 'Date',
+            'type': 'field',
+            'field_type': 'Datetime',
+            'widget': 'DateTimePickerFieldWidget',
+            'id': 'formfield-form-widgets-date',
+            'read_only': False,
+            'settings': True,
+            'favorite': False,
+            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+        })
+
+        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
+            'name': 'agenda',
+            'label': 'Agenda',
+            'type': 'field',
+            'field_type': 'Text',
+            'widget': 'WysiwygFieldWidget',
+            'id': 'formfield-form-widgets-agenda',
+            'read_only': False,
+            'settings': True,
+            'favorite': False,
+            'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
+        })
+
+        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
+            'name': 'recurrence',
+            'label': 'Recurrence',
+            'type': 'field',
+            'field_type': 'Choice',
+            'widget': 'SelectFieldWidget',
+            'id': 'formfield-form-widgets-recurrence',
+            'read_only': True,
+            'settings': False,
+            'favorite': False,
+            'rich_text': True,
+            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
         })
 
         # URLs
