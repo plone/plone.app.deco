@@ -1916,13 +1916,13 @@
                                     body += '          </div>\n';
 
                                     // Save title and description
-                                    if (tile_config.name == 'example.deco.title') {
-                                        $('.deco-example\\.deco\\.title-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $('.deco-example\\.deco\\.title-tile .deco-tile-content').text());
+                                    if (tile_config.name == 'plone.app.standardtiles.title') {
+                                        $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure').remove();
+                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text());
                                     }
-                                    if (tile_config.name == 'example.deco.description') {
-                                        $('.deco-example\\.deco\\.description-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $('.deco-example\\.deco\\.description-tile .deco-tile-content').text());
+                                    if (tile_config.name == 'plone.app.standardtiles.description') {
+                                        $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure').remove();
+                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text());
                                     }
 
                                     break;
@@ -1931,7 +1931,7 @@
                                     body += '          <div class="deco-tile-content">\n';
 
                                     // Calc url
-                                    var url = './@@example.deco.field?field=' + tiletype;
+                                    var url = './@@plone.app.standardtiles.field?field=' + tiletype;
                                     var html_id = 'tile-' + tiletype;
 
                                     body += '          <span id="' + html_id + '"></span>\n';

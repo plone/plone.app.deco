@@ -137,7 +137,7 @@
                     } else {
                         $.ajax({
                             type: "GET",
-                            url: href + (tile_config.name == 'example.deco.title' || tile_config.name == 'example.deco.description' ? '?ignore_context=' + $.deco.options.ignore_context : ''),
+                            url: href + (tile_config.name == 'plone.app.standardtiles.title' || tile_config.name == 'plone.app.standardtiles.description' ? '?ignore_context=' + $.deco.options.ignore_context : ''),
                             success: function(value) {
 
                                 // Get dom tree
