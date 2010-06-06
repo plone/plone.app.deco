@@ -83,8 +83,8 @@
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">
     <value>
-      <element>example.deco.title|fields|Title|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
-      <element>example.deco.description|fields|Description|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.title|fields|Title|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.description|fields|Description|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
     </value>
   </record>
 </registry>
