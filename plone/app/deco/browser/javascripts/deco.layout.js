@@ -1823,7 +1823,7 @@
         var links = new Array();
         var tilecount = 0;
         var id = "";
-        links.push({rel: "layout", rev: "", target: "", href: "./@@test-layout"})
+        links.push({rel: "layout", rev: "", target: "", href: "./@@default-layout"})
 
         // Add body tag
         body += "  <body>\n";

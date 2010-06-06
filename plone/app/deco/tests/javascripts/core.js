@@ -130,10 +130,10 @@ test("Init with data add url", function() {
     expect(2);
 
     // Set layout content
-    $("#form-widgets-ILayout-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><link rel="layout" href="./@@test-layout" /><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" />    <link  rel="tile" target="tile-title" href="./@@example.deco.field?field=title" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one"><span id="tile-title"></span></div></body></html>')
+    $("#form-widgets-ILayout-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><link rel="layout" href="./@@test-layout" /><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" />    <link  rel="tile" target="tile-title" href="./@@plone.app.standardtiles.field?field=title" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one"><span id="tile-title"></span></div></body></html>')
 
     // Init with add url
-    $.deco.init({url: 'http://nohost/test/++add++example.decopage'});
+    $.deco.init({url: 'http://nohost/test/++add++plone.page'});
 
     equals($("#content-edit").html(), "content text", 'Region content is populated');
     equals($('#portal-column-one').html().indexOf("tileUrl") != -1, true, 'App tile is loaded');
@@ -143,10 +143,10 @@ test("Add/remove head tags", function() {
     expect(2);
 
     // Add head tag
-    $.deco.addHeadTags('http://nohost/test/@@example.deco.pony/tile-1', $.deco.getDomTreeFromHtml('<html><head><link href="test.css" media="screen" type="text/css" rel="stylesheet"/></head></html>'));
+    $.deco.addHeadTags('http://nohost/test/@@plone.app.standardtiles.pony/tile-1', $.deco.getDomTreeFromHtml('<html><head><link href="test.css" media="screen" type="text/css" rel="stylesheet"/></head></html>'));
     equals($("head link[href=test.css]").length, 1, 'Stylesheet is added to the head');
 
     // Remove head tag
-    $.deco.removeHeadTags('http://nohost/test/@@example.deco.pony/tile-1');
+    $.deco.removeHeadTags('http://nohost/test/@@plone.app.standardtiles.pony/tile-1');
     equals($("head link[href=test.css]").length, 0, 'Stylesheet is removed from the head');
 });
