@@ -7,8 +7,6 @@
     <include package="plone.app.registry" />
     <include package="plone.app.dexterity" />
     <include package="plone.app.tinymce" />
-    <include package="plone.app.layoutbehavior" />
-    <include package="plone.app.standardtiles" />
 
     <include package=".browser" />
 
