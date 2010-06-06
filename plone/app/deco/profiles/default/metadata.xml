@@ -6,6 +6,6 @@
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
     <dependency>profile-plone.app.tinymce:default</dependency>
-    <dependency>profile-plone.app.jquerytools:default</dependency>
+    <dependency>profile-plone.app.standardtiles:default</dependency>
   </dependencies>
 </metadata>
