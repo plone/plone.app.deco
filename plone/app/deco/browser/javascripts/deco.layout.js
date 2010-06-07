@@ -1918,11 +1918,11 @@
                                     // Save title and description
                                     if (tile_config.name == 'plone.app.standardtiles.title') {
                                         $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text());
+                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text()));
                                     }
                                     if (tile_config.name == 'plone.app.standardtiles.description') {
                                         $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text());
+                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text()));
                                     }
 
                                     break;
