@@ -256,25 +256,25 @@ class DecoConfigView(BrowserView):
                 })
 
         # Field Tiles
-        type = self.context.portal_type
-        if hasattr(self.context.REQUEST, 'type'):
-            type = self.context.REQUEST['type']
-        fti = getUtility(IDexterityFTI, name=type)
-        for x in fti.lookupSchema():
-            pass
-            #log(x)
+        #type = self.context.portal_type
+        #if hasattr(self.context.REQUEST, 'type'):
+        #    type = self.context.REQUEST['type']
+        #fti = getUtility(IDexterityFTI, name=type)
+        #for x in fti.lookupSchema():
+        #    pass
+        #    #log(x)
 
-        for behavior_name in fti.behaviors:
-            try:
-                behavior_interface = resolveDottedName(behavior_name)
-            except ValueError:
-                continue
-            if behavior_interface is not None:
-                behavior_schema = IFormFieldProvider(behavior_interface, None)
-                if behavior_schema is not None:
-                    for x in behavior_schema:
-                        pass
-                        #log(x)
+        #for behavior_name in fti.behaviors:
+        #    try:
+        #        behavior_interface = resolveDottedName(behavior_name)
+        #    except ValueError:
+        #        continue
+        #    if behavior_interface is not None:
+        #        behavior_schema = IFormFieldProvider(behavior_interface, None)
+        #        if behavior_schema is not None:
+        #            for x in behavior_schema:
+        #                pass
+        #                #log(x)
 
         config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
             'name': 'date',

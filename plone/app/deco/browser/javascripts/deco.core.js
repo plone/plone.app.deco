@@ -41,7 +41,7 @@
         }
 
         // Chop add
-        match = options.url.match(/^([\w#!:.?+=&%@!\-\/])\/\+\+add\+\+([\w#!:.?+=&%@!\-\/])$/);
+        match = options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
         if (match) {
             options.url = match[1];
             options.type = match[2];
