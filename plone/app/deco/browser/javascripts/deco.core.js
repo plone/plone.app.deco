@@ -6,8 +6,10 @@
  */
 "use strict";
 
-// Ignore external defined variables for JSLint
 /*global tiledata: false, jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80 */
 
 (function ($) {
 
@@ -41,7 +43,8 @@
         }
 
         // Chop add
-        match = options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
+        match = options.url
+            .match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
         if (match) {
             options.url = match[1];
             options.type = match[2];
@@ -51,7 +54,8 @@
         // Get the configuration from the backend
         $.ajax({
             type: "GET",
-            url: options.url + "/@@deco-config" + (options.type === '' ? '' : "?type=" + options.type),
+            url: options.url + "/@@deco-config" +
+                (options.type === '' ? '' : "?type=" + options.type),
             success: function (configdata) {
 
                 // Local variables
@@ -84,7 +88,8 @@
                     target = $(this).attr("target");
                     rev = $(this).attr("rev");
 
-                    // If content, create a new div since the form data is in this panel
+                    // If content, create a new div since the form data is in
+                    // this panel
                     if (target === 'content') {
                         $("#content").before($(document.createElement("div"))
                             .attr("id", "content-edit")
@@ -99,7 +104,7 @@
                 content.find("link[rel=tile]").each(function () {
 
                     // Local variables
-                    var target, href, tile_content, tiletype, classes,
+                    var target, href, tile_content, tiletype, classes, url,
                         tile_config, x, tile_group, y, fieldhtml, lines, i;
 
                     target = $(this).attr("target");
@@ -108,7 +113,8 @@
                     // Get tile type
                     tile_content = $('#' + target).parent();
                     tiletype = '';
-                    classes = tile_content.parents('.deco-tile').attr('class').split(" ");
+                    classes = tile_content.parents('.deco-tile').attr('class')
+                        .split(" ");
                     $(classes).each(function () {
 
                         // Local variables
@@ -116,7 +122,11 @@
 
                         classname = this.match(/^deco-([\w.\-]+)-tile$/);
                         if (classname !== null) {
-                            if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
+                            if ((classname[1] !== 'selected') &&
+                                (classname[1] !== 'new') &&
+                                (classname[1] !== 'read-only') &&
+                                (classname[1] !== 'helper') &&
+                                (classname[1] !== 'original')) {
                                 tiletype = classname[1];
                             }
                         }
@@ -139,28 +149,44 @@
 
                         switch (tile_config.widget) {
                         case "TextFieldWidget":
-                            fieldhtml = '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
+                            fieldhtml = '<' + tile_config.tag + '>' +
+                                $("#" + tile_config.id).find('input')
+                                    .attr('value') +
+                                '</' + tile_config.tag + '>';
                             break;
                         case "TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
+                            lines = $("#" + tile_config.id).find('textarea')
+                                .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
-                                fieldhtml += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
+                                fieldhtml += '<' + tile_config.tag + '>' +
+                                    lines[i] + '</' + tile_config.tag + '>';
                             }
                             break;
                         case "WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id).find('textarea').attr('value');
+                            fieldhtml = $("#" + tile_config.id)
+                                .find('textarea').attr('value');
                             break;
                         default:
-                            fieldhtml = '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
+                            fieldhtml = '<span class="discreet">Placeholder ' +
+                                'for field:<br/><b>' + tile_config.label +
+                                '</b></span>';
                             break;
                         }
                         tile_content.html(fieldhtml);
 
                     // Get data from app tile
                     } else {
+                        url = href;
+                        if (tile_config.name ===
+                            'plone.app.standardtiles.title' ||
+                            tile_config.name ===
+                            'plone.app.standardtiles.description') {
+                            url += '?ignore_context=' +
+                                $.deco.options.ignore_context;
+                        }
                         $.ajax({
                             type: "GET",
-                            url: href + (tile_config.name === 'plone.app.standardtiles.title' || tile_config.name === 'plone.app.standardtiles.description' ? '?ignore_context=' + $.deco.options.ignore_context : ''),
+                            url: url,
                             success: function (value) {
 
                                 // Get dom tree
@@ -169,7 +195,10 @@
                                 // Add head tags
                                 $.deco.addHeadTags(href, value);
 
-                                tile_content.html('<span class="hiddenStructure tileUrl">' + href + '</span>' + value.find('.temp_body_tag').html());
+                                tile_content
+                                    .html('<span class="hiddenStructure ' +
+                                        'tileUrl">' + href + '</span>' +
+                                        value.find('.temp_body_tag').html());
                             }
                         });
                     }
@@ -178,7 +207,8 @@
                 // Init dialog
                 $('#content').decoDialog();
 
-                // Add toolbar div below content view and hide content view/contentActions
+                // Add toolbar div below content view and hide content
+                // view/contentActions
                 $("#content-edit").before($(document.createElement("div"))
                     .addClass("deco-toolbar")
                 );
@@ -211,16 +241,23 @@
                     if (obj.css('display') === 'block') {
 
                         // Check if panel or toolbar
-                        if (!obj.hasClass('deco-panel') && !obj.hasClass('deco-toolbar') && !obj.hasClass('deco-notifications')) {
+                        if (!obj.hasClass('deco-panel') &&
+                            !obj.hasClass('deco-toolbar') &&
+                            !obj.hasClass('deco-notifications')) {
 
                             // Check if inside panel or toolbar
-                            if (obj.parents('.deco-panel, .deco-toolbar').length === 0) {
+                            if (obj.parents('.deco-panel, .deco-toolbar')
+                                .length === 0) {
 
                                 // Check if parent of a panel or toolbar
-                                if (obj.find('.deco-panel, .deco-toolbar').length === 0) {
+                                if (obj.find('.deco-panel, .deco-toolbar')
+                                    .length === 0) {
 
-                                    // Check if parent has a child who is a panel or a toolbar
-                                    if (obj.parent().find('.deco-panel, .deco-toolbar').length !== 0) {
+                                    // Check if parent has a child who is a
+                                    // panel or a toolbar
+                                    if (obj.parent()
+                                        .find('.deco-panel, .deco-toolbar')
+                                        .length !== 0) {
 
                                         // Add blur class
                                         obj.addClass('deco-blur');
@@ -246,7 +283,8 @@
      */
     $.deco.getDomTreeFromHtml = function (content) {
 
-        // Remove doctype and replace html, head and body tag since the are stripped when converting to jQuery object
+        // Remove doctype and replace html, head and body tag since the are
+        // stripped when converting to jQuery object
         content = content.replace(/<!DOCTYPE[\w\s\- .\/\":]+>/, '');
         content = content.replace(/<html/, "<div class=\"temp_html_tag\"");
         content = content.replace(/<\/html/, "</div");
@@ -272,7 +310,8 @@
         url = url.split('?')[0];
         url = url.split('@@');
         tile_type_id = url[1].split('/');
-        url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
+        url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' +
+            tile_type_id[1] + '&confirm=true';
         html_id = tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
 
         // Remove head elements
@@ -343,7 +382,8 @@
                     if (typeof(tiledata.url) !== 'undefined') {
 
                         // Insert app tile
-                        window.parent.jQuery.deco.addAppTile(tiledata.type, tiledata.url, tiledata.id);
+                        window.parent.jQuery.deco.addAppTile(tiledata.type,
+                            tiledata.url, tiledata.id);
                     }
                 } else {
 
