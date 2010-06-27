@@ -6,8 +6,10 @@
  */
 "use strict";
 
-// Ignore external defined variables for JSLint
 /*global tinyMCE: false, jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80 */
 
 (function ($) {
 
@@ -38,7 +40,8 @@
             exec: function () {
             },
 
-            // Shortcut can be any key + ctrl/shift/alt or a combination of those
+            // Shortcut can be any key + ctrl/shift/alt or a combination of
+            // those
             shortcut: {
                 ctrl: false,
                 alt: false,
@@ -46,7 +49,8 @@
                 key: ""
             },
 
-            // Method to see if the actions should be visible based on the current tile state
+            // Method to see if the actions should be visible based on the
+            // current tile state
             visible: function (tile) {
                 return true;
             }
@@ -59,7 +63,8 @@
         if (options.shortcut.key !== "") {
 
             // Set keyCode and charCode
-            options.shortcut.charCode = options.shortcut.key.toUpperCase().charCodeAt(0);
+            options.shortcut.charCode = options.shortcut.key.toUpperCase()
+                .charCodeAt(0);
             options.shortcut.action = name;
 
             // Set shortcut
@@ -291,7 +296,8 @@
             exec: function () {
 
                 // Remove left and right align classes
-                $(".deco-selected-tile").removeClass("deco-tile-align-right deco-tile-align-left");
+                $(".deco-selected-tile")
+                    .removeClass("deco-tile-align-right deco-tile-align-left");
             },
             shortcut: {
                 ctrl: true,
@@ -338,7 +344,8 @@
         // Register save action
         $.deco.registerAction('save', {
             exec: function () {
-                $("#form-widgets-ILayout-content").attr("value", $.deco.getPageContent());
+                $("#form-widgets-ILayout-content")
+                    .attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
                 window.onbeforeunload = null;
@@ -373,7 +380,8 @@
             exec: function (source) {
 
                 // Execute the action
-                $(source).find("[value=" + $(source).val() + "]").decoExecAction();
+                $(source).find("[value=" + $(source).val() + "]")
+                    .decoExecAction();
 
                 // Reset menu
                 $(source).val("none");
@@ -413,12 +421,15 @@
                 if (tile_config.type === 'app') {
 
                     // Open dialog
-                    $.deco.dialog.openIframe($.deco.options.parent + '@@add-tile?type=' + $(source).val() +  '&form.button.Create=Create');
+                    $.deco.dialog.openIframe($.deco.options.parent +
+                        '@@add-tile?type=' + $(source).val() +
+                        '&form.button.Create=Create');
 
                 } else {
 
                     // Add tile
-                    $.deco.addTile($(source).val(), $.deco.getDefaultValue(tile_config));
+                    $.deco.addTile($(source).val(),
+                        $.deco.getDefaultValue(tile_config));
                 }
 
                 // Reset menu
@@ -439,10 +450,14 @@
             $($.deco.actionManager.shortcuts).each(function () {
 
                 // Check if shortcut matched
-                if (((e.ctrlKey === this.ctrl) || (navigator.userAgent.toLowerCase().indexOf('macintosh') !== -1 && e.metaKey === this.ctrl)) &&
+                if (((e.ctrlKey === this.ctrl) ||
+                     (navigator.userAgent.toLowerCase()
+                        .indexOf('macintosh') !== -1 &&
+                        e.metaKey === this.ctrl)) &&
                     ((e.altKey === this.alt) || (e.altKey === undefined)) &&
                     (e.shiftKey === this.shift) &&
-                    (e.charCode && String.fromCharCode(e.charCode).toUpperCase().charCodeAt(0) === this.charCode)) {
+                    (e.charCode && String.fromCharCode(e.charCode)
+                        .toUpperCase().charCodeAt(0) === this.charCode)) {
 
                     // Found action
                     action = this.action;
