@@ -7,8 +7,10 @@
 
 "use strict";
 
-// Ignore external defined variables for JSLint
 /*global jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80 */
 
 (function ($) {
 
@@ -75,7 +77,8 @@
     $.deco.dialog.open = function (mode, tile_config) {
 
         // Local variables
-        var form, formtabs, tile_group, x, visible_tabs, offset_top, field_tile, field, fieldset;
+        var form, formtabs, tile_group, x, visible_tabs, offset_top,
+            field_tile, field, fieldset;
 
         // Get form
         form = $(".deco-dialog").find("form");
@@ -102,12 +105,16 @@
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
-            form.find('#formfield-form-widgets-ILayout-content').addClass('deco-hidden');
-            form.find('#formfield-form-widgets-ILayout-layout').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayout-content')
+                .addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayout-layout')
+                .addClass('deco-hidden');
 
             // Hide title and description
-            form.find('#formfield-form-widgets-IDublinCore-title').addClass('deco-hidden');
-            form.find('#formfield-form-widgets-IDublinCore-description').addClass('deco-hidden');
+            form.find('#formfield-form-widgets-IDublinCore-title')
+                .addClass('deco-hidden');
+            form.find('#formfield-form-widgets-IDublinCore-description')
+                .addClass('deco-hidden');
 
             // Hide field which are on the wysiwyg area
             for (x = 0; x < $.deco.options.tiles.length; x += 1) {
@@ -117,15 +124,19 @@
             }
             for (x = 0; x < tile_group.tiles.length; x += 1) {
                 field_tile = tile_group.tiles[x];
-                if ($.deco.options.panels.find(".deco-" + field_tile.name + "-tile").length !== 0) {
-                    $(document.getElementById(field_tile.id)).addClass('deco-hidden');
+                if ($.deco.options.panels
+                    .find(".deco-" + field_tile.name + "-tile").length !== 0) {
+                    $(document.getElementById(field_tile.id))
+                        .addClass('deco-hidden');
                 }
             }
 
             // Hide tab if fieldset has no visible items
             form.find("fieldset").each(function () {
                 if ($(this).children("div:not(.deco-hidden)").length === 0) {
-                    $('a[href=#fieldsetlegend-' + $(this).attr('id').split('-')[1] + ']').parent().addClass('deco-hidden');
+                    $('a[href=#fieldsetlegend-' +
+                        $(this).attr('id').split('-')[1] + ']')
+                        .parent().addClass('deco-hidden');
                 }
             });
 
@@ -138,7 +149,9 @@
 
             // Select first tab
             visible_tabs.eq(0).children('a').addClass('selected');
-            form.find('#fieldset-' + visible_tabs.eq(0).children('a').attr('href').split('-')[1]).removeClass('hidden');
+            form.find('#fieldset-' +
+                visible_tabs.eq(0).children('a').attr('href').split('-')[1])
+                .removeClass('hidden');
 
         } else if (mode === 'field') {
 
