@@ -4,10 +4,17 @@
  * @author Rob Gietema
  * @version 0.1
  */
-;(function($) {
+"use strict";
+
+/*global jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80 */
+
+(function ($) {
 
     // Define deco namespace if it doesn't exist
-    if (typeof($.deco) == "undefined") {
+    if (typeof($.deco) === "undefined") {
         $.deco = {};
     }
 
@@ -16,16 +23,16 @@
      *
      * @id jQuery.deco.initNotify
      */
-    $.deco.initNotify = function() {
+    $.deco.initNotify = function () {
 
         // Check if not already initialized
-        if ($(".deco-notification").length == 0) {
+        if ($(".deco-notification").length === 0) {
 
             // Append notification container to body element
             $("body").append(
                 $(document.createElement("div"))
                     .addClass("deco-notifications")
-            )
+            );
         }
     };
 
@@ -35,7 +42,7 @@
      * @id jQuery.deco.notify
      * @param {Object} options Object containing all the options of the action
      */
-    $.deco.notify = function(options) {
+    $.deco.notify = function (options) {
 
         // Extend default settings
         options = $.extend({
@@ -46,11 +53,16 @@
             duration: 3000
         }, options);
 
+        // Local variables
+        var last_notification, offset_top, elm;
+
         // Get last notification
-        var last_notification = $(".deco-notifications").children("div:last");
+        last_notification = $(".deco-notifications").children("div:last");
 
         // Calculate new offset top
-        var offset_top = last_notification.length > 0 ? parseInt(last_notification.css("top")) + last_notification.height() + 10 : 0;
+        offset_top = last_notification.length > 0 ?
+            parseInt(last_notification.css("top"), 10) +
+            last_notification.height() + 10 : 0;
 
         // Add notification
         $(".deco-notifications")
@@ -70,7 +82,8 @@
 
                     // Add type icon
                     .append($(document.createElement("div"))
-                        .addClass("deco-notification-type deco-notification-type-" + options.type)
+                        .addClass("deco-notification-type " +
+                            "deco-notification-type-" + options.type)
                     )
 
                     // Add close icon
@@ -78,12 +91,12 @@
                         .addClass("deco-notification-close")
 
                         // On click fadeout and remove notification
-                        .click(function() {
+                        .click(function () {
                             $(this).parents(".deco-notification")
                                 .data('close', true)
-                                .fadeOut(options.fadeSpeed, function() {
+                                .fadeOut(options.fadeSpeed, function () {
                                     $(this).remove();
-                                })
+                                });
                         })
                     )
 
@@ -113,15 +126,15 @@
                 .css("top", offset_top)
 
                 // Fadein the notification
-                .fadeIn(options.fadeSpeed, function() {
-                    var elm = $(this);
+                .fadeIn(options.fadeSpeed, function () {
+                    elm = $(this);
 
                     // Set timeout to hide notification
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
 
                         // If not mouseover fadeout and remove the message
-                        if (elm.data("mouseover") == false) {
-                            elm.fadeOut(options.fadeSpeed, function() {
+                        if (elm.data("mouseover") === false) {
+                            elm.fadeOut(options.fadeSpeed, function () {
                                 elm.remove();
                             });
                         }
@@ -135,10 +148,10 @@
                 })
 
                 // Bind mouseover event
-                .mouseover(function() {
+                .mouseover(function () {
 
                     // If not close pressed
-                    if ($(this).data("close") == false) {
+                    if ($(this).data("close") === false) {
 
                         // Clear fadeout timeout and fade to full opacity
                         window.clearTimeout($(this).data('fade'));
@@ -149,16 +162,17 @@
                 })
 
                 // Bind mouseleave event
-                .bind("mouseleave", function() {
+                .bind("mouseleave", function () {
 
                     // Get element
                     elm = $(this);
 
                     // If timeout has passed and close not pressed
-                    if ((elm.data("timeout") == true) && (elm.data("close") == false)) {
+                    if ((elm.data("timeout") === true) &&
+                        (elm.data("close") === false)) {
 
                         // Fadeout and remove the notification
-                        elm.fadeOut(options.fadeSpeed, function() {
+                        elm.fadeOut(options.fadeSpeed, function () {
                             elm.remove();
                         });
                     }
@@ -166,6 +180,6 @@
                     // Set mouseover state
                     $(this).data('mouseover', false);
                 })
-            )
+            );
     };
-})(jQuery);
+}(jQuery));
