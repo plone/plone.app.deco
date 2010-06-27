@@ -4,10 +4,15 @@
  * @author Rob Gietema
  * @version 0.1
  */
-;(function($) {
+"use strict";
+
+// Ignore external defined variables for JSLint
+/*global tinyMCE: false, jQuery: false, window: false */
+
+(function ($) {
 
     // Define deco namespace if it doesn't exist
-    if (typeof($.deco) == "undefined") {
+    if (typeof($.deco) === "undefined") {
         $.deco = {};
     }
 
@@ -24,7 +29,7 @@
      * @param {String} name Name of the action.
      * @param {Object} options Object containing all the options of the action
      */
-    $.deco.registerAction = function(name, options) {
+    $.deco.registerAction = function (name, options) {
 
         // Extend default settings
         options = $.extend({
@@ -51,7 +56,7 @@
         $.deco.actionManager.actions[name] = options;
 
         // Check if shortcut is defined
-        if (options.shortcut.key != "") {
+        if (options.shortcut.key !== "") {
 
             // Set keyCode and charCode
             options.shortcut.charCode = options.shortcut.key.toUpperCase().charCodeAt(0);
@@ -71,10 +76,10 @@
     $.fn.decoExecAction = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Check if actions specified
-            if ($(this).data("action") != "") {
+            if ($(this).data("action") !== "") {
 
                 // Exec actions
                 $.deco.actionManager.actions[$(this).data("action")].exec(this);
@@ -88,7 +93,7 @@
      * @id jQuery.deco.fixWebkitSpan
      * @return {Object} jQuery object
      */
-    $.deco.fixWebkitSpan = function() {
+    $.deco.fixWebkitSpan = function () {
         var webkit_span = $(".Apple-style-span");
         webkit_span.after(webkit_span.html());
         webkit_span.remove();
@@ -99,11 +104,11 @@
      *
      * @id jQuery.deco.initActions
      */
-    $.deco.initActions = function() {
+    $.deco.initActions = function () {
 
         // Register strong action
         $.deco.registerAction('strong', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("Bold");
             },
             shortcut: {
@@ -116,42 +121,42 @@
 
         // Register emphasis action
         $.deco.registerAction('em', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("Italic");
             }
         });
 
         // Register unordered list action
         $.deco.registerAction('ul', {
-            exec: function() {
-                tinyMCE.execCommand("InsertUnorderedList")
+            exec: function () {
+                tinyMCE.execCommand("InsertUnorderedList");
             }
         });
 
         // Register ordered list action
         $.deco.registerAction('ol', {
-            exec: function() {
-                tinyMCE.execCommand("InsertOrderedList")
+            exec: function () {
+                tinyMCE.execCommand("InsertOrderedList");
             }
         });
 
         // Register undo action
         $.deco.registerAction('undo', {
-            exec: function() {
-                tinyMCE.execCommand("Undo")
+            exec: function () {
+                tinyMCE.execCommand("Undo");
             }
         });
 
         // Register redo action
         $.deco.registerAction('redo', {
-            exec: function() {
-                tinyMCE.execCommand("Redo")
+            exec: function () {
+                tinyMCE.execCommand("Redo");
             }
         });
 
         // Register paragraph action
         $.deco.registerAction('paragraph', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "p");
                 $.deco.fixWebkitSpan();
             }
@@ -159,7 +164,7 @@
 
         // Register heading action
         $.deco.registerAction('heading', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "h2");
                 $.deco.fixWebkitSpan();
             }
@@ -167,7 +172,7 @@
 
         // Register subheading action
         $.deco.registerAction('subheading', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "h3");
                 $.deco.fixWebkitSpan();
             }
@@ -175,7 +180,7 @@
 
         // Register discreet action
         $.deco.registerAction('discreet', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "p");
                 tinyMCE.execCommand("mceSetCSSClass", false, "discreet");
                 $.deco.fixWebkitSpan();
@@ -184,7 +189,7 @@
 
         // Register literal action
         $.deco.registerAction('literal', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "pre");
                 $.deco.fixWebkitSpan();
             }
@@ -192,7 +197,7 @@
 
         // Register quote action
         $.deco.registerAction('quote', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "div");
                 tinyMCE.execCommand("mceSetCSSClass", false, "pullquote");
                 $.deco.fixWebkitSpan();
@@ -201,7 +206,7 @@
 
         // Register callout action
         $.deco.registerAction('callout', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "p");
                 tinyMCE.execCommand("mceSetCSSClass", false, "callout");
                 $.deco.fixWebkitSpan();
@@ -210,7 +215,7 @@
 
         // Register highlight action
         $.deco.registerAction('highlight', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("mceSetCSSClass", false, "visualHighlight");
                 $.deco.fixWebkitSpan();
             }
@@ -218,7 +223,7 @@
 
         // Register sub action
         $.deco.registerAction('sub', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("Subscript");
                 $.deco.fixWebkitSpan();
             }
@@ -226,7 +231,7 @@
 
         // Register sup action
         $.deco.registerAction('sup', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("Superscript");
                 $.deco.fixWebkitSpan();
             }
@@ -234,7 +239,7 @@
 
         // Register remove format action
         $.deco.registerAction('remove-format', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("RemoveFormat");
                 $.deco.fixWebkitSpan();
             }
@@ -242,7 +247,7 @@
 
         // Register pagebreak action
         $.deco.registerAction('pagebreak', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("FormatBlock", false, "p");
                 tinyMCE.execCommand("mceSetCSSClass", false, "pagebreak");
                 $.deco.fixWebkitSpan();
@@ -251,7 +256,7 @@
 
         // Register justify left action
         $.deco.registerAction('justify-left', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("mceSetCSSClass", false, "justify-left");
                 $.deco.fixWebkitSpan();
             }
@@ -259,7 +264,7 @@
 
         // Register justify center action
         $.deco.registerAction('justify-center', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("mceSetCSSClass", false, "justify-center");
                 $.deco.fixWebkitSpan();
             }
@@ -267,7 +272,7 @@
 
         // Register justify right action
         $.deco.registerAction('justify-right', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("mceSetCSSClass", false, "justify-right");
                 $.deco.fixWebkitSpan();
             }
@@ -275,7 +280,7 @@
 
         // Register justify full action
         $.deco.registerAction('justify-justify', {
-            exec: function() {
+            exec: function () {
                 tinyMCE.execCommand("mceSetCSSClass", false, "justify-justify");
                 $.deco.fixWebkitSpan();
             }
@@ -283,7 +288,7 @@
 
         // Register tile align block action
         $.deco.registerAction('tile-align-block', {
-            exec: function() {
+            exec: function () {
 
                 // Remove left and right align classes
                 $(".deco-selected-tile").removeClass("deco-tile-align-right deco-tile-align-left");
@@ -298,7 +303,7 @@
 
         // Register tile align left action
         $.deco.registerAction('tile-align-left', {
-            exec: function() {
+            exec: function () {
 
                 // Remove right align class, add left align class
                 $(".deco-selected-tile")
@@ -315,7 +320,7 @@
 
         // Register tile align right action
         $.deco.registerAction('tile-align-right', {
-            exec: function() {
+            exec: function () {
 
                 // Remove left align class, add right align class
                 $(".deco-selected-tile")
@@ -332,7 +337,7 @@
 
         // Register save action
         $.deco.registerAction('save', {
-            exec: function() {
+            exec: function () {
                 $("#form-widgets-ILayout-content").attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
@@ -349,7 +354,7 @@
 
         // Register cancel action
         $.deco.registerAction('cancel', {
-            exec: function() {
+            exec: function () {
 
                 // Cancel form
                 $("#form-buttons-cancel").click();
@@ -358,14 +363,14 @@
 
         // Register page properties action
         $.deco.registerAction('page-properties', {
-            exec: function() {
+            exec: function () {
                 $.deco.dialog.open('all');
             }
         });
 
         // Register format action
         $.deco.registerAction('format', {
-            exec: function(source) {
+            exec: function (source) {
 
                 // Execute the action
                 $(source).find("[value=" + $(source).val() + "]").decoExecAction();
@@ -377,33 +382,35 @@
 
         // Register page-insert action
         $.deco.registerAction('insert', {
-            exec: function(source) {
+            exec: function (source) {
+
+                // Local variables
+                var tile_config, tile_group, x, y;
 
                 // Check if value selected
-                if ($(source).val() == "none") {
+                if ($(source).val() === "none") {
                     return false;
                 }
 
                 // Deselect tiles
                 $(".deco-selected-tile")
                     .removeClass("deco-selected-tile")
-                    .children(".deco-tile-content").blur()
+                    .children(".deco-tile-content").blur();
 
                 // Set actions
                 $.deco.options.panels.trigger("selectedtilechange");
 
                 // Get tile config
-                var tile_config;
-                for (var x = 0; x < $.deco.options.tiles.length; x++) {
-                    var tile_group = $.deco.options.tiles[x];
-                    for (var y = 0; y < tile_group.tiles.length; y++) {
-                        if (tile_group.tiles[y].name == $(source).val()) {
+                for (x = 0; x < $.deco.options.tiles.length; x += 1) {
+                    tile_group = $.deco.options.tiles[x];
+                    for (y = 0; y < tile_group.tiles.length; y += 1) {
+                        if (tile_group.tiles[y].name === $(source).val()) {
                             tile_config = tile_group.tiles[y];
                         }
                     }
                 }
 
-                if (tile_config.type == 'app') {
+                if (tile_config.type === 'app') {
 
                     // Open dialog
                     $.deco.dialog.openIframe($.deco.options.parent + '@@add-tile?type=' + $(source).val() +  '&form.button.Create=Create');
@@ -416,23 +423,26 @@
 
                 // Reset menu
                 $(source).val("none");
+
+                // Normal exit
+                return true;
             }
         });
 
         // Handle keypress event, check for shortcuts
-        $(document).keypress(function(e) {
+        $(document).keypress(function (e) {
 
             // Action name
             var action = "";
 
             // Loop through shortcuts
-            $($.deco.actionManager.shortcuts).each(function() {
+            $($.deco.actionManager.shortcuts).each(function () {
 
                 // Check if shortcut matched
-                if (((e.ctrlKey == this.ctrl) || (navigator.userAgent.toLowerCase().indexOf('macintosh') != -1 && e.metaKey == this.ctrl)) &&
-                    ((e.altKey == this.alt) || (e.altKey == undefined)) &&
-                    (e.shiftKey == this.shift) &&
-                    (e.charCode && String.fromCharCode(e.charCode).toUpperCase().charCodeAt(0) == this.charCode)) {
+                if (((e.ctrlKey === this.ctrl) || (navigator.userAgent.toLowerCase().indexOf('macintosh') !== -1 && e.metaKey === this.ctrl)) &&
+                    ((e.altKey === this.alt) || (e.altKey === undefined)) &&
+                    (e.shiftKey === this.shift) &&
+                    (e.charCode && String.fromCharCode(e.charCode).toUpperCase().charCodeAt(0) === this.charCode)) {
 
                     // Found action
                     action = this.action;
@@ -440,7 +450,7 @@
             });
 
             // Check if shortcut found
-            if (action != "") {
+            if (action !== "") {
 
                 // Exec actions
                 $.deco.actionManager.actions[action].exec();
@@ -453,4 +463,4 @@
             return true;
         });
     };
-})(jQuery);
+}(jQuery));

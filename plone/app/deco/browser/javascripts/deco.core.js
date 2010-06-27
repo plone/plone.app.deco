@@ -1,8 +1,8 @@
 /**
  * This plugin is used to define the deco namespace
  *
- * @author              Rob Gietema
- * @version             0.1
+ * @author Rob Gietema
+ * @version 0.1
  */
 "use strict";
 
