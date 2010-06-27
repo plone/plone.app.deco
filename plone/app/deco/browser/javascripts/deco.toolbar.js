@@ -4,10 +4,18 @@
  * @author Rob Gietema
  * @version 0.1
  */
-;(function($) {
+
+"use strict";
+
+/*global jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80 */
+
+(function ($) {
 
     // Define deco namespace if it doesn't exist
-    if (typeof($.deco) == "undefined") {
+    if (typeof($.deco) === "undefined") {
         $.deco = {};
     }
 
@@ -18,10 +26,10 @@
      * @id jQuery.fn.decoToolbar
      * @return {Object} Returns a jQuery object of the matched elements.
      */
-    $.fn.decoToolbar = function() {
+    $.fn.decoToolbar = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Get current object
             var obj = $(this);
@@ -56,10 +64,10 @@
             for (var a in actions) {
 
                 // Add actions to toolbar
-                for (var x = 0; x < $.deco.options[a].length; x++) {
+                for (var x = 0; x < $.deco.options[a].length; x += 1) {
 
                     // If single action
-                    if ($.deco.options[a][x].actions == undefined) {
+                    if ($.deco.options[a][x].actions === undefined) {
 
                         // Add control
                         AddControl (actions[a], $.deco.options[a][x]);
@@ -71,7 +79,7 @@
                             .addClass("deco-button-group deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"))
                         );
                         var elm_action_group = actions[a].children(".deco-button-group-" + $.deco.options[a][x].name.replace(/_/g, "-"));
-                        for (var y = 0; y < action_group.actions.length; y++) {
+                        for (var y = 0; y < action_group.actions.length; y += 1) {
 
                             // Add control
                             AddControl (elm_action_group, action_group.actions[y]);
@@ -81,37 +89,37 @@
             }
 
             // Add formats to toolbar
-            if ($.deco.options.formats != undefined) {
-                for (var x = 0; x < $.deco.options.formats.length; x++) {
+            if ($.deco.options.formats !== undefined) {
+                for (var x = 0; x < $.deco.options.formats.length; x += 1) {
                     var action_group = $.deco.options.formats[x];
                     actions['primary_actions'].append($(document.createElement("fieldset"))
                         .addClass("deco-button-group deco-button-group-" + action_group.name.replace(/_/g, "-"))
                     );
                     var elm_action_group = actions['primary_actions'].children(".deco-button-group-" + action_group.name.replace(/_/g, "-"));
-                    for (var y = 0; y < action_group.actions.length; y++) {
+                    for (var y = 0; y < action_group.actions.length; y += 1) {
                         if (action_group.actions[y].favorite) {
 
                             // Add control
                             AddControl (elm_action_group, action_group.actions[y]);
                         }
                     }
-                    if (elm_action_group.children().length == 0) {
+                    if (elm_action_group.children().length === 0) {
                         elm_action_group.remove();
                     }
                 }
             }
 
             // Add items to the insert menu
-            if ($.deco.options.tiles != undefined) {
+            if ($.deco.options.tiles !== undefined) {
                 var elm_select_insert = actions['secondary_actions'].find(".deco-menu-insert");
-                for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
                     var action_group = $.deco.options.tiles[x];
                     elm_select_insert.append($(document.createElement("optgroup"))
                         .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))
                         .attr("label", action_group.label)
                     );
                     var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + action_group.name.replace(/_/g, "-"));
-                    for (var y = 0; y < action_group.tiles.length; y++) {
+                    for (var y = 0; y < action_group.tiles.length; y += 1) {
                         var tile = action_group.tiles[y];
                         elm_action_group.append($(document.createElement("option"))
                             .addClass("deco-option deco-option-" + tile.name.replace(/_/g, "-"))
@@ -119,25 +127,25 @@
                             .html(tile.label)
                         );
                     }
-                    if (elm_action_group.children().length == 0) {
+                    if (elm_action_group.children().length === 0) {
                         elm_action_group.remove();
                     }
                 }
             }
 
             // Add items to the format menu
-            if ($.deco.options.formats != undefined) {
+            if ($.deco.options.formats !== undefined) {
                 var elm_select_format = actions['secondary_actions'].find(".deco-menu-format");
-                for (var x = 0; x < $.deco.options.formats.length; x++) {
+                for (var x = 0; x < $.deco.options.formats.length; x += 1) {
                     var action_group = $.deco.options.formats[x];
                     elm_select_format.append($(document.createElement("optgroup"))
                         .addClass("deco-option-group deco-option-group-" + action_group.name.replace(/_/g, "-"))
                         .attr("label", action_group.label)
                     );
                     var elm_action_group = actions['secondary_actions'].find(".deco-option-group-" + action_group.name.replace(/_/g, "-"));
-                    for (var y = 0; y <  action_group.actions.length; y++) {
+                    for (var y = 0; y <  action_group.actions.length; y += 1) {
                         var action = action_group.actions[y];
-                        if (action.favorite == false) {
+                        if (action.favorite === false) {
                             elm_action_group.append($(document.createElement("option"))
                                 .addClass("deco-option deco-option-" + action.name.replace(/_/g, "-"))
                                 .attr("value", action.name)
@@ -146,7 +154,7 @@
                             );
                         }
                     }
-                    if (elm_action_group.children().length == 0) {
+                    if (elm_action_group.children().length === 0) {
                         elm_action_group.remove();
                     }
                 }
@@ -197,10 +205,10 @@
                 var selected_tile = $(".deco-selected-tile");
                 if (selected_tile.length > 0) {
                     var classes = selected_tile.attr('class').split(" ");
-                    $(classes).each(function() {
+                    $(classes).each(function () {
                         var classname = this.match(/^deco-(.*)-tile$/);
-                        if (classname != null) {
-                            if ((classname[1] != 'selected') && (classname[1] != 'new') && (classname[1] != 'read-only') && (classname[1] != 'helper') && (classname[1] != 'original')) {
+                        if (classname !== null) {
+                            if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
                                 tiletype = classname[1];
                             }
                         }
@@ -209,10 +217,10 @@
 
                 // Get actions
                 var actions = $.deco.options.default_available_actions;
-                for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
                     var tile_group = $.deco.options.tiles[x];
-                    for (var y = 0; y <  tile_group.tiles.length; y++) {
-                        if (tile_group.tiles[y].name == tiletype) {
+                    for (var y = 0; y <  tile_group.tiles.length; y += 1) {
+                        if (tile_group.tiles[y].name === tiletype) {
                             actions = actions.concat(tile_group.tiles[y].available_actions);
                         }
                     }
@@ -244,7 +252,7 @@
 
                 // Set available fields
                 obj.find(".deco-menu-insert").children(".deco-option-group-fields").children().each(function () {
-                    if ($.deco.options.panels.find(".deco-" + $(this).attr("value") + "-tile").length == 0) {
+                    if ($.deco.options.panels.find(".deco-" + $(this).attr("value") + "-tile").length === 0) {
                         $(this).show().attr("disabled", "");
                     } else {
                         $(this).hide().attr("disabled", "disabled");
@@ -253,14 +261,14 @@
 
                 // Hide option group if no visible items
                 obj.find(".deco-option-group").each(function () {
-                    if ($(this).children(":enabled").length == 0) {
+                    if ($(this).children(":enabled").length === 0) {
                         $(this).hide();
                     }
                 });
 
                 // Hide menu if no enabled items
                 $(".deco-menu, .deco-icon-menu").each(function () {
-                    if ($(this).find(".deco-option:enabled").length == 1) {
+                    if ($(this).find(".deco-option:enabled").length === 1) {
                         $(this).hide();
                     }
                 });
@@ -284,7 +292,7 @@
     function AddControl (parent, action) {
 
         // Check if button or menu
-        if ((typeof (action.menu) != undefined) && (action.menu)) {
+        if ((typeof (action.menu) !== undefined) && (action.menu)) {
 
             // Check if icon menu
             if (action.icon) {
@@ -304,7 +312,7 @@
                             for (var z in action.items) {
 
                                 // Check if child objects
-                                if (action.items[z].items != undefined) {
+                                if (action.items[z].items !== undefined) {
                                     $(this).append($(document.createElement("optgroup"))
                                         .addClass("deco-option-group deco-option-group-" + action.items[z].value.replace(/_/g, "-").replace(/\//g, "-"))
                                         .attr("label", action.items[z].label)
@@ -346,10 +354,10 @@
                         $(this).decoExecAction();
                     })
                     .each(function () {
-                        for (var z = 0; z < action.items.length; z++) {
+                        for (var z = 0; z < action.items.length; z += 1) {
 
                             // Check if child objects
-                            if (action.items[z].items != undefined) {
+                            if (action.items[z].items !== undefined) {
                                 $(this).append($(document.createElement("optgroup"))
                                     .addClass("deco-option-group deco-option-group-" + action.items[z].value.replace(/_/g, "-").replace(/\//g, "-"))
                                     .attr("label", action.items[z].label)
@@ -394,4 +402,4 @@
             )
         }
     }
-})(jQuery);
+}(jQuery));
