@@ -4,17 +4,29 @@
  * @author Rob Gietema
  * @version 0.1
  */
-;(function($) {
+"use strict";
+
+/*global tinyMCE: false, jQuery: false, window: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
+eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
+immed: true, strict: true, maxlen: 80, maxerr: 9999 */
+
+(function ($) {
 
     // Define deco namespace if it doesn't exist
-    if (typeof($.deco) == "undefined") {
+    if (typeof($.deco) === "undefined") {
         $.deco = {};
     }
 
     // Define the layout namespace
     $.deco.layout = {
-        widthClasses: ['deco-width-quarter', 'deco-width-third', 'deco-width-half', 'deco-width-two-thirds', 'deco-width-three-quarters', 'deco-width-full'],
-        positionClasses: ['deco-position-leftmost', 'deco-position-quarter', 'deco-position-third', 'deco-position-half', 'deco-position-two-thirds', 'deco-position-three-quarters']
+        widthClasses: ['deco-width-quarter', 'deco-width-third',
+                       'deco-width-half', 'deco-width-two-thirds',
+                       'deco-width-three-quarters', 'deco-width-full'],
+        positionClasses: ['deco-position-leftmost', 'deco-position-quarter',
+                          'deco-position-third', 'deco-position-half',
+                          'deco-position-two-thirds',
+                          'deco-position-three-quarters']
     };
 
     /**
@@ -24,18 +36,18 @@
     * @id jQuery.fn.decoLayout
     * @return {Object} Returns a new deco layout object.
     */
-    $.fn.decoLayout = function() {
+    $.fn.decoLayout = function () {
 
         // Keydown handler
-        var DocumentKeydown = function(e) {
+        var DocumentKeydown = function (e) {
 
             // Check if esc
-            if (e.keyCode == 27) {
+            if (e.keyCode === 27) {
 
                 // Check if dragging
                 var original_tile = $(".deco-original-tile");
                 if (original_tile.length > 0) {
-                    original_tile.each(function() {
+                    original_tile.each(function () {
                         $(this).addClass("deco-drag-cancel");
                         if ($(this).hasClass("deco-helper-tile-new")) {
                             $(document).trigger("mousedown");
@@ -58,12 +70,14 @@
                 }
 
                 // Find resize helper
-                $(".deco-resize-handle-helper").each (function() {
+                $(".deco-resize-handle-helper").each(function () {
 
                     // Remove resizing state
-                    $(this).parents(".deco-panel").removeClass("deco-panel-resizing");
+                    $(this).parents(".deco-panel")
+                        .removeClass("deco-panel-resizing");
                     $(this).parent().removeClass("deco-row-resizing");
-                    $(this).parent().children(".deco-resize-placeholder").remove();
+                    $(this).parent().children(".deco-resize-placeholder")
+                        .remove();
 
                     // Remove helper
                     $(this).remove();
@@ -78,25 +92,26 @@
         $(document).bind('keydown', DocumentKeydown);
 
         // Add deselect
-        var DocumentMousedown = function(e) {
+        var DocumentMousedown = function (e) {
 
             // Get element
             var elm;
-            if (e.target)
+            if (e.target) {
                 elm = e.target;
-            else if (e.srcElement)
+            } else if (e.srcElement) {
                 elm = e.srcElement;
+            }
 
             // If clicked outside a tile
-            if ($(elm).parents(".deco-tile").length == 0) {
+            if ($(elm).parents(".deco-tile").length === 0) {
 
                 // Check if outside toolbar
-                if ($(elm).parents(".deco-toolbar").length == 0) {
+                if ($(elm).parents(".deco-toolbar").length === 0) {
 
                     // Deselect tiles
                     $(".deco-selected-tile")
                         .removeClass("deco-selected-tile")
-                        .children(".deco-tile-content").blur()
+                        .children(".deco-tile-content").blur();
 
                     // Set actions
                     $.deco.options.toolbar.trigger("selectedtilechange");
@@ -107,7 +122,7 @@
             // Find resize helper
             var new_tile = $(".deco-helper-tile-new");
             if (new_tile.length > 0) {
-                new_tile.each (function() {
+                new_tile.each(function () {
 
                     // Handle drag end
                     $(this).decoHandleDragEnd();
@@ -119,10 +134,10 @@
         $(document).bind('mousedown', DocumentMousedown);
 
         // Handle mouse move event
-        var DocumentMousemove = function(e) {
+        var DocumentMousemove = function (e) {
 
             // Find resize helper
-            $(".deco-helper-tile-new").each (function() {
+            $(".deco-helper-tile-new").each(function () {
 
                 // Get offset
                 var offset = $(this).parent().offset();
@@ -133,7 +148,7 @@
             });
 
             // Find resize helper
-            $(".deco-resize-handle-helper").each (function() {
+            $(".deco-resize-handle-helper").each(function () {
 
                 // Get helper
                 var helper = $(this);
@@ -150,7 +165,7 @@
                 // Get closest snap location
                 var snap = 25;
                 var snap_offset = 1000;
-                $([25, 33, 50, 67, 75]).each(function() {
+                $([25, 33, 50, 67, 75]).each(function () {
                     cur_snap_offset = Math.abs(this - mouse_percentage);
                     if (cur_snap_offset < snap_offset) {
                         snap = this;
@@ -159,21 +174,21 @@
                 });
 
                 // If 2 columns
-                if (helper.data("nr_of_columns") == 2) {
+                if (helper.data("nr_of_columns") === 2) {
 
                     // Check if resize
-                    if (helper.data("column_sizes").split(" ")[0] != snap) {
+                    if (helper.data("column_sizes").split(" ")[0] !== snap) {
 
                         // Loop through columns
-                        row.children(".deco-resize-placeholder").each(function(i) {
+                        row.children(".deco-resize-placeholder").each(function (i) {
 
                             // First column
-                            if (i == 0) {
+                            if (i === 0) {
 
                                 // Set new width and position
                                 $(this)
                                     .removeClass($.deco.layout.widthClasses.join(" "))
-                                    .addClass(GetWidthClassByInt(parseInt(snap)));
+                                    .addClass(GetWidthClassByInt(parseInt(snap, 10)));
 
                             // Second column
                             } else {
@@ -182,13 +197,13 @@
                                 $(this)
                                     .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
                                     .removeClass($.deco.layout.widthClasses.join(" "))
-                                    .addClass(GetWidthClassByInt(parseInt(100 - snap)))
-                                    .addClass(GetPositionClassByInt(parseInt(snap)).replace("position", "resize"));
+                                    .addClass(GetWidthClassByInt(parseInt(100 - snap, 10)))
+                                    .addClass(GetPositionClassByInt(parseInt(snap, 10)).replace("position", "resize"));
 
                                 // Set helper
                                 helper
                                     .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
-                                    .addClass(GetPositionClassByInt(parseInt(snap)).replace("position", "resize"));
+                                    .addClass(GetPositionClassByInt(parseInt(snap, 10)).replace("position", "resize"));
                             }
                         });
 
@@ -203,10 +218,10 @@
                     var resize_handle_index = $(this).data("resize_handle_index");
 
                     // Check if first resize handle
-                    if (resize_handle_index == 1) {
+                    if (resize_handle_index === 1) {
 
                         // Check if resize
-                        if ((helper.data("column_sizes").split(" ")[$(this).data("resize_handle_index") - 1] != snap) && (parseInt(snap) <= 50)) {
+                        if ((helper.data("column_sizes").split(" ")[$(this).data("resize_handle_index") - 1] !== snap) && (parseInt(snap, 10) <= 50)) {
 
                             // Get columns
                             var columns = row.children(".deco-resize-placeholder");
@@ -214,39 +229,39 @@
                             // Remove position and width classes
                             columns
                                 .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
-                                .removeClass($.deco.layout.widthClasses.join(" "))
+                                .removeClass($.deco.layout.widthClasses.join(" "));
                             helper
                                 .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
-                                .addClass(GetPositionClassByInt(parseInt(snap)).replace("position", "resize"));
+                                .addClass(GetPositionClassByInt(parseInt(snap, 10)).replace("position", "resize"));
 
                             // Get layout
-                            switch (parseInt(snap)) {
-                                case 25:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(50))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    helper.data("column_sizes", "25 50 25");
-                                    break;
-                                case 33:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(33).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(66).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    helper.data("column_sizes", "33 33 33");
-                                    break;
-                                case 50:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(50))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(50).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    helper.data("column_sizes", "50 25 25");
-                                    break;
-                        }
+                            switch (parseInt(snap, 10)) {
+                            case 25:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(50));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                helper.data("column_sizes", "25 50 25");
+                                break;
+                            case 33:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(33).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(66).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                helper.data("column_sizes", "33 33 33");
+                                break;
+                            case 50:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(50));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(50).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                helper.data("column_sizes", "50 25 25");
+                                break;
+                            }
                         }
 
                     // Else second resize handle
                     } else {
 
                         // Check if resize
-                        if ((helper.data("column_sizes").split(" ")[$(this).data("resize_handle_index")] != (100 - snap)) && (parseInt(snap) >= 50)) {
+                        if ((helper.data("column_sizes").split(" ")[$(this).data("resize_handle_index")] !== (100 - snap)) && (parseInt(snap, 10) >= 50)) {
 
                             // Get columns
                             var columns = row.children(".deco-resize-placeholder");
@@ -254,32 +269,32 @@
                             // Remove position and width classes
                             columns
                                 .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
-                                .removeClass($.deco.layout.widthClasses.join(" "))
+                                .removeClass($.deco.layout.widthClasses.join(" "));
                             helper
                                 .removeClass($.deco.layout.positionClasses.join(" ").replace(/position/g, "resize"))
-                                .addClass(GetPositionClassByInt(parseInt(snap)).replace("position", "resize"));
+                                .addClass(GetPositionClassByInt(parseInt(snap, 10)).replace("position", "resize"));
 
                             // Get layout
-                            switch (parseInt(snap)) {
-                                case 50:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(50).replace("position", "resize") + " " + GetWidthClassByInt(50))
-                                    helper.data("column_sizes", "25 25 50");
-                                    break;
-                                case 66:
-                                case 67:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(33).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(66).replace("position", "resize") + " " + GetWidthClassByInt(33))
-                                    helper.data("column_sizes", "33 33 33");
-                                    break;
-                                case 75:
-                                    $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(50))
-                                    $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25))
-                                    helper.data("column_sizes", "25 50 25");
-                                    break;
+                            switch (parseInt(snap, 10)) {
+                            case 50:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(50).replace("position", "resize") + " " + GetWidthClassByInt(50));
+                                helper.data("column_sizes", "25 25 50");
+                                break;
+                            case 66:
+                            case 67:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(33).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(66).replace("position", "resize") + " " + GetWidthClassByInt(33));
+                                helper.data("column_sizes", "33 33 33");
+                                break;
+                            case 75:
+                                $(columns.get(0)).addClass(GetPositionClassByInt(0).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                $(columns.get(1)).addClass(GetPositionClassByInt(25).replace("position", "resize") + " " + GetWidthClassByInt(50));
+                                $(columns.get(2)).addClass(GetPositionClassByInt(75).replace("position", "resize") + " " + GetWidthClassByInt(25));
+                                helper.data("column_sizes", "25 50 25");
+                                break;
                             }
                         }
                     }
@@ -292,10 +307,10 @@
         $(document).bind('dragover', DocumentMousemove);
 
         // Handle mouse up event
-        var DocumentMouseup = function(e) {
+        var DocumentMouseup = function (e) {
 
             // Find resize helper
-            $(".deco-resize-handle-helper").each (function() {
+            $(".deco-resize-handle-helper").each(function () {
 
                 // Get panel
                 var panel = $(this).parents(".deco-panel");
@@ -304,15 +319,15 @@
                 var column_sizes = $(this).data("column_sizes").split(" ");
 
                 // Set column sizes
-                $(this).parent().children(".deco-grid-cell").each(function(i) {
+                $(this).parent().children(".deco-grid-cell").each(function (i) {
                     var offset_x = 0;
-                    for (var j = 0; j < i; j++) {
-                        offset_x += parseInt(column_sizes[j]);
+                    for (var j = 0; j < i; j += 1) {
+                        offset_x += parseInt(column_sizes[j], 10);
                     }
                     $(this)
                         .removeClass($.deco.layout.positionClasses.join(" "))
                         .removeClass($.deco.layout.widthClasses.join(" "))
-                        .addClass(GetPositionClassByInt(offset_x) + " " + GetWidthClassByInt(parseInt(column_sizes[i])));
+                        .addClass(GetPositionClassByInt(offset_x) + " " + GetWidthClassByInt(parseInt(column_sizes[i], 10)));
                 });
 
                 // Remove resizing state
@@ -335,7 +350,7 @@
 
         // Loop through matched elements
         var total = this.length;
-        return this.each(function(i) {
+        return this.each(function (i) {
 
             // Get current object
             var obj = $(this);
@@ -345,7 +360,7 @@
             obj.find('.deco-tile').decoAddDrag();
             obj.decoAddEmptyRows();
             obj.children('.deco-grid-row').decoSetResizeHandles();
-            if (i == (total - 1)) {
+            if (i === (total - 1)) {
 
                 // Get biggest panel
                 var width = 0;
@@ -369,10 +384,10 @@
      * @id jQuery.decoInitTile
      * @return {Object} jQuery object
      */
-    $.fn.decoInitTile = function() {
+    $.fn.decoInitTile = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Get layout object
             var tile = $(this);
@@ -381,10 +396,10 @@
             // Get tile type
             var tiletype = '';
             var classes = $(this).attr('class').split(" ");
-            $(classes).each(function() {
+            $(classes).each(function () {
                 var classname = this.match(/^deco-(.*)-tile$/);
-                if (classname != null) {
-                    if ((classname[1] != 'selected') && (classname[1] != 'new') && (classname[1] != 'read-only') && (classname[1] != 'helper') && (classname[1] != 'original')) {
+                if (classname !== null) {
+                    if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
                         tiletype = classname[1];
                     }
                 }
@@ -392,10 +407,10 @@
 
             // Get tile config
             var tile_config;
-            for (var x = 0; x < $.deco.options.tiles.length; x++) {
+            for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
                 var tile_group = $.deco.options.tiles[x];
-                for (var y = 0; y < tile_group.tiles.length; y++) {
-                    if (tile_group.tiles[y].name == tiletype) {
+                for (var y = 0; y < tile_group.tiles.length; y += 1) {
+                    if (tile_group.tiles[y].name === tiletype) {
                         tile_config = tile_group.tiles[y];
                     }
                 }
@@ -410,9 +425,9 @@
 
             // Init rich text
             if (tile_config &&
-                ((tile_config.type == 'text' && tile_config.rich_text) ||
-                 (tile_config.type == 'app' && tile_config.rich_text) ||
-                 (tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')))) {
+                ((tile_config.type === 'text' && tile_config.rich_text) ||
+                 (tile_config.type === 'app' && tile_config.rich_text) ||
+                 (tile_config.type === 'field' && tile_config.read_only === false && (tile_config.widget === 'TextFieldWidget' || tile_config.widget === 'TextAreaFieldWidget' || tile_config.widget === 'WysiwygFieldWidget')))) {
 
                 // Generate random id
                 var random_id = 1 + Math.floor(100000 * Math.random());
@@ -441,7 +456,7 @@
             );
 
             // If tile is field tile
-            if (tile_config && tile_config.type == "field") {
+            if (tile_config && tile_config.type === "field") {
 
                 // Add label
                 $(this).prepend(
@@ -456,7 +471,7 @@
                             $(document.createElement("div"))
                                 .addClass("deco-field-label-left")
                         )
-                )
+                );
             }
 
             // If the tile is movable
@@ -476,10 +491,10 @@
                 $(this).prepend(
                     $(document.createElement("div"))
                         .addClass("deco-tile-control deco-close-icon")
-                        .click(function() {
+                        .click(function () {
 
                             // Check if app tile
-                            if (tile_config.type == 'app') {
+                            if (tile_config.type === 'app') {
 
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
@@ -497,7 +512,7 @@
                                 $.ajax({
                                     type: "GET",
                                     url: url,
-                                    success: function(value) {
+                                    success: function (value) {
 
                                         $.deco.notify({
                                             title: "Info",
@@ -534,18 +549,18 @@
 
             // Add settings icon
             if (tile_config &&
-               ((tile_config.type == 'app') ||
-                (tile_config.type == 'field' && tile_config.widget != 'TextFieldWidget' && tile_config.widget != 'TextAreaFieldWidget' && tile_config.widget != 'WysiwygFieldWidget'))) {
+               ((tile_config.type === 'app') ||
+                (tile_config.type === 'field' && tile_config.widget !== 'TextFieldWidget' && tile_config.widget !== 'TextAreaFieldWidget' && tile_config.widget !== 'WysiwygFieldWidget'))) {
 
                 $(this).prepend(
                     $(document.createElement("div"))
                         .addClass("deco-tile-control deco-info-icon")
 
                         // On click open dialog
-                        .click(function() {
+                        .click(function () {
 
                             // Check if application tile
-                            if (tile_config.type == 'app') {
+                            if (tile_config.type === 'app') {
 
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
@@ -564,7 +579,7 @@
             }
 
             // Handle mousemove on tile
-            var TileMousemove = function(e) {
+            var TileMousemove = function (e) {
 
                 // Check if dragging
                 if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
@@ -573,16 +588,16 @@
                     $(".deco-selected-divider").removeClass("deco-selected-divider");
 
                     // Don't show dividers if above original or floating tile
-                    if (($(this).hasClass("deco-original-tile") == false) &&
-                        ($(this).hasClass("deco-tile-align-left") == false) &&
-                        ($(this).hasClass("deco-tile-align-right") == false)) {
+                    if (($(this).hasClass("deco-original-tile") === false) &&
+                        ($(this).hasClass("deco-tile-align-left") === false) &&
+                        ($(this).hasClass("deco-tile-align-right") === false)) {
 
                         // Get direction
                         var dir = $(this).decoGetDirection(e);
                         var divider = $(this).children(".deco-divider-" + dir);
 
                         // Check if left or right divider
-                        if ((dir == "left") || (dir == "right")) {
+                        if ((dir === "left") || (dir === "right")) {
                             var row = divider.parent().parent().parent();
 
                             // If row has multiple columns
@@ -606,7 +621,7 @@
             $(this).bind("dragover", TileMousemove);
 
             // On click select the current tile
-            $(this).click(function() {
+            $(this).click(function () {
 
                 // Select tile
                 $(this).decoSelectTile();
@@ -654,13 +669,13 @@
      * @id jQuery.decoSelectTile
      * @return {Object} jQuery object
      */
-    $.fn.decoSelectTile = function() {
+    $.fn.decoSelectTile = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Check if not already selected
-            if ($(this).hasClass("deco-selected-tile") == false) {
+            if ($(this).hasClass("deco-selected-tile") === false) {
 
                 $(".deco-selected-tile").removeClass("deco-selected-tile").children(".deco-tile-content").blur();
                 $(this).addClass("deco-selected-tile");
@@ -681,15 +696,15 @@
      * @id jQuery.decoFocusTileContent
      * @return {Object} jQuery object
      */
-    $.fn.decoFocusTileContent = function() {
+    $.fn.decoFocusTileContent = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Get content
             var tile_content = $(this).children(".deco-tile-content");
             tile_content.focus();
-            if (tile_content.attr("id").indexOf('deco-rich-text-init') != -1) {
+            if (tile_content.attr("id").indexOf('deco-rich-text-init') !== -1) {
 
                 // Get editor
                 var ed = tinyMCE.get(tile_content.attr("id"));
@@ -701,7 +716,7 @@
                 );
 
                 // Select node and delete the selection
-                if (typeof ed != 'undefined') {
+                if (typeof ed !== 'undefined') {
                     ed.execCommand("mceSelectNode", false, tile_content.find(".deco-tile-selection-end").get(0));
                     ed.execCommand("Delete");
                 }
@@ -718,13 +733,13 @@
      * @id jQuery.decoAddMouseMoveEmptyRow
      * @return {Object} jQuery object
      */
-    $.fn.decoAddMouseMoveEmptyRow = function() {
+    $.fn.decoAddMouseMoveEmptyRow = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Mouse move event
-            $(this).mousemove(function(e) {
+            $(this).mousemove(function (e) {
 
                 // Get layout object
                 var obj = $(this).parents(".deco-panel");
@@ -746,19 +761,19 @@
      * @id jQuery.decoAddEmptyRows
      * @return {Object} jQuery object
      */
-    $.fn.decoAddEmptyRows = function() {
+    $.fn.decoAddEmptyRows = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Loop through rows
-            $(this).find(".deco-grid-row").each(function(i) {
+            $(this).find(".deco-grid-row").each(function (i) {
 
                 // Check if current row has multiple columns
                 if ($(this).children(".deco-grid-cell").length > 1) {
 
                     // Check if first row
-                    if (i == 0) {
+                    if (i === 0) {
                         $(this).before(
                             $(document.createElement("div"))
                                 .addClass("deco-grid-row deco-empty-row")
@@ -779,7 +794,7 @@
                     }
 
                     // Check if last row or next row also contains columns
-                    if (($(this).nextAll(".deco-grid-row").length == 0) || ($(this).next().children(".deco-grid-cell").length > 1)) {
+                    if (($(this).nextAll(".deco-grid-row").length === 0) || ($(this).next().children(".deco-grid-cell").length > 1)) {
                         $(this).after(
                             $(document.createElement("div"))
                                 .addClass("deco-grid-row deco-empty-row")
@@ -809,7 +824,7 @@
      * @id jQuery.decoGetWidthClass
      * @return {String} Name of the width class
      */
-    $.fn.decoGetWidthClass = function() {
+    $.fn.decoGetWidthClass = function () {
 
         // Loop through width classes
         for (x in $.deco.layout.widthClasses) {
@@ -843,7 +858,7 @@
      * @id jQuery.decoGetPositionClass
      * @return {String} Name of the position class
      */
-    $.fn.decoGetPositionClass = function() {
+    $.fn.decoGetPositionClass = function () {
 
         // Loop through position classes
         for (x in $.deco.layout.positionClasses) {
@@ -877,20 +892,20 @@
      * @id jQuery.decoAddDrag
      * @return {Object} jQuery object
      */
-    $.fn.decoAddDrag = function() {
+    $.fn.decoAddDrag = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             var tile = $(this);
 
-            var DragMove = function(event){
+            var DragMove = function (event) {
                 var helper = $('.deco-helper-tile');
                 var offset = helper.parents(".deco-panel").offset();
                 helper.css("top", event.pageY + 3 - offset.top);
                 helper.css("left", event.pageX + 3 - offset.left);
             };
-            var DragStop = function(){
+            var DragStop = function () {
                 var helper = $('.deco-helper-tile');
                 $(document)
                     .unbind('mousemove', DragMove)
@@ -900,10 +915,10 @@
                 helper.decoHandleDragEnd();
                 helper.remove();
             };
-            return tile.each(function(){
+            return tile.each(function () {
                 tile.find('div.deco-drag-handle')
                     .unbind('mousedown')
-                    .bind('mousedown', function(event){
+                    .bind('mousedown', function (event) {
 
                     var downX = event.pageX;
                     var downY = event.pageY;
@@ -934,7 +949,7 @@
                             $(document).mouseup(DragStop);
                             $(document).unbind('mousemove', DragCheckMove);
                         }
-                    }
+                    };
                     $(document).bind('mousemove', DragCheckMove);
                     $(document).bind('mouseup', function () {
                         $(document).unbind('mousemove', DragCheckMove);
@@ -950,7 +965,7 @@
      * @id jQuery.decoHandleDragEnd
      * @return {Object} jQuery object
      */
-    $.fn.decoHandleDragEnd = function() {
+    $.fn.decoHandleDragEnd = function () {
 
         // Get layout object
         var obj = $(this).parents(".deco-panel");
@@ -962,14 +977,18 @@
         var divider = $(".deco-selected-divider");
         var drop = divider.parent();
         var dir = "";
-        if (divider.hasClass("deco-divider-top"))
+        if (divider.hasClass("deco-divider-top")) {
             dir = "top";
-        if (divider.hasClass("deco-divider-bottom"))
+        }
+        if (divider.hasClass("deco-divider-bottom")) {
             dir = "bottom";
-        if (divider.hasClass("deco-divider-left"))
+        }
+        if (divider.hasClass("deco-divider-left")) {
             dir = "left";
-        if (divider.hasClass("deco-divider-right"))
+        }
+        if (divider.hasClass("deco-divider-right")) {
             dir = "right";
+        }
         divider.removeClass("deco-selected-divider");
 
         // True if new tile is inserted
@@ -991,7 +1010,7 @@
                 // Make sure the original tile doesn't get removed
                 original_tile
                     .removeClass("deco-original-tile")
-                    .addClass("deco-new-tile")
+                    .addClass("deco-new-tile");
             }
 
         // Dropped on empty row
@@ -1000,22 +1019,18 @@
             // Replace empty with normal row class
             drop
                 .removeClass("deco-empty-row")
-                .unbind('mousemove')
+                .unbind('mousemove');
 
             // Clean cell
             drop.children(".deco-grid-cell")
-                .children("div").remove()
+                .children("div").remove();
 
             // Add tile to empty row
             drop.children(".deco-grid-cell")
                 .append(original_tile
                     .clone(true)
                     .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                    .css({
-                        width: "",
-                        left: "",
-                        top: ""
-                    })
+                    .css({width: "", left: "", top: ""})
                     .decoAddDrag()
                     .addClass("deco-new-tile")
             );
@@ -1024,7 +1039,7 @@
             $(".deco-empty-row").remove();
 
         // Not dropped on tile
-        } else if (drop.hasClass("deco-tile") == false) {
+        } else if (drop.hasClass("deco-tile") === false) {
 
             // Remove remaining empty rows
             $(".deco-empty-row").remove();
@@ -1035,11 +1050,11 @@
                 // Make sure the original tile doesn't get removed
                 original_tile
                     .removeClass("deco-original-tile")
-                    .addClass("deco-new-tile")
+                    .addClass("deco-new-tile");
             }
 
         // Check if max columns rows is reached
-        } else if ((drop.parent().parent().children(".deco-grid-cell").length == 4) && (dir == "left" || dir == "right")) {
+        } else if ((drop.parent().parent().children(".deco-grid-cell").length === 4) && (dir === "left" || dir === "right")) {
 
             // Remove remaining empty rows
             $(".deco-empty-row").remove();
@@ -1050,7 +1065,7 @@
                 // Make sure the original tile doesn't get removed
                 original_tile
                     .removeClass("deco-original-tile")
-                    .addClass("deco-new-tile")
+                    .addClass("deco-new-tile");
             }
 
             // Notify user
@@ -1066,44 +1081,36 @@
             $(".deco-empty-row").remove();
 
             // If top
-            if (dir == "top") {
+            if (dir === "top") {
 
                 // Add tile before
                 drop.before(
                     original_tile
                         .clone(true)
                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                        .css({
-                            width: "",
-                            left: "",
-                            top: ""
-                        })
+                        .css({width: "", left: "", top: ""})
                         .decoAddDrag()
                         .addClass("deco-new-tile")
                 );
 
             // If bottom
-            } else if (dir == "bottom") {
+            } else if (dir === "bottom") {
 
                 // Add tile after
                 drop.after(
                     original_tile
                         .clone(true)
                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                        .css({
-                            width: "",
-                            left: "",
-                            top: ""
-                        })
+                        .css({width: "", left: "", top: ""})
                         .decoAddDrag()
                         .addClass("deco-new-tile")
                 );
 
             // If left
-            } else if ((dir == "left") || (dir == "right")) {
+            } else if ((dir === "left") || (dir === "right")) {
 
                 // Check if only 1 column in the row
-                if (drop.parent().parent().children(".deco-grid-cell").length == 1) {
+                if (drop.parent().parent().children(".deco-grid-cell").length === 1) {
 
                     // Put tiles above dropped tile in a new row above
                     var prev_elms = drop.prevAll();
@@ -1140,7 +1147,7 @@
                         .addClass("deco-width-half");
 
                     // Create column with dragged tile in it
-                    if (dir == "left") {
+                    if (dir === "left") {
                         drop.parent()
                             .addClass("deco-position-half")
                             .before($(document.createElement("div"))
@@ -1149,11 +1156,7 @@
                                     original_tile
                                         .clone(true)
                                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                                        .css({
-                                            width: "",
-                                            left: "",
-                                            top: ""
-                                        })
+                                        .css({width: "", left: "", top: ""})
                                         .decoAddDrag()
                                         .addClass("deco-new-tile")
                                 )
@@ -1167,11 +1170,7 @@
                                     original_tile
                                         .clone(true)
                                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                                        .css({
-                                            width: "",
-                                            left: "",
-                                            top: ""
-                                        })
+                                        .css({width: "", left: "", top: ""})
                                         .decoAddDrag() 
                                         .addClass("deco-new-tile")
                                 )
@@ -1185,7 +1184,7 @@
                 } else {
 
                     // Create new column
-                    if (dir == "left") {
+                    if (dir === "left") {
                         drop.parent()
                             .before($(document.createElement("div"))
                                 .addClass("deco-grid-cell")
@@ -1193,15 +1192,11 @@
                                     original_tile
                                         .clone(true)
                                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                                        .css({
-                                            width: "",
-                                            left: "",
-                                            top: ""
-                                        })
+                                        .css({width: "", left: "", top: ""})
                                         .decoAddDrag()
                                         .addClass("deco-new-tile")
                                     )
-                            )
+                            );
                     } else {
                         drop.parent()
                             .after($(document.createElement("div"))
@@ -1210,15 +1205,11 @@
                                     original_tile
                                         .clone(true)
                                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
-                                        .css({
-                                            width: "",
-                                            left: "",
-                                            top: ""
-                                        })
+                                        .css({width: "", left: "", top: ""})
                                         .decoAddDrag()
                                         .addClass("deco-new-tile")
                                     )
-                            )
+                            );
                     }
 
                     // Rezize columns
@@ -1254,73 +1245,73 @@
      * @id jQuery.decoSetColumnSizes
      * @return {Object} jQuery object
      */
-    $.fn.decoSetColumnSizes = function() {
+    $.fn.decoSetColumnSizes = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Resize columns in the row
             var nr_of_columns = $(this).children(".deco-grid-cell").length;
             $(this)
-                .children(".deco-grid-cell").each(function(i) {
+                .children(".deco-grid-cell").each(function (i) {
                     $(this)
                         .removeClass($.deco.layout.widthClasses.join(" "))
-                        .removeClass($.deco.layout.positionClasses.join(" "))
+                        .removeClass($.deco.layout.positionClasses.join(" "));
 
                     // Set width / position
                     switch (nr_of_columns) {
 
-                        // 1 column
+                    // 1 column
+                    case 1:
+                        $(this).addClass("deco-width-full deco-position-leftmost");
+                        break;
+
+                    // 2 columns
+                    case 2:
+                        switch (i) {
+                        case 0:
+                            $(this).addClass("deco-width-half deco-position-leftmost");
+                            break;
                         case 1:
-                            $(this).addClass("deco-width-full deco-position-leftmost");
+                            $(this).addClass("deco-width-half deco-position-half");
                             break;
+                        }
+                        break;
 
-                        // 2 columns
+                    // 3 columns
+                    case 3:
+                        switch (i) {
+                        case 0:
+                            $(this).addClass("deco-width-third deco-position-leftmost");
+                            break;
+                        case 1:
+                            $(this).addClass("deco-width-third deco-position-third");
+                            break;
                         case 2:
-                            switch (i) {
-                                case 0:
-                                    $(this).addClass("deco-width-half deco-position-leftmost");
-                                    break;
-                                case 1:
-                                    $(this).addClass("deco-width-half deco-position-half");
-                                    break;
-                            }
+                            $(this).addClass("deco-width-third deco-position-two-thirds");
                             break;
+                        }
+                        break;
 
-                        // 3 columns
+                    // 4 columns
+                    case 4:
+                        switch (i) {
+                        case 0:
+                            $(this).addClass("deco-width-quarter deco-position-leftmost");
+                            break;
+                        case 1:
+                            $(this).addClass("deco-width-quarter deco-position-quarter");
+                            break;
+                        case 2:
+                            $(this).addClass("deco-width-quarter deco-position-half");
+                            break;
                         case 3:
-                            switch (i) {
-                                case 0:
-                                    $(this).addClass("deco-width-third deco-position-leftmost");
-                                    break;
-                                case 1:
-                                    $(this).addClass("deco-width-third deco-position-third");
-                                    break;
-                                case 2:
-                                    $(this).addClass("deco-width-third deco-position-two-thirds");
-                                    break;
-                            }
+                            $(this).addClass("deco-width-quarter deco-position-three-quarters");
                             break;
-
-                        // 4 columns
-                        case 4:
-                            switch (i) {
-                                case 0:
-                                    $(this).addClass("deco-width-quarter deco-position-leftmost");
-                                    break;
-                                case 1:
-                                    $(this).addClass("deco-width-quarter deco-position-quarter");
-                                    break;
-                                case 2:
-                                    $(this).addClass("deco-width-quarter deco-position-half");
-                                    break;
-                                case 3:
-                                    $(this).addClass("deco-width-quarter deco-position-three-quarters");
-                                    break;
-                            }
-                            break;
-                    };
-                })
+                        }
+                        break;
+                    }
+                });
         });
     };
 
@@ -1330,10 +1321,10 @@
      * @id jQuery.decoSetResizeHandles
      * @return {Object} jQuery object
      */
-    $.fn.decoSetResizeHandles = function() {
+    $.fn.decoSetResizeHandles = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Remove resize handles
             $(this).children(".deco-resize-handle").remove();
@@ -1341,51 +1332,51 @@
             // Check number of columns
             var nr_of_columns = $(this).children(".deco-grid-cell").length;
             switch (nr_of_columns) {
-                case 2:
-                    $(this).append($(document.createElement("div"))
-                        .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
-                            .decoGetPositionClass().replace("position", "resize")
-                        )
+            case 2:
+                $(this).append($(document.createElement("div"))
+                    .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
+                        .decoGetPositionClass().replace("position", "resize")
                     )
-                    break;
-                case 3:
-                    $(this).append($(document.createElement("div"))
-                        .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
-                            .decoGetPositionClass().replace("position", "resize")
-                        )
+                );
+                break;
+            case 3:
+                $(this).append($(document.createElement("div"))
+                    .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
+                        .decoGetPositionClass().replace("position", "resize")
                     )
-                    $(this).append($(document.createElement("div"))
-                        .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-two " + $($(this).children(".deco-grid-cell").get(2))
-                            .decoGetPositionClass().replace("position", "resize")
-                        )
+                );
+                $(this).append($(document.createElement("div"))
+                    .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-two " + $($(this).children(".deco-grid-cell").get(2))
+                        .decoGetPositionClass().replace("position", "resize")
                     )
-                    break;
+                );
+                break;
             }
 
             // Mouse down handler on resize handle
-            $(this).children(".deco-resize-handle").mousedown(function(e) {
+            $(this).children(".deco-resize-handle").mousedown(function (e) {
 
                 // Get number of columns and current sizes
                 var column_sizes = new Array();
-                $(this).parent().children(".deco-grid-cell").each(function() {
+                $(this).parent().children(".deco-grid-cell").each(function () {
 
                     // Add column size
                     switch ($(this).decoGetWidthClass()) {
-                        case "deco-width-half":
-                            column_sizes.push("50");
-                            break;
-                        case "deco-width-quarter":
-                            column_sizes.push("25");
-                            break;
-                        case "deco-width-third":
-                            column_sizes.push("33");
-                            break;
-                        case "deco-width-two-thirds":
-                            column_sizes.push("66");
-                            break;
-                        case "deco-width-three-quarters":
-                            column_sizes.push("75");
-                            break;
+                    case "deco-width-half":
+                        column_sizes.push("50");
+                        break;
+                    case "deco-width-quarter":
+                        column_sizes.push("25");
+                        break;
+                    case "deco-width-third":
+                        column_sizes.push("33");
+                        break;
+                    case "deco-width-two-thirds":
+                        column_sizes.push("66");
+                        break;
+                    case "deco-width-three-quarters":
+                        column_sizes.push("75");
+                        break;
                     }
 
                     // Add placeholder
@@ -1394,7 +1385,7 @@
                         .append($(document.createElement("div"))
                             .addClass("deco-resize-placeholder-inner-border")
                         )
-                    )
+                    );
                 });
 
                 // Get resize handle index
@@ -1411,7 +1402,7 @@
                     .data("nr_of_columns", $(this).parent().children(".deco-grid-cell").length)
                     .data("column_sizes", column_sizes.join(" "))
                     .data("resize_handle_index", resize_handle_index)
-                )
+                );
 
                 // Set resizing state
                 $(this).parents(".deco-panel").addClass("deco-panel-resizing");
@@ -1430,17 +1421,17 @@
      * @id jQuery.decoCleanupRow
      * @return {Object} jQuery object
      */
-    $.fn.decoCleanupRow = function() {
+    $.fn.decoCleanupRow = function () {
 
         // Loop through matched elements
-        return this.each(function() {
+        return this.each(function () {
 
             // Get original row
             var original_row = $(this);
 
             // Remove empty columns
-            original_row.children(".deco-grid-cell").each(function() {
-                if ($(this).children().length == 0) {
+            original_row.children(".deco-grid-cell").each(function () {
+                if ($(this).children().length === 0) {
                     $(this).remove();
 
                     // Resize columns
@@ -1449,7 +1440,7 @@
             });
 
             // Remove row if no tiles inside
-            if (original_row.find(".deco-tile").length == 0) {
+            if (original_row.find(".deco-tile").length === 0) {
                 var del_row = original_row;
 
                 // Check if next row available
@@ -1471,26 +1462,26 @@
             }
 
             // Check if prev row exists and if both rows only have 1 column
-            if ((original_row.prevAll(".deco-grid-row").length > 0) && (original_row.children(".deco-grid-cell").length == 1) && (original_row.prev().children(".deco-grid-cell").length == 1)) {
+            if ((original_row.prevAll(".deco-grid-row").length > 0) && (original_row.children(".deco-grid-cell").length === 1) && (original_row.prev().children(".deco-grid-cell").length === 1)) {
 
                 // Merge rows
                 original_row.children(".deco-grid-cell").prepend(
                     original_row.prev().children(".deco-grid-cell").children(".deco-tile")
                         .clone(true)
                         .decoAddDrag()
-                )
+                );
                 original_row.prev().remove();
             }
 
             // Check if next row exists and if both rows only have 1 column
-            if ((original_row.nextAll(".deco-grid-row").length > 0) && (original_row.children(".deco-grid-cell").length == 1) && (original_row.next().children(".deco-grid-cell").length == 1)) {
+            if ((original_row.nextAll(".deco-grid-row").length > 0) && (original_row.children(".deco-grid-cell").length === 1) && (original_row.next().children(".deco-grid-cell").length === 1)) {
 
                 // Merge rows
                 original_row.children(".deco-grid-cell").append(
                     original_row.next().children(".deco-grid-cell").children(".deco-tile")
                         .clone(true)
                         .decoAddDrag()
-                )
+                );
                 original_row.next().remove();
             }
 
@@ -1505,22 +1496,22 @@
      * @id jQuery.decoSetResizeHandleLocation
      * @return {Object} jQuery object
      */
-    $.fn.decoSetResizeHandleLocation = function() {
+    $.fn.decoSetResizeHandleLocation = function () {
 
         // Get panel
         var obj = $(this);
 
         // Loop through rows
-        obj.children(".deco-grid-row").each(function() {
+        obj.children(".deco-grid-row").each(function () {
 
             // Get row
             var row = $(this);
 
             // Get cells
-            var cells = row.children(".deco-grid-cell")
+            var cells = row.children(".deco-grid-cell");
 
             // Check if 2 or 3 columns
-            if ((cells.length == 2) || (cells.length == 3)) {
+            if ((cells.length === 2) || (cells.length === 3)) {
 
                 // Remove location classes
                 row.children(".deco-resize-handle").removeClass("deco-resize-handle-left deco-resize-handle-center deco-resize-handle-right");
@@ -1540,7 +1531,7 @@
                     row.children(".deco-resize-handle-two").addClass("deco-resize-handle-left");
 
                 // Check if third column is selected
-                } else if (cells.length == 3 && $(cells.get(2)).children(".deco-tile").hasClass("deco-selected-tile")) {
+                } else if (cells.length === 3 && $(cells.get(2)).children(".deco-tile").hasClass("deco-selected-tile")) {
 
                     // Set location
                     row.children(".deco-resize-handle-one").addClass("deco-resize-handle-center");
@@ -1564,7 +1555,7 @@
      * @param {Object} e Event object
      * @return {String} Direction of the cursor relative to the tile
      */
-    $.fn.decoGetDirection = function(e) {
+    $.fn.decoGetDirection = function (e) {
 
         // Calculate x, y, width and height
         var width = parseFloat($(this).width());
@@ -1622,7 +1613,7 @@
      * @param {String} url Url of the application tile
      * @param {String} id Id of the application tile
      */
-    $.deco.addAppTile = function(type, url, id) {
+    $.deco.addAppTile = function (type, url, id) {
 
         // Close dialog
         $.deco.dialog.close();
@@ -1634,10 +1625,10 @@
         $.ajax({
             type: "GET",
             url: url,
-            success: function(value) {
+            success: function (value) {
 
                 // Get dom tree
-                value = $.deco.getDomTreeFromHtml (value);
+                value = $.deco.getDomTreeFromHtml(value);
 
                 // Add head tags
                 $.deco.addHeadTags(url, value);
@@ -1656,7 +1647,7 @@
      * @param {String} url Url of the application tile
      * @param {String} id Id of the application tile
      */
-    $.deco.editAppTile = function(url) {
+    $.deco.editAppTile = function (url) {
 
         // Close dialog
         $.deco.dialog.close();
@@ -1668,10 +1659,10 @@
         $.ajax({
             type: "GET",
             url: url,
-            success: function(value) {
+            success: function (value) {
 
                 // Get dom tree
-                value = $.deco.getDomTreeFromHtml (value);
+                value = $.deco.getDomTreeFromHtml(value);
 
                 // Remove head tags
                 $.deco.removeHeadTags(url);
@@ -1692,7 +1683,7 @@
      * @param {String} type Type of the application tile
      * @param {String} value Value of the application tile
      */
-    $.deco.addTile = function(type, value) {
+    $.deco.addTile = function (type, value) {
 
         // Set dragging state
         $.deco.options.panels.addClass("deco-panel-dragging deco-panel-dragging-new");
@@ -1712,7 +1703,7 @@
                         .addClass("deco-helper-tile deco-helper-tile-new deco-original-tile")
                     )
                 )
-        )
+        );
 
         // Set helper min size
         var helper = $.deco.options.panels.find(".deco-helper-tile-new");
@@ -1747,32 +1738,32 @@
      * @param {Object} tile_config Configuration options of the tile
      * @return {String} Default value of the given tile
      */
-    $.deco.getDefaultValue = function(tile_config) {
+    $.deco.getDefaultValue = function (tile_config) {
         switch (tile_config.type) {
-            case "field":
-                switch (tile_config.widget) {
-                    case "TextFieldWidget":
-                        return '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
-                        break;
-                    case "TextAreaFieldWidget":
-                        var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
-                        var return_string = "";
-                        for (var i = 0; i < lines.length; i++) {
-                            return_string += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
-                        }
-                        return return_string;
-                        break;
-                    case "WysiwygFieldWidget":
-                        return $("#" + tile_config.id).find('textarea').attr('value');
-                        break;
-                    default:
-                        return '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
-                        break;
+        case "field":
+            switch (tile_config.widget) {
+            case "TextFieldWidget":
+                return '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
+                break;
+            case "TextAreaFieldWidget":
+                var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
+                var return_string = "";
+                for (var i = 0; i < lines.length; i += 1) {
+                    return_string += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
                 }
+                return return_string;
+                break;
+            case "WysiwygFieldWidget":
+                return $("#" + tile_config.id).find('textarea').attr('value');
                 break;
             default:
-                return tile_config.default_value;
+                return '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
                 break;
+            }
+            break;
+        default:
+            return tile_config.default_value;
+            break;
         }
     };
 
@@ -1784,25 +1775,25 @@
      * @param {Object} tile_config Configuration options of the tile
      * @return {String} Default value of the given tile
      */
-    $.deco.saveTileValueToForm = function(tiletype, tile_config) {
+    $.deco.saveTileValueToForm = function (tiletype, tile_config) {
 
         // Update field values if type is rich text
-        if (tile_config && tile_config.type == 'field' && tile_config.read_only == false && (tile_config.widget == 'TextFieldWidget' || tile_config.widget == 'TextAreaFieldWidget' || tile_config.widget == 'WysiwygFieldWidget')) {
+        if (tile_config && tile_config.type === 'field' && tile_config.read_only === false && (tile_config.widget === 'TextFieldWidget' || tile_config.widget === 'TextAreaFieldWidget' || tile_config.widget === 'WysiwygFieldWidget')) {
             switch (tile_config.widget) {
-                case 'TextFieldWidget':
-                    $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
-                    break;
-                case 'TextAreaFieldWidget':
-                    var value = "";
-                    $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').each(function () {
-                        value += $(this).html() + "\n";
-                    })
-                    value = value.replace (/<br[^>]*>/ig);
-                    $("#" + tile_config.id).find('textarea').attr('value', value);
-                    break;
-                case 'WysiwygFieldWidget':
-                    $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
-                    break;
+            case 'TextFieldWidget':
+                $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
+                break;
+            case 'TextAreaFieldWidget':
+                var value = "";
+                $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').each(function () {
+                    value += $(this).html() + "\n";
+                });
+                value = value.replace(/<br[^>]*>/ig);
+                $("#" + tile_config.id).find('textarea').attr('value', value);
+                break;
+            case 'WysiwygFieldWidget':
+                $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
+                break;
             }
         }
     };
@@ -1823,7 +1814,7 @@
         var links = new Array();
         var tilecount = 0;
         var id = "";
-        links.push({rel: "layout", rev: "", target: "", href: "./@@default-layout"})
+        links.push({rel: "layout", rev: "", target: "", href: "./@@default-layout"});
 
         // Add body tag
         body += "  <body>\n";
@@ -1833,19 +1824,19 @@
 
             // Add open panel tag
             id = $(this).attr("id");
-            if (id == "content-edit") {
+            if (id === "content-edit") {
                 id = "content";
             }
             body += '    <div id="' + id + '">\n';
 
             // Add panel link
-            links.push({rel: "panel", rev: id, target: id, href: ""})
+            links.push({rel: "panel", rev: id, target: id, href: ""});
 
             // Loop through rows
             $(this).children(".deco-grid-row").each(function () {
 
                 // Check if not an empty row
-                if ($(this).hasClass("deco-empty-row") == false) {
+                if ($(this).hasClass("deco-empty-row") === false) {
 
                     // Add row open tag
                     body += '      <div class="deco-grid-row">\n';
@@ -1854,7 +1845,7 @@
                     $(this).children(".deco-grid-cell").each(function () {
 
                         // Add cell start tag
-                        body += '        <div class="' + $(this).attr("class") + '">\n'
+                        body += '        <div class="' + $(this).attr("class") + '">\n';
 
                         // Loop through tiles
                         $(this).children(".deco-tile").each(function () {
@@ -1862,10 +1853,10 @@
                             // Get tile type
                             var tiletype = '';
                             var classes = $(this).attr('class').split(" ");
-                            $(classes).each(function() {
+                            $(classes).each(function () {
                                 var classname = this.match(/^deco-(.*)-tile$/);
-                                if (classname != null) {
-                                    if ((classname[1] != 'selected') && (classname[1] != 'new') && (classname[1] != 'read-only') && (classname[1] != 'helper') && (classname[1] != 'original')) {
+                                if (classname !== null) {
+                                    if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
                                         tiletype = classname[1];
                                     }
                                 }
@@ -1873,82 +1864,82 @@
 
                             // Get tile config
                             var tile_config;
-                            for (var x = 0; x < $.deco.options.tiles.length; x++) {
+                            for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
                                 var tile_group = $.deco.options.tiles[x];
-                                for (var y = 0; y < tile_group.tiles.length; y++) {
-                                    if (tile_group.tiles[y].name == tiletype) {
+                                for (var y = 0; y < tile_group.tiles.length; y += 1) {
+                                    if (tile_group.tiles[y].name === tiletype) {
                                         tile_config = tile_group.tiles[y];
                                     }
                                 }
                             }
 
                             switch (tile_config.type) {
-                                case "text":
-                                    body += '          <div class="' + $(this).attr("class") + '">\n';
-                                    body += '          <div class="deco-tile-content">\n';
-                                    body += $(this).children(".deco-tile-content").html();
-                                    body += '          </div>\n';
-                                    body += '          </div>\n';
-                                    break;
-                                case "app":
-                                    body += '          <div class="' + $(this).attr("class") + '">\n';
-                                    body += '          <div class="deco-tile-content">\n';
+                            case "text":
+                                body += '          <div class="' + $(this).attr("class") + '">\n';
+                                body += '          <div class="deco-tile-content">\n';
+                                body += $(this).children(".deco-tile-content").html();
+                                body += '          </div>\n';
+                                body += '          </div>\n';
+                                break;
+                            case "app":
+                                body += '          <div class="' + $(this).attr("class") + '">\n';
+                                body += '          <div class="deco-tile-content">\n';
 
-                                    // Get url
-                                    var tile_url = $(this).find('.tileUrl').html();
+                                // Get url
+                                var tile_url = $(this).find('.tileUrl').html();
 
-                                    // Calc url
-                                    var url = tile_url.split('?')[0];
-                                    url = url.split('@@');
-                                    var tile_type_id = url[1].split('/');
-                                    var html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
+                                // Calc url
+                                var url = tile_url.split('?')[0];
+                                url = url.split('@@');
+                                var tile_type_id = url[1].split('/');
+                                var html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
 
-                                    body += '          <span id="' + html_id + '"></span>\n';
+                                body += '          <span id="' + html_id + '"></span>\n';
 
-                                    links.push({
-                                        rel: "tile",
-                                        rev: "",
-                                        target: html_id,
-                                        href: tile_url
-                                    });
+                                links.push({
+                                    rel: "tile",
+                                    rev: "",
+                                    target: html_id,
+                                    href: tile_url
+                                });
 
-                                    body += '          </div>\n';
-                                    body += '          </div>\n';
+                                body += '          </div>\n';
+                                body += '          </div>\n';
 
-                                    // Save title and description
-                                    if (tile_config.name == 'plone.app.standardtiles.title') {
-                                        $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text()));
-                                    }
-                                    if (tile_config.name == 'plone.app.standardtiles.description') {
-                                        $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure').remove();
-                                        $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text()));
-                                    }
+                                // Save title and description
+                                if (tile_config.name === 'plone.app.standardtiles.title') {
+                                    $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure').remove();
+                                    $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text()));
+                                }
+                                if (tile_config.name === 'plone.app.standardtiles.description') {
+                                    $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure').remove();
+                                    $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text()));
+                                }
 
-                                    break;
-                                case "field":
-                                    body += '          <div class="' + $(this).attr("class") + '">\n';
-                                    body += '          <div class="deco-tile-content">\n';
+                                break;
+                            case "field":
+                                body += '          <div class="' + $(this).attr("class") + '">\n';
+                                body += '          <div class="deco-tile-content">\n';
 
-                                    // Calc url
-                                    var url = './@@plone.app.standardtiles.field?field=' + tiletype;
-                                    var html_id = 'tile-' + tiletype;
+                                // Calc url
+                                var url = './@@plone.app.standardtiles.field?field=' + tiletype;
+                                var html_id = 'tile-' + tiletype;
 
-                                    body += '          <span id="' + html_id + '"></span>\n';
+                                body += '          <span id="' + html_id + '"></span>\n';
 
-                                    links.push({
-                                        rel: "tile",
-                                        rev: "",
-                                        target: html_id,
-                                        href: url
-                                    });
+                                links.push({
+                                    rel: "tile",
+                                    rev: "",
+                                    target: html_id,
+                                    href: url
+                                });
 
-                                    body += '          </div>\n';
-                                    body += '          </div>\n';
+                                body += '          </div>\n';
+                                body += '          </div>\n';
 
-                                    // Update field values if type is rich text
-                                    $.deco.saveTileValueToForm(tiletype, tile_config);
-                                    break;
+                                // Update field values if type is rich text
+                                $.deco.saveTileValueToForm(tiletype, tile_config);
+                                break;
                             }
                         });
 
@@ -1973,16 +1964,16 @@
         content += '  <head>\n';
         $(links).each(function () {
             content += '    <link ';
-            if (this.rel != "") {
+            if (this.rel !== "") {
                 content += ' rel="' + this.rel + '"';
             }
-            if (this.rev != "") {
+            if (this.rev !== "") {
                 content += ' rev="' + this.rev + '"';
             }
-            if (this.target != "") {
+            if (this.target !== "") {
                 content += ' target="' + this.target + '"';
             }
-            if (this.href != "") {
+            if (this.href !== "") {
                 content += ' href="' + this.href + '"';
             }
             content += ' />\n';
@@ -1993,7 +1984,7 @@
 
         // Return content
         return content;
-    }
+    };
 
     /**
      * Get the name of the width class of the given integer
@@ -2002,32 +1993,26 @@
      * @param {Integer} column_width Percentage of the column width
      * @return {String} Classname of the width class of the given integer
      */
-    function GetWidthClassByInt (column_width) {
+    function GetWidthClassByInt(column_width) {
         switch (column_width) {
-            case 25:
-                return "deco-width-quarter";
-                break;
-            case 33:
-                return "deco-width-third";
-                break;
-            case 50:
-                return "deco-width-half";
-                break;
-            case 66:
-            case 67:
-                return "deco-width-two-thirds";
-                break;
-            case 75:
-                return "deco-width-three-quarters";
-                break;
-            case 100:
-                return "deco-width-full";
-                break;
+        case 25:
+            return "deco-width-quarter";
+        case 33:
+            return "deco-width-third";
+        case 50:
+            return "deco-width-half";
+        case 66:
+        case 67:
+            return "deco-width-two-thirds";
+        case 75:
+            return "deco-width-three-quarters";
+        case 100:
+            return "deco-width-full";
         }
 
         // Fallback
         return "deco-width-full";
-    };
+    }
 
     /**
      * Get the name of the position class of the given integer
@@ -2036,30 +2021,24 @@
      * @param {Integer} position Percentage of the column position
      * @return {String} Classname of the position class of the given integer
      */
-    function GetPositionClassByInt (position) {
+    function GetPositionClassByInt(position) {
         switch (position) {
-            case 0:
-                return "deco-position-leftmost";
-                break;
-            case 25:
-                return "deco-position-quarter";
-                break;
-            case 33:
-                return "deco-position-third";
-                break;
-            case 50:
-                return "deco-position-half";
-                break;
-            case 66:
-            case 67:
-                return "deco-position-two-thirds";
-                break;
-            case 75:
-                return "deco-position-three-quarters";
-                break;
+        case 0:
+            return "deco-position-leftmost";
+        case 25:
+            return "deco-position-quarter";
+        case 33:
+            return "deco-position-third";
+        case 50:
+            return "deco-position-half";
+        case 66:
+        case 67:
+            return "deco-position-two-thirds";
+        case 75:
+            return "deco-position-three-quarters";
         }
 
         // Fallback
         return "deco-position-leftmost";
-    };
-})(jQuery);
+    }
+}(jQuery));
