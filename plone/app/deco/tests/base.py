@@ -3,6 +3,8 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import applyProfile
 
 from zope.configuration import xmlconfig
+#from plone.app.testing.layers import IntegrationTesting
+from plone.app.testing.layers import FunctionalTesting
 
 
 class PADeco(PloneSandboxLayer):
@@ -30,3 +32,6 @@ class PADeco(PloneSandboxLayer):
         commit()
 
 PADECO_FIXTURE = PADeco()
+
+PADECO_FUNCTIONAL_TESTING = FunctionalTesting(bases=(PADECO_FIXTURE,),
+                                              name="PADeco:Functional")

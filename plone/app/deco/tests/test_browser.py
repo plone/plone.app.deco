@@ -4,18 +4,14 @@ import pprint
 import interlude
 from plone.testing import layered
 
-#from plone.app.testing.layers import IntegrationTesting
-from plone.app.testing.layers import FunctionalTesting
-from plone.app.deco.tests.base import PADECO_FIXTURE
-
-PADECO_FUNCTIONAL_TESTING = FunctionalTesting(bases=(PADECO_FIXTURE,),
-                                              name="PADeco:Functional")
+from plone.app.deco.tests.base import PADECO_FUNCTIONAL_TESTING
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 testfiles = (
     'test_browser_decoconfig.txt',
     'test_browser_controlpanel.txt',
 )
+
 
 def test_suite():
     suite = unittest.TestSuite()
