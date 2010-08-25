@@ -4,23 +4,22 @@ try:
     import json
 except:
     import simplejson as json
-from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.interfaces import IDexterityFTI
-from plone.dexterity.utils import resolveDottedName
+
+#from plone.autoform.interfaces import IFormFieldProvider
+#from plone.dexterity.interfaces import IDexterityFTI
+#from plone.dexterity.utils import resolveDottedName
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoSettings
-from Products.CMFPlone.utils import log
-from Acquisition import aq_inner
-from plone.tiles.interfaces import ITileType
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
-import base64
+
 
 def GetBool(value):
     if value == 'False' or value == 'false':
         return False
     else:
         return True
+
 
 def GetCategoryIndex(tiles, category):
     index = 0
@@ -31,6 +30,7 @@ def GetCategoryIndex(tiles, category):
         count += 1
     return index
 
+
 class DecoUploadView(BrowserView):
     """Handle file uploads"""
 
@@ -39,7 +39,7 @@ class DecoUploadView(BrowserView):
         request = context.REQUEST
 
         # Set header to json
-        self.request.RESPONSE.setHeader('Content-Type','application/json');
+        self.request.RESPONSE.setHeader('Content-Type', 'application/json')
 
         ctr_tool = getToolByName(self.context, 'content_type_registry')
         id = request['uploadfile'].filename
@@ -47,15 +47,15 @@ class DecoUploadView(BrowserView):
         content_type = request['uploadfile'].headers["Content-Type"]
         typename = ctr_tool.findTypeName(id, content_type, "")
 
-        # 1) check if we are allowed to create an Image in folder 
-        if not typename in [t.id for t in context.getAllowedTypes()]: 
+        # 1) check if we are allowed to create an Image in folder
+        if not typename in [t.id for t in context.getAllowedTypes()]:
             error = {}
             error['status'] = 1
             error['message'] = "Not allowed to upload a file of this type to this folder"
             return json.dumps(error)
 
-        # 2) check if the current user has permissions to add stuff 
-        if not context.portal_membership.checkPermission('Add portal content',context): 
+        # 2) check if the current user has permissions to add stuff
+        if not context.portal_membership.checkPermission('Add portal content', context):
             error = {}
             error['status'] = 1
             error['message'] = "You do not have permission to upload files in this folder"
@@ -69,9 +69,9 @@ class DecoUploadView(BrowserView):
         newid = context.invokeFactory(type_name=typename, id=id)
 
         if newid is None or newid == '':
-            newid = id 
+            newid = id
 
-        obj = getattr(context,newid, None)
+        obj = getattr(context, newid, None)
 
         # Set title
         # Attempt to use Archetypes mutator if there is one, in case it uses a custom storage
@@ -103,27 +103,28 @@ class DecoUploadView(BrowserView):
 
         context = self.context
         id = ''
-        name = name.replace('\\', '/') # Fixup Windows filenames
-        name = name.split('/')[-1] # Throw away any path part.
+        name = name.replace('\\', '/')  # Fixup Windows filenames
+        name = name.split('/')[-1]  # Throw away any path part.
         for c in name:
             if c.isalnum() or c in '._':
                 id += c
 
         # Raise condition here, but not a lot we can do about that
-        if context.check_id(id) is None and getattr(context,id,None) is None:
+        if context.check_id(id) is None and getattr(context, id, None) is None:
             return id
 
         # Now make the id unique
         count = 1
         while 1:
-            if count==1:
+            if count == 1:
                 sc = ''
             else:
                 sc = str(count)
             newid = "copy%s_of_%s" % (sc, id)
-            if context.check_id(newid) is None and getattr(context,newid,None) is None:
+            if context.check_id(newid) is None and getattr(context, newid, None) is None:
                 return newid
             count += 1
+
 
 class DecoConfigView(BrowserView):
 
@@ -149,7 +150,7 @@ class DecoConfigView(BrowserView):
                     for i in range(7, len(action_fields), 2):
                         items.append({
                             'value': action_fields[i],
-                            'label': action_fields[i+1]
+                            'label': action_fields[i + 1],
                         })
 
                 record = {
@@ -158,13 +159,13 @@ class DecoConfigView(BrowserView):
                     'action': action_fields[4],
                     'icon': GetBool(action_fields[5]),
                     'menu': GetBool(action_fields[6]),
-                    'items': items
+                    'items': items,
                 }
 
                 # If no fieldset
                 if action_fields[1] == '':
                     config[action_type].append(record)
-    
+
                 # Fieldset
                 else:
 
@@ -181,7 +182,7 @@ class DecoConfigView(BrowserView):
                         config[action_type].append({
                             'name': action_fields[1],
                             'label': action_fields[2],
-                            'actions': [record]
+                            'actions': [record],
                         })
 
                     # Fieldset not found
@@ -196,7 +197,7 @@ class DecoConfigView(BrowserView):
             config['formats'].append({
                 'name': format_category.split('|')[0],
                 'label': format_category.split('|')[1],
-                'actions': []
+                'actions': [],
             })
 
         # Formats
@@ -207,7 +208,7 @@ class DecoConfigView(BrowserView):
                 'label': format_fields[2],
                 'action': format_fields[3],
                 'icon': GetBool(format_fields[4]),
-                'favorite': GetBool(format_fields[5])
+                'favorite': GetBool(format_fields[5]),
             })
 
         # Default Available Actions
@@ -221,7 +222,7 @@ class DecoConfigView(BrowserView):
             config['tiles'].append({
                 'name': tile_category.split('|')[0],
                 'label': tile_category.split('|')[1],
-                'tiles': []
+                'tiles': [],
             })
 
         # Structure Tiles
@@ -236,7 +237,7 @@ class DecoConfigView(BrowserView):
                 'settings': GetBool(tile_fields[6]),
                 'favorite': GetBool(tile_fields[7]),
                 'rich_text': GetBool(tile_fields[8]),
-                'available_actions': tile_fields[9:-1]
+                'available_actions': tile_fields[9:-1],
             })
 
         # Application Tiles
@@ -252,7 +253,7 @@ class DecoConfigView(BrowserView):
                     'settings': GetBool(tile_fields[4]),
                     'favorite': GetBool(tile_fields[5]),
                     'rich_text': GetBool(tile_fields[6]),
-                    'available_actions': tile_fields[7:-1]
+                    'available_actions': tile_fields[7:-1],
                 })
 
         # Field Tiles
@@ -286,7 +287,7 @@ class DecoConfigView(BrowserView):
             'read_only': False,
             'settings': True,
             'favorite': False,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left', ],
         })
 
         config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
@@ -299,7 +300,7 @@ class DecoConfigView(BrowserView):
             'read_only': False,
             'settings': True,
             'favorite': False,
-            'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left']
+            'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left'],
         })
 
         config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
@@ -313,7 +314,7 @@ class DecoConfigView(BrowserView):
             'settings': False,
             'favorite': False,
             'rich_text': True,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left']
+            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'],
         })
 
         # URLs
@@ -324,7 +325,7 @@ class DecoConfigView(BrowserView):
             config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
 
         # Set header to json
-        self.request.RESPONSE.setHeader('Content-Type','application/json');
+        self.request.RESPONSE.setHeader('Content-Type', 'application/json')
 
         # Write JSON structure
         return json.dumps(config)
