@@ -35,6 +35,15 @@ setup(name='plone.app.deco',
           'plone.app.dexterity',
           'plone.app.tinymce',
       ] + requires,
+      extras_require={
+          'test': [
+              'unittest2',		  
+              'interlude',
+	      'plone.app.layoutbehavior',
+              'plone.app.testing',
+              ]
+          },
+      
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone
