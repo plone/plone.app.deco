@@ -32,7 +32,7 @@ def GetCategoryIndex(tiles, category):
 
 
 class DecoRegistry(object):
-    """Adapts a registry object to parse the collection data"""
+    """Adapts a registry object to parse the deco settings data"""
 
     implements(IDecoRegistryAdapter)
     adapts(IRegistry)
