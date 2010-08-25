@@ -2,33 +2,37 @@
 Browser
 =======
 
-First we'll create a browser and login as manager.
 
-    >>> from Products.Five.testbrowser import Browser
-    >>> browser = Browser()
+First we'll create a browser and set the authorization header
+
+    >>> app = layer['app']
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(app)
     >>> browser.handleErrors = False
-    >>> self.app.acl_users.userFolderAddUser('root', 'secret', ['Manager'], [])
-    >>> browser.addHeader('Authorization', 'Basic root:secret')
+    >>> browser.addHeader('Authorization', 'Basic admin:secret')
+
 
 Let's create a basic content type.
 
     >>> browser.open('http://nohost/plone/@@dexterity-types')
+    >>> browser.getControl('Add New Content Type…').click()
     >>> browser.getControl('Type Name').value = 'Pony'
     >>> browser.getControl('Add').click()
-    >>> 'Item added successfully.' in browser.contents
+    >>> browser.open('http://nohost/plone/@@dexterity-types')
+    >>> 'Pony' in browser.contents
     True
 
 We can now add the layout behavior to our content type.
 
     >>> browser.open('http://nohost/plone/dexterity-types/pony/@@behaviors')
-    >>> browser.getControl(name='form.widgets.behaviors:list').value = ['Dublin Core metadata', 'Layout support']
-    >>> browser.getControl('Apply').click()
-    >>> 'Data successfully updated.' in browser.contents
-    True
+    >>> browser.getControl(name='form.widgets.plone.app.dexterity.behaviors.metadata.IDublinCore:list').value = 'selected'
+    >>> browser.getControl(name='form.widgets.plone.app.layoutbehavior.ILayout:list').value = 'selected'
+    >>> browser.getControl(name="form.buttons.apply").click()
 
 Our new type should have the layout behavior assigned.
 
-    >>> 'plone.layoutbehavior.ILayout' in self.portal.portal_types.pony.behaviors
+    >>> portal = layer['portal']
+    >>> 'plone.app.layoutbehavior.ILayout' in portal.portal_types.pony.behaviors
     True
 
 Next step is to add a content item.
@@ -39,15 +43,15 @@ Next step is to add a content item.
     >>> 'Item created' in browser.contents
     True
 
+
+
 Config
 ------
 
 Now let's open the Deco config view.
-
     >>> browser.open('http://nohost/plone/pony/@@deco-config')
 
 The config view should contain a json structure with settings like
 'primary_actions'.
-
     >>> browser.contents
     '{...primary_actions...}'

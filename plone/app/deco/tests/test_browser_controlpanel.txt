@@ -4,10 +4,11 @@ Controlpanel
 
 First we'll create a browser and login as manager.
 
-    >>> from Products.Five.testbrowser import Browser
-    >>> browser = Browser()
-    >>> self.app.acl_users.userFolderAddUser('root', 'secret', ['Manager'], [])
-    >>> browser.addHeader('Authorization', 'Basic root:secret')
+    >>> app = layer['app']
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic admin:secret')
 
 Now let's open the Deco control panel.
 
