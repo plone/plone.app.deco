@@ -24,6 +24,7 @@ $.deco.options = {
 module("dialog", {
     setup: function () {
         // We'll create a div element for the dialog
+        $.deco.options.panels = $(document.body);
         var dialog = $(document.createElement("div"))
             .append($(document.createElement("form"))
                 .append($(document.createElement("ul"))
