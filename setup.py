@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
-import os, sys
+import os
+import sys
 
 version = '0.1'
 
@@ -13,7 +14,8 @@ setup(name='plone.app.deco',
       description="Package for Deco UI functionality",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      # Get more strings from
+      # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -37,13 +39,10 @@ setup(name='plone.app.deco',
       ] + requires,
       extras_require={
           'test': [
-              'unittest2',		  
-              'interlude',
-	      'plone.app.layoutbehavior',
-              'plone.app.testing',
-              ]
-          },
-      
+            'interlude',
+            'plone.app.layoutbehavior',
+            'plone.app.testing', ]},
+
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone
