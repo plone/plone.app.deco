@@ -564,6 +564,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
+                                if (tile_url.indexOf('?') != -1) {
+                                    var match = tile_url.split("?");
+                                    var start_url = match[0];
+                                    var parameters = match[1];
+                                    parameters = parameters.split("&");
+                                    for (var i = 0; i < parameters.length; i += 1) {
+                                        parameters[i] = '"' + parameters[i].replace('=', '":"') + '"';
+                                    }
+                                    tile_url = start_url + '?_tiledata={' + parameters.join(",") + '}';
+                                }
                                 tile_url = tile_url.replace(/@@/, '@@edit-tile/');
 
                                 // Open dialog
