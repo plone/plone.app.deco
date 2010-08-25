@@ -5,12 +5,13 @@ from plone.directives import form
 
 _ = MessageFactory('plone.app.deco')
 
+
 class IDecoSettings(form.Schema):
     """This interface defines the deco settings."""
 
-    form.fieldset('actions', 
+    form.fieldset('actions',
             label=_(u"Actions"),
-            fields=['default_available_actions', 'primary_actions', 'secondary_actions']
+            fields=['default_available_actions', 'primary_actions', 'secondary_actions'],
         )
 
     primary_actions = schema.List(
@@ -31,42 +32,46 @@ class IDecoSettings(form.Schema):
         value_type=schema.TextLine(),
         required=False)
 
-    form.fieldset('formats', 
+    form.fieldset('formats',
             label=_(u"Styles"),
-            fields=['format_categories', 'formats']
+            fields=['format_categories', 'formats'],
         )
 
     format_categories = schema.List(
         title=_(u"Style categories"),
         description=_(u"Enter a list of format categories. Format is name|label, one format per line."),
-        value_type= schema.TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
     formats = schema.List(
         title=_(u"Styles"),
         description=_(u"Enter a list of formats. Format is name|category|label|action|icon|favorite, one format per line."),
-        value_type= schema.TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
-    form.fieldset('tiles', 
+    form.fieldset('tiles',
             label=_(u"Tiles"),
-            fields=['tile_categories', 'structure_tiles', 'app_tiles']
+            fields=['tile_categories', 'structure_tiles', 'app_tiles'],
         )
 
     tile_categories = schema.List(
         title=_(u"Tile categories"),
         description=_(u"Enter a list of tile categories. Format is name|title, one format per line."),
-        value_type= schema.TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
     structure_tiles = schema.List(
         title=_(u"Structure tiles"),
         description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one format per line."),
-        value_type= schema.TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
     app_tiles = schema.List(
         title=_(u"Application tiles"),
         description=_(u"Enter a list of application tiles. Format is name|category|label|read_only|settings|favorite|rich_text|available_actions, one format per line."),
-        value_type= schema.TextLine(),
+        value_type=schema.TextLine(),
         required=False)
+
+
+class IDecoRegistryAdapter(Interface):
+    """Marker interface for the registry adapter"""

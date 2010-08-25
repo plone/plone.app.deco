@@ -12,6 +12,8 @@
 
     <include file="profiles.zcml" />
 
+    <adapter factory=".registry.DecoRegistry" />
+
     <grok:grok package="." />
 
 </configure>
