@@ -1,5 +1,16 @@
 /**
- * This plugin is used to create the deco undo stack, and enable undo/redo actions.
+ * This plugin is used to create the deco undo stack, and enable
+ * undo/redo actions. The JS defines two classes, one for internal use
+ * ($.deco.undo.Stack) and the public one $.deco.unto.UndoManager. The
+ * latter needs to be initialized (form the deco core), using:
+ *  - stack size (max undo history) 
+ *  - reference to a handler that is called with the state as argument on undo/redo
+ *  - current state
+ *
+ * The state can be anyting, but a feasible use is a DOM snippet as
+ * state, that can be re-applied to an element on undo/redo.  Check
+ * out plone.app.deco/plone/app/deco/tests/javascipts/test_undo.html
+ * for an example wiring.
  *
  * @author D.A.Dokter
  * @version 0.1
@@ -18,10 +29,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco = {};
     }
 
+    // Declare deco.undo namespace
     $.deco.undo = function() {};
 
     /**
-     * Stack constructor, taking optional size paramater.
+     * Stack constructor, taking optional size parameter.
+     * @id jQuery.deco.undo.Stack
+     * @param {Integer} stackSize Maximum number of items on the stack.
      */
     $.deco.undo.Stack = function (stackSize) {
       if (typeof(stackSize) === "undefined") {
@@ -33,6 +47,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
       this.stack = Array();
     };
 
+    /**
+     * Return current stack size.
+     * @id jQuery.deco.undo.Stack.size
+     */
     $.deco.undo.Stack.prototype.size  = function() {
         return this.stack.length;
     };
@@ -40,6 +58,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     /**
      * FIFO stack push, that removes object at other end if the stack grows bigger than
      * the size set.
+     * @id jQuery.deco.undo.Stack.add
+     * @param {Object} obj Object to push onto the stack.
      */
     $.deco.undo.Stack.prototype.add = function(obj) {
 
@@ -50,6 +70,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
       this.stack.unshift(obj);
     };
 
+    /**
+     * Get the object at the given index. Note that new states (added
+     * through jQuery.deco.undo.Stack.add) are added (using shift) at index 0.
+     * @id jQuery.deco.undo.Stack.get
+     */
     $.deco.undo.Stack.prototype.get = function(i) {
       return this.stack[i];
     };
@@ -57,6 +82,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     /**
      * Undo manager, handling calls to undo/redo. This implementation uses full DOM
      * snippets.
+     * @id jQuery.deco.undo.UndoManager
+     * @param {Integer} stackSize max undo history
+     * @param {Function} handler for undo/redo, taking state as argument
+     * @param {Object} currentState Current state
      */
     $.deco.undo.UndoManager = function(stackSize, handler, currentState) {
       
@@ -68,6 +97,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     /**
      * Add state to manager.
+     * @id jQuery.deco.undo.UndoManager.add
+     * @param {Object} state State to add.
      */
     $.deco.undo.UndoManager.prototype.add = function(state) {
       
@@ -76,6 +107,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     /**
      * Undo last action, by restoring last state.
+     * @id jQuery.deco.undo.UndoManager.undo
      */
     $.deco.undo.UndoManager.prototype.undo = function() {
       
@@ -90,7 +122,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     };
 
     /**
-     * Redo last action, by restoring previous state.
+     * Redo last action, by calling handler with previous state.
+     * @id jQuery.deco.undo.UndoManager.redo
      */
     $.deco.undo.UndoManager.prototype.redo = function() {
 

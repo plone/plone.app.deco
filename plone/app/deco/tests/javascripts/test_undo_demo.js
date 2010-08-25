@@ -23,5 +23,3 @@ function doRedo() {
 $(document).ready(function() {
     undo = new $.deco.undo.UndoManager(10, handler, $("#undo-area").html());
 });
-
-
