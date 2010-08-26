@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from plone.app.deco.tests.base import PADECO_FUNCTIONAL_TESTING
 import plone.app.deco.tests.registry_testdata as td
-from zope.component import getMultiAdapter
 
 
 class DecoRegistryTest(unittest.TestCase):
@@ -32,7 +31,6 @@ class DecoRegistryTest(unittest.TestCase):
     def test_parse_registry(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
-        portal = self.layer['portal']
-        page = portal.page
-        settings = getMultiAdapter((page, registry), IDecoRegistryAdapter)()
+        settings = IDecoRegistryAdapter(registry)()
+        self.maxDiff = None
         self.assertEqual(settings, td.parsed_data)

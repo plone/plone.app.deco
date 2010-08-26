@@ -8,7 +8,6 @@ except:
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.utils import getToolByName
-from zope.component import getMultiAdapter
 
 
 class DecoUploadView(BrowserView):
@@ -116,6 +115,5 @@ class DecoConfigView(BrowserView):
     def __call__(self):
         self.request.RESPONSE.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
-        adapted = getMultiAdapter((self.context, registry),
-                                        IDecoRegistryAdapter)
+        adapted = IDecoRegistryAdapter(registry)
         return json.dumps(adapted())

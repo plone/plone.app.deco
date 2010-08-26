@@ -11,7 +11,7 @@ from plone.dexterity.utils import createContent
 
 class PADeco(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
-
+    
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.app.deco
