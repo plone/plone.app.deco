@@ -9,9 +9,9 @@ except:
 #from plone.dexterity.interfaces import IDexterityFTI
 #from plone.dexterity.utils import resolveDottedName
 from plone.registry.interfaces import IRegistry
-from plone.app.deco.interfaces import IDecoSettings
+from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.utils import getToolByName
-from plone.app.deco.registry import DecoRegistry
+from zope.component import getMultiAdapter
 
 
 class DecoUploadView(BrowserView):
@@ -34,14 +34,17 @@ class DecoUploadView(BrowserView):
         if not typename in [t.id for t in context.getAllowedTypes()]:
             error = {}
             error['status'] = 1
-            error['message'] = "Not allowed to upload a file of this type to this folder"
+            error['message'] =\
+                "Not allowed to upload a file of this type to this folder"
             return json.dumps(error)
 
         # 2) check if the current user has permissions to add stuff
-        if not context.portal_membership.checkPermission('Add portal content', context):
+        if not context.portal_membership.checkPermission('Add portal content',
+                                                         context):
             error = {}
             error['status'] = 1
-            error['message'] = "You do not have permission to upload files in this folder"
+            error['message'] =\
+                "You do not have permission to upload files in this folder"
             return json.dumps(error)
 
         # Get an unused filename without path
@@ -57,7 +60,8 @@ class DecoUploadView(BrowserView):
         obj = getattr(context, newid, None)
 
         # Set title
-        # Attempt to use Archetypes mutator if there is one, in case it uses a custom storage
+        # Attempt to use Archetypes mutator if there is one,
+        # in case it uses a custom storage
         if title:
             try:
                 obj.setTitle(title)
@@ -104,7 +108,8 @@ class DecoUploadView(BrowserView):
             else:
                 sc = str(count)
             newid = "copy%s_of_%s" % (sc, id)
-            if context.check_id(newid) is None and getattr(context, newid, None) is None:
+            if context.check_id(newid) is None\
+                and getattr(context, newid, None) is None:
                 return newid
             count += 1
 
@@ -113,5 +118,7 @@ class DecoConfigView(BrowserView):
 
     def __call__(self):
         self.request.RESPONSE.setHeader('Content-Type', 'application/json')
-        registry = getUtility(IRegistry).forInterface(IDecoSettings)
-        return json.dumps(DecoRegistry(self.context, registry)())
+        registry = getUtility(IRegistry)
+        adapted = getMultiAdapter((self.context, registry),
+                                        IDecoRegistryAdapter)
+        return json.dumps(adapted())
