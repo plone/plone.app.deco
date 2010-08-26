@@ -1,0 +1,38 @@
+=======
+Browser
+=======
+
+
+First we'll create a browser and set the authorization header
+
+    >>> app = layer['app']
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic admin:secret')
+
+
+We can now add the layout behavior to the page type.
+
+    >>> browser.open('http://nohost/plone/dexterity-types/plone.page/@@behaviors')
+    >>> browser.getControl(name='form.widgets.plone.app.dexterity.behaviors.metadata.IDublinCore:list').value = 'selected'
+    >>> browser.getControl(name='form.widgets.plone.app.layoutbehavior.ILayout:list').value = 'selected'
+    >>> browser.getControl(name="form.buttons.apply").click()
+
+Our page type should have the layout behavior assigned.
+
+    >>> portal = layer['portal']
+    >>> page_type = getattr(portal.portal_types, "plone.page")
+    >>> 'plone.app.layoutbehavior.ILayout' in page_type.behaviors
+    True
+
+Config
+------
+
+Now let's open the Deco config view.
+    >>> browser.open('http://nohost/plone/page/@@deco-config')
+
+The config view should contain a json structure with settings like
+'primary_actions'.
+    >>> browser.contents
+    '{...primary_actions...}'
