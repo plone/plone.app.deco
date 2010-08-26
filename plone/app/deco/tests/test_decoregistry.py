@@ -48,7 +48,6 @@ class DecoRegistryTest(unittest.TestCase):
         adapted = IDecoRegistryAdapter(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
-        print config
         self.assertEqual(config, td.parsed_tiles_categories_data)
 
     def test_parse_registry(self):
