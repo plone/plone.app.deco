@@ -534,6 +534,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             // Remove current tile
                             $(this).parent().remove();
 
+                            $.deco.undo.snapshot();
+
                             // Cleanup original row
                             original_row.decoCleanupRow();
 
@@ -836,25 +838,32 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.fn.decoGetWidthClass = function () {
 
+        var x;
+
         // Loop through width classes
         for (x in $.deco.layout.widthClasses) {
 
-            // If class found
-            if ($(this).hasClass($.deco.layout.widthClasses[x])) {
+            if ($.deco.layout.widthClasses.hasOwnProperty(x)) {
 
-                // Return the width class
-                return $.deco.layout.widthClasses[x];
+                // If class found
+                if ($(this).hasClass($.deco.layout.widthClasses[x])) {
+
+                    // Return the width class
+                    return $.deco.layout.widthClasses[x];
+                }
             }
         }
 
         // Loop through width classes
         for (x in $.deco.layout.widthClasses) {
 
-            // If class found
-            if ($(this).hasClass($.deco.layout.widthClasses[x].replace("position", "resize"))) {
+            if ($.deco.layout.widthClasses.hasOwnProperty(x)) {
+                // If class found
+                if ($(this).hasClass($.deco.layout.widthClasses[x].replace("position", "resize"))) {
 
-                // Return the width class
-                return $.deco.layout.widthClasses[x];
+                    // Return the width class
+                    return $.deco.layout.widthClasses[x];
+                }
             }
         }
 
@@ -1880,6 +1889,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 }
                             }
 
+                            // Predefine vars
+                            var url, html_id;
+
                             switch (tile_config.type) {
                             case "text":
                                 body += '          <div class="' + $(this).attr("class") + '">\n';
@@ -1896,10 +1908,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 var tile_url = $(this).find('.tileUrl').html();
 
                                 // Calc url
-                                var url = tile_url.split('?')[0];
+                                url = tile_url.split('?')[0];
                                 url = url.split('@@');
                                 var tile_type_id = url[1].split('/');
-                                var html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
+                                html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
 
                                 body += '          <span id="' + html_id + '"></span>\n';
 
@@ -1929,8 +1941,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 body += '          <div class="deco-tile-content">\n';
 
                                 // Calc url
-                                var url = './@@plone.app.standardtiles.field?field=' + tiletype;
-                                var html_id = 'tile-' + tiletype;
+                                url = './@@plone.app.standardtiles.field?field=' + tiletype;
+                                html_id = 'tile-' + tiletype;
 
                                 body += '          <span id="' + html_id + '"></span>\n';
 

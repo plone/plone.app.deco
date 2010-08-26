@@ -14,8 +14,26 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 (function ($) {
 
     // Create the deco namespace
-    $.deco = {};
+    $.deco = {
+        "loaded": false,
+        "nrOfTiles": 0,
+        "tileInitCount": 0
+    };
 
+    /**
+     * Called upon full initialization (that is: when all tiles have
+     * been loaded).
+     * @id jQuery.deco.initialized
+     */
+    $.deco.initialized = function () {
+        if ($.deco.loaded) {
+            return;
+        }
+        $.deco.loaded = true;
+        // Take first snapshot
+        $.deco.undo.snapshot();
+    };
+  
     /**
      * Initialize the Deco UI
      *
@@ -104,6 +122,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init app tiles
+                $.deco.nrOfTiles = content.find("link[rel=tile]").size();
+
                 content.find("link[rel=tile]").each(function () {
 
                     // Local variables
@@ -202,6 +222,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                     .html('<span class="hiddenStructure ' +
                                         'tileUrl">' + href + '</span>' +
                                         value.find('.temp_body_tag').html());
+
+                                $.deco.tileInitCount += 1;
+
+                                if ($.deco.tileInitCount >= $.deco.nrOfTiles) {
+                                    $.deco.initialized();
+                                }
                             }
                         });
                     }
@@ -273,6 +299,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Init upload
                 $.deco.initUpload();
+                $.deco.undo.init();
             }
         });
     };

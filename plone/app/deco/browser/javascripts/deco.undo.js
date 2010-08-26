@@ -5,12 +5,18 @@
  * latter needs to be initialized (form the deco core), using:
  *  - stack size (max undo history) 
  *  - reference to a handler that is called with the state as argument on undo/redo
- *  - current state
+ *  - current state (optional)
  *
  * The state can be anyting, but a feasible use is a DOM snippet as
  * state, that can be re-applied to an element on undo/redo.  Check
  * out plone.app.deco/plone/app/deco/tests/javascipts/test_undo.html
  * for an example wiring.
+ *
+ * Currently for deco the 'public' methods of the module are 'init',
+ * 'undo', 'redo', 'hasInitial' and 'snapshot'. The undo manager
+ * always needs an intial state (to be able to redo the undo...). A
+ * state can be added with the jQuery.deco.undo.snapshot
+ * method. Always take the snapshot AFTER the change in the DOM.
  *
  * @author D.A.Dokter
  * @version 0.1
@@ -31,6 +37,72 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     // Declare deco.undo namespace
     $.deco.undo = function () {};
+
+    /**
+     * Initialize undo manager.
+     * @id jQuery.deco.undo.init
+     */
+    $.deco.undo.init = function () {
+
+        function handler(state) {
+
+            for (var i = 0; i < state.length; i += 1) {
+                $("#" + state[i].target).html(state[i].source);
+            }
+        }
+
+        $.deco.undo.undoManager =  new $.deco.undo.UndoManager(10, handler);
+    };
+
+
+    /**
+     * Create a snapshot of the current situation, and add it to the
+     * undo manager.
+     * @id jQuery.deco.undo.snapshot
+     */
+    $.deco.undo.snapshot = function () {
+        var state = [];
+        $(".deco-panel").each(function () {
+            state.push({"target": $(this).attr("id"),
+                  "source": $(this).html()});
+        });
+        if (typeof($.deco.undo.undoManager) === "undefined") {
+            $.deco.undo.init();
+        }
+
+        $.deco.undo.undoManager.add(state);
+    };
+
+
+    /**
+     *
+     */
+    $.deco.undo.hasInitial = function () {
+        if ($.deco.undo.undoManager.stack.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+
+    /**
+     * Undo.
+     * @id jQuery.deco.undo.undo
+     */
+    $.deco.undo.undo = function () {
+        $.deco.undo.undoManager.undo();
+    };
+
+
+    /**
+     * Redo.
+     * @id jQuery.deco.undo.redo
+     */
+    $.deco.undo.redo = function () {
+        $.deco.undo.undoManager.redo();
+    };
+
 
     /**
      * Stack constructor, taking optional size parameter.
@@ -92,7 +164,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         this.stack = new $.deco.undo.Stack(stackSize);
         this.pointer = 0;
         this.handler = handler;
-        this.stack.add(currentState);
+        if (typeof(currentState) !== "undefined") {
+            this.stack.add(currentState);
+        }
     };
 
     /**
@@ -110,7 +184,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @id jQuery.deco.undo.UndoManager.undo
      */
     $.deco.undo.UndoManager.prototype.undo = function  () {
-      
+
         var state = this.stack.get(this.pointer + 1);
 
         if (state) {

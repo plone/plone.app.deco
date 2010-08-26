@@ -53,7 +53,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // current tile state
             visible: function (tile) {
                 return true;
-            }
+            },
+
+            // Should the action be undo-able?
+            undoable: false
+
         }, options);
 
         // Add action to manager
@@ -86,8 +90,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Check if actions specified
             if ($(this).data("action") !== "") {
 
+                var mgr = $.deco.actionManager;
+
                 // Exec actions
-                $.deco.actionManager.actions[$(this).data("action")].exec(this);
+                mgr.actions[$(this).data("action")].exec(this);
+                if (mgr.actions[$(this).data("action")].undoable) {
+                    $.deco.undo.snapshot();
+                }
             }
         });
     };
@@ -368,6 +377,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
         });
 
+        // Register undo action
+        $.deco.registerAction('undo', {
+            exec: function () {
+                $.deco.undo.undo();
+            }
+        });
+
+        // Register redo action
+        $.deco.registerAction('redo', {
+            exec: function () {
+                $.deco.undo.redo();
+            }
+        });
+
         // Register page properties action
         $.deco.registerAction('page-properties', {
             exec: function () {
@@ -469,6 +492,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Exec actions
                 $.deco.actionManager.actions[action].exec();
+                
+                if ($.deco.actionManager.actions[action].undoable) {
+                    $.deco.undo.snapshot();
+                }
 
                 // Prevent other actions
                 return false;
