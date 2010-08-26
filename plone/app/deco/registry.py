@@ -2,7 +2,6 @@ from zope.component import adapts
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
-from Products.CMFCore.interfaces._content import IFolderish
 from plone.dexterity.interfaces import IDexterityContent
 
 
