@@ -33,6 +33,14 @@ class DecoRegistryTest(unittest.TestCase):
         adapted = IDecoRegistryAdapter(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapFormatCategories(settings, {})
+        self.assertEqual(config, td.parsed_format_categories_data)
+
+    def test_formats(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapFormatCategories(settings, {})
+        config = adapted.mapFormats(settings, config)
         self.assertEqual(config, td.parsed_format_data)
 
     def test_parse_registry(self):
