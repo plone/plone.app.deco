@@ -1,8 +1,9 @@
 from zope.component import adapts
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
-from interfaces import IDecoRegistryAdapter
+from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.interfaces._content import IFolderish
+from plone.dexterity.interfaces import IDexterityContent
 
 
 class DottedDict(dict):
@@ -37,7 +38,7 @@ class DecoRegistry(object):
     """Adapts a registry object to parse the deco settings data"""
 
     implements(IDecoRegistryAdapter)
-    adapts(IRegistry)
+    adapts(IDexterityContent, IRegistry)
     prefix = "plone.app.deco"
 
     def __init__(self, context, registry):
