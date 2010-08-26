@@ -91,13 +91,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // If content, create a new div since the form data is in
                     // this panel
                     if (target === 'content') {
+                        $("#content").addClass('deco-original-content');
                         $("#content").before($(document.createElement("div"))
-                            .attr("id", "content-edit")
+                            .attr("id", "content")
+                            .addClass('deco-panel')
+                            .html(content.find("#" + rev).html())
                         );
-                        target += '-edit';
+                    } else {
+                        $("#" + target).addClass('deco-panel');
+                        $("#" + target).html(content.find("#" + rev).html());
                     }
-                    $("#" + target).addClass('deco-panel');
-                    $("#" + target).html(content.find("#" + rev).html());
                 });
 
                 // Init app tiles
@@ -205,11 +208,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init dialog
-                $('#content').decoDialog();
+                $('#content.deco-original-content').decoDialog();
 
                 // Add toolbar div below content view and hide content
                 // view/contentActions
-                $("#content-edit").before($(document.createElement("div"))
+                $("#content.deco-panel").before($(document.createElement("div"))
                     .addClass("deco-toolbar")
                 );
                 $("#content-views").hide();

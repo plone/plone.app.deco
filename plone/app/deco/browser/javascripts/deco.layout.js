@@ -1834,9 +1834,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Add open panel tag
             id = $(this).attr("id");
-            if (id === "content-edit") {
-                id = "content";
-            }
             body += '    <div id="' + id + '">\n';
 
             // Add panel link
