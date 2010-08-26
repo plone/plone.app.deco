@@ -11,7 +11,7 @@ testfiles = (
     'test_browser_decoconfig.txt',
     'test_browser_controlpanel.txt',
 )
-
+testfiles = ()
 
 def test_suite():
     suite = unittest.TestSuite()

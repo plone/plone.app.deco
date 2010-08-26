@@ -305,10 +305,53 @@
       </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
-    <value>
-      <element>text|structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-format|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</element>
-    </value>
+  <record name="plone.app.deco.structure_tiles.text">
+      <field type="plone.registry.field.Dict">
+          <title>Tile categories</title>
+          <key_type type="plone.registry.field.TextLine" />
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element key="default_value">&lt;p&gt;New block&lt;/p&gt;</element>
+          <element key="category">structure</element>
+          <element key="read_only">False</element>
+          <element key="name">text</element>
+          <element key="settings">True</element>
+          <element key="favorite">False</element>
+          <element key="label">Text</element>
+          <element key="type">text</element>
+          <element key="rich_text">True</element>
+      </value>
+  </record>
+  <record name="plone.app.deco.structure_tiles.text.available_actions">
+      <field type="plone.registry.field.List">
+          <title>Available actions for the Text structure tile</title>
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element>strong</element>
+          <element>em</element>
+          <element>paragraph</element>
+          <element>heading</element>
+          <element>subheading</element>
+          <element>discreet</element>
+          <element>literal</element>
+          <element>quote</element>
+          <element>callout</element>
+          <element>highlight</element>
+          <element>sub</element>
+          <element>sup</element>
+          <element>remove-format</element>
+          <element>pagebreak</element>
+          <element>ul</element>
+          <element>ol</element>
+          <element>justify-left</element>
+          <element>justify-center</element>
+          <element>justify-right</element>
+          <element>justify-justify</element>
+          <element>tile-align-block</element>
+          <element>tile-align-right</element>
+      </value>
   </record>
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">

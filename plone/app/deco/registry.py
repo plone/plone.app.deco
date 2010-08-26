@@ -147,21 +147,11 @@ class DecoRegistry(object):
         return config
 
     def mapStructureTiles(self, settings, config):
-        return config
         # Structure Tiles
-        for structure_tile in settings.get('structure_tiles', []):
-            tile_fields = structure_tile.split('|')
-            config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
-                'name': tile_fields[0],
-                'label': tile_fields[2],
-                'type': tile_fields[3],
-                'default_value': tile_fields[4],
-                'read_only': GetBool(tile_fields[5]),
-                'settings': GetBool(tile_fields[6]),
-                'favorite': GetBool(tile_fields[7]),
-                'rich_text': GetBool(tile_fields[8]),
-                'available_actions': tile_fields[9:-1],
-            })
+        tiles = settings.get('%s.structure_tiles' % self.prefix, [])
+        for key, tile in tiles.items():
+            index = GetCategoryIndex(config['tiles'], tile['category'])
+            config['tiles'][index]['tiles'].append(tile)
         return config
 
     def mapApplicationTiles(self, settings, config):
