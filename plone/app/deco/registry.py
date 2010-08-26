@@ -42,11 +42,11 @@ class DecoRegistry(object):
     def __init__(self, registry):
         self.registry = registry
 
-    def parseRegistry(self, registry):
+    def parseRegistry(self):
         """Make a dictionary structure for the values in the registry"""
 
         result = DottedDict()
-        for record in registry.records:
+        for record in self.registry.records:
             splitted = record.split('.')
             current = result
             for x in splitted[:-1]:
@@ -57,7 +57,7 @@ class DecoRegistry(object):
 
             # store actual key/value
             key = splitted[-1]
-            current[key] = registry.records[record].value
+            current[key] = self.registry.records[record].value
 
         return result
 
@@ -250,7 +250,7 @@ class DecoRegistry(object):
         return config
 
     def __call__(self):
-        settings = self.parseRegistry(self.registry)
+        settings = self.parseRegistry()
         config = {}
         config = self.mapFormatCategories(settings, config)
         config = self.mapFormats(settings, config)

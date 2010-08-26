@@ -28,9 +28,16 @@ class DecoRegistryTest(unittest.TestCase):
         importer.importDocument(xml)
         return self.registry
 
+    def test_format_categories(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapFormatCategories(settings, {})
+        self.assertEqual(config, td.parsed_format_data)
+
     def test_parse_registry(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
         settings = IDecoRegistryAdapter(registry)()
-        self.maxDiff = None
+        # self.maxDiff = None
         self.assertEqual(settings, td.parsed_data)
