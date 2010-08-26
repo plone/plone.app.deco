@@ -305,10 +305,53 @@ xml = """
       </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="structure_tiles">
-    <value>
-      <element>text|structure|Text|text|&lt;p&gt;New block&lt;/p&gt;|false|true|false|true|strong|em|paragraph|heading|subheading|discreet|literal|quote|callout|highlight|sub|sup|remove-format|pagebreak|ul|ol|justify-left|justify-center|justify-right|justify-justify|tile-align-block|tile-align-right|tile-align-left'</element>
-    </value>
+  <record name="plone.app.deco.structure_tiles.text">
+      <field type="plone.registry.field.Dict">
+          <title>Tile categories</title>
+          <key_type type="plone.registry.field.TextLine" />
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element key="default_value">&lt;p&gt;New block&lt;/p&gt;</element>
+          <element key="category">structure</element>
+          <element key="read_only">False</element>
+          <element key="name">text</element>
+          <element key="settings">True</element>
+          <element key="favorite">False</element>
+          <element key="label">Text</element>
+          <element key="type">text</element>
+          <element key="rich_text">True</element>
+      </value>
+  </record>
+  <record name="plone.app.deco.structure_tiles.text.available_actions">
+      <field type="plone.registry.field.List">
+          <title>Available actions for the Text structure tile</title>
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element>strong</element>
+          <element>em</element>
+          <element>paragraph</element>
+          <element>heading</element>
+          <element>subheading</element>
+          <element>discreet</element>
+          <element>literal</element>
+          <element>quote</element>
+          <element>callout</element>
+          <element>highlight</element>
+          <element>sub</element>
+          <element>sup</element>
+          <element>remove-format</element>
+          <element>pagebreak</element>
+          <element>ul</element>
+          <element>ol</element>
+          <element>justify-left</element>
+          <element>justify-center</element>
+          <element>justify-right</element>
+          <element>justify-justify</element>
+          <element>tile-align-block</element>
+          <element>tile-align-right</element>
+      </value>
   </record>
 
   <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">
@@ -328,3 +371,5 @@ parsed_format_categories_data = {'formats': [{'name': u'selection', 'actions': [
 parsed_format_data = {'formats': [{'name': u'selection', 'actions': [{'category': u'selection', 'name': u'sub', 'favorite': False, 'label': u'Subscript', 'action': u'sub', 'icon': True}, {'category': u'selection', 'name': u'sup', 'favorite': False, 'label': u'Superscript', 'action': u'sup', 'icon': True}, {'category': u'selection', 'name': u'highlight', 'favorite': False, 'label': u'Highlight', 'action': u'highlight', 'icon': True}, {'category': u'selection', 'name': u'remove-format', 'favorite': False, 'label': u'(Remove format)', 'action': u'remove-format', 'icon': True}], 'label': u'Selection'}, {'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'print', 'actions': [{'category': u'print', 'name': u'pagebreak', 'favorite': False, 'label': u'Page break', 'action': u'pagebreak', 'icon': True}], 'label': u'Print'}, {'name': u'text', 'actions': [{'category': u'text', 'name': u'em', 'favorite': True, 'label': u'I', 'action': u'em', 'icon': False}, {'category': u'text', 'name': u'callout', 'favorite': False, 'label': u'Callout', 'action': u'callout', 'icon': True}, {'category': u'text', 'name': u'subheading', 'favorite': False, 'label': u'Subheading', 'action': u'subheading', 'icon': True}, {'category': u'text', 'name': u'literal', 'favorite': False, 'label': u'Literal', 'action': u'literal', 'icon': True}, {'category': u'text', 'name': u'quote', 'favorite': False, 'label': u'Quote', 'action': u'quote', 'icon': True}, {'category': u'text', 'name': u'discreet', 'favorite': False, 'label': u'Discreet', 'action': u'discreet', 'icon': True}, {'category': u'text', 'name': u'strong', 'favorite': True, 'label': u'B', 'action': u'strong', 'icon': False}, {'category': u'text', 'name': u'paragraph', 'favorite': False, 'label': u'Paragraph', 'action': u'paragraph', 'icon': True}, {'category': u'text', 'name': u'heading', 'favorite': False, 'label': u'Heading', 'action': u'heading', 'icon': True}], 'label': u'Text'}, {'name': u'lists', 'actions': [{'category': u'lists', 'name': u'ol', 'favorite': False, 'label': u'Ordered list', 'action': u'ol', 'icon': True}, {'category': u'lists', 'name': u'ul', 'favorite': False, 'label': u'Unordered list', 'action': u'ul', 'icon': True}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'category': u'justify', 'name': u'tile-align-right', 'favorite': False, 'label': u'Tile right', 'action': u'tile-align-right', 'icon': True}, {'category': u'justify', 'name': u'justify-justify', 'favorite': False, 'label': u'Justified', 'action': u'justify-justify', 'icon': True}, {'category': u'justify', 'name': u'tile-align-block', 'favorite': False, 'label': u'Tile block', 'action': u'tile-align-block', 'icon': True}, {'category': u'justify', 'name': u'justify-left', 'favorite': False, 'label': u'Left-aligned', 'action': u'justify-left', 'icon': True}, {'category': u'justify', 'name': u'tile-align-left', 'favorite': False, 'label': u'Tile left', 'action': u'tile-align-left', 'icon': True}, {'category': u'justify', 'name': u'justify-center', 'favorite': False, 'label': u'Center', 'action': u'justify-center', 'icon': True}, {'category': u'justify', 'name': u'justify-right', 'favorite': False, 'label': u'Right-aligned', 'action': u'justify-right', 'icon': True}], 'label': u'Justify'}]}
 
 parsed_tiles_categories_data = {'tiles': [{'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'fields', 'label': u'Fields'}]}
+
+parsed_structure_tiles_data = {'tiles': [{'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [{u'default_value': u'<p>New block</p>', u'category': u'structure', u'name': u'text', u'settings': u'True', 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], u'favorite': u'False', u'label': u'Text', u'read_only': u'False', u'type': u'text', u'rich_text': u'True'}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'fields', 'label': u'Fields'}]}
