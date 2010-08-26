@@ -41,6 +41,7 @@ setup(name='plone.app.deco',
           'test': [
             'interlude',
             'plone.app.layoutbehavior',
+            'plone.app.page',
             'plone.app.testing', ]},
 
       entry_points="""
