@@ -43,6 +43,14 @@ class DecoRegistryTest(unittest.TestCase):
         config = adapted.mapFormats(settings, config)
         self.assertEqual(config, td.parsed_format_data)
 
+    def test_tiles_categories(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapTilesCategories(settings, {})
+        print config
+        self.assertEqual(config, td.parsed_tiles_categories_data)
+
     def test_parse_registry(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
