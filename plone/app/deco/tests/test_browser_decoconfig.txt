@@ -12,44 +12,25 @@ First we'll create a browser and set the authorization header
     >>> browser.addHeader('Authorization', 'Basic admin:secret')
 
 
-Let's create a basic content type.
+We can now add the layout behavior to the page type.
 
-    >>> browser.open('http://nohost/plone/@@dexterity-types')
-    >>> browser.getControl('Add New Content Type…').click()
-    >>> browser.getControl('Type Name').value = 'Pony'
-    >>> browser.getControl('Add').click()
-    >>> browser.open('http://nohost/plone/@@dexterity-types')
-    >>> 'Pony' in browser.contents
-    True
-
-We can now add the layout behavior to our content type.
-
-    >>> browser.open('http://nohost/plone/dexterity-types/pony/@@behaviors')
+    >>> browser.open('http://nohost/plone/dexterity-types/plone.page/@@behaviors')
     >>> browser.getControl(name='form.widgets.plone.app.dexterity.behaviors.metadata.IDublinCore:list').value = 'selected'
     >>> browser.getControl(name='form.widgets.plone.app.layoutbehavior.ILayout:list').value = 'selected'
     >>> browser.getControl(name="form.buttons.apply").click()
 
-Our new type should have the layout behavior assigned.
+Our page type should have the layout behavior assigned.
 
     >>> portal = layer['portal']
-    >>> 'plone.app.layoutbehavior.ILayout' in portal.portal_types.pony.behaviors
+    >>> page_type = getattr(portal.portal_types, "plone.page")
+    >>> 'plone.app.layoutbehavior.ILayout' in page_type.behaviors
     True
-
-Next step is to add a content item.
-
-    >>> browser.open('http://nohost/plone/++add++pony')
-    >>> browser.getControl(name='form.widgets.IDublinCore.title').value = 'Pony'
-    >>> browser.getControl('Save').click()
-    >>> 'Item created' in browser.contents
-    True
-
-
 
 Config
 ------
 
 Now let's open the Deco config view.
-    >>> browser.open('http://nohost/plone/pony/@@deco-config')
+    >>> browser.open('http://nohost/plone/page/@@deco-config')
 
 The config view should contain a json structure with settings like
 'primary_actions'.

@@ -5,6 +5,8 @@ from plone.app.testing import applyProfile
 from zope.configuration import xmlconfig
 #from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing.layers import FunctionalTesting
+from interlude import interact
+from plone.dexterity.utils import createContent
 
 
 class PADeco(PloneSandboxLayer):
@@ -14,20 +16,29 @@ class PADeco(PloneSandboxLayer):
         # load ZCML
         import plone.app.deco
         import plone.app.layoutbehavior
+        import plone.app.page
         xmlconfig.file('configure.zcml', plone.app.deco,
                        context=configurationContext)
         xmlconfig.file('configure.zcml', plone.app.layoutbehavior,
+                       context=configurationContext)
+        xmlconfig.file('configure.zcml', plone.app.page,
                        context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.deco:default')
+        applyProfile(portal, 'plone.app.page:default')
 
         # add a manager user
         portal.acl_users.userFolderAddUser('admin',
                                            'secret',
                                            ['Manager'],
                                            [])
+        
+        # add a plone.page type, where we can test with
+        page = createContent("plone.page")
+        page.id = 'page'
+        portal._setObject('page', page)
         from transaction import commit
         commit()
 
