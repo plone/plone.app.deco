@@ -132,19 +132,16 @@ class DecoRegistry(object):
 
     def mapFormatCategories(self, settings, config):
         config['formats'] = config.get('formats', [])
-
         categories = settings.get("%s.format_categories" % self.prefix, [])
-
-        for category in categories:
+        for name, label in categories.items():
             config['formats'].append({
-                'name': category['name'],
-                'label': category['label'],
+                'name': name,
+                'label': label,
                 'actions': [],
             })
         return config
 
     def mapFormats(self, settings, config):
-        return config
         formats = settings.get('%s.formats' % self.prefix, [])
         for key, format in formats.items():
             index = GetCategoryIndex(config['formats'], format['category'])
@@ -255,24 +252,14 @@ class DecoRegistry(object):
 
         return config
 
-    def mapURLS(self, settings, config):
-        return config
-        config['document_url'] = self.context.absolute_url()
-        if IFolderish.providedBy(self.context):
-            config['parent'] = self.context.absolute_url() + "/"
-        else:
-            config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
-        return config
-
     def __call__(self):
         settings = self.parseRegistry(self.registry)
         config = {}
-        config = self.mapActions(settings, config)
-        config = self.mapTilesCategories(settings, config)
         config = self.mapFormatCategories(settings, config)
         config = self.mapFormats(settings, config)
+        config = self.mapActions(settings, config)
+        config = self.mapTilesCategories(settings, config)
         config = self.mapStructureTiles(settings, config)
         config = self.mapApplicationTiles(settings, config)
         config = self.mapFieldTiles(settings, config)
-        config = self.mapURLS(settings, config)
         return config
