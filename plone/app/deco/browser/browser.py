@@ -113,5 +113,5 @@ class DecoConfigView(BrowserView):
 
     def __call__(self):
         self.request.RESPONSE.setHeader('Content-Type', 'application/json')
-        registry = getUtility(IRegistry).forInterface(IDecoSettings)
+        registry = getUtility(IRegistry)  # .forInterface(IDecoSettings)
         return json.dumps(DecoRegistry(self.context, registry)())

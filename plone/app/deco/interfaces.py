@@ -34,14 +34,14 @@ class IDecoSettings(form.Schema):
 
     form.fieldset('formats',
             label=_(u"Styles"),
-            fields=['format_categories', 'formats'],
+            fields=['formats'],
         )
 
-    format_categories = schema.List(
-        title=_(u"Style categories"),
-        description=_(u"Enter a list of format categories. Format is name|label, one format per line."),
-        value_type=schema.TextLine(),
-        required=False)
+#    format_categories = schema.List(
+#        title=_(u"Style categories"),
+#        description=_(u"Enter a list of format categories. Format is name|label, one format per line."),
+#        value_type=schema.TextLine(),
+#        required=False)
 
     formats = schema.List(
         title=_(u"Styles"),
@@ -54,11 +54,11 @@ class IDecoSettings(form.Schema):
             fields=['tile_categories', 'structure_tiles', 'app_tiles'],
         )
 
-    tile_categories = schema.List(
-        title=_(u"Tile categories"),
-        description=_(u"Enter a list of tile categories. Format is name|title, one format per line."),
-        value_type=schema.TextLine(),
-        required=False)
+#    tile_categories = schema.List(
+#        title=_(u"Tile categories"),
+#        description=_(u"Enter a list of tile categories. Format is name|title, one format per line."),
+#        value_type=schema.TextLine(),
+#        required=False)
 
     structure_tiles = schema.List(
         title=_(u"Structure tiles"),
@@ -75,3 +75,12 @@ class IDecoSettings(form.Schema):
 
 class IDecoRegistryAdapter(Interface):
     """Marker interface for the registry adapter"""
+
+
+class IFormat(Interface):
+    name = schema.TextLine(title=u"Name")
+    category = schema.TextLine(title=u"Category")
+    label = schema.TextLine(title=u"Label")
+    action = schema.TextLine(title=u"Action")
+    icon = schema.Bool(title=u"Icon")
+    favorite = schema.Bool(title=u"Favorite")

@@ -13,7 +13,10 @@ class DottedDict(dict):
             return super(DottedDict, self).get(k, default)
         val = self
         for x in k.split('.'):
-            val = val[x]
+            try:
+                val = val[x]
+            except:
+                return default
         return val
 
 
@@ -23,12 +26,11 @@ def GetBool(value):
 
 def GetCategoryIndex(tiles, category):
     index = 0
-    count = 0
     for tile in tiles:
         if tile['name'] == category:
-            index = count
-        count += 1
-    return index
+            return index
+        index += 1
+    return None
 
 
 class DecoRegistry(object):
@@ -42,10 +44,11 @@ class DecoRegistry(object):
         self.context = context
         self.registry = registry
 
-    def parseRegistry(self):
+    def parseRegistry(self, registry):
         """Make a dictionary structure for the values in the registry"""
+
         result = DottedDict()
-        for record in self.context.records:
+        for record in registry.records:
             splitted = record.split('.')
             current = result
             for x in splitted[:-1]:
@@ -56,20 +59,16 @@ class DecoRegistry(object):
 
             # store actual key/value
             key = splitted[-1]
-            current[key] = self.context.records[record].value
+            current[key] = registry.records[record].value
 
         return result
 
-    def __call__(self):
-        settings = self.registry
-
-        # Create empty configuration
-        config = {}
-
+    def mapActions(self, settings, config):
+        return config
         # Primary / Secondary Actions
         for action_type in ['primary_actions', 'secondary_actions']:
             config[action_type] = []
-            for action in getattr(settings, action_type):
+            for action in settings.get(action_type, []):
                 action_fields = action.split('|')
                 items = []
                 if GetBool(action_fields[6]):
@@ -115,44 +114,47 @@ class DecoRegistry(object):
                     else:
                         config[action_type][fieldset_index]['actions'].append(record)
 
-        # Formats
-        config['formats'] = []
-
-        # Format Categories
-        for format_category in settings.format_categories:
-            config['formats'].append({
-                'name': format_category.split('|')[0],
-                'label': format_category.split('|')[1],
-                'actions': [],
-            })
-
-        # Formats
-        for format in settings.formats:
-            format_fields = format.split('|')
-            config['formats'][GetCategoryIndex(config['formats'], format_fields[1])]['actions'].append({
-                'name': format_fields[0],
-                'label': format_fields[2],
-                'action': format_fields[3],
-                'icon': GetBool(format_fields[4]),
-                'favorite': GetBool(format_fields[5]),
-            })
-
         # Default Available Actions
-        config['default_available_actions'] = settings.default_available_actions
+        config['default_available_actions'] = settings.get('default_available_actions', [])
+        return config
 
-        # Tiles
-        config['tiles'] = []
-
-        # Tile Categories
-        for tile_category in settings.tile_categories:
+    def mapTilesCategories(self, settings, config):
+        config['tiles'] = config.get('tiles', [])
+        categories = settings.get("%s.tiles_categories" % self.prefix, [])
+        for name, label in categories.items():
             config['tiles'].append({
-                'name': tile_category.split('|')[0],
-                'label': tile_category.split('|')[1],
+                'name': name,
+                'label': label,
                 'tiles': [],
             })
+        return config
 
+    def mapFormatCategories(self, settings, config):
+        config['formats'] = config.get('formats', [])
+
+        categories = settings.get("%s.format_categories" % self.prefix, [])
+
+        for category in categories:
+            config['formats'].append({
+                'name': category['name'],
+                'label': category['label'],
+                'actions': [],
+            })
+        return config
+
+    def mapFormats(self, settings, config):
+        return config
+        formats = settings.get('%s.formats' % self.prefix, [])
+        for key, format in formats.items():
+            index = GetCategoryIndex(config['formats'], format['category'])
+            config['formats'][index]['actions'].append(format)
+
+        return config
+
+    def mapStructureTiles(self, settings, config):
+        return config
         # Structure Tiles
-        for structure_tile in settings.structure_tiles:
+        for structure_tile in settings.get('structure_tiles', []):
             tile_fields = structure_tile.split('|')
             config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
                 'name': tile_fields[0],
@@ -165,10 +167,14 @@ class DecoRegistry(object):
                 'rich_text': GetBool(tile_fields[8]),
                 'available_actions': tile_fields[9:-1],
             })
+        return config
 
+    def mapApplicationTiles(self, settings, config):
+        return config
         # Application Tiles
-        if settings.app_tiles:
-            for app_tile in settings.app_tiles:
+        app_tiles = settings.get('app_tiles', [])
+        if app_tiles:
+            for app_tile in app_tiles:
                 tile_fields = app_tile.split('|')
                 config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
                     'name': tile_fields[0],
@@ -181,7 +187,10 @@ class DecoRegistry(object):
                     'rich_text': GetBool(tile_fields[6]),
                     'available_actions': tile_fields[7:-1],
                 })
+        return config
 
+    def mapFieldTiles(self, settings, config):
+        return config
         # Field Tiles
         #type = self.context.portal_type
         #if hasattr(self.context.REQUEST, 'type'):
@@ -243,11 +252,26 @@ class DecoRegistry(object):
             'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'],
         })
 
-        # URLs
+        return config
+
+    def mapURLS(self, settings, config):
+        return config
         config['document_url'] = self.context.absolute_url()
         if IFolderish.providedBy(self.context):
             config['parent'] = self.context.absolute_url() + "/"
         else:
             config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
+        return config
 
+    def __call__(self):
+        settings = self.parseRegistry(self.registry)
+        config = {}
+        config = self.mapActions(settings, config)
+        config = self.mapTilesCategories(settings, config)
+        config = self.mapFormatCategories(settings, config)
+        config = self.mapFormats(settings, config)
+        config = self.mapStructureTiles(settings, config)
+        config = self.mapApplicationTiles(settings, config)
+        config = self.mapFieldTiles(settings, config)
+        config = self.mapURLS(settings, config)
         return config
