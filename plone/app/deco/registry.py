@@ -150,28 +150,19 @@ class DecoRegistry(object):
         # Structure Tiles
         tiles = settings.get('%s.structure_tiles' % self.prefix, [])
         for key, tile in tiles.items():
+            if not 'category' in tile:
+                continue
             index = GetCategoryIndex(config['tiles'], tile['category'])
             config['tiles'][index]['tiles'].append(tile)
         return config
 
     def mapApplicationTiles(self, settings, config):
-        return config
-        # Application Tiles
-        app_tiles = settings.get('app_tiles', [])
-        if app_tiles:
-            for app_tile in app_tiles:
-                tile_fields = app_tile.split('|')
-                config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
-                    'name': tile_fields[0],
-                    'label': tile_fields[2],
-                    'type': 'app',
-                    'default_value': '',
-                    'read_only': GetBool(tile_fields[3]),
-                    'settings': GetBool(tile_fields[4]),
-                    'favorite': GetBool(tile_fields[5]),
-                    'rich_text': GetBool(tile_fields[6]),
-                    'available_actions': tile_fields[7:-1],
-                })
+        tiles = settings.get('%s.app_tiles' % self.prefix, [])
+        for key, tile in tiles.items():
+            if not 'category' in tile:
+                continue
+            index = GetCategoryIndex(config['tiles'], tile['category'])
+            config['tiles'][index]['tiles'].append(tile)
         return config
 
     def mapFieldTiles(self, settings, config):

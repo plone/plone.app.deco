@@ -43,16 +43,16 @@ class IDecoSettings(form.Schema):
 #        value_type=schema.TextLine(),
 #        required=False)
 
-    formats = schema.List(
-        title=_(u"Styles"),
-        description=_(u"Enter a list of formats. Format is name|category|label|action|icon|favorite, one format per line."),
-        value_type=schema.TextLine(),
-        required=False)
+#    formats = schema.List(
+#        title=_(u"Styles"),
+#        description=_(u"Enter a list of formats. Format is name|category|label|action|icon|favorite, one format per line."),
+#        value_type=schema.TextLine(),
+#        required=False)
 
-    form.fieldset('tiles',
-            label=_(u"Tiles"),
-            fields=['tile_categories', 'structure_tiles', 'app_tiles'],
-        )
+#    form.fieldset('tiles',
+#            label=_(u"Tiles"),
+#            fields=['tile_categories', 'structure_tiles', 'app_tiles'],
+#        )
 
 #    tile_categories = schema.List(
 #        title=_(u"Tile categories"),
@@ -60,17 +60,17 @@ class IDecoSettings(form.Schema):
 #        value_type=schema.TextLine(),
 #        required=False)
 
-    structure_tiles = schema.List(
-        title=_(u"Structure tiles"),
-        description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one format per line."),
-        value_type=schema.TextLine(),
-        required=False)
+#    structure_tiles = schema.List(
+#        title=_(u"Structure tiles"),
+#        description=_(u"Enter a list of structure tiles. Format is name|category|label|type|default_value|read_only|settings|favorite|rich_text|available_actions, one format per line."),
+#        value_type=schema.TextLine(),
+#        required=False)
 
-    app_tiles = schema.List(
-        title=_(u"Application tiles"),
-        description=_(u"Enter a list of application tiles. Format is name|category|label|read_only|settings|favorite|rich_text|available_actions, one format per line."),
-        value_type=schema.TextLine(),
-        required=False)
+#    app_tiles = schema.List(
+#        title=_(u"Application tiles"),
+#        description=_(u"Enter a list of application tiles. Format is name|category|label|read_only|settings|favorite|rich_text|available_actions, one format per line."),
+#        value_type=schema.TextLine(),
+#        required=False)
 
 
 class IDecoRegistryAdapter(Interface):

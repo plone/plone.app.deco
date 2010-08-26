@@ -354,10 +354,60 @@
       </value>
   </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">
-    <value>
-      <element>plone.app.standardtiles.title|fields|Title|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
-      <element>plone.app.standardtiles.description|fields|Description|false|false|false|true|tile-align-block|tile-align-right|tile-align-left</element>
-    </value>
+  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title">
+      <field type="plone.registry.field.Dict">
+          <title>plone.app.standardtiles.title</title>
+          <key_type type="plone.registry.field.TextLine" />
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element key="read_only">False</element>
+          <element key="category">fields</element>
+          <element key="name">plone.app.standardtiles.title</element>
+          <element key="settings">False</element>
+          <element key="favorite">False</element>
+          <element key="label">Title</element>
+          <element key="rich_text">True</element>
+      </value>
   </record>
+  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title.available_actions">
+      <field type="plone.registry.field.List">
+          <title>Available actions for the Text structure tile</title>
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element>tile-align-block</element>
+          <element>tile-align-right</element>
+          <element>tile-align-left</element>
+      </value>
+  </record>
+  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description">
+      <field type="plone.registry.field.Dict">
+          <title>plone.app.standardtiles.description</title>
+          <key_type type="plone.registry.field.TextLine" />
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element key="read_only">False</element>
+          <element key="category">fields</element>
+          <element key="name">plone.app.standardtiles.description</element>
+          <element key="settings">False</element>
+          <element key="favorite">False</element>
+          <element key="label">Description</element>
+          <element key="rich_text">True</element>
+      </value>
+  </record>
+  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description.available_actions">
+      <field type="plone.registry.field.List">
+          <title>Available actions for the Text structure tile</title>
+          <value_type type="plone.registry.field.TextLine" />
+      </field>
+      <value>
+          <element>tile-align-block</element>
+          <element>tile-align-right</element>
+          <element>tile-align-left</element>
+      </value>
+  </record>
+
+
 </registry>
