@@ -109,7 +109,7 @@ xml = """
         <value>
             <element>save</element>
             <element>cancel</element>
-            <element>page_propertiesproperties</element>
+            <element>page-properties</element>
             <element>undo</element>
             <element>redo</element>
             <element>format</element>
