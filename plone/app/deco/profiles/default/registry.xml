@@ -1,7 +1,138 @@
 <?xml version="1.0"?>
 <registry>
+    <!-- Primary actions -->
+    <record name="plone.app.deco.primary_actions.save">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.save Save</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">save</element>
+            <element key="fieldset">save</element>
+            <element key="label">Save</element>
+            <element key="action">save</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.primary_actions.cancel">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.cancel Cancel</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">cancel</element>
+            <element key="fieldset"></element>
+            <element key="label">Cancel</element>
+            <element key="action">cancel</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.primary_actions.page_properties">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.page_properties Page properties</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">page_properties</element>
+            <element key="fieldset"></element>
+            <element key="label">Page properties</element>
+            <element key="action">page-properties</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
 
 
+    <!-- secondary actions -->
+    <record name="plone.app.deco.secondary_actions.layout">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.layout Layout</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">layout</element>
+            <element key="fieldset"></element>
+            <element key="label">Layout</element>
+            <element key="action">layout</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.layout.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the layout action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Layout</element>
+            <element key="newslisting">News listing</element>
+            <element key="projectdetails">Project details</element>
+            <element key="gallery">Gallery</element>
+            <element key="another">Choose another...</element>
+            <element key="template">Save as template...</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.format">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.format Format</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">format</element>
+            <element key="fieldset"></element>
+            <element key="label">Format</element>
+            <element key="action">format</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.format.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the format action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Format</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.insert">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.insert Insert</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">insert</element>
+            <element key="fieldset"></element>
+            <element key="label">Insert</element>
+            <element key="action">insert</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.insert.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the insert action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Insert</element>
+        </value>
+    </record>
+
+
+
+    <!-- Default actions -->
     <record name="plone.app.deco.default_available_actions">
         <field type="plone.registry.field.List">
             <title>Default available actions</title>
@@ -18,6 +149,7 @@
         </value>
     </record>
 
+    <!-- Format categories -->
     <record name="plone.app.deco.format_categories">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
@@ -34,6 +166,7 @@
         </value>
     </record>
 
+    <!-- Formats -->
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.strong"
              >
@@ -254,6 +387,7 @@
         <value key="favorite">false</value>
     </records>
 
+    <!-- Tile categories -->
     <record name="plone.app.deco.tiles_categories">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
@@ -267,6 +401,7 @@
         </value>
     </record>
 
+    <!-- Tiles -->
     <record name="plone.app.deco.structure_tiles.text">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
