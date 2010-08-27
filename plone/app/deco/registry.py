@@ -65,58 +65,25 @@ class DecoRegistry(object):
         return result
 
     def mapActions(self, settings, config):
-        return config
-        # Primary / Secondary Actions
         for action_type in ['primary_actions', 'secondary_actions']:
             config[action_type] = []
-            for action in settings.get(action_type, []):
-                action_fields = action.split('|')
-                items = []
-                if GetBool(action_fields[6]):
-                    for i in range(7, len(action_fields), 2):
-                        items.append({
-                            'value': action_fields[i],
-                            'label': action_fields[i + 1],
-                        })
 
-                record = {
-                    'name': action_fields[0],
-                    'label': action_fields[3],
-                    'action': action_fields[4],
-                    'icon': GetBool(action_fields[5]),
-                    'menu': GetBool(action_fields[6]),
-                    'items': items,
-                }
+            for key, action in settings.get('%s.%s' % (self.prefix, action_type), {}).items():
+                if not hasattr(action, 'fieldset') or not action['fieldset']:
+                    config[action_type].append(action)
+                    continue
 
-                # If no fieldset
-                if action_fields[1] == '':
-                    config[action_type].append(record)
+                index = GetCategoryIndex(config[action_type], action['fieldset'])
+                if not index:
+                    config[action_type].append({'name': action['fieldset'],
+                                                'label': action['fieldset'],
+                                                'actions': []})
 
-                # Fieldset
-                else:
-
-                    # Find fieldset
-                    fieldset_index = -1
-                    count = 0
-                    for config_action in config[action_type]:
-                        if config_action['name'] == action_fields[1]:
-                            fieldset_index = count
-                        count += 1
-
-                    # Fieldset not found
-                    if fieldset_index == -1:
-                        config[action_type].append({
-                            'name': action_fields[1],
-                            'label': action_fields[2],
-                            'actions': [record],
-                        })
-
-                    # Fieldset not found
-                    else:
-                        config[action_type][fieldset_index]['actions'].append(record)
+                config[action_type][index]['actions'].append(action)
 
         # Default Available Actions
-        config['default_available_actions'] = settings.get('default_available_actions', [])
+        config['default_available_actions'] = settings.get('%s.default_available_actions' % self.prefix, [])
+
         return config
 
     def mapTilesCategories(self, settings, config):
