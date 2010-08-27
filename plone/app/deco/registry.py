@@ -69,7 +69,7 @@ class DecoRegistry(object):
             config[action_type] = []
 
             for key, action in settings.get('%s.%s' % (self.prefix, action_type), {}).items():
-                if not hasattr(action, 'fieldset') or not action['fieldset']:
+                if not action['fieldset']:
                     config[action_type].append(action)
                     continue
 
