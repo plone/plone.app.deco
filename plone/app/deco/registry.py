@@ -78,6 +78,7 @@ class DecoRegistry(object):
                     config[action_type].append({'name': action['fieldset'],
                                                 'label': action['fieldset'],
                                                 'actions': []})
+                    index = GetCategoryIndex(config[action_type], action['fieldset'])
 
                 config[action_type][index]['actions'].append(action)
 
@@ -119,6 +120,7 @@ class DecoRegistry(object):
     def mapStructureTiles(self, settings, config):
         # Structure Tiles
         tiles = settings.get('%s.structure_tiles' % self.prefix, {})
+
         for key, tile in tiles.items():
             if not 'category' in tile:
                 continue

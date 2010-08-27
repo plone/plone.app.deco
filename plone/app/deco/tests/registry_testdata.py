@@ -372,15 +372,15 @@ xml = """
     <!-- Tiles -->
     <records prefix="plone.app.deco.structure_tiles.text"
             interface="plone.app.deco.interfaces.ITile">
-        <element key="default_value">&lt;p&gt;New block&lt;/p&gt;</element>
-        <element key="category">structure</element>
-        <element key="read_only">False</element>
-        <element key="name">text</element>
-        <element key="settings">True</element>
-        <element key="favorite">False</element>
-        <element key="label">Text</element>
-        <element key="type">text</element>
-        <element key="rich_text">True</element>
+        <value key="default_value">&lt;p&gt;New block&lt;/p&gt;</value>
+        <value key="category">structure</value>
+        <value key="read_only">False</value>
+        <value key="name">text</value>
+        <value key="settings">True</value>
+        <value key="favorite">False</value>
+        <value key="label">Text</value>
+        <value key="tile_type">text</value>
+        <value key="rich_text">True</value>
     </records>
     <record name="plone.app.deco.structure_tiles.text.available_actions">
         <field type="plone.registry.field.List">

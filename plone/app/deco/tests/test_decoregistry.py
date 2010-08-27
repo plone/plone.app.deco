@@ -56,6 +56,7 @@ class DecoRegistryTest(unittest.TestCase):
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
         config = adapted.mapStructureTiles(settings, config)
+
         self.assertEqual(config, td.parsed_structure_tiles_data)
 
     def test_application_tiles(self):
@@ -71,7 +72,7 @@ class DecoRegistryTest(unittest.TestCase):
         adapted = IDecoRegistryAdapter(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
-        config = self.mapFieldTiles(settings, config)
+        config = adapted.mapFieldTiles(settings, config)
         self.assertEqual(config, td.parsed_map_field_tiles_data)
 
     def test_parse_registry(self):
