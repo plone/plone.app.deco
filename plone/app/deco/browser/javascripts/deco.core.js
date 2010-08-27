@@ -132,6 +132,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         }
                     });
 
+                    tile_config = false;
                     // Get tile config
                     for (x = 0; x < $.deco.options.tiles.length; x += 1) {
                         tile_group = $.deco.options.tiles[x];
@@ -142,10 +143,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         }
                     }
 
+                    if(!tile_config) {
+                        throw "[deco.core] ConfigurationError: couldn't get config for tile type " + tiletype + " in tile group " + tile_group;
+                    }
+
                     // Check if a field tile
-                    if (tile_config.type === 'field') {
+                    if (tile_config.tile_type === 'field') {
 
                         fieldhtml = '';
+                        tile_config.settings = false;
 
                         switch (tile_config.widget) {
                         case "TextFieldWidget":
@@ -170,6 +176,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             fieldhtml = '<span class="discreet">Placeholder ' +
                                 'for field:<br/><b>' + tile_config.label +
                                 '</b></span>';
+                            tile_config.settings = true;
                             break;
                         }
                         tile_content.html(fieldhtml);
