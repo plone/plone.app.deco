@@ -25,6 +25,23 @@ class IAction(Interface):
     menu = schema.Bool(title=u"Menu")
 
 
+class IFieldTile(Interface):
+    """Interface for the field tile configuration in the registry
+    """
+    id = schema.TextLine(title=u"The widget id")
+    name = schema.TextLine(title=u"Name")
+    label = schema.TextLine(title=u"Label")
+    category = schema.TextLine(title=u"Category")
+    tile_type = schema.TextLine(title=u"Type")
+    read_only = schema.Bool(title=u"Read only")
+    favorite = schema.Bool(title=u"Favorite")
+    widget = schema.TextLine(title=u"Field widget")
+    available_actions = schema.List(
+        title=u"Actions",
+        value_type = schema.TextLine()
+    )
+
+
 class ITile(Interface):
     """Interface for the tile configuration in the registry"""
     name = schema.TextLine(title=u"Name")

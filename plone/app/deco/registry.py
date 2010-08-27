@@ -156,7 +156,7 @@ class DecoRegistry(object):
                     'name': fieldconfig['name'],
                     'label': fieldconfig['title'],
                     'category': 'fields',
-                    'type': 'field',
+                    'tile_type': 'field',
                     'read_only': fieldconfig['readonly'],
                     'favorite': False,
                     'widget': fieldconfig['widget'],
