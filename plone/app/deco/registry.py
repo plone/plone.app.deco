@@ -147,7 +147,7 @@ class DecoRegistry(object):
         }
         args.update(kwargs)
         if args['type'] is None:
-            return
+            return config
         for schema in iterSchemataForType(args['type']):
             for fieldconfig in extractFieldInformation(
                         schema, args['context'], args['request']):
@@ -164,6 +164,7 @@ class DecoRegistry(object):
                 }
                 index = GetCategoryIndex(config['tiles'], 'fields')
                 config['tiles'][index]['tiles'].append(tileconfig)
+        return config
 
     def __call__(self, **kwargs):
         settings = self.parseRegistry()
