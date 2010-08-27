@@ -174,18 +174,18 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         switch (tile_config.widget) {
                         case "z3c.form.browser.text.TextWidget":
                         case "z3c.form.browser.text.TextFieldWidget":
-                            fieldhtml = '<' + tile_config.tag + '>' +
+                            fieldhtml = '<div>' +
                                 $("#" + tile_config.id).find('input')
                                     .attr('value') +
-                                '</' + tile_config.tag + '>';
+                                '</div>';
                             break;
                         case "z3c.form.browser.textarea.TextAreaWidget":
                         case "z3c.form.browser.textarea.TextAreaFieldWidget":
                             lines = $("#" + tile_config.id).find('textarea')
                                 .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
-                                fieldhtml += '<' + tile_config.tag + '>' +
-                                    lines[i] + '</' + tile_config.tag + '>';
+                                fieldhtml += '<div>' +
+                                    lines[i] + '</div>';
                             }
                             break;
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
@@ -194,9 +194,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 .find('textarea').attr('value');
                             break;
                         default:
-                            fieldhtml = '<span class="discreet">Placeholder ' +
+                            fieldhtml = '<div class="discreet">Placeholder ' +
                                 'for field:<br/><b>' + tile_config.label +
-                                '</b></span>';
+                                '</b></div>';
                             tile_config.settings = true;
                             break;
                         }

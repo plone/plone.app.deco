@@ -1775,14 +1775,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                return '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
+                return '<div>' + $("#" + tile_config.id).find('input').attr('value') + '</div>';
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
                 var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
                 var return_string = "";
                 for (var i = 0; i < lines.length; i += 1) {
-                    return_string += '<' + tile_config.tag + '>' + lines[i] + '</' + tile_config.tag + '>';
+                    return_string += '<div>' + lines[i] + '</div>';
                 }
                 return return_string;
                 break;
@@ -1791,7 +1791,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 return $("#" + tile_config.id).find('textarea').attr('value');
                 break;
             default:
-                return '<span class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></span>';
+                return '<div class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></div>';
                 break;
             }
             break;
@@ -1831,7 +1831,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').each(function () {
                     value += $(this).html() + "\n";
                 });
-                value = value.replace(/<br[^>]*>/ig);
+                value = value.replace(/<br[^>]*>/ig, "\n");
                 $("#" + tile_config.id).find('textarea').attr('value', value);
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
