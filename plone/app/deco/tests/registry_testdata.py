@@ -1,417 +1,378 @@
 xml = """
 <?xml version="1.0"?>
-<registry>
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="primary_actions">
-    <value>
-      <element>save|save|Save|Save|save|false|false</element>
-      <element>cancel|||Cancel|cancel|false|false</element>
-      <element>page_properties|||Page properties|page-properties|false|false</element>
-    </value>
-  </record>
+<registry purge="True">
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="secondary_actions">
-    <value>
-      <element>layout|||Layout|layout|false|true|none|Layout|newslisting|News listing|projectdetails|Project details|gallery|Gallery|another|Choose another...|template|Save as template...</element>
-      <element>format|||Format|format|false|true|none|Format</element>
-      <element>insert|||Insert|insert|false|true|none|Insert</element>
-    </value>
-  </record>
+    <record name="plone.app.deco.default_available_actions">
+        <field type="plone.registry.field.List">
+            <title>Default available actions</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>save</element>
+            <element>cancel</element>
+            <element>page_propertiesproperties</element>
+            <element>undo</element>
+            <element>redo</element>
+            <element>format</element>
+            <element>insert</element>
+        </value>
+    </record>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="default_available_actions">
-    <value>
-      <element>save</element>
-      <element>cancel</element>
-      <element>page_propertiesproperties</element>
-      <element>undo</element>
-      <element>redo</element>
-      <element>format</element>
-      <element>insert</element>
-    </value>
-  </record>
+    <record name="plone.app.deco.format_categories">
+        <field type="plone.registry.field.Dict">
+            <title>Tile categories</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="actions">Actions</element>
+            <element key="text">Text</element>
+            <element key="selection">Selection</element>
+            <element key="lists">Lists</element>
+            <element key="justify">Justify</element>
+            <element key="print">Print</element>
+        </value>
+    </record>
 
-  <record name="plone.app.deco.format_categories">
-      <field type="plone.registry.field.Dict">
-          <title>Tile categories</title>
-          <key_type type="plone.registry.field.TextLine" />
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element key="actions">Actions</element>
-          <element key="text">Text</element>
-          <element key="selection">Selection</element>
-          <element key="lists">Lists</element>
-          <element key="justify">Justify</element>
-          <element key="print">Print</element>
-      </value>
-  </record>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.strong"
+             >
+        <value key="name">strong</value>
+        <value key="category">text</value>
+        <value key="label">B</value>
+        <value key="action">strong</value>
+        <value key="icon">false</value>
+        <value key="favorite">true</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.em"
+             >
+        <value key="name">em</value>
+        <value key="category">text</value>
+        <value key="label">I</value>
+        <value key="action">em</value>
+        <value key="icon">false</value>
+        <value key="favorite">true</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.paragraph">
+        <value key="name">paragraph</value>
+        <value key="category">text</value>
+        <value key="label">Paragraph</value>
+        <value key="action">paragraph</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.heading">
+        <value key="name">heading</value>
+        <value key="category">text</value>
+        <value key="label">Heading</value>
+        <value key="action">heading</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.subheading">
+        <value key="name">subheading</value>
+        <value key="category">text</value>
+        <value key="label">Subheading</value>
+        <value key="action">subheading</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.discreet">
+        <value key="name">discreet</value>
+        <value key="category">text</value>
+        <value key="label">Discreet</value>
+        <value key="action">discreet</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.literal">
+        <value key="name">literal</value>
+        <value key="category">text</value>
+        <value key="label">Literal</value>
+        <value key="action">literal</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.quote">
+        <value key="name">quote</value>
+        <value key="category">text</value>
+        <value key="label">Quote</value>
+        <value key="action">quote</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.callout">
+        <value key="name">callout</value>
+        <value key="category">text</value>
+        <value key="label">Callout</value>
+        <value key="action">callout</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.highlight">
+        <value key="name">highlight</value>
+        <value key="category">selection</value>
+        <value key="label">Highlight</value>
+        <value key="action">highlight</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.sub">
+        <value key="name">sub</value>
+        <value key="category">selection</value>
+        <value key="label">Subscript</value>
+        <value key="action">sub</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.sup">
+        <value key="name">sup</value>
+        <value key="category">selection</value>
+        <value key="label">Superscript</value>
+        <value key="action">sup</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.remove_format">
+        <value key="name">remove-format</value>
+        <value key="category">selection</value>
+        <value key="label">(Remove format)</value>
+        <value key="action">remove-format</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.ul">
+        <value key="name">ul</value>
+        <value key="category">lists</value>
+        <value key="label">Unordered list</value>
+        <value key="action">ul</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.ol">
+        <value key="name">ol</value>
+        <value key="category">lists</value>
+        <value key="label">Ordered list</value>
+        <value key="action">ol</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.justify_left">
+        <value key="name">justify-left</value>
+        <value key="category">justify</value>
+        <value key="label">Left-aligned</value>
+        <value key="action">justify-left</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.justify_center">
+        <value key="name">justify-center</value>
+        <value key="category">justify</value>
+        <value key="label">Center</value>
+        <value key="action">justify-center</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.justify_right">
+        <value key="name">justify-right</value>
+        <value key="category">justify</value>
+        <value key="label">Right-aligned</value>
+        <value key="action">justify-right</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.justify_justify">
+        <value key="name">justify-justify</value>
+        <value key="category">justify</value>
+        <value key="label">Justified</value>
+        <value key="action">justify-justify</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.tile_align_block">
+        <value key="name">tile-align-block</value>
+        <value key="category">justify</value>
+        <value key="label">Tile block</value>
+        <value key="action">tile-align-block</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.tile_align_left">
+        <value key="name">tile-align-left</value>
+        <value key="category">justify</value>
+        <value key="label">Tile left</value>
+        <value key="action">tile-align-left</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.tile_align_right">
+        <value key="name">tile-align-right</value>
+        <value key="category">justify</value>
+        <value key="label">Tile right</value>
+        <value key="action">tile-align-right</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.pagebreak">
+        <value key="name">pagebreak</value>
+        <value key="category">print</value>
+        <value key="label">Page break</value>
+        <value key="action">pagebreak</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
 
-  <record interface="plone.app.deco.interfaces.IDecoSettings" field="formats">
-    <value>
-        <element>strong</element>
-        <element>em</element>
-        <element>paragraph</element>
-        <element>heading</element>
-        <element>subheading</element>
-        <element>discreet</element>
-        <element>literal</element>
-        <element>quote</element>
-        <element>callout</element>
-        <element>highlight</element>
-        <element>sub</element>
-        <element>sup</element>
-        <element>remove-format</element>
-        <element>ul</element>
-        <element>ol</element>
-        <element>justify-left</element>
-        <element>justify-center</element>
-        <element>justify-right</element>
-        <element>justify-justify</element>
-        <element>tile-align-block</element>
-        <element>tile-align-left</element>
-        <element>tile-align-right</element>
-        <element>pagebreak</element>
-    </value>
-  </record>
+    <records interface="plone.app.deco.interfaces.IFormat"
+             prefix="plone.app.deco.formats.pagebreak">
+        <value key="name">pagebreak</value>
+        <value key="category">print</value>
+        <value key="label">Page break</value>
+        <value key="action">pagebreak</value>
+        <value key="icon">true</value>
+        <value key="favorite">false</value>
+    </records>
 
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.strong"
-           >
-      <value key="name">strong</value>
-      <value key="category">text</value>
-      <value key="label">B</value>
-      <value key="action">strong</value>
-      <value key="icon">false</value>
-      <value key="favorite">true</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.em"
-           >
-      <value key="name">em</value>
-      <value key="category">text</value>
-      <value key="label">I</value>
-      <value key="action">em</value>
-      <value key="icon">false</value>
-      <value key="favorite">true</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.paragraph">
-      <value key="name">paragraph</value>
-      <value key="category">text</value>
-      <value key="label">Paragraph</value>
-      <value key="action">paragraph</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.heading">
-      <value key="name">heading</value>
-      <value key="category">text</value>
-      <value key="label">Heading</value>
-      <value key="action">heading</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.subheading">
-      <value key="name">subheading</value>
-      <value key="category">text</value>
-      <value key="label">Subheading</value>
-      <value key="action">subheading</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.discreet">
-      <value key="name">discreet</value>
-      <value key="category">text</value>
-      <value key="label">Discreet</value>
-      <value key="action">discreet</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.literal">
-      <value key="name">literal</value>
-      <value key="category">text</value>
-      <value key="label">Literal</value>
-      <value key="action">literal</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.quote">
-      <value key="name">quote</value>
-      <value key="category">text</value>
-      <value key="label">Quote</value>
-      <value key="action">quote</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.callout">
-      <value key="name">callout</value>
-      <value key="category">text</value>
-      <value key="label">Callout</value>
-      <value key="action">callout</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.highlight">
-      <value key="name">highlight</value>
-      <value key="category">selection</value>
-      <value key="label">Highlight</value>
-      <value key="action">highlight</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.sub">
-      <value key="name">sub</value>
-      <value key="category">selection</value>
-      <value key="label">Subscript</value>
-      <value key="action">sub</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.sup">
-      <value key="name">sup</value>
-      <value key="category">selection</value>
-      <value key="label">Superscript</value>
-      <value key="action">sup</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.remove_format">
-      <value key="name">remove-format</value>
-      <value key="category">selection</value>
-      <value key="label">(Remove format)</value>
-      <value key="action">remove-format</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.ul">
-      <value key="name">ul</value>
-      <value key="category">lists</value>
-      <value key="label">Unordered list</value>
-      <value key="action">ul</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.ol">
-      <value key="name">ol</value>
-      <value key="category">lists</value>
-      <value key="label">Ordered list</value>
-      <value key="action">ol</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.justify_left">
-      <value key="name">justify-left</value>
-      <value key="category">justify</value>
-      <value key="label">Left-aligned</value>
-      <value key="action">justify-left</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.justify_center">
-      <value key="name">justify-center</value>
-      <value key="category">justify</value>
-      <value key="label">Center</value>
-      <value key="action">justify-center</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.justify_right">
-      <value key="name">justify-right</value>
-      <value key="category">justify</value>
-      <value key="label">Right-aligned</value>
-      <value key="action">justify-right</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.justify_justify">
-      <value key="name">justify-justify</value>
-      <value key="category">justify</value>
-      <value key="label">Justified</value>
-      <value key="action">justify-justify</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.tile_align_block">
-      <value key="name">tile-align-block</value>
-      <value key="category">justify</value>
-      <value key="label">Tile block</value>
-      <value key="action">tile-align-block</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.tile_align_left">
-      <value key="name">tile-align-left</value>
-      <value key="category">justify</value>
-      <value key="label">Tile left</value>
-      <value key="action">tile-align-left</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.tile_align_right">
-      <value key="name">tile-align-right</value>
-      <value key="category">justify</value>
-      <value key="label">Tile right</value>
-      <value key="action">tile-align-right</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.pagebreak">
-      <value key="name">pagebreak</value>
-      <value key="category">print</value>
-      <value key="label">Page break</value>
-      <value key="action">pagebreak</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
+    <record name="plone.app.deco.tiles_categories">
+        <field type="plone.registry.field.Dict">
+            <title>Tile categories</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="structure">Structure</element>
+            <element key="media">Media</element>
+            <element key="fields">Fields</element>
+        </value>
+    </record>
 
-  <records interface="plone.app.deco.interfaces.IFormat"
-           prefix="plone.app.deco.formats.pagebreak">
-      <value key="name">pagebreak</value>
-      <value key="category">print</value>
-      <value key="label">Page break</value>
-      <value key="action">pagebreak</value>
-      <value key="icon">true</value>
-      <value key="favorite">false</value>
-  </records>
+    <record name="plone.app.deco.structure_tiles.text">
+        <field type="plone.registry.field.Dict">
+            <title>Tile categories</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="default_value">&lt;p&gt;New block&lt;/p&gt;</element>
+            <element key="category">structure</element>
+            <element key="read_only">False</element>
+            <element key="name">text</element>
+            <element key="settings">True</element>
+            <element key="favorite">False</element>
+            <element key="label">Text</element>
+            <element key="type">text</element>
+            <element key="rich_text">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.structure_tiles.text.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Text structure tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>strong</element>
+            <element>em</element>
+            <element>paragraph</element>
+            <element>heading</element>
+            <element>subheading</element>
+            <element>discreet</element>
+            <element>literal</element>
+            <element>quote</element>
+            <element>callout</element>
+            <element>highlight</element>
+            <element>sub</element>
+            <element>sup</element>
+            <element>remove-format</element>
+            <element>pagebreak</element>
+            <element>ul</element>
+            <element>ol</element>
+            <element>justify-left</element>
+            <element>justify-center</element>
+            <element>justify-right</element>
+            <element>justify-justify</element>
+            <element>tile-align-block</element>
+            <element>tile-align-right</element>
+        </value>
+    </record>
 
-  <record name="plone.app.deco.tiles_categories">
-      <field type="plone.registry.field.Dict">
-          <title>Tile categories</title>
-          <key_type type="plone.registry.field.TextLine" />
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element key="structure">Structure</element>
-          <element key="media">Media</element>
-          <element key="fields">Fields</element>
-      </value>
-  </record>
-
-  <record name="plone.app.deco.structure_tiles.text">
-      <field type="plone.registry.field.Dict">
-          <title>Tile categories</title>
-          <key_type type="plone.registry.field.TextLine" />
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element key="default_value">&lt;p&gt;New block&lt;/p&gt;</element>
-          <element key="category">structure</element>
-          <element key="read_only">False</element>
-          <element key="name">text</element>
-          <element key="settings">True</element>
-          <element key="favorite">False</element>
-          <element key="label">Text</element>
-          <element key="type">text</element>
-          <element key="rich_text">True</element>
-      </value>
-  </record>
-  <record name="plone.app.deco.structure_tiles.text.available_actions">
-      <field type="plone.registry.field.List">
-          <title>Available actions for the Text structure tile</title>
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element>strong</element>
-          <element>em</element>
-          <element>paragraph</element>
-          <element>heading</element>
-          <element>subheading</element>
-          <element>discreet</element>
-          <element>literal</element>
-          <element>quote</element>
-          <element>callout</element>
-          <element>highlight</element>
-          <element>sub</element>
-          <element>sup</element>
-          <element>remove-format</element>
-          <element>pagebreak</element>
-          <element>ul</element>
-          <element>ol</element>
-          <element>justify-left</element>
-          <element>justify-center</element>
-          <element>justify-right</element>
-          <element>justify-justify</element>
-          <element>tile-align-block</element>
-          <element>tile-align-right</element>
-      </value>
-  </record>
-
-  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title">
-      <field type="plone.registry.field.Dict">
-          <title>plone.app.standardtiles.title</title>
-          <key_type type="plone.registry.field.TextLine" />
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element key="read_only">False</element>
-          <element key="category">fields</element>
-          <element key="name">plone.app.standardtiles.title</element>
-          <element key="settings">False</element>
-          <element key="favorite">False</element>
-          <element key="label">Title</element>
-          <element key="rich_text">True</element>
-      </value>
-  </record>
-  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title.available_actions">
-      <field type="plone.registry.field.List">
-          <title>Available actions for the Text structure tile</title>
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element>tile-align-block</element>
-          <element>tile-align-right</element>
-          <element>tile-align-left</element>
-      </value>
-  </record>
-  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description">
-      <field type="plone.registry.field.Dict">
-          <title>plone.app.standardtiles.description</title>
-          <key_type type="plone.registry.field.TextLine" />
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element key="read_only">False</element>
-          <element key="category">fields</element>
-          <element key="name">plone.app.standardtiles.description</element>
-          <element key="settings">False</element>
-          <element key="favorite">False</element>
-          <element key="label">Description</element>
-          <element key="rich_text">True</element>
-      </value>
-  </record>
-  <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description.available_actions">
-      <field type="plone.registry.field.List">
-          <title>Available actions for the Text structure tile</title>
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element>tile-align-block</element>
-          <element>tile-align-right</element>
-          <element>tile-align-left</element>
-      </value>
-  </record>
-
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.standardtiles.title</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="read_only">False</element>
+            <element key="category">fields</element>
+            <element key="name">plone.app.standardtiles.title</element>
+            <element key="settings">False</element>
+            <element key="favorite">False</element>
+            <element key="label">Title</element>
+            <element key="rich_text">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Text structure tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>tile-align-block</element>
+            <element>tile-align-right</element>
+            <element>tile-align-left</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.standardtiles.description</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="read_only">False</element>
+            <element key="category">fields</element>
+            <element key="name">plone.app.standardtiles.description</element>
+            <element key="settings">False</element>
+            <element key="favorite">False</element>
+            <element key="label">Description</element>
+            <element key="rich_text">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Text structure tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>tile-align-block</element>
+            <element>tile-align-right</element>
+            <element>tile-align-left</element>
+        </value>
+    </record>
 
 </registry>
+
 
 """
 

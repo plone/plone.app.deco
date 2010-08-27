@@ -47,6 +47,9 @@ class DecoRegistry(object):
 
         result = DottedDict()
         for record in self.registry.records:
+            if not record.startswith(self.prefix):
+                continue
+
             splitted = record.split('.')
             current = result
             for x in splitted[:-1]:
@@ -118,7 +121,7 @@ class DecoRegistry(object):
 
     def mapTilesCategories(self, settings, config):
         config['tiles'] = config.get('tiles', [])
-        categories = settings.get("%s.tiles_categories" % self.prefix, [])
+        categories = settings.get("%s.tiles_categories" % self.prefix, {})
         for name, label in categories.items():
             config['tiles'].append({
                 'name': name,
@@ -129,7 +132,7 @@ class DecoRegistry(object):
 
     def mapFormatCategories(self, settings, config):
         config['formats'] = config.get('formats', [])
-        categories = settings.get("%s.format_categories" % self.prefix, [])
+        categories = settings.get("%s.format_categories" % self.prefix, {})
         for name, label in categories.items():
             config['formats'].append({
                 'name': name,
@@ -139,7 +142,7 @@ class DecoRegistry(object):
         return config
 
     def mapFormats(self, settings, config):
-        formats = settings.get('%s.formats' % self.prefix, [])
+        formats = settings.get('%s.formats' % self.prefix, {})
         for key, format in formats.items():
             index = GetCategoryIndex(config['formats'], format['category'])
             config['formats'][index]['actions'].append(format)
@@ -148,7 +151,7 @@ class DecoRegistry(object):
 
     def mapStructureTiles(self, settings, config):
         # Structure Tiles
-        tiles = settings.get('%s.structure_tiles' % self.prefix, [])
+        tiles = settings.get('%s.structure_tiles' % self.prefix, {})
         for key, tile in tiles.items():
             if not 'category' in tile:
                 continue
@@ -157,7 +160,7 @@ class DecoRegistry(object):
         return config
 
     def mapApplicationTiles(self, settings, config):
-        tiles = settings.get('%s.app_tiles' % self.prefix, [])
+        tiles = settings.get('%s.app_tiles' % self.prefix, {})
         for key, tile in tiles.items():
             if not 'category' in tile:
                 continue
@@ -166,68 +169,6 @@ class DecoRegistry(object):
         return config
 
     def mapFieldTiles(self, settings, config):
-        return config
-        # Field Tiles
-        #type = self.context.portal_type
-        #if hasattr(self.context.REQUEST, 'type'):
-        #    type = self.context.REQUEST['type']
-        #fti = getUtility(IDexterityFTI, name=type)
-        #for x in fti.lookupSchema():
-        #    pass
-        #    #log(x)
-
-        #for behavior_name in fti.behaviors:
-        #    try:
-        #        behavior_interface = resolveDottedName(behavior_name)
-        #    except ValueError:
-        #        continue
-        #    if behavior_interface is not None:
-        #        behavior_schema = IFormFieldProvider(behavior_interface, None)
-        #        if behavior_schema is not None:
-        #            for x in behavior_schema:
-        #                pass
-        #                #log(x)
-
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'date',
-            'label': 'Date',
-            'type': 'field',
-            'field_type': 'Datetime',
-            'widget': 'DateTimePickerFieldWidget',
-            'id': 'formfield-form-widgets-date',
-            'read_only': False,
-            'settings': True,
-            'favorite': False,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left', ],
-        })
-
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'agenda',
-            'label': 'Agenda',
-            'type': 'field',
-            'field_type': 'Text',
-            'widget': 'WysiwygFieldWidget',
-            'id': 'formfield-form-widgets-agenda',
-            'read_only': False,
-            'settings': True,
-            'favorite': False,
-            'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left'],
-        })
-
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'recurrence',
-            'label': 'Recurrence',
-            'type': 'field',
-            'field_type': 'Choice',
-            'widget': 'SelectFieldWidget',
-            'id': 'formfield-form-widgets-recurrence',
-            'read_only': True,
-            'settings': False,
-            'favorite': False,
-            'rich_text': True,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'],
-        })
-
         return config
 
     def __call__(self):
