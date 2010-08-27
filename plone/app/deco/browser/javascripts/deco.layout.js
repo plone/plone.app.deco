@@ -425,9 +425,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Init rich text
             if (tile_config &&
-                ((tile_config.type === 'text' && tile_config.rich_text) ||
-                 (tile_config.type === 'app' && tile_config.rich_text) ||
-                 (tile_config.type === 'field' && tile_config.read_only === false && (tile_config.widget === 'TextFieldWidget' || tile_config.widget === 'TextAreaFieldWidget' || tile_config.widget === 'WysiwygFieldWidget')))) {
+                ((tile_config.tile_type === 'text' && tile_config.rich_text) ||
+                 (tile_config.tile_type === 'app' && tile_config.rich_text) ||
+                 (tile_config.tile_type === 'field' && tile_config.read_only === false &&
+                  (tile_config.widget === 'z3c.form.browser.text.TextWidget' ||
+                   tile_config.widget === 'z3c.form.browser.text.TextFieldWidget' ||
+                   tile_config.widget === 'z3c.form.browser.textarea.TextAreaWidget' ||
+                   tile_config.widget === 'z3c.form.browser.textarea.TextAreaFieldWidget' ||
+                   tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygWidget' ||
+                   tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget')))) {
 
                 // Generate random id
                 var random_id = 1 + Math.floor(100000 * Math.random());
@@ -456,7 +462,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             );
 
             // If tile is field tile
-            if (tile_config && tile_config.type === "field") {
+            if (tile_config && tile_config.tile_type === "field") {
 
                 // Add label
                 $(this).prepend(
@@ -494,7 +500,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         .click(function () {
 
                             // Check if app tile
-                            if (tile_config.type === 'app') {
+                            if (tile_config.tile_type === 'app') {
 
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
@@ -551,8 +557,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Add settings icon
             if (tile_config &&
-               ((tile_config.type === 'app') ||
-                (tile_config.type === 'field' && tile_config.widget !== 'TextFieldWidget' && tile_config.widget !== 'TextAreaFieldWidget' && tile_config.widget !== 'WysiwygFieldWidget'))) {
+               ((tile_config.tile_type === 'app') ||
+                (tile_config.tile_type === 'field' &&
+                 tile_config.widget !== 'z3c.form.browser.text.TextWidget' &&
+                 tile_config.widget !== 'z3c.form.browser.text.TextFieldWidget' &&
+                 tile_config.widget !== 'z3c.form.browser.textarea.TextAreaWidget' &&
+                 tile_config.widget !== 'z3c.form.browser.textarea.TextAreaFieldWidget' &&
+                 tile_config.widget !== 'plone.app.z3cform.wysiwyg.widget.WysiwygWidget' &&
+                 tile_config.widget !== 'plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget'))) {
 
                 $(this).prepend(
                     $(document.createElement("div"))
@@ -562,7 +574,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         .click(function () {
 
                             // Check if application tile
-                            if (tile_config.type === 'app') {
+                            if (tile_config.tile_type === 'app') {
 
                                 // Get url
                                 var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
@@ -1758,13 +1770,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @return {String} Default value of the given tile
      */
     $.deco.getDefaultValue = function (tile_config) {
-        switch (tile_config.type) {
+        switch (tile_config.tile_type) {
         case "field":
             switch (tile_config.widget) {
-            case "TextFieldWidget":
+            case "z3c.form.browser.text.TextWidget":
+            case "z3c.form.browser.text.TextFieldWidget":
                 return '<' + tile_config.tag + '>' + $("#" + tile_config.id).find('input').attr('value') + '</' + tile_config.tag + '>';
                 break;
-            case "TextAreaFieldWidget":
+            case "z3c.form.browser.textarea.TextAreaWidget":
+            case "z3c.form.browser.textarea.TextAreaFieldWidget":
                 var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
                 var return_string = "";
                 for (var i = 0; i < lines.length; i += 1) {
@@ -1772,7 +1786,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
                 return return_string;
                 break;
-            case "WysiwygFieldWidget":
+            case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+            case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
                 return $("#" + tile_config.id).find('textarea').attr('value');
                 break;
             default:
@@ -1797,12 +1812,21 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.saveTileValueToForm = function (tiletype, tile_config) {
 
         // Update field values if type is rich text
-        if (tile_config && tile_config.type === 'field' && tile_config.read_only === false && (tile_config.widget === 'TextFieldWidget' || tile_config.widget === 'TextAreaFieldWidget' || tile_config.widget === 'WysiwygFieldWidget')) {
+        if (tile_config && tile_config.tile_type === 'field' &&
+            tile_config.read_only === false &&
+            (tile_config.widget === 'z3c.form.browser.text.TextWidget' ||
+             tile_config.widget === 'z3c.form.browser.text.TextFieldWidget' ||
+             tile_config.widget === 'z3c.form.browser.textarea.TextAreaWidget' ||
+             tile_config.widget === 'z3c.form.browser.textarea.TextAreaFieldWidget' ||
+             tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygWidget' ||
+             tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget')) {
             switch (tile_config.widget) {
-            case 'TextFieldWidget':
+            case "z3c.form.browser.text.TextWidget":
+            case "z3c.form.browser.text.TextFieldWidget":
                 $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
                 break;
-            case 'TextAreaFieldWidget':
+            case "z3c.form.browser.textarea.TextAreaWidget":
+            case "z3c.form.browser.textarea.TextAreaFieldWidget":
                 var value = "";
                 $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').each(function () {
                     value += $(this).html() + "\n";
@@ -1810,7 +1834,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 value = value.replace(/<br[^>]*>/ig);
                 $("#" + tile_config.id).find('textarea').attr('value', value);
                 break;
-            case 'WysiwygFieldWidget':
+            case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+            case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
                 $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
                 break;
             }
@@ -1892,7 +1917,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             // Predefine vars
                             var url, html_id;
 
-                            switch (tile_config.type) {
+                            switch (tile_config.tile_type) {
                             case "text":
                                 body += '          <div class="' + $(this).attr("class") + '">\n';
                                 body += '          <div class="deco-tile-content">\n';

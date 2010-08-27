@@ -166,18 +166,21 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     }
 
                     // Check if a field tile
-                    if (tile_config.type === 'field') {
+                    if (tile_config.tile_type === 'field') {
 
                         fieldhtml = '';
+                        tile_config.settings = false;
 
                         switch (tile_config.widget) {
-                        case "TextFieldWidget":
+                        case "z3c.form.browser.text.TextWidget":
+                        case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<' + tile_config.tag + '>' +
                                 $("#" + tile_config.id).find('input')
                                     .attr('value') +
                                 '</' + tile_config.tag + '>';
                             break;
-                        case "TextAreaFieldWidget":
+                        case "z3c.form.browser.textarea.TextAreaWidget":
+                        case "z3c.form.browser.textarea.TextAreaFieldWidget":
                             lines = $("#" + tile_config.id).find('textarea')
                                 .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
@@ -185,7 +188,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                     lines[i] + '</' + tile_config.tag + '>';
                             }
                             break;
-                        case "WysiwygFieldWidget":
+                        case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+                        case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
                             fieldhtml = $("#" + tile_config.id)
                                 .find('textarea').attr('value');
                             break;
@@ -193,6 +197,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             fieldhtml = '<span class="discreet">Placeholder ' +
                                 'for field:<br/><b>' + tile_config.label +
                                 '</b></span>';
+                            tile_config.settings = true;
                             break;
                         }
                         tile_content.html(fieldhtml);
@@ -412,7 +417,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     if (typeof(tiledata.url) !== 'undefined') {
 
                         // Insert app tile
-                        window.parent.jQuery.deco.addAppTile(tiledata.type,
+                        window.parent.jQuery.deco.addAppTile(tiledata.tile_type,
                             tiledata.url, tiledata.id);
                     }
                 } else {
