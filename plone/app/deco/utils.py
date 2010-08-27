@@ -61,7 +61,17 @@ def _getWidgetName(field, widgets, request):
         factory = getMultiAdapter((field, request), IFieldWidget)
     if isinstance(factory, basestring):
         return factory
+    if not isinstance(factory, type):
+        factory = factory.__class__
     return '%s.%s' % (factory.__module__, factory.__name__)
+
+
+def is_visible(name, omitted):
+    value = omitted.get(name, False)
+    if isinstance(value, basestring):
+        return value == 'false'
+    else:
+        return not bool(value)
 
 
 def extractFieldInformation(schema, context, request):
@@ -84,8 +94,7 @@ def extractFieldInformation(schema, context, request):
         elif mode == DISPLAY_MODE:
             read_only.append(name)
     for name in schema.names():
-        if not omitted.get(name, False) and \
-                omitted.get(name, 'false') == 'false':
+        if is_visible(name, omitted):
             yield {
                 'name': name,
                 'title': schema[name].title,
