@@ -412,4 +412,378 @@
             <element>tile-align-right</element>
         </value>
     </record>
+
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_title"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Title</value>
+        <value key="label">plone.app.standardtiles.title</value>
+        <value key="category">fields</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">false</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">true</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Title tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_description"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Description</value>
+        <value key="label">plone.app.standardtiles.description</value>
+        <value key="category">fields</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">false</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">true</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Description tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_image"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Image</value>
+        <value key="label">plone.app.standardtiles.image</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_image.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Image tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_attachment"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Attachment</value>
+        <value key="label">plone.app.standardtiles.attachment</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_attachment.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Attachment tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_video"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Video</value>
+        <value key="label">plone.app.standardtiles.video</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_video.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Video tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_proxy"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Proxy</value>
+        <value key="label">plone.app.standardtiles.proxy</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_proxy.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Proxy tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_navigation"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Navtree</value>
+        <value key="label">plone.app.standardtiles.navigation</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_navigation.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Navtree tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_discussion"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Discussion</value>
+        <value key="label">plone.app.standardtiles.discussion</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_discussion.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Discussion tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_contentlisting"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Content listing</value>
+        <value key="label">plone.app.standardtiles.contentlisting</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_contentlisting.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Content listing tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_rss"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">RSS</value>
+        <value key="label">plone.app.standardtiles.rss</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_rss.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the RSS tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_tableofcontents"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Table of contents</value>
+        <value key="label">plone.app.standardtiles.tableofcontents</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_tableofcontents.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Table of contents tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_document_byline"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Document byline</value>
+        <value key="label">plone.app.standardtiles.document_byline</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_document_byline.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Document byline tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_related_items"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Related items</value>
+        <value key="label">plone.app.standardtiles.related_items</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_related_items.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Related items tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_calendar"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Calendar</value>
+        <value key="label">plone.app.standardtiles.calendar</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_calendar.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Calendar tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_keywords"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Keywords</value>
+        <value key="label">plone.app.standardtiles.keywords</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_keywords.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Keywords tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
 </registry>

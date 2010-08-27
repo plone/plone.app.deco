@@ -51,12 +51,12 @@ class DecoRegistryTest(unittest.TestCase):
         self.assertEqual(config, td.parsed_tiles_categories_data)
 
     def test_structure_tiles(self):
+        self.maxDiff = None
         registry = self.createRegistry(td.xml)
         adapted = IDecoRegistryAdapter(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
         config = adapted.mapStructureTiles(settings, config)
-
         self.assertEqual(config, td.parsed_structure_tiles_data)
 
     def test_application_tiles(self):
@@ -67,17 +67,9 @@ class DecoRegistryTest(unittest.TestCase):
         config = adapted.mapApplicationTiles(settings, config)
         self.assertEqual(config, td.parsed_application_tiles_data)
     
-    def test_map_field_tiles(self):
-        registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
-        settings = adapted.parseRegistry()
-        config = adapted.mapTilesCategories(settings, {})
-        config = adapted.mapFieldTiles(settings, config)
-        self.assertEqual(config, td.parsed_map_field_tiles_data)
-
     def test_parse_registry(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
         settings = IDecoRegistryAdapter(registry)()
-        # self.maxDiff = None
+        self.maxDiff = None
         self.assertEqual(settings, td.parsed_data)

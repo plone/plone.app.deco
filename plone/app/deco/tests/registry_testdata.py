@@ -413,10 +413,55 @@ xml = """
         </value>
     </record>
 
-"""
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_title"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Title</value>
+        <value key="label">plone.app.standardtiles.title</value>
+        <value key="category">fields</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">false</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">true</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_title.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Title tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
 
-xml += """
-  <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_image"
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_description"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Description</value>
+        <value key="label">plone.app.standardtiles.description</value>
+        <value key="category">fields</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">false</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">true</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_description.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Description tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_image"
             interface="plone.app.deco.interfaces.ITile">        
         <value key="name">Image</value>
         <value key="label">plone.app.standardtiles.image</value>
@@ -464,11 +509,286 @@ xml += """
              <element>tile-align-right</element>
              <element>tile-align-left</element>
         </value>
-    </record>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_video"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Video</value>
+        <value key="label">plone.app.standardtiles.video</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_video.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Video tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_proxy"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Proxy</value>
+        <value key="label">plone.app.standardtiles.proxy</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_proxy.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Proxy tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_navigation"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Navtree</value>
+        <value key="label">plone.app.standardtiles.navigation</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_navigation.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Navtree tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_discussion"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Discussion</value>
+        <value key="label">plone.app.standardtiles.discussion</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_discussion.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Discussion tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_contentlisting"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Content listing</value>
+        <value key="label">plone.app.standardtiles.contentlisting</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_contentlisting.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Content listing tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_rss"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">RSS</value>
+        <value key="label">plone.app.standardtiles.rss</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_rss.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the RSS tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_tableofcontents"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Table of contents</value>
+        <value key="label">plone.app.standardtiles.tableofcontents</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_tableofcontents.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Table of contents tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_document_byline"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Document byline</value>
+        <value key="label">plone.app.standardtiles.document_byline</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_document_byline.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Document byline tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_related_items"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Related items</value>
+        <value key="label">plone.app.standardtiles.related_items</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_related_items.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Related items tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_calendar"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Calendar</value>
+        <value key="label">plone.app.standardtiles.calendar</value>
+        <value key="category">media</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_calendar.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Calendar tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
+
+   <records prefix="plone.app.deco.app_tiles.plone_app_standardtiles_keywords"
+            interface="plone.app.deco.interfaces.ITile">        
+        <value key="name">Keywords</value>
+        <value key="label">plone.app.standardtiles.keywords</value>
+        <value key="category">structure</value>
+        <value key="tile_type">app</value>
+        <value key="default_value"></value>
+        <value key="read_only">false</value>
+        <value key="settings">true</value>
+        <value key="favorite">false</value>
+        <value key="rich_text">false</value>
+    </records>
+    <record name="plone.app.deco.app_tiles.plone_app_standardtiles_keywords.available_actions">
+        <field type="plone.registry.field.List">
+            <title>Available actions for the Keywords tile</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+             <element>blur</element>
+             <element>tile-align-block</element>
+             <element>tile-align-right</element>
+             <element>tile-align-left</element>
+        </value>
+    </record>  
 </registry>
 """
 
-parsed_data = {'tiles': [{'tiles': [{'default_value': u'<p>New block</p>', 'read_only': False, 'name': u'text', 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], 'settings': True, 'favorite': False, 'type': u'text', 'rich_text': True, 'label': u'Text'}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [{'default_value': '', 'read_only': False, 'name': u'plone.app.standardtiles.title', 'available_actions': [u'tile-align-block', u'tile-align-right'], 'settings': False, 'favorite': False, 'type': 'app', 'rich_text': True, 'label': u'Title'}, {'default_value': '', 'read_only': False, 'name': u'plone.app.standardtiles.description', 'available_actions': [u'tile-align-block', u'tile-align-right'], 'settings': False, 'favorite': False, 'type': 'app', 'rich_text': True, 'label': u'Description'}, {'read_only': False, 'field_type': 'Datetime', 'widget': 'DateTimePickerFieldWidget', 'name': 'date', 'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'], 'settings': True, 'favorite': False, 'type': 'field', 'id': 'formfield-form-widgets-date', 'label': 'Date'}, {'read_only': False, 'field_type': 'Text', 'widget': 'WysiwygFieldWidget', 'name': 'agenda', 'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left'], 'settings': True, 'favorite': False, 'type': 'field', 'id': 'formfield-form-widgets-agenda', 'label': 'Agenda'}, {'widget': 'SelectFieldWidget', 'id': 'formfield-form-widgets-recurrence', 'read_only': True, 'field_type': 'Choice', 'name': 'recurrence', 'settings': False, 'type': 'field', 'favorite': False, 'label': 'Recurrence', 'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'], 'rich_text': True}], 'name': u'fields', 'label': u'Fields'}], 'default_available_actions': [u'save', u'cancel', u'page-properties', u'undo', u'redo', u'format', u'insert'], 'primary_actions': [{'name': u'save', 'actions': [{'name': u'save', 'menu': False, 'label': u'Save', 'items': [], 'action': u'save', 'icon': False}], 'label': u'Save'}, {'name': u'cancel', 'menu': False, 'label': u'Cancel', 'items': [], 'action': u'cancel', 'icon': False}, {'name': u'page_properties', 'menu': False, 'label': u'Page properties', 'items': [], 'action': u'page-properties', 'icon': False}], 'secondary_actions': [{'name': u'layout', 'menu': True, 'label': u'Layout', 'items': [{'value': u'none', 'label': u'Layout'}, {'value': u'newslisting', 'label': u'News listing'}, {'value': u'projectdetails', 'label': u'Project details'}, {'value': u'gallery', 'label': u'Gallery'}, {'value': u'another', 'label': u'Choose another...'}, {'value': u'template', 'label': u'Save as template...'}], 'action': u'layout', 'icon': False}, {'name': u'format', 'menu': True, 'label': u'Format', 'items': [{'value': u'none', 'label': u'Format'}], 'action': u'format', 'icon': False}, {'name': u'insert', 'menu': True, 'label': u'Insert', 'items': [{'value': u'none', 'label': u'Insert'}], 'action': u'insert', 'icon': False}], 'formats': [{'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'text', 'actions': [{'action': u'strong', 'icon': False, 'favorite': True, 'name': u'strong', 'label': u'B'}, {'action': u'em', 'icon': False, 'favorite': True, 'name': u'em', 'label': u'I'}, {'action': u'paragraph', 'icon': True, 'favorite': False, 'name': u'paragraph', 'label': u'Paragraph'}, {'action': u'heading', 'icon': True, 'favorite': False, 'name': u'heading', 'label': u'Heading'}, {'action': u'subheading', 'icon': True, 'favorite': False, 'name': u'subheading', 'label': u'Subheading'}, {'action': u'discreet', 'icon': True, 'favorite': False, 'name': u'discreet', 'label': u'Discreet'}, {'action': u'literal', 'icon': True, 'favorite': False, 'name': u'literal', 'label': u'Literal'}, {'action': u'quote', 'icon': True, 'favorite': False, 'name': u'quote', 'label': u'Quote'}, {'action': u'callout', 'icon': True, 'favorite': False, 'name': u'callout', 'label': u'Callout'}], 'label': u'Text'}, {'name': u'selection', 'actions': [{'action': u'highlight', 'icon': True, 'favorite': False, 'name': u'highlight', 'label': u'Highlight'}, {'action': u'sub', 'icon': True, 'favorite': False, 'name': u'sub', 'label': u'Subscript'}, {'action': u'sup', 'icon': True, 'favorite': False, 'name': u'sup', 'label': u'Superscript'}, {'action': u'remove-format', 'icon': True, 'favorite': False, 'name': u'remove-format', 'label': u'(Remove format)'}], 'label': u'Selection'}, {'name': u'lists', 'actions': [{'action': u'ul', 'icon': True, 'favorite': False, 'name': u'ul', 'label': u'Unordered list'}, {'action': u'ol', 'icon': True, 'favorite': False, 'name': u'ol', 'label': u'Ordered list'}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'action': u'justify-left', 'icon': True, 'favorite': False, 'name': u'justify-left', 'label': u'Left-aligned'}, {'action': u'justify-center', 'icon': True, 'favorite': False, 'name': u'justify-center', 'label': u'Center'}, {'action': u'justify-right', 'icon': True, 'favorite': False, 'name': u'justify-right', 'label': u'Right-aligned'}, {'action': u'justify-justify', 'icon': True, 'favorite': False, 'name': u'justify-justify', 'label': u'Justified'}, {'action': u'tile-align-block', 'icon': True, 'favorite': False, 'name': u'tile-align-block', 'label': u'Tile block'}, {'action': u'tile-align-left', 'icon': True, 'favorite': False, 'name': u'tile-align-left', 'label': u'Tile left'}, {'action': u'tile-align-right', 'icon': True, 'favorite': False, 'name': u'tile-align-right', 'label': u'Tile right'}], 'label': u'Justify'}, {'name': u'print', 'actions': [{'action': u'pagebreak', 'icon': True, 'favorite': False, 'name': u'pagebreak', 'label': u'Page break'}], 'label': u'Print'}]}
+parsed_data = {'tiles': [{'tiles': [{'category': u'media', 'default_value': None, 'name': u'Discussion', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.discussion', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Video', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.video', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Navtree', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.navigation', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'RSS', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.rss', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Image', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.image', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Calendar', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.calendar', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Proxy', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.proxy', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Attachment', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.attachment', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'media', 'label': u'Media'}, {'tiles': [{'category': u'structure', 'default_value': u'<p>New block</p>', 'name': u'text', 'settings': True, 'tile_type': u'text', 'favorite': False, 'label': u'Text', 'read_only': False, 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], 'rich_text': True}, {'category': u'structure', 'default_value': None, 'name': u'Keywords', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.keywords', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Content listing', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.contentlisting', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Related items', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.related_items', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Document byline', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.document_byline', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Table of contents', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.tableofcontents', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [{'category': u'fields', 'default_value': None, 'name': u'Description', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.description', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}, {'category': u'fields', 'default_value': None, 'name': u'Title', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.title', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}], 'name': u'fields', 'label': u'Fields'}], 'secondary_actions': [{'name': u'None', 'actions': [{'fieldset': u'None', 'name': u'insert', 'items': {u'none': u'Insert'}, 'label': u'Insert', 'menu': True, 'action': u'insert', 'icon': False}, {'fieldset': u'None', 'name': u'layout', 'items': {u'none': u'Layout', u'another': u'Choose another...', u'template': u'Save as template...', u'newslisting': u'News listing', u'projectdetails': u'Project details', u'gallery': u'Gallery'}, 'label': u'Layout', 'menu': True, 'action': u'layout', 'icon': False}, {'fieldset': u'None', 'name': u'format', 'items': {u'none': u'Format'}, 'label': u'Format', 'menu': True, 'action': u'format', 'icon': False}], 'label': u'None'}, {'name': u'None', 'actions': [], 'label': u'None'}, {'name': u'None', 'actions': [], 'label': u'None'}], 'primary_actions': [{'name': u'save', 'actions': [{'fieldset': u'save', 'name': u'save', 'menu': False, 'label': u'Save', 'action': u'save', 'icon': False}], 'label': u'save'}], 'default_available_actions': [u'save', u'cancel', u'page_propertiesproperties', u'undo', u'redo', u'format', u'insert'], 'formats': [{'name': u'selection', 'actions': [{'category': u'selection', 'name': u'sub', 'favorite': False, 'label': u'Subscript', 'action': u'sub', 'icon': True}, {'category': u'selection', 'name': u'sup', 'favorite': False, 'label': u'Superscript', 'action': u'sup', 'icon': True}, {'category': u'selection', 'name': u'highlight', 'favorite': False, 'label': u'Highlight', 'action': u'highlight', 'icon': True}, {'category': u'selection', 'name': u'remove-format', 'favorite': False, 'label': u'(Remove format)', 'action': u'remove-format', 'icon': True}], 'label': u'Selection'}, {'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'print', 'actions': [{'category': u'print', 'name': u'pagebreak', 'favorite': False, 'label': u'Page break', 'action': u'pagebreak', 'icon': True}], 'label': u'Print'}, {'name': u'text', 'actions': [{'category': u'text', 'name': u'em', 'favorite': True, 'label': u'I', 'action': u'em', 'icon': False}, {'category': u'text', 'name': u'callout', 'favorite': False, 'label': u'Callout', 'action': u'callout', 'icon': True}, {'category': u'text', 'name': u'subheading', 'favorite': False, 'label': u'Subheading', 'action': u'subheading', 'icon': True}, {'category': u'text', 'name': u'literal', 'favorite': False, 'label': u'Literal', 'action': u'literal', 'icon': True}, {'category': u'text', 'name': u'quote', 'favorite': False, 'label': u'Quote', 'action': u'quote', 'icon': True}, {'category': u'text', 'name': u'discreet', 'favorite': False, 'label': u'Discreet', 'action': u'discreet', 'icon': True}, {'category': u'text', 'name': u'strong', 'favorite': True, 'label': u'B', 'action': u'strong', 'icon': False}, {'category': u'text', 'name': u'paragraph', 'favorite': False, 'label': u'Paragraph', 'action': u'paragraph', 'icon': True}, {'category': u'text', 'name': u'heading', 'favorite': False, 'label': u'Heading', 'action': u'heading', 'icon': True}], 'label': u'Text'}, {'name': u'lists', 'actions': [{'category': u'lists', 'name': u'ol', 'favorite': False, 'label': u'Ordered list', 'action': u'ol', 'icon': True}, {'category': u'lists', 'name': u'ul', 'favorite': False, 'label': u'Unordered list', 'action': u'ul', 'icon': True}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'category': u'justify', 'name': u'tile-align-right', 'favorite': False, 'label': u'Tile right', 'action': u'tile-align-right', 'icon': True}, {'category': u'justify', 'name': u'justify-justify', 'favorite': False, 'label': u'Justified', 'action': u'justify-justify', 'icon': True}, {'category': u'justify', 'name': u'tile-align-block', 'favorite': False, 'label': u'Tile block', 'action': u'tile-align-block', 'icon': True}, {'category': u'justify', 'name': u'justify-left', 'favorite': False, 'label': u'Left-aligned', 'action': u'justify-left', 'icon': True}, {'category': u'justify', 'name': u'tile-align-left', 'favorite': False, 'label': u'Tile left', 'action': u'tile-align-left', 'icon': True}, {'category': u'justify', 'name': u'justify-center', 'favorite': False, 'label': u'Center', 'action': u'justify-center', 'icon': True}, {'category': u'justify', 'name': u'justify-right', 'favorite': False, 'label': u'Right-aligned', 'action': u'justify-right', 'icon': True}], 'label': u'Justify'}]}
 
 parsed_format_categories_data = {'formats': [{'name': u'selection', 'actions': [], 'label': u'Selection'}, {'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'print', 'actions': [], 'label': u'Print'}, {'name': u'text', 'actions': [], 'label': u'Text'}, {'name': u'lists', 'actions': [], 'label': u'Lists'}, {'name': u'justify', 'actions': [], 'label': u'Justify'}]}
 
@@ -476,4 +796,6 @@ parsed_format_data = {'formats': [{'name': u'selection', 'actions': [{'category'
 
 parsed_tiles_categories_data = {'tiles': [{'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'fields', 'label': u'Fields'}]}
 
-parsed_structure_tiles_data = {'tiles': [{'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [{u'default_value': u'<p>New block</p>', u'category': u'structure', u'name': u'text', u'settings': u'True', 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], u'favorite': u'False', u'label': u'Text', u'read_only': u'False', u'type': u'text', u'rich_text': u'True'}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'fields', 'label': u'Fields'}]}
+parsed_structure_tiles_data = {'tiles': [{'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [{'category': u'structure', 'default_value': u'<p>New block</p>', 'name': u'text', 'settings': True, 'tile_type': u'text', 'favorite': False, 'label': u'Text', 'read_only': False, 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], 'rich_text': True}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'fields', 'label': u'Fields'}]}
+
+parsed_application_tiles_data = {'tiles': [{'tiles': [{'category': u'media', 'default_value': None, 'name': u'Discussion', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.discussion', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Video', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.video', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Navtree', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.navigation', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'RSS', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.rss', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Image', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.image', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Calendar', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.calendar', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Proxy', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.proxy', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'Attachment', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.attachment', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'media', 'label': u'Media'}, {'tiles': [{'category': u'structure', 'default_value': None, 'name': u'Keywords', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.keywords', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Content listing', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.contentlisting', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Related items', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.related_items', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Document byline', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.document_byline', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'Table of contents', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.tableofcontents', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [{'category': u'fields', 'default_value': None, 'name': u'Description', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.description', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}, {'category': u'fields', 'default_value': None, 'name': u'Title', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'plone.app.standardtiles.title', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}], 'name': u'fields', 'label': u'Fields'}]}
