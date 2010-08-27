@@ -11,20 +11,20 @@
         <value key="menu">False</value>
     </records>
 
-    <records name="plone.app.deco.primary_actions.cancel"
+    <records prefix="plone.app.deco.primary_actions.cancel"
             interface='plone.app.deco.interfaces.IAction'>
         <value key="name">cancel</value>
-        <value key="fieldset">None</value>
+        <value key="fieldset"></value>
         <value key="label">Cancel</value>
         <value key="action">cancel</value>
         <value key="icon">False</value>
         <value key="menu">False</value>
     </records>
 
-    <records name="plone.app.deco.primary_actions.page_properties"
+    <records prefix="plone.app.deco.primary_actions.page_properties"
              interface='plone.app.deco.interfaces.IAction'>
         <value key="name">page_properties</value>
-        <value key="fieldset">None</value>
+        <value key="fieldset"></value>
         <value key="label">Page properties</value>
         <value key="action">page-properties</value>
         <value key="icon">False</value>
@@ -36,7 +36,7 @@
     <records prefix="plone.app.deco.secondary_actions.layout"
             interface='plone.app.deco.interfaces.IAction'>
         <value key="name">layout</value>
-        <value key="fieldset">None</value>
+        <value key="fieldset"></value>
         <value key="label">Layout</value>
         <value key="action">layout</value>
         <value key="icon">False</value>
@@ -61,7 +61,7 @@
     <records prefix="plone.app.deco.secondary_actions.format"
              interface='plone.app.deco.interfaces.IAction'>
         <value key="name">format</value>
-        <value key="fieldset">None</value>
+        <value key="fieldset"></value>
         <value key="label">Format</value>
         <value key="action">format</value>
         <value key="icon">False</value>
@@ -81,7 +81,7 @@
     <records prefix="plone.app.deco.secondary_actions.insert"
             interface='plone.app.deco.interfaces.IAction'>
         <value key="name">insert</value>
-        <value key="fieldset">None</value>
+        <value key="fieldset"></value>
         <value key="label">Insert</value>
         <value key="action">insert</value>
         <value key="icon">False</value>
