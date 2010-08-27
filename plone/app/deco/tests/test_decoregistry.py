@@ -67,7 +67,7 @@ class DecoRegistryTest(unittest.TestCase):
         config = adapted.mapApplicationTiles(settings, config)
         self.assertEqual(config, td.parsed_application_tiles_data)
     
-    def test_parse_registry(self):
+    def test_config(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
         settings = IDecoRegistryAdapter(registry)()
