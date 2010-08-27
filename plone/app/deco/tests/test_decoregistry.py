@@ -71,5 +71,4 @@ class DecoRegistryTest(unittest.TestCase):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
         settings = IDecoRegistryAdapter(registry)()
-        self.maxDiff = None
         self.assertEqual(settings, td.parsed_data)
