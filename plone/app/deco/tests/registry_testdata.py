@@ -1,7 +1,138 @@
 xml = """
-<?xml version="1.0"?>
-<registry purge="True">
+<registry>
+    <!-- Primary actions -->
+    <record name="plone.app.deco.primary_actions.save">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.save Save</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">save</element>
+            <element key="fieldset">save</element>
+            <element key="label">Save</element>
+            <element key="action">save</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.primary_actions.cancel">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.cancel Cancel</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">cancel</element>
+            <element key="fieldset"></element>
+            <element key="label">Cancel</element>
+            <element key="action">cancel</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.primary_actions.page_properties">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.primary_actions.page_properties Page properties</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">page_properties</element>
+            <element key="fieldset"></element>
+            <element key="label">Page properties</element>
+            <element key="action">page-properties</element>
+            <element key="icon">False</element>
+            <element key="menu">False</element>
+        </value>
+    </record>
 
+
+    <!-- secondary actions -->
+    <record name="plone.app.deco.secondary_actions.layout">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.layout Layout</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">layout</element>
+            <element key="fieldset"></element>
+            <element key="label">Layout</element>
+            <element key="action">layout</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.layout.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the layout action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Layout</element>
+            <element key="newslisting">News listing</element>
+            <element key="projectdetails">Project details</element>
+            <element key="gallery">Gallery</element>
+            <element key="another">Choose another...</element>
+            <element key="template">Save as template...</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.format">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.format Format</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">format</element>
+            <element key="fieldset"></element>
+            <element key="label">Format</element>
+            <element key="action">format</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.format.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the format action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Format</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.insert">
+        <field type="plone.registry.field.Dict">
+            <title>plone.app.deco.secondary_actions.insert Insert</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="name">insert</element>
+            <element key="fieldset"></element>
+            <element key="label">Insert</element>
+            <element key="action">insert</element>
+            <element key="icon">False</element>
+            <element key="menu">True</element>
+        </value>
+    </record>
+    <record name="plone.app.deco.secondary_actions.insert.items">
+        <field type="plone.registry.field.Dict">
+            <title>Available items for the insert action</title>
+            <key_type type="plone.registry.field.TextLine" />
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element key="none">Insert</element>
+        </value>
+    </record>
+
+
+
+    <!-- Default actions -->
     <record name="plone.app.deco.default_available_actions">
         <field type="plone.registry.field.List">
             <title>Default available actions</title>
@@ -18,6 +149,7 @@ xml = """
         </value>
     </record>
 
+    <!-- Format categories -->
     <record name="plone.app.deco.format_categories">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
@@ -34,6 +166,7 @@ xml = """
         </value>
     </record>
 
+    <!-- Formats -->
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.strong"
              >
@@ -254,6 +387,7 @@ xml = """
         <value key="favorite">false</value>
     </records>
 
+    <!-- Tile categories -->
     <record name="plone.app.deco.tiles_categories">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
@@ -267,6 +401,7 @@ xml = """
         </value>
     </record>
 
+    <!-- Tiles -->
     <record name="plone.app.deco.structure_tiles.text">
         <field type="plone.registry.field.Dict">
             <title>Tile categories</title>
@@ -372,8 +507,6 @@ xml = """
     </record>
 
 </registry>
-
-
 """
 
 parsed_data = {'tiles': [{'tiles': [{'default_value': u'<p>New block</p>', 'read_only': False, 'name': u'text', 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], 'settings': True, 'favorite': False, 'type': u'text', 'rich_text': True, 'label': u'Text'}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [], 'name': u'media', 'label': u'Media'}, {'tiles': [{'default_value': '', 'read_only': False, 'name': u'plone.app.standardtiles.title', 'available_actions': [u'tile-align-block', u'tile-align-right'], 'settings': False, 'favorite': False, 'type': 'app', 'rich_text': True, 'label': u'Title'}, {'default_value': '', 'read_only': False, 'name': u'plone.app.standardtiles.description', 'available_actions': [u'tile-align-block', u'tile-align-right'], 'settings': False, 'favorite': False, 'type': 'app', 'rich_text': True, 'label': u'Description'}, {'read_only': False, 'field_type': 'Datetime', 'widget': 'DateTimePickerFieldWidget', 'name': 'date', 'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'], 'settings': True, 'favorite': False, 'type': 'field', 'id': 'formfield-form-widgets-date', 'label': 'Date'}, {'read_only': False, 'field_type': 'Text', 'widget': 'WysiwygFieldWidget', 'name': 'agenda', 'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left'], 'settings': True, 'favorite': False, 'type': 'field', 'id': 'formfield-form-widgets-agenda', 'label': 'Agenda'}, {'widget': 'SelectFieldWidget', 'id': 'formfield-form-widgets-recurrence', 'read_only': True, 'field_type': 'Choice', 'name': 'recurrence', 'settings': False, 'type': 'field', 'favorite': False, 'label': 'Recurrence', 'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'], 'rich_text': True}], 'name': u'fields', 'label': u'Fields'}], 'default_available_actions': [u'save', u'cancel', u'page-properties', u'undo', u'redo', u'format', u'insert'], 'primary_actions': [{'name': u'save', 'actions': [{'name': u'save', 'menu': False, 'label': u'Save', 'items': [], 'action': u'save', 'icon': False}], 'label': u'Save'}, {'name': u'cancel', 'menu': False, 'label': u'Cancel', 'items': [], 'action': u'cancel', 'icon': False}, {'name': u'page_properties', 'menu': False, 'label': u'Page properties', 'items': [], 'action': u'page-properties', 'icon': False}], 'secondary_actions': [{'name': u'layout', 'menu': True, 'label': u'Layout', 'items': [{'value': u'none', 'label': u'Layout'}, {'value': u'newslisting', 'label': u'News listing'}, {'value': u'projectdetails', 'label': u'Project details'}, {'value': u'gallery', 'label': u'Gallery'}, {'value': u'another', 'label': u'Choose another...'}, {'value': u'template', 'label': u'Save as template...'}], 'action': u'layout', 'icon': False}, {'name': u'format', 'menu': True, 'label': u'Format', 'items': [{'value': u'none', 'label': u'Format'}], 'action': u'format', 'icon': False}, {'name': u'insert', 'menu': True, 'label': u'Insert', 'items': [{'value': u'none', 'label': u'Insert'}], 'action': u'insert', 'icon': False}], 'formats': [{'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'text', 'actions': [{'action': u'strong', 'icon': False, 'favorite': True, 'name': u'strong', 'label': u'B'}, {'action': u'em', 'icon': False, 'favorite': True, 'name': u'em', 'label': u'I'}, {'action': u'paragraph', 'icon': True, 'favorite': False, 'name': u'paragraph', 'label': u'Paragraph'}, {'action': u'heading', 'icon': True, 'favorite': False, 'name': u'heading', 'label': u'Heading'}, {'action': u'subheading', 'icon': True, 'favorite': False, 'name': u'subheading', 'label': u'Subheading'}, {'action': u'discreet', 'icon': True, 'favorite': False, 'name': u'discreet', 'label': u'Discreet'}, {'action': u'literal', 'icon': True, 'favorite': False, 'name': u'literal', 'label': u'Literal'}, {'action': u'quote', 'icon': True, 'favorite': False, 'name': u'quote', 'label': u'Quote'}, {'action': u'callout', 'icon': True, 'favorite': False, 'name': u'callout', 'label': u'Callout'}], 'label': u'Text'}, {'name': u'selection', 'actions': [{'action': u'highlight', 'icon': True, 'favorite': False, 'name': u'highlight', 'label': u'Highlight'}, {'action': u'sub', 'icon': True, 'favorite': False, 'name': u'sub', 'label': u'Subscript'}, {'action': u'sup', 'icon': True, 'favorite': False, 'name': u'sup', 'label': u'Superscript'}, {'action': u'remove-format', 'icon': True, 'favorite': False, 'name': u'remove-format', 'label': u'(Remove format)'}], 'label': u'Selection'}, {'name': u'lists', 'actions': [{'action': u'ul', 'icon': True, 'favorite': False, 'name': u'ul', 'label': u'Unordered list'}, {'action': u'ol', 'icon': True, 'favorite': False, 'name': u'ol', 'label': u'Ordered list'}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'action': u'justify-left', 'icon': True, 'favorite': False, 'name': u'justify-left', 'label': u'Left-aligned'}, {'action': u'justify-center', 'icon': True, 'favorite': False, 'name': u'justify-center', 'label': u'Center'}, {'action': u'justify-right', 'icon': True, 'favorite': False, 'name': u'justify-right', 'label': u'Right-aligned'}, {'action': u'justify-justify', 'icon': True, 'favorite': False, 'name': u'justify-justify', 'label': u'Justified'}, {'action': u'tile-align-block', 'icon': True, 'favorite': False, 'name': u'tile-align-block', 'label': u'Tile block'}, {'action': u'tile-align-left', 'icon': True, 'favorite': False, 'name': u'tile-align-left', 'label': u'Tile left'}, {'action': u'tile-align-right', 'icon': True, 'favorite': False, 'name': u'tile-align-right', 'label': u'Tile right'}], 'label': u'Justify'}, {'name': u'print', 'actions': [{'action': u'pagebreak', 'icon': True, 'favorite': False, 'name': u'pagebreak', 'label': u'Page break'}], 'label': u'Print'}]}
