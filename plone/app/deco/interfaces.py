@@ -51,3 +51,8 @@ class ITile(Interface):
     settings = schema.Bool(title=u"Settings")
     favorite = schema.Bool(title=u"Favorite")
     rich_text = schema.Bool(title=u"Rich Text")
+
+
+class IWidgetAction(Interface):
+    name = schema.TextLine(title=u"Name")
+    actions = schema.List(title=u"Actions")

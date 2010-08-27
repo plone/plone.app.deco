@@ -355,6 +355,19 @@ xml = """
         <value key="favorite">false</value>
     </records>
 
+    <!-- Default widget actions -->
+    <record name="plone.app.deco.default_widget_actions">
+        <field type="plone.registry.field.List">
+            <title>Available default actions for the widgets</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+          <element>tile-align-block</element>
+          <element>tile-align-left</element>
+          <element>tile-align-right</element>
+        </value>
+    </record>  
+
     <!-- Tile categories -->
     <record name="plone.app.deco.tiles_categories">
         <field type="plone.registry.field.Dict">
