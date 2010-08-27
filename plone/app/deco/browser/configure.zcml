@@ -32,11 +32,4 @@
         permission="cmf.ModifyPortalContent"
         />
 
-    <browser:page
-        name="deco-controlpanel"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.DecoControlPanelFormView"
-        permission="cmf.ManagePortal"
-        />
-
 </configure>
