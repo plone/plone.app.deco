@@ -144,7 +144,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     }
 
                     if(!tile_config) {
-                        throw "[deco.core] ConfigurationError: couldn't get config for tile type " + tiletype + " in tile group " + tile_group;
+                        throw "[deco.core] ConfigurationError: couldn't get config for tile type " + tiletype + " in tile group " + tile_group.name;
                     }
 
                     // Check if a field tile
@@ -154,13 +154,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         tile_config.settings = false;
 
                         switch (tile_config.widget) {
-                        case "TextFieldWidget":
+                        case "z3c.form.browser.text.TextWidget":
+                        case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<' + tile_config.tag + '>' +
                                 $("#" + tile_config.id).find('input')
                                     .attr('value') +
                                 '</' + tile_config.tag + '>';
                             break;
-                        case "TextAreaFieldWidget":
+                        case "z3c.form.browser.textarea.TextAreaWidget":
+                        case "z3c.form.browser.textarea.TextAreaFieldWidget":
                             lines = $("#" + tile_config.id).find('textarea')
                                 .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
@@ -168,7 +170,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                     lines[i] + '</' + tile_config.tag + '>';
                             }
                             break;
-                        case "WysiwygFieldWidget":
+                        case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+                        case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
                             fieldhtml = $("#" + tile_config.id)
                                 .find('textarea').attr('value');
                             break;

@@ -93,7 +93,7 @@ def extractFieldInformation(schema, context, request):
             omitted[name] = True
         elif mode == DISPLAY_MODE:
             read_only.append(name)
-    for name in schema.names():
+    for name in schema.names(True):
         if is_visible(name, omitted):
             yield {
                 'name': name,
