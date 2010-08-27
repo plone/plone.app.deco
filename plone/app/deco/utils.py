@@ -74,8 +74,10 @@ def is_visible(name, omitted):
         return not bool(value)
 
 
-def extractFieldInformation(schema, context, request):
+def extractFieldInformation(schema, context, request, prefix):
     iro = [ IEditForm, Interface ]
+    if prefix != '':
+        prefix += '-'
     omitted = mergedTaggedValuesForIRO(schema, OMITTED_KEY, iro)
     modes = mergedTaggedValuesForIRO(schema, MODES_KEY, iro)
     widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
@@ -96,7 +98,7 @@ def extractFieldInformation(schema, context, request):
     for name in schema.names(True):
         if is_visible(name, omitted):
             yield {
-                'name': name,
+                'name': prefix + name,
                 'title': schema[name].title,
                 'widget': _getWidgetName(schema[name], widgets, request),
                 'readonly': name in read_only

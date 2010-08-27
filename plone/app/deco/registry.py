@@ -148,9 +148,16 @@ class DecoRegistry(object):
         args.update(kwargs)
         if args['type'] is None:
             return config
-        for schema in iterSchemataForType(args['type']):
+        prefixes = []
+        for index, schema in enumerate(iterSchemataForType(args['type'])):
+            prefix = ''
+            if index > 0:
+                prefix = schema.__name__
+                if prefix in prefixes:
+                    prefix = schema.__identifier__
+                prefixes.append(prefix)
             for fieldconfig in extractFieldInformation(
-                        schema, args['context'], args['request']):
+                        schema, args['context'], args['request'], prefix):
                 tileconfig = {
                     'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
                     'name': fieldconfig['name'],
