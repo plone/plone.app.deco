@@ -59,7 +59,7 @@
     </record>
 
     <records prefix="plone.app.deco.secondary_actions.format"
-            interface='plone.app.deco.interfaces.IAction'>
+             interface='plone.app.deco.interfaces.IAction'>
         <value key="name">format</value>
         <value key="fieldset">None</value>
         <value key="label">Format</value>
@@ -381,8 +381,8 @@
         <element key="label">Text</element>
         <element key="type">text</element>
         <element key="rich_text">True</element>
-    </record>
-    <records name="plone.app.deco.structure_tiles.text.available_actions">
+    </records>
+    <record name="plone.app.deco.structure_tiles.text.available_actions">
         <field type="plone.registry.field.List">
             <title>Available actions for the Text structure tile</title>
             <value_type type="plone.registry.field.TextLine" />
