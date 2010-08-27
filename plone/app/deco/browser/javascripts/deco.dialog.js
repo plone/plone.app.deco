@@ -159,10 +159,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             fieldset = field.parents("fieldset");
 
             // Hide all fieldsets
-            form.find('fieldset').addClass('hidden');
+            form.find('fieldset').hide();
 
             // Show current fieldset
-            fieldset.removeClass('hidden');
+            fieldset.show();
 
             // Hide all fields in current fieldset
             fieldset.children().addClass('deco-hidden');
