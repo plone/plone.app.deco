@@ -112,8 +112,24 @@ class DecoUploadView(BrowserView):
 
 class DecoConfigView(BrowserView):
 
+    def obtain_type(self):
+        """Obtains the type of the context object or of the object we are adding
+        """
+        if 'type' in self.request.form:
+            return self.request.form['type']
+        else:
+            if hasattr(self.context, 'portal_type'):
+                return self.context.portal_type
+        return None
+
     def __call__(self):
         self.request.RESPONSE.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
         adapted = IDecoRegistryAdapter(registry)
-        return json.dumps(adapted())
+        kwargs = {
+            'type': self.obtain_type(),
+            'context': self.context,
+            'request': self.request
+        }
+        return json.dumps(adapted(**kwargs))
+

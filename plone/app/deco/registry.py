@@ -3,6 +3,8 @@ from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 
+from utils import iterSchemataForType, extractFieldInformation
+
 
 class DottedDict(dict):
     """A dictionary where you can access nested dicts with dotted names"""
@@ -137,10 +139,33 @@ class DecoRegistry(object):
             config['tiles'][index]['tiles'].append(tile)
         return config
 
-    def mapFieldTiles(self, settings, config):
-        return config
+    def mapFieldTiles(self, settings, config, kwargs):
+        args = {
+            'type': None,
+            'context': None,
+            'request': None
+        }
+        args.update(kwargs)
+        if args['type'] is None:
+            return
+        for schema in iterSchemataForType(args['type']):
+            for fieldconfig in extractFieldInformation(
+                        schema, args['context'], args['request']):
+                tileconfig = {
+                    'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
+                    'name': fieldconfig['name'],
+                    'label': fieldconfig['title'],
+                    'category': 'fields',
+                    'type': 'field',
+                    'read_only': fieldconfig['readonly'],
+                    'favorite': False,
+                    'widget': fieldconfig['widget'],
+                    'available_actions': [ 'tile-align-block', 'tile-align-right', 'tile-align-left' ]
+                }
+                index = GetCategoryIndex(config['tiles'], 'fields')
+                config['tiles'][index]['tiles'].append(tileconfig)
 
-    def __call__(self):
+    def __call__(self, **kwargs):
         settings = self.parseRegistry()
         config = {}
         config = self.mapFormatCategories(settings, config)
@@ -149,5 +174,5 @@ class DecoRegistry(object):
         config = self.mapTilesCategories(settings, config)
         config = self.mapStructureTiles(settings, config)
         config = self.mapApplicationTiles(settings, config)
-        config = self.mapFieldTiles(settings, config)
+        config = self.mapFieldTiles(settings, config, kwargs)
         return config
