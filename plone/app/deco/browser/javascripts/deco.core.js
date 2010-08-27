@@ -238,7 +238,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Add toolbar div below content view and hide content
                 // view/contentActions
-                $("#content.deco-panel").before($(document.createElement("div"))
+                $("body").prepend($(document.createElement("div"))
                     .addClass("deco-toolbar")
                 );
                 $("#content-views").hide();

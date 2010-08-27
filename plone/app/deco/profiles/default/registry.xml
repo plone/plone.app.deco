@@ -4,8 +4,6 @@
     <value>
       <element>save|save|Save|Save|save|false|false</element>
       <element>cancel|||Cancel|cancel|false|false</element>
-      <element>undo|||Undo|undo|false|false</element>
-      <element>redo|||Redo|redo|false|false</element>
       <element>page_properties|||Page properties|page-properties|false|false</element>
     </value>
   </record>
