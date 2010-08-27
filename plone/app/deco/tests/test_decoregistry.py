@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from plone.app.deco.tests.base import PADECO_FUNCTIONAL_TESTING
 import plone.app.deco.tests.registry_testdata as td
-from zope.component import getMultiAdapter
 
 
 class DecoRegistryTest(unittest.TestCase):
@@ -29,10 +28,47 @@ class DecoRegistryTest(unittest.TestCase):
         importer.importDocument(xml)
         return self.registry
 
-    def test_parse_registry(self):
+    def test_format_categories(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapFormatCategories(settings, {})
+        self.assertEqual(config, td.parsed_format_categories_data)
+
+    def test_formats(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapFormatCategories(settings, {})
+        config = adapted.mapFormats(settings, config)
+        self.assertEqual(config, td.parsed_format_data)
+
+    def test_tiles_categories(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapTilesCategories(settings, {})
+        self.assertEqual(config, td.parsed_tiles_categories_data)
+
+    def test_structure_tiles(self):
+        self.maxDiff = None
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapTilesCategories(settings, {})
+        config = adapted.mapStructureTiles(settings, config)
+        self.assertEqual(config, td.parsed_structure_tiles_data)
+
+    def test_application_tiles(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapTilesCategories(settings, {})
+        config = adapted.mapApplicationTiles(settings, config)
+        self.assertEqual(config, td.parsed_application_tiles_data)
+    
+    def test_config(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
-        portal = self.layer['portal']
-        page = portal.page
-        settings = getMultiAdapter((page, registry), IDecoRegistryAdapter)()
+        settings = IDecoRegistryAdapter(registry)()
         self.assertEqual(settings, td.parsed_data)

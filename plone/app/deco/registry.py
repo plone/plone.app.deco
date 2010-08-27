@@ -1,11 +1,9 @@
 from zope.component import adapts
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
-from interfaces import IDecoRegistryAdapter
-from Products.CMFCore.interfaces._content import IFolderish
-from  plone.dexterity.interfaces import IDexterityContent
-from plone.app.deco.interfaces import IDecoSettings
-from zope.interface import Interface
+from plone.app.deco.interfaces import IDecoRegistryAdapter
+
+from utils import iterSchemataForType, extractFieldInformation
 
 
 class DottedDict(dict):
@@ -16,7 +14,10 @@ class DottedDict(dict):
             return super(DottedDict, self).get(k, default)
         val = self
         for x in k.split('.'):
-            val = val[x]
+            try:
+                val = val[x]
+            except:
+                return default
         return val
 
 
@@ -26,29 +27,31 @@ def GetBool(value):
 
 def GetCategoryIndex(tiles, category):
     index = 0
-    count = 0
     for tile in tiles:
         if tile['name'] == category:
-            index = count
-        count += 1
-    return index
+            return index
+        index += 1
+    return None
 
 
 class DecoRegistry(object):
     """Adapts a registry object to parse the deco settings data"""
 
     implements(IDecoRegistryAdapter)
-    adapts(Interface, IRegistry)
+    adapts(IRegistry)
     prefix = "plone.app.deco"
 
-    def __init__(self, context, registry):
-        self.context = context
+    def __init__(self, registry):
         self.registry = registry
 
     def parseRegistry(self):
         """Make a dictionary structure for the values in the registry"""
+
         result = DottedDict()
-        for record in self.context.records:
+        for record in self.registry.records:
+            if not record.startswith(self.prefix):
+                continue
+
             splitted = record.split('.')
             current = result
             for x in splitted[:-1]:
@@ -59,198 +62,131 @@ class DecoRegistry(object):
 
             # store actual key/value
             key = splitted[-1]
-            current[key] = self.context.records[record].value
+            current[key] = self.registry.records[record].value
 
         return result
 
-    def __call__(self):
-        settings = self.registry.forInterface(IDecoSettings)
-
-        # Create empty configuration
-        config = {}
-
-        # Primary / Secondary Actions
+    def mapActions(self, settings, config):
         for action_type in ['primary_actions', 'secondary_actions']:
             config[action_type] = []
-            for action in getattr(settings, action_type):
-                action_fields = action.split('|')
-                items = []
-                if GetBool(action_fields[6]):
-                    for i in range(7, len(action_fields), 2):
-                        items.append({
-                            'value': action_fields[i],
-                            'label': action_fields[i + 1],
-                        })
 
-                record = {
-                    'name': action_fields[0],
-                    'label': action_fields[3],
-                    'action': action_fields[4],
-                    'icon': GetBool(action_fields[5]),
-                    'menu': GetBool(action_fields[6]),
-                    'items': items,
-                }
+            key = '%s.%s' % (self.prefix, action_type)
+            for key, action in settings.get(key, {}).items():
+                if not action['fieldset']:
+                    config[action_type].append(action)
+                    continue
 
-                # If no fieldset
-                if action_fields[1] == '':
-                    config[action_type].append(record)
+                index = GetCategoryIndex(config[action_type],
+                                         action['fieldset'])
+                if not index:
+                    config[action_type].append({'name': action['fieldset'],
+                                                'label': action['fieldset'],
+                                                'actions': []})
+                    index = GetCategoryIndex(config[action_type],
+                                             action['fieldset'])
 
-                # Fieldset
-                else:
-
-                    # Find fieldset
-                    fieldset_index = -1
-                    count = 0
-                    for config_action in config[action_type]:
-                        if config_action['name'] == action_fields[1]:
-                            fieldset_index = count
-                        count += 1
-
-                    # Fieldset not found
-                    if fieldset_index == -1:
-                        config[action_type].append({
-                            'name': action_fields[1],
-                            'label': action_fields[2],
-                            'actions': [record],
-                        })
-
-                    # Fieldset not found
-                    else:
-                        config[action_type][fieldset_index]['actions'].append(record)
-
-        # Formats
-        config['formats'] = []
-
-        # Format Categories
-        for format_category in settings.format_categories:
-            config['formats'].append({
-                'name': format_category.split('|')[0],
-                'label': format_category.split('|')[1],
-                'actions': [],
-            })
-
-        # Formats
-        for format in settings.formats:
-            format_fields = format.split('|')
-            config['formats'][GetCategoryIndex(config['formats'], format_fields[1])]['actions'].append({
-                'name': format_fields[0],
-                'label': format_fields[2],
-                'action': format_fields[3],
-                'icon': GetBool(format_fields[4]),
-                'favorite': GetBool(format_fields[5]),
-            })
+                config[action_type][index]['actions'].append(action)
 
         # Default Available Actions
-        config['default_available_actions'] = settings.default_available_actions
+        key = '%s.default_available_actions' % self.prefix
+        config['default_available_actions'] = settings.get(key, [])
 
-        # Tiles
-        config['tiles'] = []
+        return config
 
-        # Tile Categories
-        for tile_category in settings.tile_categories:
+    def mapTilesCategories(self, settings, config):
+        config['tiles'] = config.get('tiles', [])
+        categories = settings.get("%s.tiles_categories" % self.prefix, {})
+        for name, label in categories.items():
             config['tiles'].append({
-                'name': tile_category.split('|')[0],
-                'label': tile_category.split('|')[1],
+                'name': name,
+                'label': label,
                 'tiles': [],
             })
+        return config
 
-        # Structure Tiles
-        for structure_tile in settings.structure_tiles:
-            tile_fields = structure_tile.split('|')
-            config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
-                'name': tile_fields[0],
-                'label': tile_fields[2],
-                'type': tile_fields[3],
-                'default_value': tile_fields[4],
-                'read_only': GetBool(tile_fields[5]),
-                'settings': GetBool(tile_fields[6]),
-                'favorite': GetBool(tile_fields[7]),
-                'rich_text': GetBool(tile_fields[8]),
-                'available_actions': tile_fields[9:-1],
+    def mapFormatCategories(self, settings, config):
+        config['formats'] = config.get('formats', [])
+        categories = settings.get("%s.format_categories" % self.prefix, {})
+        for name, label in categories.items():
+            config['formats'].append({
+                'name': name,
+                'label': label,
+                'actions': [],
             })
+        return config
 
-        # Application Tiles
-        if settings.app_tiles:
-            for app_tile in settings.app_tiles:
-                tile_fields = app_tile.split('|')
-                config['tiles'][GetCategoryIndex(config['tiles'], tile_fields[1])]['tiles'].append({
-                    'name': tile_fields[0],
-                    'label': tile_fields[2],
-                    'type': 'app',
-                    'default_value': '',
-                    'read_only': GetBool(tile_fields[3]),
-                    'settings': GetBool(tile_fields[4]),
-                    'favorite': GetBool(tile_fields[5]),
-                    'rich_text': GetBool(tile_fields[6]),
-                    'available_actions': tile_fields[7:-1],
-                })
+    def mapFormats(self, settings, config):
+        formats = settings.get('%s.formats' % self.prefix, {})
+        for key, format in formats.items():
+            index = GetCategoryIndex(config['formats'], format['category'])
+            config['formats'][index]['actions'].append(format)
 
-        # Field Tiles
-        #type = self.context.portal_type
-        #if hasattr(self.context.REQUEST, 'type'):
-        #    type = self.context.REQUEST['type']
-        #fti = getUtility(IDexterityFTI, name=type)
-        #for x in fti.lookupSchema():
-        #    pass
-        #    #log(x)
+        return config
 
-        #for behavior_name in fti.behaviors:
-        #    try:
-        #        behavior_interface = resolveDottedName(behavior_name)
-        #    except ValueError:
-        #        continue
-        #    if behavior_interface is not None:
-        #        behavior_schema = IFormFieldProvider(behavior_interface, None)
-        #        if behavior_schema is not None:
-        #            for x in behavior_schema:
-        #                pass
-        #                #log(x)
+    def mapStructureTiles(self, settings, config):
+        # Structure Tiles
+        tiles = settings.get('%s.structure_tiles' % self.prefix, {})
 
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'date',
-            'label': 'Date',
-            'type': 'field',
-            'field_type': 'Datetime',
-            'widget': 'DateTimePickerFieldWidget',
-            'id': 'formfield-form-widgets-date',
-            'read_only': False,
-            'settings': True,
-            'favorite': False,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left', ],
-        })
+        for key, tile in tiles.items():
+            if not 'category' in tile:
+                continue
+            index = GetCategoryIndex(config['tiles'], tile['category'])
+            config['tiles'][index]['tiles'].append(tile)
+        return config
 
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'agenda',
-            'label': 'Agenda',
-            'type': 'field',
-            'field_type': 'Text',
-            'widget': 'WysiwygFieldWidget',
-            'id': 'formfield-form-widgets-agenda',
-            'read_only': False,
-            'settings': True,
-            'favorite': False,
-            'available_actions': ['strong', 'em', 'paragraph', 'heading', 'subheading', 'discreet', 'literal', 'quote', 'callout', 'highlight', 'sub', 'sup', 'remove-format', 'pagebreak', 'ul', 'ol', 'justify-left', 'justify-center', 'justify-right', 'justify-justify', 'tile-align-block', 'tile-align-right', 'tile-align-left'],
-        })
+    def mapApplicationTiles(self, settings, config):
+        tiles = settings.get('%s.app_tiles' % self.prefix, {})
+        for key, tile in tiles.items():
+            if not 'category' in tile:
+                continue
+            index = GetCategoryIndex(config['tiles'], tile['category'])
+            config['tiles'][index]['tiles'].append(tile)
+        return config
 
-        config['tiles'][GetCategoryIndex(config['tiles'], 'fields')]['tiles'].append({
-            'name': 'recurrence',
-            'label': 'Recurrence',
-            'type': 'field',
-            'field_type': 'Choice',
-            'widget': 'SelectFieldWidget',
-            'id': 'formfield-form-widgets-recurrence',
-            'read_only': True,
-            'settings': False,
-            'favorite': False,
-            'rich_text': True,
-            'available_actions': ['tile-align-block', 'tile-align-right', 'tile-align-left'],
-        })
+    def mapFieldTiles(self, settings, config, kwargs):
+        args = {
+            'type': None,
+            'context': None,
+            'request': None,
+        }
+        args.update(kwargs)
+        if args['type'] is None:
+            return config
+        prefixes = []
+        for index, schema in enumerate(iterSchemataForType(args['type'])):
+            prefix = ''
+            if index > 0:
+                prefix = schema.__name__
+                if prefix in prefixes:
+                    prefix = schema.__identifier__
+                prefixes.append(prefix)
+            for fieldconfig in extractFieldInformation(
+                        schema, args['context'], args['request'], prefix):
+                tileconfig = {
+                    'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
+                    'name': fieldconfig['name'],
+                    'label': fieldconfig['title'],
+                    'category': 'fields',
+                    'tile_type': 'field',
+                    'read_only': fieldconfig['readonly'],
+                    'favorite': False,
+                    'widget': fieldconfig['widget'],
+                    'available_actions': ['tile-align-block',
+                                           'tile-align-right',
+                                           'tile-align-left'],
+                }
+                index = GetCategoryIndex(config['tiles'], 'fields')
+                config['tiles'][index]['tiles'].append(tileconfig)
+        return config
 
-        # URLs
-        config['document_url'] = self.context.absolute_url()
-        if IFolderish.providedBy(self.context):
-            config['parent'] = self.context.absolute_url() + "/"
-        else:
-            config['parent'] = getattr(self.context.aq_inner, 'aq_parent', None).absolute_url() + "/"
-
+    def __call__(self, **kwargs):
+        settings = self.parseRegistry()
+        config = {}
+        config = self.mapFormatCategories(settings, config)
+        config = self.mapFormats(settings, config)
+        config = self.mapActions(settings, config)
+        config = self.mapTilesCategories(settings, config)
+        config = self.mapStructureTiles(settings, config)
+        config = self.mapApplicationTiles(settings, config)
+        config = self.mapFieldTiles(settings, config, kwargs)
         return config

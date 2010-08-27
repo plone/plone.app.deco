@@ -9,7 +9,6 @@ from plone.app.deco.tests.base import PADECO_FUNCTIONAL_TESTING
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 testfiles = (
     'test_browser_decoconfig.txt',
-    'test_browser_controlpanel.txt',
 )
 
 

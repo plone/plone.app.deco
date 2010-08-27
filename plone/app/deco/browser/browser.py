@@ -5,13 +5,9 @@ try:
 except:
     import simplejson as json
 
-#from plone.autoform.interfaces import IFormFieldProvider
-#from plone.dexterity.interfaces import IDexterityFTI
-#from plone.dexterity.utils import resolveDottedName
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.utils import getToolByName
-from zope.component import getMultiAdapter
 
 
 class DecoUploadView(BrowserView):
@@ -116,9 +112,24 @@ class DecoUploadView(BrowserView):
 
 class DecoConfigView(BrowserView):
 
+    def obtain_type(self):
+        """Obtains the type of the context object or of the object we are adding
+        """
+        if 'type' in self.request.form:
+            return self.request.form['type']
+        else:
+            if hasattr(self.context, 'portal_type'):
+                return self.context.portal_type
+        return None
+
     def __call__(self):
         self.request.RESPONSE.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
-        adapted = getMultiAdapter((self.context, registry),
-                                        IDecoRegistryAdapter)
-        return json.dumps(adapted())
+        adapted = IDecoRegistryAdapter(registry)
+        kwargs = {
+            'type': self.obtain_type(),
+            'context': self.context,
+            'request': self.request
+        }
+        return json.dumps(adapted(**kwargs))
+
