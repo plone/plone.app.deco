@@ -83,6 +83,12 @@ class DecoRegistry(object):
             actions = settings.get(key, {}).items()
             actions.sort(cmp=weightedSort)
             for key, action in actions:
+                # sort items
+                items = action.get('items', {}).values()
+                if items:
+                    action['items'] = items
+                    action['items'].sort(key=itemgetter('weight'))
+                
                 if not action['fieldset']:
                     config[action_type].append(action)
                     continue

@@ -45,22 +45,37 @@
         <value key="menu">True</value>
         <value key="weight">10</value>
     </records>
-    <record name="plone.app.deco.secondary_actions.layout.items">
-        <field type="plone.registry.field.Dict">
-            <title>Available items for the layout action</title>
-            <key_type type="plone.registry.field.TextLine" />
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element key="none">Layout</element>
-            <element key="newslisting">News listing</element>
-            <element key="projectdetails">Project details</element>
-            <element key="gallery">Gallery</element>
-            <element key="another">Choose another...</element>
-            <element key="template">Save as template...</element>
-        </value>
-    </record>
-
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.layout.items.layout">
+        <value key="name">none</value>
+        <value key="label">Layout</value>
+        <value key="weight">10</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.layout.items.newslisting">
+        <value key="name">newslisting</value>
+        <value key="label">News listing</value>
+        <value key="weight">20</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.layout.items.gallery">
+        <value key="name">gallery</value>
+        <value key="label">Gallery</value>
+        <value key="weight">30</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.layout.items.another">
+        <value key="name">another</value>
+        <value key="label">Choose another...</value>
+        <value key="weight">40</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.layout.items.template">
+        <value key="name">template</value>
+        <value key="label">Save as template...</value>
+        <value key="weight">50</value>
+    </records>
+    
     <records prefix="plone.app.deco.secondary_actions.format"
              interface='plone.app.deco.interfaces.IAction'>
         <value key="name">format</value>
@@ -71,17 +86,12 @@
         <value key="menu">True</value>
         <value key="weight">20</value>
     </records>
-    <record name="plone.app.deco.secondary_actions.format.items">
-        <field type="plone.registry.field.Dict">
-            <title>Available items for the format action</title>
-            <key_type type="plone.registry.field.TextLine" />
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element key="value">none</element>
-            <element key="label">Format</element>
-        </value>
-    </record>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.format.items.format">
+        <value key="name">none</value>
+        <value key="label">Format</value>
+        <value key="weight">10</value>
+    </records>
 
     <records prefix="plone.app.deco.secondary_actions.insert"
             interface='plone.app.deco.interfaces.IAction'>
@@ -93,17 +103,12 @@
         <value key="menu">True</value>
         <value key="weight">30</value>
     </records>
-    <record name="plone.app.deco.secondary_actions.insert.items">
-        <field type="plone.registry.field.Dict">
-            <title>Available items for the insert action</title>
-            <key_type type="plone.registry.field.TextLine" />
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element key="value">none</element>
-            <element key="label">Insert</element>
-        </value>
-    </record>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.secondary_actions.insert.items.insert">
+        <value key="name">none</value>
+        <value key="label">Insert</value>
+        <value key="weight">10</value>
+    </records>
 
     <!-- Default actions -->
     <record name="plone.app.deco.default_available_actions">
