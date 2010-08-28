@@ -4,7 +4,6 @@ from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.interfaces._content import IFolderish
-from zope.site.hooks import getSite
 from operator import itemgetter
 
 from utils import iterSchemataForType, extractFieldInformation
@@ -176,42 +175,39 @@ class DecoRegistry(object):
         for tile in config['tiles']:
             tile['tiles'].sort(key=itemgetter('weight'))
         return config
-            
+
     # BBB: needs a bit of thought, I'm nowhere near satisfied with this
     # solution
-    @staticmethod
-    def actionsForWidget(settings, widget_name):
+    @classmethod
+    def actionsForWidget(cls, settings, widget_name):
         """Looks up which (deco) actions are associated to a certain z3c
         widget.
 
-        The lookup is made in 3 parts:
+        The lookup is made in 2 parts:
 
         - First the registry is looked for a key named
-          plone.app.deco.widget_actions.<full widget dotted name>
-
-        - If the key's not found, looks for
-          plone.app.deco.widget_actions.<widget name>
+          plone.app.deco.widget_actions.<'full.widget.dotted.name'.replace('.','_')>
 
         - If it is not found, looks for
           plone.app.deco.default_widget_actions
 
-        The rationale is that using the full dotted name will yield very long
-        keys, which can be painful to edit, especially through the web
-        interface. Therefore a "shortened" version is provided, and can be used
-        as long as naming conflicts do not ensue. If a "short key" is found
-        used, the developer has to fall back to the long key: the lookup
-        ordering ensures that the right key is always picked up.
+        The rationale is that this way the three default actions are there by
+        default, and only if you need special stuff (probably if you provide an
+        inline widget) you can override the default, but for the simple use
+        case no interaction is needed
         """
-        _marker = object()
-        for name in [widget_name, widget_name.split('.')[-1]]:
-            actions = settings.get(
-                'plone.app.deco.widget_actions.%s.actions' % name,
-                default=_marker)
-            if not actions == _marker:
-                return actions
+        actions = settings.get(
+            '%s.widget_actions.%s.actions' % (
+                cls.prefix, widget_name.replace('.', '_')
+            ),
+            default = None
+        )
+        if actions is not None:
+            return actions
         return settings.get(
-            'plone.app.deco.default_widget_actions',
-            default=[])
+            cls.prefix + '.default_widget_actions',
+            default = []
+        )
 
     def mapFieldTiles(self, settings, config, kwargs):
         args = {
@@ -224,9 +220,6 @@ class DecoRegistry(object):
             return config
         prefixes = []
 
-        # Get a request so we can do translations.
-        site = getSite()
-        request = getattr(site, 'REQUEST', None)
         for index, schema in enumerate(iterSchemataForType(args['type'])):
             prefix = ''
             if index > 0:
@@ -234,24 +227,40 @@ class DecoRegistry(object):
                 if prefix in prefixes:
                     prefix = schema.__identifier__
                 prefixes.append(prefix)
+            registry_omitted = settings.get(
+                '%s.omitted_fields.%s' % (self.prefix, args['type'].replace('.','_')),
+                default = None
+            )
+            if registry_omitted is None:
+                registry_omitted = settings.get(
+                    self.prefix + '.default_omitted_fields',
+                    default = []
+                )
             for fieldconfig in extractFieldInformation(
                         schema, args['context'], args['request'], prefix):
-                label = translate(fieldconfig['title'], context=request)
-                tileconfig = {
-                    'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
-                    'name': fieldconfig['name'],
-                    'label': label,
-                    'category': 'fields',
-                    'tile_type': 'field',
-                    'read_only': fieldconfig['readonly'],
-                    'favorite': False,
-                    'widget': fieldconfig['widget'],
-                    'available_actions': self.actionsForWidget(
-                        settings,
-                        fieldconfig['widget']),
-                }
-                index = GetCategoryIndex(config['tiles'], 'fields')
-                config['tiles'][index]['tiles'].append(tileconfig)
+                if fieldconfig['id'] not in registry_omitted:
+                    label = translate(
+                        fieldconfig['title'],
+                        context = args['request']
+                    )
+                    tileconfig = {
+                        'id': 'formfield-form-widgets-%s' % (
+                            fieldconfig['name'],
+                        ),
+                        'name': fieldconfig['name'],
+                        'label': label,
+                        'category': 'fields',
+                        'tile_type': 'field',
+                        'read_only': fieldconfig['readonly'],
+                        'favorite': False,
+                        'widget': fieldconfig['widget'],
+                        'available_actions': self.actionsForWidget(
+                            settings,
+                            fieldconfig['widget']
+                        ),
+                    }
+                    index = GetCategoryIndex(config['tiles'], 'fields')
+                    config['tiles'][index]['tiles'].append(tileconfig)
         return config
 
     def __call__(self, **kwargs):
@@ -261,7 +270,7 @@ class DecoRegistry(object):
         config = self.mapFormats(settings, config)
         config = self.mapActions(settings, config)
         config = self.mapTilesCategories(settings, config)
-        for tile_category in ['structure_tiles', 'app_tiles']:        
+        for tile_category in ['structure_tiles', 'app_tiles']:
             config = self.mapTiles(settings, config, tile_category)
         config = self.mapFieldTiles(settings, config, kwargs)
 

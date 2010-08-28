@@ -130,6 +130,7 @@ def extractFieldInformation(schema, context, request, prefix):
                 read_only.append(name)
         if is_visible(name, omitted):
             yield {
+                'id': "%s.%s" % (schema.__identifier__, name),
                 'name': prefix + name,
                 'title': schema[name].title,
                 'widget': _getWidgetName(schema[name], widgets, request),

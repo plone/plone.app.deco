@@ -410,6 +410,30 @@
         <value key="weight">240</value>
     </records>
 
+    <!-- Omitted fields -->
+    <record name="plone.app.deco.default_omitted_fields">
+        <field type="plone.registry.field.List">
+            <title>Default omitted fields</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.subjects</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.language</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.effective</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.expires</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.creators</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.contributors</element>
+            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.rights</element>
+            <element>plone.app.dexterity.behaviors.metadata.ICategorization.subjects</element>
+            <element>plone.app.dexterity.behaviors.metadata.ICategorization.language</element>
+            <element>plone.app.dexterity.behaviors.metadata.IPublication.effective</element>
+            <element>plone.app.dexterity.behaviors.metadata.IPublication.expires</element>
+            <element>plone.app.dexterity.behaviors.metadata.IOwnership.creators</element>
+            <element>plone.app.dexterity.behaviors.metadata.IOwnership.contributors</element>
+            <element>plone.app.dexterity.behaviors.metadata.IOwnership.rights</element>
+        </value>
+    </record>
+
     <!-- Widget actions -->
     <record name="plone.app.deco.default_widget_actions">
         <field type="plone.registry.field.List">
@@ -424,7 +448,7 @@
     </record>
 
     <record field="actions" interface="plone.app.deco.interfaces.IWidgetAction"
-            name="plone.app.deco.widget_actions.WysiwygFieldWidget.actions">
+            name="plone.app.deco.widget_actions.plone_app_z3cform_wysiwyg_widget_WysiwygFieldWidget.actions">
         <field type="plone.registry.field.List">
             <title>Actions</title>
             <value_type type="plone.registry.field.TextLine" />
@@ -464,7 +488,7 @@
     </record>
 
     <record field="actions" interface="plone.app.deco.interfaces.IWidgetAction"
-            name="plone.app.deco.widget_actions.WysiwygWidget.actions">
+            name="plone.app.deco.widget_actions.plone_app_z3cform_wysiwyg_widget_WysiwygWidget.actions">
         <field type="plone.registry.field.List">
             <title>Actions</title>
             <value_type type="plone.registry.field.TextLine" />

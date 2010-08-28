@@ -1,0 +1,43 @@
+Available settings
+==================
+
+Here are listed, divided roughly by semantic group, all the settings that can
+be found in the ``plone_registry`` that are related to deco.
+
+Some of them will be in the form ``setting.dotted.name.$variable.whatever`` to
+denote that there is a variable part.
+
+Widget actions
+--------------
+
+``plone.app.deco.default_widget_actions``
+    A list of actions that should be applied to the field tiles if no specific
+    configuration is present
+
+``plone.app.deco.widget_actions.$widget_name``
+    With ``$widget_name`` being the full dotted name of a widget or widget
+    factory (with dots replaces by underscores), holds a
+    ``plone.app.deco.interfaces.IWidgetAction`` object that has two fields:
+    ``name`` is the dotted name of the widget or factory, and ``actions`` is a
+    list of actions to be added to the tile whose field has the widget
+    specified by the dotted name.
+    Especially useful in case of rich text widgets or widgets that have a
+    corresponding inline Deco widget.  It is for now required to put both the
+    factory (``*FieldWidget``) and the widget itself (``*Widget``) in the
+    configuration as two separate entries holding the same values.
+
+Omitted fields
+--------------
+
+``plone.app.deco.default_omitted_fields``
+    A list containing the full dotted names of the fields that are not to be
+    displayed: for example
+    ``plone.app.dexterity.behaviors.metadata.IPublication.effective``
+
+``plone.app.deco.omitted_fields.$portal_type``
+    With ``$portal_type`` being a portal type name (such as ``plone.page``)
+    with the dots replaces by underscores (hence resulting in
+    ``plone.app.deco.omitted_fields.plone_page``), contains a list of the
+    full dotted names of the fields that are not to be displayed for the type
+    in question. Note that it overrides totally the ``default_omitted_fields``,
+    in order to make it usable to show fields omitted by default.
