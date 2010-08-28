@@ -55,4 +55,5 @@ class ITile(Interface):
 
 class IWidgetAction(Interface):
     name = schema.TextLine(title=u"Name")
-    actions = schema.List(title=u"Actions")
+    actions = schema.List(title=u"Actions",
+                          value_type=schema.TextLine())

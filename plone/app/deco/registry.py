@@ -145,6 +145,44 @@ class DecoRegistry(object):
             config['tiles'][index]['tiles'].append(tile)
         return config
 
+    # BBB: needs a bit of thought, I'm nowhere near satisfied with this
+    # solution
+    @staticmethod
+    def actionsForWidget(settings, widget_name):
+        """Looks up which (deco) actions are associated to a certain z3c
+        widget.
+
+        The lookup is made in 3 parts:
+
+        - First the registry is looked for a key named
+          plone.app.deco.widget_actions.<full widget dotted name>
+
+        - If the key's not found, looks for
+          plone.app.deco.widget_actions.<widget name>
+
+        - If it is not found, looks for
+          plone.app.deco.default_widget_actions
+
+        The rationale is that using the full dotted name will yield very long
+        keys, which can be painful to edit, especially through the web
+        interface. Therefore a "shortened" version is provided, and can be used
+        as long as naming conflicts do not ensue. If a "short key" is found
+        used, the developer has to fall back to the long key: the lookup
+        ordering ensures that the right key is always picked up.
+        """
+        _marker = object()
+        for name in [ widget_name, widget_name.split('.')[-1] ]:
+            actions = settings.get(
+                'plone.app.deco.widget_actions.%s.actions' % name,
+                default = _marker
+            )
+            if not actions == _marker:
+                return actions
+        return settings.get(
+            'plone.app.deco.default_widget_actions',
+            default = []
+        )
+
     def mapFieldTiles(self, settings, config, kwargs):
         args = {
             'type': None,
@@ -174,9 +212,10 @@ class DecoRegistry(object):
                     'read_only': fieldconfig['readonly'],
                     'favorite': False,
                     'widget': fieldconfig['widget'],
-                    'available_actions': ['tile-align-block',
-                                           'tile-align-right',
-                                           'tile-align-left'],
+                    'available_actions': self.actionsForWidget(
+                        settings,
+                        fieldconfig['widget']
+                    ),
                 }
                 index = GetCategoryIndex(config['tiles'], 'fields')
                 config['tiles'][index]['tiles'].append(tileconfig)
