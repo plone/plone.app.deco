@@ -88,6 +88,8 @@ class DecoRegistry(object):
                 if items:
                     action['items'] = items
                     action['items'].sort(key=itemgetter('weight'))
+                    for x in action['items']:
+                        x['value'] = x['name']
                 
                 if not action['fieldset']:
                     config[action_type].append(action)

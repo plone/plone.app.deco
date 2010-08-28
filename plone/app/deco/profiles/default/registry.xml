@@ -47,31 +47,31 @@
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.layout.items.layout">
-        <value key="value">none</value>
+        <value key="name">none</value>
         <value key="label">Layout</value>
         <value key="weight">10</value>
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.layout.items.newslisting">
-        <value key="value">newslisting</value>
+        <value key="name">newslisting</value>
         <value key="label">News listing</value>
         <value key="weight">20</value>
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.layout.items.gallery">
-        <value key="value">gallery</value>
+        <value key="name">gallery</value>
         <value key="label">Gallery</value>
         <value key="weight">30</value>
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.layout.items.another">
-        <value key="value">another</value>
+        <value key="name">another</value>
         <value key="label">Choose another...</value>
         <value key="weight">40</value>
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.layout.items.template">
-        <value key="value">template</value>
+        <value key="name">template</value>
         <value key="label">Save as template...</value>
         <value key="weight">50</value>
     </records>
@@ -88,7 +88,7 @@
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.format.items.format">
-        <value key="value">none</value>
+        <value key="name">none</value>
         <value key="label">Format</value>
         <value key="weight">10</value>
     </records>
@@ -105,7 +105,7 @@
     </records>
     <records interface="plone.app.deco.interfaces.IWeightedDict"
              prefix="plone.app.deco.secondary_actions.insert.items.insert">
-        <value key="value">none</value>
+        <value key="name">none</value>
         <value key="label">Insert</value>
         <value key="weight">10</value>
     </records>
