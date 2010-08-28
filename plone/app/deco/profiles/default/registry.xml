@@ -78,7 +78,8 @@
             <value_type type="plone.registry.field.TextLine" />
         </field>
         <value>
-            <element key="none">Format</element>
+            <element key="value">none</element>
+            <element key="label">Format</element>
         </value>
     </record>
 
@@ -99,7 +100,8 @@
             <value_type type="plone.registry.field.TextLine" />
         </field>
         <value>
-            <element key="none">Insert</element>
+            <element key="value">none</element>
+            <element key="label">Insert</element>
         </value>
     </record>
 
@@ -120,22 +122,43 @@
         </value>
     </record>
 
-    <!-- Format categories -->
-    <record name="plone.app.deco.format_categories">
-        <field type="plone.registry.field.Dict">
-            <title>Tile categories</title>
-            <key_type type="plone.registry.field.TextLine" />
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element key="actions">Actions</element>
-            <element key="text">Text</element>
-            <element key="selection">Selection</element>
-            <element key="lists">Lists</element>
-            <element key="justify">Justify</element>
-            <element key="print">Print</element>
-        </value>
-    </record>
+    <!-- Format categories -->    
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.actions">
+        <value key="name">actions</value>
+        <value key="label">Actions</value>
+        <value key="weight">10</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.text">
+        <value key="name">text</value>
+        <value key="label">Text</value>
+        <value key="weight">20</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.selection">
+        <value key="name">selection</value>
+        <value key="label">Selection</value>
+        <value key="weight">30</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.lists">
+        <value key="name">lists</value>
+        <value key="label">Lists</value>
+        <value key="weight">40</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.justify">
+        <value key="name">justify</value>
+        <value key="label">Justify</value>
+        <value key="weight">50</value>
+    </records>
+    <records interface="plone.app.deco.interfaces.IWeightedDict"
+             prefix="plone.app.deco.format_categories.print">
+        <value key="name">print</value>
+        <value key="label">Print</value>
+        <value key="weight">60</value>
+    </records>
 
     <!-- Formats -->
     <records interface="plone.app.deco.interfaces.IFormat"

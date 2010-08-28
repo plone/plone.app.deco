@@ -76,7 +76,6 @@ class DecoRegistry(object):
             # store actual key/value
             key = splitted[-1]
             current[key] = self.registry.records[record].value
-
         return result
 
     def mapActions(self, settings, config):
@@ -122,12 +121,12 @@ class DecoRegistry(object):
     def mapFormatCategories(self, settings, config):
         config['formats'] = config.get('formats', [])
         categories = settings.get("%s.format_categories" % self.prefix, {})
-        for name, label in categories.items():
-            config['formats'].append({
-                'name': name,
-                'label': label,
-                'actions': [],
-            })
+        sorted_categories = [(x, categories[x]) for x in categories.keys()]
+        sorted_categories.sort(cmp=weightedSort)
+        for key, category in sorted_categories:
+            category['actions'] = []
+            config['formats'].append(category)
+        print config
         return config
 
     def mapFormats(self, settings, config):
