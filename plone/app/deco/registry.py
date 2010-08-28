@@ -2,6 +2,7 @@ from zope.component import adapts
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
+from Products.CMFCore.interfaces._content import IFolderish
 
 from utils import iterSchemataForType, extractFieldInformation
 
@@ -189,4 +190,17 @@ class DecoRegistry(object):
         config = self.mapStructureTiles(settings, config)
         config = self.mapApplicationTiles(settings, config)
         config = self.mapFieldTiles(settings, config, kwargs)
+
+
+        args = {
+            'type': None,
+            'context': None,
+            'request': None,
+        }
+        args.update(kwargs)
+        if IFolderish.providedBy(args['context']):
+            config['parent'] = args['context'].absolute_url() + "/"
+        else:
+            config['parent'] = getattr(args['context'].aq_inner, 'aq_parent', None).absolute_url() + "/"
+
         return config
