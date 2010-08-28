@@ -556,16 +556,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
 
             // Add settings icon
-            if (tile_config &&
-               ((tile_config.tile_type === 'app') ||
-                (tile_config.tile_type === 'field' &&
-                 tile_config.widget !== 'z3c.form.browser.text.TextWidget' &&
-                 tile_config.widget !== 'z3c.form.browser.text.TextFieldWidget' &&
-                 tile_config.widget !== 'z3c.form.browser.textarea.TextAreaWidget' &&
-                 tile_config.widget !== 'z3c.form.browser.textarea.TextAreaFieldWidget' &&
-                 tile_config.widget !== 'plone.app.z3cform.wysiwyg.widget.WysiwygWidget' &&
-                 tile_config.widget !== 'plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget'))) {
-
+            if (tile_config && tile_config.settings) {
                 $(this).prepend(
                     $(document.createElement("div"))
                         .addClass("deco-tile-control deco-info-icon")
@@ -1673,7 +1664,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     /**
      * Edit an apptile with the given value
      *
-     * @id jQuery.deco.addAppTile
+     * @id jQuery.deco.editAppTile
      * @param {String} type Type of the application tile
      * @param {String} url Url of the application tile
      * @param {String} id Id of the application tile
