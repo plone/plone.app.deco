@@ -6,6 +6,12 @@ class IDecoRegistryAdapter(Interface):
     """Marker interface for the registry adapter"""
 
 
+class IWeightedDict(Interface):
+    name = schema.TextLine(title=u"Name")
+    label = schema.TextLine(title=u"Label")
+    weight = schema.Int(title=u"Weight")
+
+
 class IFormat(Interface):
     """Interface for the format configuration in the registry"""
     name = schema.TextLine(title=u"Name")
@@ -58,3 +64,5 @@ class IWidgetAction(Interface):
     name = schema.TextLine(title=u"Name")
     actions = schema.List(title=u"Actions",
                           value_type=schema.TextLine())
+
+
