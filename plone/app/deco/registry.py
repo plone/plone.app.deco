@@ -41,11 +41,7 @@ def GetCategoryIndex(tiles, category):
 def weightedSort(x, y):
     weight_x = x[1]['weight']
     weight_y = y[1]['weight']
-    if weight_x < weight_y:
-        return -1
-    elif weight_x == weight_y:
-        return 0
-    return 1
+    return cmp(weight_x, weight_y)
 
 
 class DecoRegistry(object):
@@ -111,12 +107,11 @@ class DecoRegistry(object):
     def mapTilesCategories(self, settings, config):
         config['tiles'] = config.get('tiles', [])
         categories = settings.get("%s.tiles_categories" % self.prefix, {})
-        for name, label in categories.items():
-            config['tiles'].append({
-                'name': name,
-                'label': label,
-                'tiles': [],
-            })
+        sorted_categories = [(x, categories[x]) for x in categories.keys()]
+        sorted_categories.sort(cmp=weightedSort)
+        for key, category in sorted_categories:
+            category['tiles'] = []
+            config['tiles'].append(category)
         return config
 
     def mapFormatCategories(self, settings, config):
@@ -139,26 +134,41 @@ class DecoRegistry(object):
             format['actions'].sort(key=itemgetter('weight'))
         return config
 
-    def mapStructureTiles(self, settings, config):
-        # Structure Tiles
-        tiles = settings.get('%s.structure_tiles' % self.prefix, {})
+    #def mapStructureTiles(self, settings, config):
+    #    # Structure Tiles
+    #    tiles = settings.get('%s.structure_tiles' % self.prefix, {})
+    #
+    #    for key, tile in tiles.items():
+    #        if not 'category' in tile:
+    #            continue
+    #        index = GetCategoryIndex(config['tiles'], tile['category'])
+    #        config['tiles'][index]['tiles'].append(tile)
+    #    for tile in config['tiles']:
+    #        tile['tiles'].sort(key=itemgetter('weight'))
+    #    return config
+    #
+    #def mapApplicationTiles(self, settings, config):
+    #    tiles = settings.get('%s.app_tiles' % self.prefix, {})
+    #    for key, tile in tiles.items():
+    #        if not 'category' in tile:
+    #            continue
+    #        index = GetCategoryIndex(config['tiles'], tile['category'])
+    #        config['tiles'][index]['tiles'].append(tile)
+    #    for tile in config['tiles']:
+    #        tile['tiles'].sort(key=itemgetter('weight'))
+    #    return config
 
+    def mapTiles(self, settings, config, tile_category):
+        tiles = settings.get('%s.%s' % (self.prefix, tile_category), {})
         for key, tile in tiles.items():
             if not 'category' in tile:
                 continue
             index = GetCategoryIndex(config['tiles'], tile['category'])
             config['tiles'][index]['tiles'].append(tile)
+        for tile in config['tiles']:
+            tile['tiles'].sort(key=itemgetter('weight'))
         return config
-
-    def mapApplicationTiles(self, settings, config):
-        tiles = settings.get('%s.app_tiles' % self.prefix, {})
-        for key, tile in tiles.items():
-            if not 'category' in tile:
-                continue
-            index = GetCategoryIndex(config['tiles'], tile['category'])
-            config['tiles'][index]['tiles'].append(tile)
-        return config
-
+            
     # BBB: needs a bit of thought, I'm nowhere near satisfied with this
     # solution
     @staticmethod
@@ -243,8 +253,8 @@ class DecoRegistry(object):
         config = self.mapFormats(settings, config)
         config = self.mapActions(settings, config)
         config = self.mapTilesCategories(settings, config)
-        config = self.mapStructureTiles(settings, config)
-        config = self.mapApplicationTiles(settings, config)
+        for tile_category in ['structure_tiles', 'app_tiles']:        
+            config = self.mapTiles(settings, config, tile_category)
         config = self.mapFieldTiles(settings, config, kwargs)
 
         args = {

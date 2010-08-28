@@ -59,7 +59,7 @@ class ITile(Interface):
     settings = schema.Bool(title=u"Settings")
     favorite = schema.Bool(title=u"Favorite")
     rich_text = schema.Bool(title=u"Rich Text")
-
+    weight = schema.Int(title=u"Weight")
 
 class IWidgetAction(Interface):
     name = schema.TextLine(title=u"Name")
