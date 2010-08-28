@@ -4,6 +4,7 @@ from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.interfaces._content import IFolderish
+from zope.site.hooks import getSite
 
 from utils import iterSchemataForType, extractFieldInformation
 
@@ -193,6 +194,10 @@ class DecoRegistry(object):
         if args['type'] is None:
             return config
         prefixes = []
+
+        # Get a request so we can do translations.
+        site = getSite()
+        request = getattr(site, 'REQUEST', None)
         for index, schema in enumerate(iterSchemataForType(args['type'])):
             prefix = ''
             if index > 0:
@@ -202,7 +207,7 @@ class DecoRegistry(object):
                 prefixes.append(prefix)
             for fieldconfig in extractFieldInformation(
                         schema, args['context'], args['request'], prefix):
-                label = translate(fieldconfig['title'])
+                label = translate(fieldconfig['title'], context=request)
                 tileconfig = {
                     'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
                     'name': fieldconfig['name'],
