@@ -5,6 +5,7 @@ from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.interfaces._content import IFolderish
 from zope.site.hooks import getSite
+from operator import itemgetter
 
 from utils import iterSchemataForType, extractFieldInformation
 
@@ -126,7 +127,6 @@ class DecoRegistry(object):
         for key, category in sorted_categories:
             category['actions'] = []
             config['formats'].append(category)
-        print config
         return config
 
     def mapFormats(self, settings, config):
@@ -134,7 +134,9 @@ class DecoRegistry(object):
         for key, format in formats.items():
             index = GetCategoryIndex(config['formats'], format['category'])
             config['formats'][index]['actions'].append(format)
-
+        # sort the formats
+        for format in config['formats']:
+            format['actions'].sort(key=itemgetter('weight'))
         return config
 
     def mapStructureTiles(self, settings, config):

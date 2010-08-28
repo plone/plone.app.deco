@@ -170,6 +170,7 @@ xml = """
         <value key="action">strong</value>
         <value key="icon">false</value>
         <value key="favorite">true</value>
+        <value key="weight">10</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.em"
@@ -180,6 +181,7 @@ xml = """
         <value key="action">em</value>
         <value key="icon">false</value>
         <value key="favorite">true</value>
+        <value key="weight">20</value>        
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.paragraph">
@@ -189,6 +191,7 @@ xml = """
         <value key="action">paragraph</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">30</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.heading">
@@ -198,6 +201,7 @@ xml = """
         <value key="action">heading</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">40</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.subheading">
@@ -207,6 +211,7 @@ xml = """
         <value key="action">subheading</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">50</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.discreet">
@@ -216,6 +221,7 @@ xml = """
         <value key="action">discreet</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">60</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.literal">
@@ -225,6 +231,7 @@ xml = """
         <value key="action">literal</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">70</value>        
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.quote">
@@ -234,6 +241,7 @@ xml = """
         <value key="action">quote</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">80</value>                
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.callout">
@@ -243,6 +251,7 @@ xml = """
         <value key="action">callout</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">90</value>                
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.highlight">
@@ -252,6 +261,7 @@ xml = """
         <value key="action">highlight</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">100</value>                        
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.sub">
@@ -261,6 +271,7 @@ xml = """
         <value key="action">sub</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">110</value>                                
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.sup">
@@ -270,6 +281,7 @@ xml = """
         <value key="action">sup</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">120</value>                                
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.remove_format">
@@ -279,6 +291,7 @@ xml = """
         <value key="action">remove-format</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">130</value>                                        
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.ul">
@@ -288,6 +301,7 @@ xml = """
         <value key="action">ul</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">140</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.ol">
@@ -297,6 +311,7 @@ xml = """
         <value key="action">ol</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">150</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.justify_left">
@@ -306,6 +321,7 @@ xml = """
         <value key="action">justify-left</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">160</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.justify_center">
@@ -315,6 +331,7 @@ xml = """
         <value key="action">justify-center</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">170</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.justify_right">
@@ -324,6 +341,7 @@ xml = """
         <value key="action">justify-right</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">180</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.justify_justify">
@@ -333,6 +351,7 @@ xml = """
         <value key="action">justify-justify</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">190</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.tile_align_block">
@@ -342,6 +361,7 @@ xml = """
         <value key="action">tile-align-block</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">200</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.tile_align_left">
@@ -351,6 +371,7 @@ xml = """
         <value key="action">tile-align-left</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">210</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.tile_align_right">
@@ -360,6 +381,7 @@ xml = """
         <value key="action">tile-align-right</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">220</value>
     </records>
     <records interface="plone.app.deco.interfaces.IFormat"
              prefix="plone.app.deco.formats.pagebreak">
@@ -369,6 +391,7 @@ xml = """
         <value key="action">pagebreak</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">230</value>
     </records>
 
     <records interface="plone.app.deco.interfaces.IFormat"
@@ -379,6 +402,7 @@ xml = """
         <value key="action">pagebreak</value>
         <value key="icon">true</value>
         <value key="favorite">false</value>
+        <value key="weight">240</value>
     </records>
 
     <!-- Widget actions -->
@@ -906,14 +930,13 @@ xml = """
         </value>
     </record>  
  </registry>
-
 """
 
 parsed_data = {'tiles': [{'tiles': [{'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.discussion', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Discussion', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.video', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Video', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.navigation', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Navtree', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.rss', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'RSS', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.image', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Image', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.calendar', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Calendar', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.proxy', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Proxy', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'media', 'default_value': None, 'name': u'plone.app.standardtiles.attachment', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Attachment', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'media', 'label': u'Media'}, {'tiles': [{'category': u'structure', 'default_value': u'<p>New block</p>', 'name': u'text', 'settings': True, 'tile_type': u'text', 'favorite': False, 'label': u'Text', 'read_only': False, 'available_actions': [u'strong', u'em', u'paragraph', u'heading', u'subheading', u'discreet', u'literal', u'quote', u'callout', u'highlight', u'sub', u'sup', u'remove-format', u'pagebreak', u'ul', u'ol', u'justify-left', u'justify-center', u'justify-right', u'justify-justify', u'tile-align-block', u'tile-align-right'], 'rich_text': True}, {'category': u'structure', 'default_value': None, 'name': u'plone.app.standardtiles.keywords', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Keywords', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'plone.app.standardtiles.contentlisting', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Content listing', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'plone.app.standardtiles.related_items', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Related items', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'plone.app.standardtiles.document_byline', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Document byline', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}, {'category': u'structure', 'default_value': None, 'name': u'plone.app.standardtiles.tableofcontents', 'settings': True, 'tile_type': u'app', 'favorite': False, 'label': u'Table of contents', 'read_only': False, 'available_actions': [u'blur', u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': False}], 'name': u'structure', 'label': u'Structure'}, {'tiles': [{'category': u'fields', 'default_value': None, 'name': u'plone.app.standardtiles.description', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'Description', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}, {'category': u'fields', 'default_value': None, 'name': u'plone.app.standardtiles.title', 'settings': False, 'tile_type': u'app', 'favorite': False, 'label': u'Title', 'read_only': False, 'available_actions': [u'tile-align-block', u'tile-align-right', u'tile-align-left'], 'rich_text': True}], 'name': u'fields', 'label': u'Fields'}], 'secondary_actions': [{'name': u'None', 'actions': [{'fieldset': u'None', 'name': u'insert', 'items': {u'none': u'Insert'}, 'label': u'Insert', 'menu': True, 'action': u'insert', 'icon': False}, {'fieldset': u'None', 'name': u'layout', 'items': {u'none': u'Layout', u'another': u'Choose another...', u'template': u'Save as template...', u'newslisting': u'News listing', u'projectdetails': u'Project details', u'gallery': u'Gallery'}, 'label': u'Layout', 'menu': True, 'action': u'layout', 'icon': False}, {'fieldset': u'None', 'name': u'format', 'items': {u'none': u'Format'}, 'label': u'Format', 'menu': True, 'action': u'format', 'icon': False}], 'label': u'None'}, {'name': u'None', 'actions': [], 'label': u'None'}, {'name': u'None', 'actions': [], 'label': u'None'}], 'primary_actions': [{'name': u'save', 'actions': [{'fieldset': u'save', 'name': u'save', 'menu': False, 'label': u'Save', 'action': u'save', 'icon': False}], 'label': u'save'}], 'default_available_actions': [u'save', u'cancel', u'page-properties', u'undo', u'redo', u'format', u'insert'], 'formats': [{'name': u'selection', 'actions': [{'category': u'selection', 'name': u'sub', 'favorite': False, 'label': u'Subscript', 'action': u'sub', 'icon': True}, {'category': u'selection', 'name': u'sup', 'favorite': False, 'label': u'Superscript', 'action': u'sup', 'icon': True}, {'category': u'selection', 'name': u'highlight', 'favorite': False, 'label': u'Highlight', 'action': u'highlight', 'icon': True}, {'category': u'selection', 'name': u'remove-format', 'favorite': False, 'label': u'(Remove format)', 'action': u'remove-format', 'icon': True}], 'label': u'Selection'}, {'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'print', 'actions': [{'category': u'print', 'name': u'pagebreak', 'favorite': False, 'label': u'Page break', 'action': u'pagebreak', 'icon': True}], 'label': u'Print'}, {'name': u'text', 'actions': [{'category': u'text', 'name': u'em', 'favorite': True, 'label': u'I', 'action': u'em', 'icon': False}, {'category': u'text', 'name': u'callout', 'favorite': False, 'label': u'Callout', 'action': u'callout', 'icon': True}, {'category': u'text', 'name': u'subheading', 'favorite': False, 'label': u'Subheading', 'action': u'subheading', 'icon': True}, {'category': u'text', 'name': u'literal', 'favorite': False, 'label': u'Literal', 'action': u'literal', 'icon': True}, {'category': u'text', 'name': u'quote', 'favorite': False, 'label': u'Quote', 'action': u'quote', 'icon': True}, {'category': u'text', 'name': u'discreet', 'favorite': False, 'label': u'Discreet', 'action': u'discreet', 'icon': True}, {'category': u'text', 'name': u'strong', 'favorite': True, 'label': u'B', 'action': u'strong', 'icon': False}, {'category': u'text', 'name': u'paragraph', 'favorite': False, 'label': u'Paragraph', 'action': u'paragraph', 'icon': True}, {'category': u'text', 'name': u'heading', 'favorite': False, 'label': u'Heading', 'action': u'heading', 'icon': True}], 'label': u'Text'}, {'name': u'lists', 'actions': [{'category': u'lists', 'name': u'ol', 'favorite': False, 'label': u'Ordered list', 'action': u'ol', 'icon': True}, {'category': u'lists', 'name': u'ul', 'favorite': False, 'label': u'Unordered list', 'action': u'ul', 'icon': True}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'category': u'justify', 'name': u'tile-align-right', 'favorite': False, 'label': u'Tile right', 'action': u'tile-align-right', 'icon': True}, {'category': u'justify', 'name': u'justify-justify', 'favorite': False, 'label': u'Justified', 'action': u'justify-justify', 'icon': True}, {'category': u'justify', 'name': u'tile-align-block', 'favorite': False, 'label': u'Tile block', 'action': u'tile-align-block', 'icon': True}, {'category': u'justify', 'name': u'justify-left', 'favorite': False, 'label': u'Left-aligned', 'action': u'justify-left', 'icon': True}, {'category': u'justify', 'name': u'tile-align-left', 'favorite': False, 'label': u'Tile left', 'action': u'tile-align-left', 'icon': True}, {'category': u'justify', 'name': u'justify-center', 'favorite': False, 'label': u'Center', 'action': u'justify-center', 'icon': True}, {'category': u'justify', 'name': u'justify-right', 'favorite': False, 'label': u'Right-aligned', 'action': u'justify-right', 'icon': True}], 'label': u'Justify'}]}
 
 parsed_format_categories_data = {'formats': [{'actions': [], 'name': u'actions', 'weight': 10, 'label': u'Actions'}, {'actions': [], 'name': u'text', 'weight': 20, 'label': u'Text'}, {'actions': [], 'name': u'selection', 'weight': 30, 'label': u'Selection'}, {'actions': [], 'name': u'lists', 'weight': 40, 'label': u'Lists'}, {'actions': [], 'name': u'justify', 'weight': 50, 'label': u'Justify'}, {'actions': [], 'name': u'print', 'weight': 60, 'label': u'Print'}]}
 
-parsed_format_data = {'formats': [{'name': u'selection', 'actions': [{'category': u'selection', 'name': u'sub', 'favorite': False, 'label': u'Subscript', 'action': u'sub', 'icon': True}, {'category': u'selection', 'name': u'sup', 'favorite': False, 'label': u'Superscript', 'action': u'sup', 'icon': True}, {'category': u'selection', 'name': u'highlight', 'favorite': False, 'label': u'Highlight', 'action': u'highlight', 'icon': True}, {'category': u'selection', 'name': u'remove-format', 'favorite': False, 'label': u'(Remove format)', 'action': u'remove-format', 'icon': True}], 'label': u'Selection'}, {'name': u'actions', 'actions': [], 'label': u'Actions'}, {'name': u'print', 'actions': [{'category': u'print', 'name': u'pagebreak', 'favorite': False, 'label': u'Page break', 'action': u'pagebreak', 'icon': True}], 'label': u'Print'}, {'name': u'text', 'actions': [{'category': u'text', 'name': u'em', 'favorite': True, 'label': u'I', 'action': u'em', 'icon': False}, {'category': u'text', 'name': u'callout', 'favorite': False, 'label': u'Callout', 'action': u'callout', 'icon': True}, {'category': u'text', 'name': u'subheading', 'favorite': False, 'label': u'Subheading', 'action': u'subheading', 'icon': True}, {'category': u'text', 'name': u'literal', 'favorite': False, 'label': u'Literal', 'action': u'literal', 'icon': True}, {'category': u'text', 'name': u'quote', 'favorite': False, 'label': u'Quote', 'action': u'quote', 'icon': True}, {'category': u'text', 'name': u'discreet', 'favorite': False, 'label': u'Discreet', 'action': u'discreet', 'icon': True}, {'category': u'text', 'name': u'strong', 'favorite': True, 'label': u'B', 'action': u'strong', 'icon': False}, {'category': u'text', 'name': u'paragraph', 'favorite': False, 'label': u'Paragraph', 'action': u'paragraph', 'icon': True}, {'category': u'text', 'name': u'heading', 'favorite': False, 'label': u'Heading', 'action': u'heading', 'icon': True}], 'label': u'Text'}, {'name': u'lists', 'actions': [{'category': u'lists', 'name': u'ol', 'favorite': False, 'label': u'Ordered list', 'action': u'ol', 'icon': True}, {'category': u'lists', 'name': u'ul', 'favorite': False, 'label': u'Unordered list', 'action': u'ul', 'icon': True}], 'label': u'Lists'}, {'name': u'justify', 'actions': [{'category': u'justify', 'name': u'tile-align-right', 'favorite': False, 'label': u'Tile right', 'action': u'tile-align-right', 'icon': True}, {'category': u'justify', 'name': u'justify-justify', 'favorite': False, 'label': u'Justified', 'action': u'justify-justify', 'icon': True}, {'category': u'justify', 'name': u'tile-align-block', 'favorite': False, 'label': u'Tile block', 'action': u'tile-align-block', 'icon': True}, {'category': u'justify', 'name': u'justify-left', 'favorite': False, 'label': u'Left-aligned', 'action': u'justify-left', 'icon': True}, {'category': u'justify', 'name': u'tile-align-left', 'favorite': False, 'label': u'Tile left', 'action': u'tile-align-left', 'icon': True}, {'category': u'justify', 'name': u'justify-center', 'favorite': False, 'label': u'Center', 'action': u'justify-center', 'icon': True}, {'category': u'justify', 'name': u'justify-right', 'favorite': False, 'label': u'Right-aligned', 'action': u'justify-right', 'icon': True}], 'label': u'Justify'}]}
+parsed_format_data = {'formats': [{'actions': [], 'name': u'actions', 'weight': 10, 'label': u'Actions'}, {'actions': [{'category': u'text', 'name': u'strong', 'weight': 10, 'favorite': True, 'label': u'B', 'action': u'strong', 'icon': False}, {'category': u'text', 'name': u'em', 'weight': 20, 'favorite': True, 'label': u'I', 'action': u'em', 'icon': False}, {'category': u'text', 'name': u'paragraph', 'weight': 30, 'favorite': False, 'label': u'Paragraph', 'action': u'paragraph', 'icon': True}, {'category': u'text', 'name': u'heading', 'weight': 40, 'favorite': False, 'label': u'Heading', 'action': u'heading', 'icon': True}, {'category': u'text', 'name': u'subheading', 'weight': 50, 'favorite': False, 'label': u'Subheading', 'action': u'subheading', 'icon': True}, {'category': u'text', 'name': u'discreet', 'weight': 60, 'favorite': False, 'label': u'Discreet', 'action': u'discreet', 'icon': True}, {'category': u'text', 'name': u'literal', 'weight': 70, 'favorite': False, 'label': u'Literal', 'action': u'literal', 'icon': True}, {'category': u'text', 'name': u'quote', 'weight': 80, 'favorite': False, 'label': u'Quote', 'action': u'quote', 'icon': True}, {'category': u'text', 'name': u'callout', 'weight': 90, 'favorite': False, 'label': u'Callout', 'action': u'callout', 'icon': True}], 'name': u'text', 'weight': 20, 'label': u'Text'}, {'actions': [{'category': u'selection', 'name': u'highlight', 'weight': 100, 'favorite': False, 'label': u'Highlight', 'action': u'highlight', 'icon': True}, {'category': u'selection', 'name': u'sub', 'weight': 110, 'favorite': False, 'label': u'Subscript', 'action': u'sub', 'icon': True}, {'category': u'selection', 'name': u'sup', 'weight': 120, 'favorite': False, 'label': u'Superscript', 'action': u'sup', 'icon': True}, {'category': u'selection', 'name': u'remove-format', 'weight': 130, 'favorite': False, 'label': u'(Remove format)', 'action': u'remove-format', 'icon': True}], 'name': u'selection', 'weight': 30, 'label': u'Selection'}, {'actions': [{'category': u'lists', 'name': u'ul', 'weight': 140, 'favorite': False, 'label': u'Unordered list', 'action': u'ul', 'icon': True}, {'category': u'lists', 'name': u'ol', 'weight': 150, 'favorite': False, 'label': u'Ordered list', 'action': u'ol', 'icon': True}], 'name': u'lists', 'weight': 40, 'label': u'Lists'}, {'actions': [{'category': u'justify', 'name': u'justify-left', 'weight': 160, 'favorite': False, 'label': u'Left-aligned', 'action': u'justify-left', 'icon': True}, {'category': u'justify', 'name': u'justify-center', 'weight': 170, 'favorite': False, 'label': u'Center', 'action': u'justify-center', 'icon': True}, {'category': u'justify', 'name': u'justify-right', 'weight': 180, 'favorite': False, 'label': u'Right-aligned', 'action': u'justify-right', 'icon': True}, {'category': u'justify', 'name': u'justify-justify', 'weight': 190, 'favorite': False, 'label': u'Justified', 'action': u'justify-justify', 'icon': True}, {'category': u'justify', 'name': u'tile-align-block', 'weight': 200, 'favorite': False, 'label': u'Tile block', 'action': u'tile-align-block', 'icon': True}, {'category': u'justify', 'name': u'tile-align-left', 'weight': 210, 'favorite': False, 'label': u'Tile left', 'action': u'tile-align-left', 'icon': True}, {'category': u'justify', 'name': u'tile-align-right', 'weight': 220, 'favorite': False, 'label': u'Tile right', 'action': u'tile-align-right', 'icon': True}], 'name': u'justify', 'weight': 50, 'label': u'Justify'}, {'actions': [{'category': u'print', 'name': u'pagebreak', 'weight': 240, 'favorite': False, 'label': u'Page break', 'action': u'pagebreak', 'icon': True}], 'name': u'print', 'weight': 60, 'label': u'Print'}]}
 
 parsed_primary_actions_data = [{'name': u'save', 'actions': [{'fieldset': u'save', 'name': u'save', 'weight': 10, 'menu': False, 'label': u'Save', 'action': u'save', 'icon': False}], 'label': u'save'}, {'fieldset': None, 'name': u'cancel', 'weight': 20, 'menu': False, 'label': u'Cancel', 'action': u'cancel', 'icon': False}, {'fieldset': None, 'name': u'page_properties', 'weight': 30, 'menu': False, 'label': u'Page properties', 'action': u'page-properties', 'icon': False}]
 

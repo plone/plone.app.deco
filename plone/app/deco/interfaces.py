@@ -20,6 +20,7 @@ class IFormat(Interface):
     action = schema.TextLine(title=u"Action")
     icon = schema.Bool(title=u"Icon")
     favorite = schema.Bool(title=u"Favorite")
+    weight = schema.Int(title=u"Weight")
 
 
 class IAction(Interface):
