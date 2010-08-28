@@ -9,6 +9,7 @@
         <value key="action">save</value>
         <value key="icon">False</value>
         <value key="menu">False</value>
+        <value key="weight">10</value>
     </records>
 
     <records prefix="plone.app.deco.primary_actions.cancel"
@@ -19,6 +20,7 @@
         <value key="action">cancel</value>
         <value key="icon">False</value>
         <value key="menu">False</value>
+        <value key="weight">20</value>
     </records>
 
     <records prefix="plone.app.deco.primary_actions.page_properties"
@@ -29,8 +31,8 @@
         <value key="action">page-properties</value>
         <value key="icon">False</value>
         <value key="menu">False</value>
+        <value key="weight">30</value>
     </records>
-
 
     <!-- secondary actions -->
     <records prefix="plone.app.deco.secondary_actions.layout"
@@ -41,6 +43,7 @@
         <value key="action">layout</value>
         <value key="icon">False</value>
         <value key="menu">True</value>
+        <value key="weight">10</value>
     </records>
     <record name="plone.app.deco.secondary_actions.layout.items">
         <field type="plone.registry.field.Dict">
@@ -66,6 +69,7 @@
         <value key="action">format</value>
         <value key="icon">False</value>
         <value key="menu">True</value>
+        <value key="weight">20</value>
     </records>
     <record name="plone.app.deco.secondary_actions.format.items">
         <field type="plone.registry.field.Dict">
@@ -86,6 +90,7 @@
         <value key="action">insert</value>
         <value key="icon">False</value>
         <value key="menu">True</value>
+        <value key="weight">30</value>
     </records>
     <record name="plone.app.deco.secondary_actions.insert.items">
         <field type="plone.registry.field.Dict">
