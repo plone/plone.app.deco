@@ -23,6 +23,7 @@ class IAction(Interface):
     action = schema.TextLine(title=u"Action")
     icon = schema.Bool(title=u"Icon")
     menu = schema.Bool(title=u"Menu")
+    weight = schema.Int(title=u"Weight")
 
 
 class IFieldTile(Interface):
