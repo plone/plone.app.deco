@@ -98,7 +98,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                         // Local variables
                         var z, elm, y;
-
                         for (z = 0; z < action.items.length; z += 1) {
 
                             // Check if child objects
