@@ -23,7 +23,6 @@ class DecoRegistryTest(unittest.TestCase):
         gsm = getGlobalSiteManager()
         self.registry = Registry()
         gsm.registerUtility(self.registry, IRegistry)
-
         importer = RegistryImporter(self.registry, self)
         importer.importDocument(xml)
         return self.registry
@@ -42,6 +41,16 @@ class DecoRegistryTest(unittest.TestCase):
         config = adapted.mapFormatCategories(settings, {})
         config = adapted.mapFormats(settings, config)
         self.assertEqual(config, td.parsed_format_data)
+
+    def test_actions(self):
+        registry = self.createRegistry(td.xml)
+        adapted = IDecoRegistryAdapter(registry)
+        settings = adapted.parseRegistry()
+        config = adapted.mapActions(settings, {})
+        self.assertEqual(config['primary_actions'],
+                         td.parsed_primary_actions_data)
+        self.assertEqual(config['secondary_actions'],
+                         td.parsed_secondary_actions_data)
 
     def test_tiles_categories(self):
         registry = self.createRegistry(td.xml)
