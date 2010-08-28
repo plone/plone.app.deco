@@ -172,17 +172,15 @@ class DecoRegistry(object):
         ordering ensures that the right key is always picked up.
         """
         _marker = object()
-        for name in [ widget_name, widget_name.split('.')[-1] ]:
+        for name in [widget_name, widget_name.split('.')[-1]]:
             actions = settings.get(
                 'plone.app.deco.widget_actions.%s.actions' % name,
-                default = _marker
-            )
+                default=_marker)
             if not actions == _marker:
                 return actions
         return settings.get(
             'plone.app.deco.default_widget_actions',
-            default = []
-        )
+            default=[])
 
     def mapFieldTiles(self, settings, config, kwargs):
         args = {
@@ -219,8 +217,7 @@ class DecoRegistry(object):
                     'widget': fieldconfig['widget'],
                     'available_actions': self.actionsForWidget(
                         settings,
-                        fieldconfig['widget']
-                    ),
+                        fieldconfig['widget']),
                 }
                 index = GetCategoryIndex(config['tiles'], 'fields')
                 config['tiles'][index]['tiles'].append(tileconfig)
