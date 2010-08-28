@@ -159,6 +159,22 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     for (x = 0; x < $.deco.options.tiles.length; x += 1) {
                         tile_group = $.deco.options.tiles[x];
                         for (y = 0; y < tile_group.tiles.length; y += 1) {
+
+                            // Set settings value
+                            if (tile_group.tiles[y].tile_type === 'field') {
+                                switch (tile_group.tiles[y].widget) {
+                                case "z3c.form.browser.text.TextWidget":
+                                case "z3c.form.browser.text.TextFieldWidget":
+                                case "z3c.form.browser.textarea.TextAreaWidget":
+                                case "z3c.form.browser.textarea.TextAreaFieldWidget":
+                                case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+                                case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
+                                    tile_group.tiles[y].settings = false;
+                                    break;
+                                default:
+                                    tile_group.tiles[y].settings = true;
+                                }
+                            }
                             if (tile_group.tiles[y].name === tiletype) {
                                 tile_config = tile_group.tiles[y];
                             }
@@ -169,7 +185,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     if (tile_config.tile_type === 'field') {
 
                         fieldhtml = '';
-                        tile_config.settings = false;
 
                         switch (tile_config.widget) {
                         case "z3c.form.browser.text.TextWidget":
@@ -197,7 +212,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             fieldhtml = '<div class="discreet">Placeholder ' +
                                 'for field:<br/><b>' + tile_config.label +
                                 '</b></div>';
-                            tile_config.settings = true;
                             break;
                         }
                         tile_content.html(fieldhtml);
