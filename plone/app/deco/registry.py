@@ -37,6 +37,16 @@ def GetCategoryIndex(tiles, category):
     return None
 
 
+def weightedSort(x, y):
+    weight_x = x[1]['weight']
+    weight_y = y[1]['weight']
+    if weight_x < weight_y:
+        return -1
+    elif weight_x == weight_y:
+        return 0
+    return 1
+
+
 class DecoRegistry(object):
     """Adapts a registry object to parse the deco settings data"""
 
@@ -70,11 +80,13 @@ class DecoRegistry(object):
         return result
 
     def mapActions(self, settings, config):
+
         for action_type in ['primary_actions', 'secondary_actions']:
             config[action_type] = []
-
             key = '%s.%s' % (self.prefix, action_type)
-            for key, action in settings.get(key, {}).items():
+            actions = settings.get(key, {}).items()
+            actions.sort(cmp=weightedSort)
+            for key, action in actions:
                 if not action['fieldset']:
                     config[action_type].append(action)
                     continue
