@@ -245,8 +245,12 @@ class DecoRegistry(object):
         args.update(kwargs)
         if IFolderish.providedBy(args['context']):
             config['parent'] = args['context'].absolute_url() + "/"
-        else:
+        elif args['context']:
             config['parent'] = getattr(args['context'].aq_inner, 'aq_parent',
                                        None).absolute_url() + "/"
+        else:
+            # context can be None, at least in tests.  Do nothing
+            # then.  See test_config in test_decoregistry.py
+            pass
 
         return config
