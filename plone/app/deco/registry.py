@@ -1,4 +1,5 @@
 from zope.component import adapts
+from zope.i18n import translate
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
@@ -163,10 +164,11 @@ class DecoRegistry(object):
                 prefixes.append(prefix)
             for fieldconfig in extractFieldInformation(
                         schema, args['context'], args['request'], prefix):
+                label = translate(fieldconfig['title'])
                 tileconfig = {
                     'id': 'formfield-form-widgets-%s' % fieldconfig['name'],
                     'name': fieldconfig['name'],
-                    'label': fieldconfig['title'],
+                    'label': label,
                     'category': 'fields',
                     'tile_type': 'field',
                     'read_only': fieldconfig['readonly'],
@@ -191,7 +193,6 @@ class DecoRegistry(object):
         config = self.mapApplicationTiles(settings, config)
         config = self.mapFieldTiles(settings, config, kwargs)
 
-
         args = {
             'type': None,
             'context': None,
@@ -201,6 +202,7 @@ class DecoRegistry(object):
         if IFolderish.providedBy(args['context']):
             config['parent'] = args['context'].absolute_url() + "/"
         else:
-            config['parent'] = getattr(args['context'].aq_inner, 'aq_parent', None).absolute_url() + "/"
+            config['parent'] = getattr(args['context'].aq_inner, 'aq_parent',
+                                       None).absolute_url() + "/"
 
         return config
