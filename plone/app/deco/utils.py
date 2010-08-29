@@ -15,6 +15,8 @@ from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
 
+from plone.directives.standardtiles.interfaces import FIELD_OMITTED_KEY
+
 
 # BBB: this should be in plone.autoform.utils
 class PermissionChecker(object):
@@ -106,6 +108,8 @@ def extractFieldInformation(schema, context, request, prefix):
     modes = mergedTaggedValuesForIRO(schema, MODES_KEY, iro)
     widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
 
+    fieldtile_omitted = mergedTaggedValueDict(schema, FIELD_OMITTED_KEY)
+
     if context is not None:
         read_permissionchecker = PermissionChecker(
             mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY),
@@ -128,7 +132,7 @@ def extractFieldInformation(schema, context, request, prefix):
                 omitted[name] = True
             if not write_permissionchecker.allowed(name):
                 read_only.append(name)
-        if is_visible(name, omitted):
+        if is_visible(name, omitted) and is_visible(name, fieldtile_omitted):
             yield {
                 'id': "%s.%s" % (schema.__identifier__, name),
                 'name': prefix + name,
