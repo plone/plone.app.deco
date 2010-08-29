@@ -432,11 +432,9 @@
             <element>plone.app.dexterity.behaviors.metadata.IOwnership.contributors</element>
             <element>plone.app.dexterity.behaviors.metadata.IOwnership.rights</element>
 
-            <!-- SHOULD BE REMOVED WHEN DIRECTIVES ARE IMPLMENTED -->
+            <!-- SHOULD BE REMOVED WHEN WE GET RID OF THE METADATA APP TILES -->
             <element>plone.app.dexterity.behaviors.metadata.IDublinCore.title</element>
             <element>plone.app.dexterity.behaviors.metadata.IDublinCore.description</element>
-            <element>plone.app.layoutbehavior.ILayout.content</element>
-            <element>plone.app.layoutbehavior.ILayout.layout</element>
         </value>
     </record>
 
