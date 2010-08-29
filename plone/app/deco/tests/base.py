@@ -5,7 +5,7 @@ from plone.app.testing import applyProfile
 from zope.configuration import xmlconfig
 #from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing.layers import FunctionalTesting
-from interlude import interact
+
 from plone.dexterity.utils import createContent
 
 
