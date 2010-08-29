@@ -1026,7 +1026,7 @@ body #plone-contentmenu-workflow a:hover .state-published {
 	text-shadow:0 -1px 0 #1B4965;
 }
 body dt.actionMenuHeader {
-	padding:0 0 7px;
+	padding:0 0 5px;
 }
 body dd.actionMenuContent, body #contentActionMenus dl.actionMenu.activated dd {
 	background-color: #252122;
