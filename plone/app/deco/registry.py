@@ -67,6 +67,7 @@ class DecoRegistry(object):
                 # create the key if it's not there
                 if not x in current:
                     current[x] = {}
+
                 current = current[x]
 
             # store actual key/value
@@ -89,7 +90,7 @@ class DecoRegistry(object):
                     action['items'].sort(key=itemgetter('weight'))
                     for x in action['items']:
                         x['value'] = x['name']
-                
+
                 if not action['fieldset']:
                     config[action_type].append(action)
                     continue
@@ -198,15 +199,15 @@ class DecoRegistry(object):
         """
         actions = settings.get(
             '%s.widget_actions.%s.actions' % (
-                cls.prefix, widget_name.replace('.', '_')
+                cls.prefix, widget_name.replace('.', '_'),
             ),
-            default = None
+            default=None
         )
         if actions is not None:
             return actions
         return settings.get(
             cls.prefix + '.default_widget_actions',
-            default = []
+            default=[],
         )
 
     def mapFieldTiles(self, settings, config, kwargs):
@@ -228,21 +229,19 @@ class DecoRegistry(object):
                     prefix = schema.__identifier__
                 prefixes.append(prefix)
             registry_omitted = settings.get(
-                '%s.omitted_fields.%s' % (self.prefix, args['type'].replace('.','_')),
-                default = None
+                '%s.omitted_fields.%s' % (self.prefix, args['type'].replace('.', '_')),
+                default=None,
             )
             if registry_omitted is None:
                 registry_omitted = settings.get(
                     self.prefix + '.default_omitted_fields',
-                    default = []
+                    default=[],
                 )
             for fieldconfig in extractFieldInformation(
                         schema, args['context'], args['request'], prefix):
                 if fieldconfig['id'] not in registry_omitted:
-                    label = translate(
-                        fieldconfig['title'],
-                        context = args['request']
-                    )
+                    label = translate(fieldconfig['title'],
+                                      context=args['request'])
                     tileconfig = {
                         'id': 'formfield-form-widgets-%s' % (
                             fieldconfig['name'],
