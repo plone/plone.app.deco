@@ -238,8 +238,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 $.deco.addHeadTags(href, value);
 
                                 tile_content
-                                    .html('<span class="hiddenStructure ' +
-                                        'tileUrl">' + href + '</span>' +
+                                    .html('<p class="hiddenStructure ' +
+                                        'tileUrl">' + href + '</p>' +
                                         value.find('.temp_body_tag').html());
 
                                 $.deco.tileInitCount += 1;

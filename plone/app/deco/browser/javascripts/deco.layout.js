@@ -1656,7 +1656,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.addHeadTags(url, value);
 
                 // Add tile
-                $.deco.addTile(type, '<span class="hiddenStructure tileUrl">' + url + '</span>' + value.find('.temp_body_tag').html());
+                $.deco.addTile(type, '<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
             }
         });
     };
@@ -1693,7 +1693,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.addHeadTags(url, value);
 
                 // Update tile
-                $('.deco-selected-tile .deco-tile-content').html('<span class="hiddenStructure tileUrl">' + url + '</span>' + value.find('.temp_body_tag').html());
+                $('.deco-selected-tile .deco-tile-content').html('<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
             }
         });
     };
