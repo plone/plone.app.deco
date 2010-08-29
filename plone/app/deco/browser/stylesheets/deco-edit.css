@@ -135,7 +135,7 @@
     z-index: 100;
 }
 
-.deco-tile-content textarea, .deco-tile-content input {
+.deco-tile-content textarea, .deco-tile-content input[type=text] {
     width: 100%;
 }
 
