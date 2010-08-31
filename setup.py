@@ -41,6 +41,7 @@ setup(name='plone.app.deco',
       extras_require={
           'test': [
             'interlude',
+            'unittest2',
             'plone.app.layoutbehavior',
             'plone.app.page',
             'plone.app.testing', ]},
