@@ -215,9 +215,8 @@
 }
 
 .deco-close-icon {
-    right: -2px;
-    left: auto;
-    top: -2px;
+    left: -18px;
+    top: -18px;
     width: 30px;
     height: 30px;
     background-image: url(++resource++plone.app.deco.images/window.png);
