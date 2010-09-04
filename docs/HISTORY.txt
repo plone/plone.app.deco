@@ -1,8 +1,989 @@
 Changelog
 =========
 
-0.1 - Unreleased
+0.1 (unreleased)
 ----------------
 
-* Initial release
+- Move close icon.
+  [robgietema]
 
+- unittest2 added as test dependency to make hudson happy.
+  [timo]
+
+- Fixed button width.
+  [robgietema]
+
+- Removed the registry keys to hide layout and content, which are now schema-hidden
+  [shywolf9982]
+
+- Added plone.directives,standardtiles as dependency: should probably be removed once we get the registry stuff out
+  [shywolf9982]
+
+- Hooked up plone.directives.standardtiles, settings now honored
+  [shywolf9982]
+
+- PEP8
+  [jaroel]
+
+- Set tileURL to use p and not span because tinymce auto wraps spans.
+  [robgietema]
+
+- Removing interlude import since it does not do anything.
+  [timo]
+
+- Fixed pulldown menu.
+  [robgietema]
+
+- deco style toolbar
+  [laurenskling]
+
+- Rearranged tiles.
+  [robgietema]
+
+- * Added the ability to hide field tiles via registry * Changed the format of the widget actions keys to work similarly to the rest
+  [shywolf9982]
+
+- name -> value + tests
+  [maerteijn]
+
+- name -> value
+  [maerteijn]
+
+- Add ordering to items in actions
+  [maerteijn]
+
+- Added more sorting to fields, tiles and formats
+  [maerteijn]
+
+- Also made IFormat sortable now
+  [maerteijn]
+
+- Fixed settings icon.
+  [robgietema]
+
+- Added sorting to the formatting categories
+  [maerteijn]
+
+- Added WeightedDict interface
+  [maerteijn]
+
+- Added tests for the weight fields and primary actions
+  [maerteijn]
+
+- Added weight to the actions
+  [maerteijn]
+
+- Added sorting for primary and secondary actions
+  [maerteijn]
+
+- Added weight so we can sort the actions
+  [maerteijn]
+
+- Fixed plone.autoform _getDisallowedFields
+  [shywolf9982]
+
+- PPP (PeP8/Pyflakes)
+  [maurits]
+
+- Fixed AttributeError when creating a registry when context is None, (happens in the test_config test in test_decoregistry).
+  [maurits]
+
+- Translate labels into the right language, by getting a request using getSite.
+  [maurits]
+
+- Actions are now looked up correctly according to the z3c widget used in the form
+  [shywolf9982]
+
+- Use settings flag to determine the properties icon.
+  [robgietema]
+
+- Translate the title of the fieldconfig.
+  [maurits]
+
+- Fix application tile url.
+  [robgietema]
+
+- Added Default Widget Actions
+  [maerteijn]
+
+- Fixed undefined error in field tiles.
+  [robgietema]
+
+- Fixed edit field tiles in dialog.
+  [robgietema]
+
+- Fixing primary and secondary actions; fix registry.
+  [jaroel]
+
+- Removing reference to non-existing controlpanel
+  [jaroel]
+
+- Merge 10910-fixregistry branch.
+  [jaroel]
+
+- Merged files from fix registry branche.
+  [robgietema]
+
+- Changed font.
+  [robgietema]
+
+- Small button style tweaks.
+  [robgietema]
+
+- Restyle buttons in a toolbar.
+  [robgietema]
+
+- Put toolbar on top. Hide undo/redo for now till it's fully functional.
+  [robgietema]
+
+- Issue #19020: Added undo/redo actions, and added deco.undo.js to JS
+  [dokter]
+
+- issue #10916: added undo to deco initialization, and added example to remove action
+  [dokter]
+
+- Adapt from "Interface" now, so we now the multiadapter works for all contexts now
+  [maerteijn]
+
+- Quickfix for the multiadapter now so you can add new items
+  [maerteijn]
+
+- Fixed style in editing mode.
+  [robgietema]
+
+- Fixed the tests so the output of the DecoRegistryAdapter is now tested.
+  [maerteijn]
+
+- Made a correct MultiAdapter implementation of the IDecoRegistryAdapter
+  [maerteijn]
+
+- Added plone.app.page as dependancy for the registry tests
+  [maerteijn]
+
+- Rearranged test package Added stub for the decoregistry testcase
+  [maerteijn]
+
+- Made JSLint compatible
+  [dokter]
+
+- Added documentation to JS
+  [dokter]
+
+- Added undo JS base
+  [dokter]
+
+- Fixed deco to use _tiledata.
+  [robgietema]
+
+- Removed tests.py, this has been replaced by tests/*
+  [maerteijn]
+
+- Based testsuite on plone.app.testing now Fixed the currently existing browser tests
+  [maerteijn]
+
+- Removed unittest2, removed tab characters
+  [maerteijn]
+
+- Added extra_require so we have separate packages for testing, including plone.app.testing
+  [maerteijn]
+
+- Fixed docstring, so it makes sense
+  [maerteijn]
+
+- Fixed dialog tests.
+  [robgietema]
+
+- Move getConfiguration to an adapter
+  [jaroel]
+
+- PEP8 cleanup
+  [jaroel]
+
+- added missing sys import to setup.py
+  [jbaumann]
+
+- Updated install info.
+  [robgietema]
+
+- JSLint fixes.
+  [robgietema]
+
+- JSLint fixes.
+  [robgietema]
+
+- JSLint fixes for toolbar module.
+  [robgietema]
+
+- Upload module now passes JSLint checks.
+  [robgietema]
+
+- Added jslint options to dialog module. Set maxlen to 80.
+  [robgietema]
+
+- Added jslint options to actions module. Set maxlen to 80.
+  [robgietema]
+
+- Added jslint options to core module. Set maxlen to 80.
+  [robgietema]
+
+- Notify module now passes JSLint checks.
+  [robgietema]
+
+- Dialog module now passes JSLint tests.
+  [robgietema]
+
+- Actions module now passes JSLint tests.
+  [robgietema]
+
+- Fixed add page regexp.
+  [robgietema]
+
+- deco.core.js now passing JSLint tests.
+  [robgietema]
+
+- Fixed whitespace issue with title and description tile.
+  [robgietema]
+
+- Use new tile naming.
+  [robgietema]
+
+- Updated js to the new tile names.
+  [robgietema]
+
+- Fixed tile naming.
+  [robgietema]
+
+- Fixed dependencies.
+  [robgietema]
+
+- Fixed dependencies.
+  [robgietema]
+
+- Fixed issue where title and description were not in the right menu.
+  [robgietema]
+
+- Deco can now handle title and description fields as app tiles.
+  [robgietema]
+
+- Fixed getting initial value of a field tile.
+  [robgietema]
+
+- Getting field tile data in edit mode from form.
+  [robgietema]
+
+- Fixed displacement of tile when dragging.
+  [robgietema]
+
+- Changed dependency.
+  [robgietema]
+
+- Rename plone.layoutbehavior to plone.app.layoutbehavior.
+  [dukebody]
+
+- Stripped tileUrl from field tiles.
+  [robgietema]
+
+- Set json header for upload browser view.
+  [robgietema]
+
+- Set json header for config browser view.
+  [robgietema]
+
+- Added upload module test boilerplate.
+  [robgietema]
+
+- Updated jQuery version for tests.
+  [robgietema]
+
+- Added tests for app tile replacement on init.
+  [robgietema]
+
+- Added test for add url.
+  [robgietema]
+
+- Added add/remove head tags tests.
+  [robgietema]
+
+- Fixed tests for deco.core module.
+  [robgietema]
+
+- Fixed jQuery 1.4 compatibility.
+  [robgietema]
+
+- Removed blur action.
+  [robgietema]
+
+- Dialog module has full coverage now.
+  [robgietema]
+
+- Fixed tests for dialog.
+  [robgietema]
+
+- Updated test info.
+  [robgietema]
+
+- Fixed dialog which was broken due to new z3c.form markup.
+  [robgietema]
+
+- Updated content markup classes.
+  [robgietema]
+
+- Added fieldtile handling in js.
+  [robgietema]
+
+- Renamed content field.
+  [robgietema]
+
+- Added client-side head merging when managing application tiles.
+  [robgietema]
+
+- Panels and application tiles are now stored as links in the head.
+  [robgietema]
+
+- Fixed initial content.
+  [robgietema]
+
+- Moved tile id generation to backend.
+  [robgietema]
+
+- Added edit application tile handler.
+  [robgietema]
+
+- Added Ajax event to remove application tile data when application tile is removed.
+  [robgietema]
+
+- Fixed minor jQuery 1.4 issue.
+  [robgietema]
+
+- Added profile dependency.
+  [robgietema]
+
+- Changed dependency.
+  [robgietema]
+
+- Updated url.
+  [robgietema]
+
+- Updated add tile url.
+  [robgietema]
+
+- Added cancel handler for app tiles dialog.
+  [robgietema]
+
+- Added url to apptile html. Added insert apptile handler.
+  [robgietema]
+
+- Replaced value with url when adding app tiles.
+  [robgietema]
+
+- Updated addtile url.
+  [robgietema]
+
+- Fixed failing tests.
+  [robgietema]
+
+- Added canvas test.
+  [robgietema]
+
+- Added settings to app tiles.
+  [robgietema]
+
+- Added actions.
+  [robgietema]
+
+- Prevent event from binding twice.
+  [robgietema]
+
+- Removed jQuery UI from tests.
+  [robgietema]
+
+- Removed jQuery UI files.
+  [robgietema]
+
+- Removed jQuery UI dependency.
+  [robgietema]
+
+- Added custom drag function.
+  [robgietema]
+
+- Fixed initialisation of tiles when uploading multiple.
+  [robgietema]
+
+- Added loading indicator.
+  [robgietema]
+
+- Fixed multiple upload.
+  [robgietema]
+
+- Used json library.
+  [robgietema]
+
+- Set source of uploaded file and fadein.
+  [robgietema]
+
+- Show error message on client side.
+  [robgietema]
+
+- Return json structure on succes.
+  [robgietema]
+
+- First working upload.
+  [robgietema]
+
+- Upload file using ajax.
+  [robgietema]
+
+- Added upload view.
+  [robgietema]
+
+- Handle multiple files.
+  [robgietema]
+
+- Check for supported mimetypes.
+  [robgietema]
+
+- Added max-width to images.
+  [robgietema]
+
+- Added basic drop functionality.
+  [robgietema]
+
+- Added drop event.
+  [robgietema]
+
+- Added initialisation for upload.
+  [robgietema]
+
+- Added upload module.
+  [robgietema]
+
+- Fixed initialisation of toolbar tests.
+  [robgietema]
+
+- Added boilerplate for layout tests.
+  [robgietema]
+
+- Removed event storage. Added deco namespace if not available.
+  [robgietema]
+
+- Updated toolbar tests, module has full coverage now.
+  [robgietema]
+
+- Updated toolbar tests.
+  [robgietema]
+
+- Added boilerplate for toolbar tests.
+  [robgietema]
+
+- Added tests for core module, this module is now fully covered.
+  [robgietema]
+
+- Updated dialog tests, module is fully covered now.
+  [robgietema]
+
+- Removed uninit methods. Removed init options.
+  [robgietema]
+
+- Removed unused files.
+  [robgietema]
+
+- Fixed showing initial tab.
+  [robgietema]
+
+- Fixed showing tabs.
+  [robgietema]
+
+- Fixed hiding tabs for empty fieldsets.
+  [robgietema]
+
+- Split up tests.
+  [robgietema]
+
+- Create deco namespace if it doesn't exist.
+  [robgietema]
+
+- This doesn't need to be a product
+  [optilude]
+
+- Another use of the old name
+  [optilude]
+
+- New name
+  [optilude]
+
+- Added tests for dialog.
+  [robgietema]
+
+- Changed selector from region-content to deco-dialog.
+  [robgietema]
+
+- Added tests for decoDialog.
+  [robgietema]
+
+- Added dialog test boilerplate.
+  [robgietema]
+
+- Fixed ILayout behavior location.
+  [robgietema]
+
+- Notification module has full coverage.
+  [robgietema]
+
+- Added fadeSpeed and duration options to the notify function.
+  [robgietema]
+
+- Moved notify parameters to dict so they can be extended.
+  [robgietema]
+
+- Added boilerplate for notify tests.
+  [robgietema]
+
+- Added tests for the insert menu. Actions module has full coverage now.
+  [robgietema]
+
+- Added tests for formatting.
+  [robgietema]
+
+- Added tests for page properties.
+  [robgietema]
+
+- Added tests for save/cancel actions.
+  [robgietema]
+
+- Added tests for tile alignment actions.
+  [robgietema]
+
+- Added tests for TinyMCE actions.
+  [robgietema]
+
+- Added tests for fixWebkitSpan.
+  [robgietema]
+
+- Added tests for decoExecAction.
+  [robgietema]
+
+- Added tests for registerAction.
+  [robgietema]
+
+- Moved initialisation from document ready to init method so unittests are isolated.
+  [robgietema]
+
+- Ignore window load event when using coverage test.
+  [robgietema]
+
+- Added documentation about jscoverage.
+  [robgietema]
+
+- Added boilerplate for jscoverage.
+  [robgietema]
+
+- Moved index to js folder.
+  [robgietema]
+
+- Moved actions to js folder.
+  [robgietema]
+
+- Added javascript folder to tests.
+  [robgietema]
+
+- Added JS testing boilerplate.
+  [robgietema]
+
+- Fixed placeholder markup.
+  [robgietema]
+
+- Fixed saving of fieldtiles.
+  [robgietema]
+
+- Fixes for the Sunburst theme.
+  [robgietema]
+
+- Hide normal editbar when editing using Deco.
+  [robgietema]
+
+- Don't init if layout is empty.
+  [robgietema]
+
+- Changed widget of list settings.
+  [robgietema]
+
+- Removed debug info.
+  [robgietema]
+
+- Fixed dependencies.
+  [robgietema]
+
+- Fixed for in loops since jQuery adds extra methods to array objects.
+  [robgietema]
+
+- Updated toolbar style.
+  [robgietema]
+
+- Added translations.
+  [robgietema]
+
+- Added tests for browser class.
+  [robgietema]
+
+- Added tests for the controlpanel.
+  [robgietema]
+
+- Changed z3c.json to simplejson.
+  [robgietema]
+
+- Added testing boilerplate.
+  [robgietema]
+
+- Changed dependency to plone.app.jquerytools.
+  [robgietema]
+
+- Added tests folder.
+  [robgietema]
+
+- Added Deco init.
+  [robgietema]
+
+- Moved visual editor to separate package.
+  [robgietema]
+
+- Fixed error on startup when editor is not fully loaded.
+  [robgietema]
+
+- Added jqtools dependency.
+  [robgietema]
+
+- Fixes for jQuery and autoform changes.
+  [robgietema]
+
+- Update to jqueryui 1.7.2.
+  [robgietema]
+
+- Removed jquery 1.3 since it's included in Plone 3.3 now.
+  [robgietema]
+
+- Updated install instructions.
+  [robgietema]
+
+- Added dependency to registry, z3cform and dexterity to profile.
+  [robgietema]
+
+- Fixed Dexterity api calls.
+  [robgietema]
+
+- Updated buildout to use mr.developer
+  [robgietema]
+
+- The option None is now always available in the format menu.
+  [robgietema]
+
+- Tile alignment removed from text tiles.
+  [robgietema]
+
+- Renamed style to format.
+  [robgietema]
+
+- Added tile align block, left and right to the style menu.
+  [robgietema]
+
+- Stylesheet cleanup.
+  [robgietema]
+
+- Fixed dialog background and padding.
+  [robgietema]
+
+- Added blur to non editable content when editing.
+  [robgietema]
+
+- Dialog is now fixed to the top of the screen when scrolling. Dialog is hidden after esc is pressed.
+  [robgietema]
+
+- Fixed bug when redrawing the toolbar; field tile option group was not hidden when empty.
+  [robgietema]
+
+- declare our dependency on plone.registry
+  [davisagli]
+
+- Added inserting app tiles.
+  [robgietema]
+
+- Fixed style pulldown menu
+  [robgietema]
+
+- Fixed lightbox offset
+  [robgietema]
+
+- Added add dialog for app tiles.
+  [robgietema]
+
+- Actions and styles now based on registry settings.
+  [robgietema]
+
+- Added application tiles to the registry.
+  [robgietema]
+
+- Configuration fixes.
+  [robgietema]
+
+- Configuration now based on lists so they can be ordered.
+  [robgietema]
+
+- Updated install instructions.
+  [robgietema]
+
+- Configuration based on lists so they can be sorted.
+  [robgietema]
+
+- Fixed control panel.
+  [robgietema]
+
+- Fixed control panel.
+  [robgietema]
+
+- Wrong fieldname.
+  [robgietema]
+
+- Updated control panel.
+  [robgietema]
+
+- Removed unused files.
+  [robgietema]
+
+- Added registry.
+  [robgietema]
+
+- Fixed utility registration.
+  [robgietema]
+
+- Removed component registry.
+  [robgietema]
+
+- Added control panel for editing settings.
+  [robgietema]
+
+- Added utility for storing settings.
+  [robgietema]
+
+- Added control panel link.
+  [robgietema]
+
+- Removed unused files.
+  [robgietema]
+
+- Removed unused jQuery UI includes.
+  [robgietema]
+
+- Updated docs/links to plone.app.deco.
+  [robgietema]
+
+- Moved deco to app.
+  [robgietema]
+
+- Added app
+  [robgietema]
+
+- Moved experimental to plone.
+  [robgietema]
+
+- Moved z3c.form branche to plone.app.deco trunk.
+  [robgietema]
+
+- Added schema info.
+  [robgietema]
+
+- `Removed unused skin.
+  [robgietema]
+
+- Removed registration of the skin.
+  [robgietema]
+
+- Removed unused browser views.
+  [robgietema]
+
+- Config is now generated using z3c.json.
+  [robgietema]
+
+- Only show "i" icon on app tiles and non-wysiwyg field tiles.
+  [robgietema]
+
+- Hide tabs/fieldsets which don't have visible fields.
+  [robgietema]
+
+- Hide fields in page properties dialog which are in the wysiwyg area.
+  [robgietema]
+
+- Info icon now shows a dialog containing only that widget.
+  [robgietema]
+
+- Added dialog plugin.
+  [robgietema]
+
+- Info icon now shows the correct dialog.
+  [robgietema]
+
+- Added storing of field value when removed from the wysiwyg area.
+  [robgietema]
+
+- Fixed saving of WysiwygFieldWidget Fixed default value of field tiles
+  [robgietema]
+
+- Fixed saving of TextAreaFieldWidget.
+  [robgietema]
+
+- Added saving of some field tiles.
+  [robgietema]
+
+- Fixed dialog blocker position.
+  [robgietema]
+
+- Added field widget check.
+  [robgietema]
+
+- Added schema to the edit json config structure.
+  [robgietema]
+
+- Added lightbox Fixed cancel button
+  [robgietema]
+
+- Added saving of layout field.
+  [robgietema]
+
+- Fixed popup buttons.
+  [robgietema]
+
+- Changed edit button bar.
+  [robgietema]
+
+- Fixed toolbar fieldset style.
+  [robgietema]
+
+- Fixed init for layout widget.
+  [robgietema]
+
+- Added css/javascript to profile.
+  [robgietema]
+
+- Created z3c.form branche.
+  [robgietema]
+
+- Updated icons.
+  [robgietema]
+
+- Renamed deinit to uninit. Browserviews now start with deco- to avoid name clashing.
+  [robgietema]
+
+- Save and close, Revert changes and Cancel buttons now work. First tile gets focus when switching to edit mode.
+  [robgietema]
+
+- Updated readme and installation instructions.
+  [robgietema]
+
+- Renamed browser views.
+  [robgietema]
+
+- Moved config-view-item to config-view.
+  [robgietema]
+
+- Moved config-edit-item to config-edit.
+  [robgietema]
+
+- Removed old jquery.
+  [robgietema]
+
+- Markup fixes.
+  [robgietema]
+
+- Static toolbar is shown when javascript is disabled.
+  [robgietema]
+
+- View toolbar also based on json config.
+  [robgietema]
+
+- Style and insert menu now also based on json config. Changed menu style.
+  [robgietema]
+
+- Moved config to config-edit-item.
+  [robgietema]
+
+- Added page actions to action registry.
+  [robgietema]
+
+- Minor fixes for multi panel support.
+  [robgietema]
+
+- Added multi panel support.
+  [robgietema]
+
+- Removed explicit mode.
+  [robgietema]
+
+- Fixed dotted border while resizing.
+  [robgietema]
+
+- Removed unused files.
+  [robgietema]
+
+- Moved deco.css to deco-edit.css.
+  [robgietema]
+
+- Moved grid style to a separate stylesheet.
+  [robgietema]
+
+- Changed outer borders.
+  [robgietema]
+
+- Replaced margin with padding on content block elements.
+  [robgietema]
+
+- Removed padding from deco-tile-content.
+  [robgietema]
+
+- Added options to save button.
+  [robgietema]
+
+- Removed directory
+  [maerteijn]
+
+- Added testdirectory to see if commitpermissions are set
+  [maerteijn]
+
+- Removed add tile before and after current tile option.
+  [robgietema]
+
+- Updated layout and example content page.
+  [robgietema]
+
+- Fixed save url. Added example content page.
+  [robgietema]
+
+- Added loading of content and configuration from the back-end.
+  [robgietema]
+
+- Fixes for saving field tiles.
+  [robgietema]
+
+- Added http PUT method to store data.
+  [robgietema]
+
+- Added folders to skin.
+  [robgietema]
+
+- Added profile.zcml
+  [robgietema]
+
+- Copy index.html to layout.html.pt
+  [robgietema]
+
+- Added profile, skin and browser resources.
+  [robgietema]
+
+- Copy js to browser/javascripts
+  [robgietema]
+
+- Copy images to browser/images
+  [robgietema]
+
+- Copy css to browser/stylesheets
+  [robgietema]
+
+- Added package files.
+  [robgietema]
