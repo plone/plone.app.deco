@@ -1,7 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:grok="http://namespaces.zope.org/grok"
-    i18n_domain="plone.app.deco">
+    i18n_domain="plone">
 
     <include package="plone.app.tiles" />
     <include package="plone.app.registry" />
