@@ -9,6 +9,8 @@ from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
 from Products.CMFCore.utils import getToolByName
 
+from plone.app.deco import PloneMessageFactory as _
+
 
 class DecoUploadView(BrowserView):
     """Handle file uploads"""
@@ -31,7 +33,7 @@ class DecoUploadView(BrowserView):
             error = {}
             error['status'] = 1
             error['message'] =\
-                "Not allowed to upload a file of this type to this folder"
+                _(u"Not allowed to upload a file of this type to this folder")
             return json.dumps(error)
 
         # 2) check if the current user has permissions to add stuff
@@ -40,7 +42,7 @@ class DecoUploadView(BrowserView):
             error = {}
             error['status'] = 1
             error['message'] =\
-                "You do not have permission to upload files in this folder"
+                _(u"You do not have permission to upload files in this folder")
             return json.dumps(error)
 
         # Get an unused filename without path
@@ -71,7 +73,7 @@ class DecoUploadView(BrowserView):
         if not obj:
             error = {}
             error['status'] = 1
-            error['message'] = "Could not upload the file"
+            error['message'] = _(u"Could not upload the file")
             return json.dumps(error)
 
         obj.reindexObject()
@@ -132,4 +134,3 @@ class DecoConfigView(BrowserView):
             'request': self.request
         }
         return json.dumps(adapted(**kwargs))
-
