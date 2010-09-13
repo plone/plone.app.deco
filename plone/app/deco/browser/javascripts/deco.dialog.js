@@ -61,8 +61,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             obj
                 .hide()
                 .css({
-                    'width': '800px',
-                    'left': (($(window).width() - 800) / 2)
+                    'width': '900px',
+                    'left': (($(window).width() - 900) / 2)
                 })
                 .addClass("deco-dialog");
 
@@ -225,11 +225,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $(document.body).append($(document.createElement("iframe"))
             .css({
                 'position': 'absolute',
-                'width': '800px',
+                'width': '900px',
                 'height': '600px',
                 'top': '0px',
                 'z-index': '3000',
-                'left': (($(window).width() - 800) / 2),
+                'left': (($(window).width() - 900) / 2),
                 'border': '0px'
             })
             .attr({
