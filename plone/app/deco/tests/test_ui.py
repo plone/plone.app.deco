@@ -28,10 +28,15 @@ class DecoUITestCase(WindmillTestCase):
     def test_exporter(self):
         client = self.wm
 
+        # Create a new page with the title 'Page'
         client.open(url=u'/plone/++add++plone.app.page')
         client.waits.forPageLoad(timeout=u'20000')
         client.execJS(js=u"$('.deco-plone\\\\.app\\\\.standardtiles\\\\.title-tile h1').html('Page')")
         client.mouseDown(jquery=u'(".deco-button-save")[0]')
+        client.waits.forPageLoad(timeout=u'20000')
+
+        # Edit the newly created page
+        client.click(jquery=u'("#contentview-edit a")[0]')
         client.waits.forPageLoad(timeout=u'20000')
 
 
