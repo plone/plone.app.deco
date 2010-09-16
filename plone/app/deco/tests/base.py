@@ -17,16 +17,11 @@ class PADeco(PloneSandboxLayer):
         import plone.app.deco
         import plone.app.layoutbehavior
         import plone.app.page
-        xmlconfig.file('configure.zcml', plone.app.deco,
-                       context=configurationContext)
-        xmlconfig.file('configure.zcml', plone.app.layoutbehavior,
-                       context=configurationContext)
         xmlconfig.file('configure.zcml', plone.app.page,
                        context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.app.deco:default')
         applyProfile(portal, 'plone.app.page:default')
 
         # add a manager user
@@ -36,7 +31,7 @@ class PADeco(PloneSandboxLayer):
                                            [])
         
         # add a plone.page type, where we can test with
-        page = createContent("plone.page")
+        page = createContent("plone.app.page")
         page.id = 'page'
         portal._setObject('page', page)
         from transaction import commit
