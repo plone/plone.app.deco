@@ -42,6 +42,7 @@ setup(name='plone.app.deco',
           'test': [
             'interlude',
             'unittest2',
+            'niteoweb.windmill',
             'plone.app.layoutbehavior',
             'plone.app.page',
             'plone.app.testing', ]},
