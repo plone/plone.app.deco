@@ -47,8 +47,10 @@ class DecoRegistryTest(unittest.TestCase):
         adapted = IDecoRegistryAdapter(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapActions(settings, {})
-        self.assertEqual(config['primary_actions'], td.parsed_primary_actions_data)
-        self.assertEqual(config['secondary_actions'], td.parsed_secondary_actions_data)
+        self.assertEqual(config['primary_actions'],
+                         td.parsed_primary_actions_data)
+        self.assertEqual(config['secondary_actions'],
+                         td.parsed_secondary_actions_data)
 
     def test_tiles_categories(self):
         registry = self.createRegistry(td.xml)

@@ -6,6 +6,7 @@ from Products.Five.zcml import load_config
 from Testing import ZopeTestCase as ztc
 from plone.dexterity.utils import createContent
 
+
 @onsetup
 def load_zcml():
     import plone.app.page
@@ -14,6 +15,7 @@ def load_zcml():
 
 load_zcml()
 setupPloneSite(products=['plone.app.page'])
+
 
 class DecoUITestCase(WindmillTestCase):
 
@@ -24,14 +26,14 @@ class DecoUITestCase(WindmillTestCase):
         self.setRoles(['Manager'])
         self.login_user()
 
-
     def test_exporter(self):
         client = self.wm
 
         # Create a new page with the title 'Page'
         client.open(url=u'/plone/++add++plone.app.page')
         client.waits.forPageLoad(timeout=u'20000')
-        client.execJS(js=u"$('.deco-plone\\\\.app\\\\.standardtiles\\\\.title-tile h1').html('Page')")
+        client.execJS(js=u"$('.deco-plone\\\\.app\\\\.standardtiles\\\\.' + \
+                             'title-tile h1').html('Page')")
         client.mouseDown(jquery=u'(".deco-button-save")[0]')
         client.waits.forPageLoad(timeout=u'20000')
 

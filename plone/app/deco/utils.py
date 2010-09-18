@@ -31,12 +31,13 @@ class PermissionChecker(object):
         permission_name = self.permissions.get(field_name, None)
         if permission_name is not None:
             if permission_name not in self.cache:
-                permission = queryUtility(IPermission, name = permission_name)
+                permission = queryUtility(IPermission, name=permission_name)
                 if permission is None:
                     self.cache[permission_name] = True
                 else:
                     self.cache[permission_name] = bool(
-                        self.sm.checkPermission(permission.title, self.context)
+                        self.sm.checkPermission(permission.title,
+                                                self.context),
                     )
         return self.cache.get(permission_name, True)
 
@@ -113,11 +114,11 @@ def extractFieldInformation(schema, context, request, prefix):
     if context is not None:
         read_permissionchecker = PermissionChecker(
             mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY),
-            context
+            context,
         )
         write_permissionchecker = PermissionChecker(
             mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY),
-            context
+            context,
         )
     tagged_values = mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY)
     read_only = []

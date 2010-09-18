@@ -115,7 +115,8 @@ class DecoUploadView(BrowserView):
 class DecoConfigView(BrowserView):
 
     def obtain_type(self):
-        """Obtains the type of the context object or of the object we are adding
+        """
+        Obtains the type of the context object or of the object we are adding
         """
         if 'type' in self.request.form:
             return self.request.form['type']
@@ -131,6 +132,6 @@ class DecoConfigView(BrowserView):
         kwargs = {
             'type': self.obtain_type(),
             'context': self.context,
-            'request': self.request
+            'request': self.request,
         }
         return json.dumps(adapted(**kwargs))

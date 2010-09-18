@@ -187,7 +187,8 @@ class DecoRegistry(object):
         The lookup is made in 2 parts:
 
         - First the registry is looked for a key named
-          plone.app.deco.widget_actions.<'full.widget.dotted.name'.replace('.','_')>
+          plone.app.deco.widget_actions.<'full.widget.dotted.name'
+          .replace('.','_')>
 
         - If it is not found, looks for
           plone.app.deco.default_widget_actions
@@ -229,7 +230,8 @@ class DecoRegistry(object):
                     prefix = schema.__identifier__
                 prefixes.append(prefix)
             registry_omitted = settings.get(
-                '%s.omitted_fields.%s' % (self.prefix, args['type'].replace('.', '_')),
+                '%s.omitted_fields.%s' % (self.prefix,
+                                          args['type'].replace('.', '_')),
                 default=None,
             )
             if registry_omitted is None:

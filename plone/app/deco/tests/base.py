@@ -29,7 +29,7 @@ class PADeco(PloneSandboxLayer):
                                            'secret',
                                            ['Manager'],
                                            [])
-        
+
         # add a plone.page type, where we can test with
         page = createContent("plone.app.page")
         page.id = 'page'
