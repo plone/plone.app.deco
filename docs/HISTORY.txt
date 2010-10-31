@@ -4,6 +4,10 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Removed plone.directives.standardtiles dependency. A marker interface is
+  much simpler.
+  [optilude]
+
 - Move close icon.
   [robgietema]
 

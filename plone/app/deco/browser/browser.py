@@ -17,10 +17,10 @@ class DecoUploadView(BrowserView):
 
     def __call__(self):
         context = self.context
-        request = context.REQUEST
+        request = self.request
 
         # Set header to json
-        self.request.RESPONSE.setHeader('Content-Type', 'application/json')
+        request.response.setHeader('Content-Type', 'application/json')
 
         ctr_tool = getToolByName(self.context, 'content_type_registry')
         id = request['uploadfile'].filename
@@ -126,7 +126,7 @@ class DecoConfigView(BrowserView):
         return None
 
     def __call__(self):
-        self.request.RESPONSE.setHeader('Content-Type', 'application/json')
+        self.request.response.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
         adapted = IDecoRegistryAdapter(registry)
         kwargs = {

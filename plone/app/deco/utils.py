@@ -15,8 +15,7 @@ from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
 
-from plone.directives.standardtiles.interfaces import FIELD_OMITTED_KEY
-
+from plone.app.deco.interfaces import IOmittedField
 
 # BBB: this should be in plone.autoform.utils
 class PermissionChecker(object):
@@ -93,7 +92,7 @@ def _getWidgetName(field, widgets, request):
     return '%s.%s' % (factory.__module__, factory.__name__)
 
 
-def is_visible(name, omitted):
+def isVisible(name, omitted):
     value = omitted.get(name, False)
     if isinstance(value, basestring):
         return value == 'false'
@@ -109,8 +108,6 @@ def extractFieldInformation(schema, context, request, prefix):
     modes = mergedTaggedValuesForIRO(schema, MODES_KEY, iro)
     widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
 
-    fieldtile_omitted = mergedTaggedValueDict(schema, FIELD_OMITTED_KEY)
-
     if context is not None:
         read_permissionchecker = PermissionChecker(
             mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY),
@@ -120,7 +117,7 @@ def extractFieldInformation(schema, context, request, prefix):
             mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY),
             context,
         )
-    tagged_values = mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY)
+    
     read_only = []
     for name, mode in modes.items():
         if mode == HIDDEN_MODE:
@@ -133,11 +130,13 @@ def extractFieldInformation(schema, context, request, prefix):
                 omitted[name] = True
             if not write_permissionchecker.allowed(name):
                 read_only.append(name)
-        if is_visible(name, omitted) and is_visible(name, fieldtile_omitted):
-            yield {
-                'id': "%s.%s" % (schema.__identifier__, name),
-                'name': prefix + name,
-                'title': schema[name].title,
-                'widget': _getWidgetName(schema[name], widgets, request),
-                'readonly': name in read_only,
-            }
+        if isVisible(name, omitted):
+            field = schema[name]
+            if not IOmittedField.providedBy(field):
+                yield {
+                    'id': "%s.%s" % (schema.__identifier__, name),
+                    'name': prefix + name,
+                    'title': schema[name].title,
+                    'widget': _getWidgetName(schema[name], widgets, request),
+                    'readonly': name in read_only,
+                }
