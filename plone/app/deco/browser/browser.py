@@ -114,7 +114,7 @@ class DecoUploadView(BrowserView):
 
 class DecoConfigView(BrowserView):
 
-    def obtain_type(self):
+    def obtainType(self):
         """
         Obtains the type of the context object or of the object we are adding
         """
@@ -130,7 +130,7 @@ class DecoConfigView(BrowserView):
         registry = getUtility(IRegistry)
         adapted = IDecoRegistryAdapter(registry)
         kwargs = {
-            'type': self.obtain_type(),
+            'type': self.obtainType(),
             'context': self.context,
             'request': self.request,
         }

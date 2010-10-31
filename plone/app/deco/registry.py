@@ -24,11 +24,11 @@ class DottedDict(dict):
         return val
 
 
-def GetBool(value):
+def getBool(value):
     return value.lower() == 'true'
 
 
-def GetCategoryIndex(tiles, category):
+def getCategoryIndex(tiles, category):
     index = 0
     for tile in tiles:
         if tile['name'] == category:
@@ -95,13 +95,13 @@ class DecoRegistry(object):
                     config[action_type].append(action)
                     continue
 
-                index = GetCategoryIndex(config[action_type],
+                index = getCategoryIndex(config[action_type],
                                          action['fieldset'])
                 if not index:
                     config[action_type].append({'name': action['fieldset'],
                                                 'label': action['fieldset'],
                                                 'actions': []})
-                    index = GetCategoryIndex(config[action_type],
+                    index = getCategoryIndex(config[action_type],
                                              action['fieldset'])
 
                 config[action_type][index]['actions'].append(action)
@@ -135,7 +135,7 @@ class DecoRegistry(object):
     def mapFormats(self, settings, config):
         formats = settings.get('%s.formats' % self.prefix, {})
         for key, format in formats.items():
-            index = GetCategoryIndex(config['formats'], format['category'])
+            index = getCategoryIndex(config['formats'], format['category'])
             config['formats'][index]['actions'].append(format)
         # sort the formats
         for format in config['formats']:
@@ -149,7 +149,7 @@ class DecoRegistry(object):
     #    for key, tile in tiles.items():
     #        if not 'category' in tile:
     #            continue
-    #        index = GetCategoryIndex(config['tiles'], tile['category'])
+    #        index = getCategoryIndex(config['tiles'], tile['category'])
     #        config['tiles'][index]['tiles'].append(tile)
     #    for tile in config['tiles']:
     #        tile['tiles'].sort(key=itemgetter('weight'))
@@ -160,7 +160,7 @@ class DecoRegistry(object):
     #    for key, tile in tiles.items():
     #        if not 'category' in tile:
     #            continue
-    #        index = GetCategoryIndex(config['tiles'], tile['category'])
+    #        index = getCategoryIndex(config['tiles'], tile['category'])
     #        config['tiles'][index]['tiles'].append(tile)
     #    for tile in config['tiles']:
     #        tile['tiles'].sort(key=itemgetter('weight'))
@@ -171,7 +171,7 @@ class DecoRegistry(object):
         for key, tile in tiles.items():
             if not 'category' in tile:
                 continue
-            index = GetCategoryIndex(config['tiles'], tile['category'])
+            index = getCategoryIndex(config['tiles'], tile['category'])
             config['tiles'][index]['tiles'].append(tile)
         for tile in config['tiles']:
             tile['tiles'].sort(key=itemgetter('weight'))
@@ -260,7 +260,7 @@ class DecoRegistry(object):
                             fieldconfig['widget']
                         ),
                     }
-                    index = GetCategoryIndex(config['tiles'], 'fields')
+                    index = getCategoryIndex(config['tiles'], 'fields')
                     config['tiles'][index]['tiles'].append(tileconfig)
         return config
 
