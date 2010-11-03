@@ -15,7 +15,7 @@ from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
 
-from plone.app.deco.interfaces import IOmittedField
+from plone.app.page.interfaces import IOmittedField
 
 # BBB: this should be in plone.autoform.utils
 class PermissionChecker(object):

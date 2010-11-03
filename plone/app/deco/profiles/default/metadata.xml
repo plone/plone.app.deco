@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>0.1</version>
+  <version>1</version>
   <dependencies>
-    <dependency>profile-plone.app.tiles:default</dependency>
+    <dependency>profile-plone.app.blocks:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
+    <dependency>profile-plone.app.tiles:default</dependency>
+    <dependency>profile-plone.app.standardtiles:default</dependency>
+    <dependency>profile-plone.app.page:default</dependency>
     <dependency>profile-plone.app.tinymce:default</dependency>
   </dependencies>
 </metadata>

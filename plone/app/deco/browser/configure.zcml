@@ -2,7 +2,30 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone">
-
+    
+    <include file="widget.zcml" />
+    
+    <adapter factory=".formlayout.formTemplateFactory" />
+    
+    <!-- XXX: Disable KSS inline validation for pages -->
+    <browser:page
+        name="kss_z3cform_inline_validation"
+        for="plone.app.page.content.IPage"
+        class=".disablekss.NullFormValidation"
+        attribute="validate_input"
+        permission="zope2.View"
+        />
+    
+    <!-- XXX: This should probably move to content space -->
+    <browser:page
+        name="default-layout"
+        for="*"
+        permission="zope2.View"
+        template="templates/defaultlayout.pt"
+        />
+    
+    <!-- Resources -->
+    
     <browser:resourceDirectory
         name="plone.app.deco.stylesheets"
         directory="stylesheets"
@@ -17,7 +40,9 @@
         name="plone.app.deco.javascripts"
         directory="javascripts"
         />
-
+        
+    <!-- Deco support views -->
+    
     <browser:page
         for="*"
         name="deco-config"

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en">
+  <head>
+    <!-- Panels -->
+    <link rel="panel" rev="content" target="content" />
+    <link rel="panel" rev="portal-column-two" target="portal-column-two" />
+
+    <!-- Head elements -->
+    <link rel="tile" href="./plone.app.standardtiles.headtitle" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.stylesheets" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.javascripts" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.authorlink" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.faviconlink" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.navigationlink" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.rsslink" />
+    <link  rel="tile" href="./@@plone.app.standardtiles.searchlink" />
+
+    <!-- Portal top -->
+    <link  rel="tile" target="skip-links" href="./@@plone.app.standardtiles.skip_links" />
+    <link  rel="tile" target="personal-bar" href="./@@plone.app.standardtiles.personal_bar" />
+    <link  rel="tile" target="languageselector" href="./@@plone.app.standardtiles.languageselector" />
+    <link  rel="tile" target="searchbox" href="./@@plone.app.standardtiles.searchbox" />
+    <link  rel="tile" target="logo" href="./@@plone.app.standardtiles.logo" />
+    <link  rel="tile" target="global-sections" href="./@@plone.app.standardtiles.global_sections" />
+
+    <!-- Column One -->
+    <link  rel="tile" target="navigation" href="./@@plone.app.standardtiles.navigation/tile-1?name=None&amp;amp;root=None&amp;amp;includeTop%3Aboolean=&amp;amp;currentFolderOnly%3Aboolean=&amp;amp;topLevel%3Along=1&amp;amp;bottomLevel%3Along=0" />
+    <link  rel="tile" target="login" href="./@@plone.app.standardtiles.login" />
+
+    <!-- Above content -->
+    <link  rel="tile" target="path-bar" href="./@@plone.app.standardtiles.path_bar" />
+    <link  rel="tile" target="lockinfo" href="./@@plone.app.standardtiles.lockinfo" />
+
+    <!-- Edit bar -->
+    <link  rel="tile" target="edit_bar" href="./@@plone.app.standardtiles.edit_bar" />
+
+    <!-- Portal Footer -->
+    <link  rel="tile" target="footer" href="./@@plone.app.standardtiles.footer" />
+    <link  rel="tile" target="colophon" href="./@@plone.app.standardtiles.colophon" />
+    <link  rel="tile" target="site-actions" href="./@@plone.app.standardtiles.site_actions" />
+    <link  rel="tile" target="analytics" href="./@@plone.app.standardtiles.analytics" />
+  </head>
+  <body>
+    <div id="visual-portal-wrapper">
+
+      <div id="edit-bar" />
+
+      <div id="portal-top" class="row">
+        <div class="cell width-full position-0">
+          <div id="plone-portaltop">
+            <div id="skip-links" />
+            <div id="personal-bar" />
+            <div id="languageselector" />
+            <div id="searchbox" />
+            <div id="logo" />
+            <div id="global-sections" />
+          </div>
+        </div>
+      </div>
+
+      <div id="portal-columns" class="row">
+        <div class="cell width-1:4 position-0">
+          <div id="portal-column-one">
+            <div id="navigation" />
+            <div id="login" />
+          </div>
+        </div>
+        <div id="portal-column-content" class="cell width-1:2 position-1:4">
+          <div id="path-bar" />
+          <div id="lockinfo" />
+          <div class="documentEditable">
+            <div id="content" />
+          </div>
+        </div>
+        <div class="cell width-1:4 position-3:4">
+          <div id="portal-column-two"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="cell width-full position-0">
+          <div id="footer" />
+          <div id="colophon" />
+          <div id="site-actions" />
+          <div id="analytics" />
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

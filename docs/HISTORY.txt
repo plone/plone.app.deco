@@ -4,6 +4,12 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Refactored dependencies so that plone.app.deco now contains all UI and
+  plone.app.page contains all storage and logic related to Deco.
+  plone.app.layoutbehavior and plone.formwidget.layoutbehavior are now
+  gone.
+  [optilude]
+
 - Removed plone.directives.standardtiles dependency. A marker interface is
   much simpler.
   [optilude]

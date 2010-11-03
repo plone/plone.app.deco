@@ -32,18 +32,18 @@ setup(name='plone.app.deco',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.blocks',
           'plone.app.tiles',
           'plone.app.registry',
           'plone.app.dexterity',
+          'plone.app.standardtiles',
+          'plone.app.page',
           'plone.app.tinymce',
       ] + requires,
       extras_require={
           'test': [
             'interlude',
             'unittest2',
-            'niteoweb.windmill',
-            'plone.app.layoutbehavior',
-            'plone.app.page',
             'plone.app.testing', ]},
       entry_points="""
       [z3c.autoinclude.plugin]

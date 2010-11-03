@@ -1,11 +1,14 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
-    <include package="plone.app.tiles" />
+    <include package="plone.app.blocks" />
     <include package="plone.app.registry" />
     <include package="plone.app.dexterity" />
+    <include package="plone.app.tiles" />
+    <include package="plone.app.standardtiles" />
+    <include package="plone.app.page" />
     <include package="plone.app.tinymce" />
 
     <include package=".browser" />
@@ -13,7 +16,13 @@
     <include file="profiles.zcml" />
 
     <adapter factory=".registry.DecoRegistry" />
-
-    <grok:grok package="." />
+    
+    <genericsetup:registerProfile
+        name="default"
+        title="Deco"
+        directory="profiles/default"
+        description='Extension profile for the "Plone Deco" package.'
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
 
 </configure>

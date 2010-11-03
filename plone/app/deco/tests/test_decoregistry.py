@@ -3,13 +3,13 @@ from zope.component import getGlobalSiteManager
 from plone.registry import Registry
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
-from plone.app.deco.tests.base import PADECO_FUNCTIONAL_TESTING
+from plone.app.deco.testing import DECO_INTEGRATION_TESTING
 import plone.app.deco.tests.registry_testdata as td
 
 
 class DecoRegistryTest(unittest.TestCase):
 
-    layer = PADECO_FUNCTIONAL_TESTING
+    layer = DECO_INTEGRATION_TESTING
 
     def getLogger(self, value):
         return 'plone.app.deco'

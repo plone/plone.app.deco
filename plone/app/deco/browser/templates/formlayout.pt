@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <head>
+    <link rel="layout" href="./@@default-layout" />
+  </head>
+  <body>
+    <div id="content">
+      <h1 class="documentFirstHeading" tal:content="view/label">Title</h1>
+      <tal:form metal:use-macro="context/@@ploneform-macros/titlelessform"/>
+    </div>
+  </body>
+</html>
