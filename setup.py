@@ -43,6 +43,7 @@ setup(name='plone.app.deco',
       extras_require={
           'test': [
             'interlude',
+            'z3c.form [test]',
             'unittest2',
             'plone.app.testing', ]},
       entry_points="""

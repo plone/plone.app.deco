@@ -27,7 +27,7 @@ class PADeco(PloneSandboxLayer):
                                               [])
 
         # add a plone.page type, where we can test with
-        page = createContent("plone.app.page")
+        page = createContent("page")
         page.id = 'page'
         portal._setObject('page', page)
 

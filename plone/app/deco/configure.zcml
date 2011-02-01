@@ -21,7 +21,7 @@
         name="default"
         title="Deco"
         directory="profiles/default"
-        description='Extension profile for the "Plone Deco" package.'
+        description='The Deco visual layout editor'
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 

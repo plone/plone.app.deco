@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
     
     <include file="widget.zcml" />
@@ -16,15 +17,18 @@
         permission="zope2.View"
         />
     
-    <!-- XXX: This should probably move to content space -->
-    <browser:page
-        name="default-layout"
-        for="*"
-        permission="zope2.View"
-        template="templates/defaultlayout.pt"
-        />
-    
     <!-- Resources -->
+    
+    <plone:static
+        type="sitelayout"
+        name="default"
+        directory="static/sitelayout"
+        />
+    <plone:static
+        type="pagelayout"
+        name="default"
+        directory="static/pagelayout"
+        />
     
     <browser:resourceDirectory
         name="plone.app.deco.stylesheets"
