@@ -10,7 +10,7 @@ Then do the following:
 - Start the instance, create a new site
 - Install the "Page" product using the Quickinstaller or Control Panel
 - Go to the front page of the site and add an "Page" (there are two at the
-  moment, 1 old and 1 new, make sure you use the ++add++plone.page, check your
+  moment, 1 old and 1 new, make sure you use the ++add++page, check your
   statusbar)
 
 You can also install example.deco for some extra example tiles.
