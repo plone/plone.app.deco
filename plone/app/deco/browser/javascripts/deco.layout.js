@@ -1869,7 +1869,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var links = new Array();
         var tilecount = 0;
         var id = "";
-        links.push({rel: "layout", rev: "", target: "", href: "./++sitelayout++default/site.html"});
+        links.push({rel: "layout", rev: "", target: "", href: "./@@page-site-layout"});
 
         // Add body tag
         body += "  <body>\n";

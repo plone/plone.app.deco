@@ -4,7 +4,7 @@
       lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal">
   <head>
-    <link rel="layout" href="./++sitelayout++default/site.html" />
+    <link rel="layout" href="./@@default-site-layout" />
   </head>
   <body>
     <div id="content">
