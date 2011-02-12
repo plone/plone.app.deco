@@ -64,7 +64,7 @@ module("dialog", {
                 .append($(document.createElement("fieldset"))
                     .attr("id", "fieldset-2")
                     .append($(document.createElement("div"))
-                        .attr("id", "formfield-form-widgets-ILayout-layout")
+                        .attr("id", "formfield-form-widgets-ILayoutAwareAware-layout")
                     )
                 )
                 .append($(document.createElement("div"))
@@ -121,7 +121,7 @@ test("dialog.open", function() {
     equals($("a[href=#fieldsetlegend-2]").parent().hasClass("lastFormTab"), false, "Last tab marker is removed");
     equals($("a[href=#fieldsetlegend-2]").parent().hasClass("deco-hidden"), true, "Last tab is hidden");
 
-    equals($('#formfield-form-widgets-ILayout-layout').hasClass('deco-hidden'), true, "Row with layoutfield is hidden");
+    equals($('#formfield-form-widgets-ILayoutAware-layout').hasClass('deco-hidden'), true, "Row with layoutfield is hidden");
 
     equals($('#fieldset-1').hasClass('hidden'), false, "Second fieldset is shown");
 

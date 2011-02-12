@@ -105,7 +105,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.options.ignore_context = options.ignore_context;
                 $.deco.options.tileheadelements = [];
 
-                content = $('#form-widgets-ILayout-content').val();
+                content = $('#form-widgets-ILayoutAware-content').val();
 
                 // Check if no layout
                 if (content === '') {
@@ -427,7 +427,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $(window).load(function () {
 
         // Check if layout exists
-        if ($('#form-widgets-ILayout-content').length > 0) {
+        if ($('#form-widgets-ILayoutAware-content').length > 0) {
 
             // Init Deco
             $.deco.init();

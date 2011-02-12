@@ -11,7 +11,7 @@ from z3c.form.widget import FieldWidget
 from z3c.form.browser.widget import addFieldClass
 from z3c.form.browser.textarea import TextAreaWidget
 
-from plone.app.page.interfaces import ILayoutField
+from plone.app.blocks.interfaces import ILayoutField
 
 from plone.app.deco.interfaces import ILayoutWidget
 

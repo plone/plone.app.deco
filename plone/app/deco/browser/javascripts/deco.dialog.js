@@ -124,9 +124,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             formtabs.children('.lastFormTab').removeClass('lastFormTab');
 
             // Hide layout field
-            form.find('#formfield-form-widgets-ILayout-content')
+            form.find('#formfield-form-widgets-ILayoutAware-content')
                 .addClass('deco-hidden');
-            form.find('#formfield-form-widgets-ILayout-layout')
+            form.find('#formfield-form-widgets-ILayoutAware-layout')
                 .addClass('deco-hidden');
 
             // Hide title and description

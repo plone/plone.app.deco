@@ -96,7 +96,7 @@ module("layout", {
         $("#content").remove();
         $("#content-edit").remove();
         $("#portal-column-one").remove();
-        $("#form-widgets-ILayout-layout").remove();
+        $("#form-widgets-ILayoutAware-layout").remove();
     }
 });
 

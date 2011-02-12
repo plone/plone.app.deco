@@ -373,7 +373,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register save action
         $.deco.registerAction('save', {
             exec: function () {
-                $("#form-widgets-ILayout-content")
+                $("#form-widgets-ILayoutAware-content")
                     .attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
