@@ -5,6 +5,12 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Fixed resize js error.
+  [robgietema]
+
+- Fixed drag js error.
+  [robgietema]
+
 - Add MANIFEST.in.
   [WouterVH]
 

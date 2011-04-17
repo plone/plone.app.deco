@@ -170,6 +170,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Find resize helper
             $(".deco-resize-handle-helper").each(function () {
 
+                var cur_snap_offset;
+
                 // Get helper
                 var helper = $(this);
 
