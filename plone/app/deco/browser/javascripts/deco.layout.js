@@ -370,6 +370,148 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Bind event and add to array
         $(document).bind('mouseup', DocumentMouseup);
 
+        // Handle mousemove on tile
+        var TileMousemove = function (e) {
+
+            // Check if dragging
+            if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
+
+                // Hide all dividers
+                $(".deco-selected-divider").removeClass("deco-selected-divider");
+
+                // Don't show dividers if above original or floating tile
+                if (($(this).hasClass("deco-original-tile") === false) &&
+                    ($(this).hasClass("deco-tile-align-left") === false) &&
+                    ($(this).hasClass("deco-tile-align-right") === false)) {
+
+                    // Get direction
+                    var dir = $(this).decoGetDirection(e);
+                    var divider = $(this).children(".deco-divider-" + dir);
+
+                    // Check if left or right divider
+                    if ((dir === "left") || (dir === "right")) {
+                        var row = divider.parent().parent().parent();
+
+                        // If row has multiple columns
+                        if (row.children(".deco-grid-cell").length > 1) {
+                            divider.height(row.height() + 5);
+                            divider.css('top', (row.offset().top - divider.parent().offset().top) - 5);
+                        } else {
+                            divider.height(divider.parent().height() + 5);
+                            divider.css('top', -5);
+                        }
+                    }
+
+                    // Show divider
+                    divider.addClass("deco-selected-divider");
+                }
+            }
+        };
+
+        // Bind events
+        $(".deco-tile").live("mousemove", TileMousemove);
+        $(".deco-tile").live("dragover", TileMousemove);
+
+        // On click select the current tile
+        $(".deco-tile").live("click", function () {
+
+            // Select tile
+            $(this).decoSelectTile();
+        });
+
+        $(".deco-close-icon").live("click", function () {
+
+            // Get tile config
+            var tile_config = $(this).parents(".deco-tile").decoGetTileConfig();
+
+            // Check if app tile
+            if (tile_config.tile_type === 'app') {
+
+                // Get url
+                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
+
+                // Remove tags
+                $.deco.removeHeadTags(tile_url);
+
+                // Calc delete url
+                var url = tile_url.split('?')[0];
+                url = url.split('@@');
+                var tile_type_id = url[1].split('/');
+                url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
+
+                // Ajax call to remove tile
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function (value) {
+
+                        $.deco.notify({
+                            title: "Info",
+                            message: "Application tile removed"
+                        });
+                    }
+                });
+            }
+
+            // Remove empty rows
+            $.deco.options.panels.find(".deco-empty-row").remove();
+
+            // Get original row
+            var original_row = $(this).parents(".deco-tile").parent().parent();
+
+            // Save tile value
+            $.deco.saveTileValueToForm(tile_config.name, tile_config);
+
+            // Remove current tile
+            $(this).parent().remove();
+
+            $.deco.undo.snapshot();
+
+            // Cleanup original row
+            original_row.decoCleanupRow();
+
+            // Add empty rows
+            $.deco.options.panels.decoAddEmptyRows();
+
+            // Set toolbar
+            $.deco.options.toolbar.trigger("selectedtilechange");
+            $.deco.options.toolbar.decoSetResizeHandleLocation();
+        });
+
+
+        // On click open dialog
+        $(".deco-info-icon").live("click", function () {
+
+            // Get tile config
+            var tile_config = $(this).parents(".deco-tile").decoGetTileConfig();
+
+            // Check if application tile
+            if (tile_config.tile_type === 'app') {
+
+                // Get url
+                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
+                if (tile_url.indexOf('?') != -1) {
+                    var match = tile_url.split("?");
+                    var start_url = match[0];
+                    var parameters = match[1];
+                    parameters = parameters.split("&");
+                    for (var i = 0; i < parameters.length; i += 1) {
+                        parameters[i] = '"' + parameters[i].replace('=', '":"') + '"';
+                    }
+                    tile_url = start_url + '?_tiledata={' + parameters.join(",") + '}';
+                }
+                tile_url = tile_url.replace(/@@/, '@@edit-tile/');
+
+                // Open dialog
+                $.deco.dialog.openIframe(tile_url);
+
+            } else {
+
+                // Edit field
+                $.deco.dialog.open('field', tile_config);
+            }
+        })
+
         // Loop through matched elements
         var total = this.length;
         return this.each(function (i) {
@@ -415,28 +557,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             var tile = $(this);
             var obj = tile.parents(".deco-panel");
 
-            // Get tile type
-            var tiletype = '';
-            var classes = $(this).attr('class').split(" ");
-            $(classes).each(function () {
-                var classname = this.match(/^deco-(.*)-tile$/);
-                if (classname !== null) {
-                    if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
-                        tiletype = classname[1];
-                    }
-                }
-            });
-
-            // Get tile config
-            var tile_config;
-            for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
-                var tile_group = $.deco.options.tiles[x];
-                for (var y = 0; y < tile_group.tiles.length; y += 1) {
-                    if (tile_group.tiles[y].name === tiletype) {
-                        tile_config = tile_group.tiles[y];
-                    }
-                }
-            }
+            var tile_config = $(this).decoGetTileConfig();
 
             // Check read only
             if (tile_config && tile_config.read_only) {
@@ -516,65 +637,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if ($(this).hasClass("removable")) {
 
                 // Add close icon
-                $(this).prepend(
-                    $(document.createElement("div"))
-                        .addClass("deco-tile-control deco-close-icon")
-                        .click(function () {
-
-                            // Check if app tile
-                            if (tile_config.tile_type === 'app') {
-
-                                // Get url
-                                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
-
-                                // Remove tags
-                                $.deco.removeHeadTags(tile_url);
-
-                                // Calc delete url
-                                var url = tile_url.split('?')[0];
-                                url = url.split('@@');
-                                var tile_type_id = url[1].split('/');
-                                url = url[0] + '@@delete-tile?type=' + tile_type_id[0] + '&id=' + tile_type_id[1] + '&confirm=true';
-
-                                // Ajax call to remove tile
-                                $.ajax({
-                                    type: "GET",
-                                    url: url,
-                                    success: function (value) {
-
-                                        $.deco.notify({
-                                            title: "Info",
-                                            message: "Application tile removed"
-                                        });
-                                    }
-                                });
-                            }
-
-                            // Remove empty rows
-                            $.deco.options.panels.find(".deco-empty-row").remove();
-
-                            // Get original row
-                            var original_row = $(this).parents(".deco-tile").parent().parent();
-
-                            // Save tile value
-                            $.deco.saveTileValueToForm(tiletype, tile_config);
-
-                            // Remove current tile
-                            $(this).parent().remove();
-
-                            $.deco.undo.snapshot();
-
-                            // Cleanup original row
-                            original_row.decoCleanupRow();
-
-                            // Add empty rows
-                            $.deco.options.panels.decoAddEmptyRows();
-
-                            // Set toolbar
-                            $.deco.options.toolbar.trigger("selectedtilechange");
-                            $.deco.options.toolbar.decoSetResizeHandleLocation();
-                        })
-                );
+                $(this).prepend('<div class="deco-tile-control deco-close-icon"></div>');
             }
 
             // Add settings icon
@@ -582,87 +645,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $(this).prepend(
                     $(document.createElement("div"))
                         .addClass("deco-tile-control deco-info-icon")
-
-                        // On click open dialog
-                        .click(function () {
-
-                            // Check if application tile
-                            if (tile_config.tile_type === 'app') {
-
-                                // Get url
-                                var tile_url = $(this).parents(".deco-tile").find('.tileUrl').html();
-                                if (tile_url.indexOf('?') != -1) {
-                                    var match = tile_url.split("?");
-                                    var start_url = match[0];
-                                    var parameters = match[1];
-                                    parameters = parameters.split("&");
-                                    for (var i = 0; i < parameters.length; i += 1) {
-                                        parameters[i] = '"' + parameters[i].replace('=', '":"') + '"';
-                                    }
-                                    tile_url = start_url + '?_tiledata={' + parameters.join(",") + '}';
-                                }
-                                tile_url = tile_url.replace(/@@/, '@@edit-tile/');
-
-                                // Open dialog
-                                $.deco.dialog.openIframe(tile_url);
-
-                            } else {
-
-                                // Edit field
-                                $.deco.dialog.open('field', tile_config);
-                            }
-                        })
                 );
             }
-
-            // Handle mousemove on tile
-            var TileMousemove = function (e) {
-
-                // Check if dragging
-                if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
-
-                    // Hide all dividers
-                    $(".deco-selected-divider").removeClass("deco-selected-divider");
-
-                    // Don't show dividers if above original or floating tile
-                    if (($(this).hasClass("deco-original-tile") === false) &&
-                        ($(this).hasClass("deco-tile-align-left") === false) &&
-                        ($(this).hasClass("deco-tile-align-right") === false)) {
-
-                        // Get direction
-                        var dir = $(this).decoGetDirection(e);
-                        var divider = $(this).children(".deco-divider-" + dir);
-
-                        // Check if left or right divider
-                        if ((dir === "left") || (dir === "right")) {
-                            var row = divider.parent().parent().parent();
-
-                            // If row has multiple columns
-                            if (row.children(".deco-grid-cell").length > 1) {
-                                divider.height(row.height() + 5);
-                                divider.css('top', (row.offset().top - divider.parent().offset().top) - 5);
-                            } else {
-                                divider.height(divider.parent().height() + 5);
-                                divider.css('top', -5);
-                            }
-                        }
-
-                        // Show divider
-                        divider.addClass("deco-selected-divider");
-                    }
-                }
-            };
-
-            // Bind events
-            $(this).bind("mousemove", TileMousemove);
-            $(this).bind("dragover", TileMousemove);
-
-            // On click select the current tile
-            $(this).click(function () {
-
-                // Select tile
-                $(this).decoSelectTile();
-            });
 
             // Add dividers
             $(this).prepend(
@@ -1595,6 +1579,41 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     };
 
     /**
+     * Get the config of the tile
+     *
+     * @id jQuery.decoGetTileConfig
+     * @return {Object} config of the tile
+     */
+    $.fn.decoGetTileConfig = function () {
+
+        // Get tile type
+        var tiletype = '';
+        var classes = $(this).attr('class').split(" ");
+        $(classes).each(function () {
+            var classname = this.match(/^deco-(.*)-tile$/);
+            if (classname !== null) {
+                if ((classname[1] !== 'selected') && (classname[1] !== 'new') && (classname[1] !== 'read-only') && (classname[1] !== 'helper') && (classname[1] !== 'original')) {
+                    tiletype = classname[1];
+                }
+            }
+        });
+
+        // Get tile config
+        var tile_config;
+        for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
+            var tile_group = $.deco.options.tiles[x];
+            for (var y = 0; y < tile_group.tiles.length; y += 1) {
+                if (tile_group.tiles[y].name === tiletype) {
+                    tile_config = tile_group.tiles[y];
+                }
+            }
+        }
+
+        // Return config
+        return tile_config;
+    };
+
+    /**
      * Get the direction based on the tile size and relative x and y coords of the cursor
      *
      * @id jQuery.decoGetDirection
@@ -2100,4 +2119,5 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Fallback
         return "deco-position-leftmost";
     }
+
 }(jQuery));

@@ -5,6 +5,9 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Bind tile events using live so new dom elements get correct events.
+  [robgietema]
+
 - Fixed resize js error.
   [robgietema]
 
