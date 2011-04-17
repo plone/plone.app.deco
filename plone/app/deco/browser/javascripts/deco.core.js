@@ -337,7 +337,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init upload
-                $.deco.initUpload();
+                // $.deco.initUpload();
                 $.deco.undo.init();
             }
         });
