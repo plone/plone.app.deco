@@ -902,6 +902,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.fn.decoGetPositionClass = function () {
 
+        var x;
+
         // Loop through position classes
         for (x in $.deco.layout.positionClasses) {
 
