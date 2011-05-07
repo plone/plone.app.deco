@@ -8,7 +8,6 @@ Then do the following:
 - run python2.6 bootstrap.py
 - run ./bin/buildout
 - Start the instance, create a new site
-- Install the "Deco" product using the Quickinstaller or Control Panel
 - Go to the front page of the site and add an "Page" (there are two at the
   moment, 1 old and 1 new, make sure you use the ++add++page, check your
   statusbar)
