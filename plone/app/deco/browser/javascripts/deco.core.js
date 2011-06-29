@@ -311,7 +311,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         // Check if panel or toolbar
                         if (!obj.hasClass('deco-panel') &&
                             !obj.hasClass('deco-toolbar') &&
-                            !obj.hasClass('deco-notifications')) {
+                            !obj.hasClass('deco-notifications') &&
+                            obj.attr('id') !== 'plone-cmsui-menu') {
 
                             // Check if inside panel or toolbar
                             if (obj.parents('.deco-panel, .deco-toolbar')
