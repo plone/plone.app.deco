@@ -39,6 +39,7 @@ setup(name='plone.app.deco',
           'plone.app.standardtiles',
           'plone.app.page',
           'plone.app.tinymce',
+          'plone.app.cmsui',
       ] + requires,
       extras_require={
           'test': [
