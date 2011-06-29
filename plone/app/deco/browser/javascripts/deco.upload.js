@@ -46,13 +46,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.initUpload = function () {
 
         // Bind dragover
-        $(".deco-panel").bind("dragover", function (e) {
+        $(".deco-panel", $.deco.document).bind("dragover", function (e) {
 
             // Check if drag not already loaded
-            if ($(".deco-panel-dragging").length === 0) {
+            if ($(".deco-panel-dragging", $.deco.document).length === 0) {
 
                 // Deselect tiles
-                $(".deco-selected-tile")
+                $(".deco-selected-tile", $.deco.document)
                     .removeClass("deco-selected-tile")
                     .children(".deco-tile-content").blur();
 
@@ -81,7 +81,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 event.preventDefault();
 
                 // Drop tile
-                $(document).trigger("mousedown");
+                $($.deco.document).trigger("mousedown");
 
                 // Check filetypes
                 first = true;
@@ -97,9 +97,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         if (first) {
 
                             // Set image and tile
-                            img = $(".deco-selected-tile")
-                                .children(".deco-tile-content").children("img");
-                            tile = $(".deco-selected-tile");
+                            img = $(".deco-selected-tile", $.deco.document)
+                                .children(".deco-tile-content")
+                                .children("img");
+                            tile = $(".deco-selected-tile",
+                                     $.deco.document);
 
                             // Set first to false
                             first = false;
@@ -108,18 +110,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         } else {
 
                             // Create new tile
-                            newtile = $(document.createElement("div"))
-                                    .addClass("movable removable deco-tile " +
-                                        "deco-image-tile")
-                                    .append($(document.createElement("div"))
-                                        .addClass("deco-tile-content")
-                                        .append($(document.createElement("img"))
+                            newtile = $($.deco.document.createElement("div"))
+                                .addClass("movable removable deco-tile " +
+                                          "deco-image-tile")
+                                .append($($.deco.document.createElement("div"))
+                                    .addClass("deco-tile-content")
+                                    .append(
+                                        $($.deco.document.createElement("img"))
                                             .attr("border", 0)
-                                        )
-                                    );
+                                    )
+                                );
 
                             // Insert new tile
-                            $(".deco-selected-tile").after(newtile);
+                            $(".deco-selected-tile", $.deco.document)
+                                .after(newtile);
                             newtile.decoInitTile();
                             newtile.decoAddDrag();
 
@@ -130,7 +134,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         }
 
                         // Setup progress div
-                        tile.append($(document.createElement("div"))
+                        tile.append($($.deco.document.createElement("div"))
                             .addClass("deco-tile-uploadprogress")
                         );
 
@@ -240,7 +244,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Remove tile if no supported filetypes
                 if (first) {
-                    $(".deco-selected-tile").find(".deco-close-icon")
+                    $(".deco-selected-tile", $.deco.document)
+                        .find(".deco-close-icon")
                         .trigger("click");
                 }
             },
