@@ -62,19 +62,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .hide()
                 .css({
                     'width': '900px',
-                    'left': (($(window).width() - 900) / 2)
+                    'left': (($(window.parent).width() - 900) / 2)
                 })
                 .addClass("deco-dialog");
 
             // Add lightbox
-            $(document.body).prepend($(document.createElement("div"))
-                .addClass("deco-dialog-blocker")
+            $(document.body, $.deco.document)
+                .prepend($(document.createElement("div"))
+                    .addClass("deco-dialog-blocker")
             );
 
             // Clear actions
-            $(".formControls").children("input").hide();
-            $(".formControls").append(
-                $(document.createElement("input")).attr({
+            $(".formControls", $.deco.document).children("input").hide();
+            $(".formControls", $.deco.document).append(
+                $($.deco.document.createElement("input")).attr({
                     'type': 'button',
                     'value': 'Ok'
                 })
@@ -100,7 +101,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             field_tile, field, fieldset;
 
         // Get form
-        form = $(".deco-dialog").find("form");
+        form = $(".deco-dialog", $.deco.document).find("form");
 
         if (mode === 'all') {
 
@@ -145,7 +146,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 field_tile = tile_group.tiles[x];
                 if ($.deco.options.panels
                     .find(".deco-" + field_tile.name + "-tile").length !== 0) {
-                    $(document.getElementById(field_tile.id))
+                    $($.deco.document.getElementById(field_tile.id))
                         .addClass('deco-hidden');
                 }
             }
@@ -154,7 +155,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             form.find("fieldset").each(function () {
                 if ($(this).children("div:not(.deco-hidden)").length === 0) {
                     $('a[href=#fieldsetlegend-' +
-                        $(this).attr('id').split('-')[1] + ']')
+                        $(this).attr('id').split('-')[1] + ']',
+                      $.deco.document)
                         .parent().addClass('deco-hidden');
                 }
             });
@@ -169,13 +171,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Select first tab
             visible_tabs.eq(0).children('a').addClass('selected');
             form.find('#fieldset-' +
-                visible_tabs.eq(0).children('a').attr('href').split('-')[1])
+                visible_tabs.eq(0).children('a').attr('href').split('-')[1],
+                $.deco.document)
                 .removeClass('hidden');
 
         } else if (mode === 'field') {
 
             // Get fieldset and field
-            field = $("#" + tile_config.id);
+            field = $("#" + tile_config.id, $.deco.document);
             fieldset = field.parents("fieldset");
 
             // Hide all fieldsets
@@ -193,9 +196,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Hide form tabs
             form.find(".formTabs").addClass('deco-hidden');
         }
-        $(".deco-dialog-blocker").show();
-        offset_top = parseInt($(".deco-dialog").css('top'), 10);
-        $(".deco-dialog")
+        $(".deco-dialog-blocker", $.deco.document).show();
+        offset_top = parseInt($(".deco-dialog",
+                                $.deco.document).css('top'), 10);
+        $(".deco-dialog", $.deco.document)
             .css({'top': offset_top - 300})
             .show()
             .animate({'top': offset_top}, 300);
@@ -207,9 +211,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @id jQuery.deco.dialog.close
      */
     $.deco.dialog.close = function () {
-        $(".deco-dialog-blocker").hide();
-        $(".deco-dialog").hide();
-        $(".deco-iframe-dialog").remove();
+        $(".deco-dialog-blocker", $.deco.document).hide();
+        $(".deco-dialog", $.deco.document).hide();
+        $(".deco-iframe-dialog", $.deco.document).remove();
     };
 
     /**
@@ -220,22 +224,23 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.dialog.openIframe = function (url) {
 
-        $(".deco-dialog-blocker").show();
+        $(".deco-dialog-blocker", $.deco.document).show();
         
-        $(document.body).append($(document.createElement("iframe"))
-            .css({
-                'position': 'absolute',
-                'width': '900px',
-                'height': '600px',
-                'top': '0px',
-                'z-index': '3000',
-                'left': (($(window).width() - 900) / 2),
-                'border': '0px'
-            })
-            .attr({
-                'src': url
-            })
-            .addClass("deco-iframe-dialog")
+        $($.deco.document.body).append(
+            $($.deco.document.createElement("iframe"))
+                .css({
+                    'position': 'absolute',
+                    'width': '900px',
+                    'height': '600px',
+                    'top': '0px',
+                    'z-index': '3000',
+                    'left': (($(window.parent).width() - 900) / 2),
+                    'border': '0px'
+                })
+                .attr({
+                    'src': url
+                })
+                .addClass("deco-iframe-dialog")
         );
     };
 }(jQuery));
