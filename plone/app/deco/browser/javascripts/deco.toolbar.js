@@ -370,7 +370,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Get selected tile and tiletype
                 tiletype = "";
-                selected_tile = $(".deco-selected-tile");
+                selected_tile = $(".deco-selected-tile", $.deco.document);
                 if (selected_tile.length > 0) {
                     classes = selected_tile.attr('class').split(" ");
                     $(classes).each(function () {
@@ -444,7 +444,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Hide menu if no enabled items
-                $(".deco-menu, .deco-icon-menu").each(function () {
+                $(".deco-menu, .deco-icon-menu",
+                  $.deco.document).each(function () {
                     if ($(this).find(".deco-option:enabled").length === 1) {
                         $(this).hide();
                     }

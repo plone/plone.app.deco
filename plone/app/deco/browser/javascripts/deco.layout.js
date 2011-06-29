@@ -65,7 +65,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if (e.keyCode === 27) {
 
                 // Check if dragging
-                var original_tile = $(".deco-original-tile");
+                var original_tile = $(".deco-original-tile", $.deco.document);
                 if (original_tile.length > 0) {
                     original_tile.each(function () {
                         $(this).addClass("deco-drag-cancel");
@@ -80,7 +80,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 } else {
 
                     // Deselect tiles
-                    $(".deco-selected-tile")
+                    $(".deco-selected-tile", $.deco.document)
                         .removeClass("deco-selected-tile")
                         .children(".deco-tile-content").blur();
 
@@ -90,7 +90,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
 
                 // Find resize helper
-                $(".deco-resize-handle-helper").each(function () {
+                $(".deco-resize-handle-helper",
+                  $.deco.document).each(function () {
 
                     // Remove resizing state
                     $(this).parents(".deco-panel")
@@ -109,7 +110,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         };
 
         // Bind event and add to array
-        $(document).bind('keydown', DocumentKeydown);
+        $($.deco.document).bind('keydown', DocumentKeydown);
 
         // Add deselect
         var DocumentMousedown = function (e) {
@@ -129,7 +130,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 if ($(elm).parents(".deco-toolbar").length === 0) {
 
                     // Deselect tiles
-                    $(".deco-selected-tile")
+                    $(".deco-selected-tile", $.deco.document)
                         .removeClass("deco-selected-tile")
                         .children(".deco-tile-content").blur();
 
@@ -140,7 +141,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
 
             // Find resize helper
-            var new_tile = $(".deco-helper-tile-new");
+            var new_tile = $(".deco-helper-tile-new", $.deco.document);
             if (new_tile.length > 0) {
                 new_tile.each(function () {
 
@@ -151,13 +152,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         };
 
         // Bind event and add to array
-        $(document).bind('mousedown', DocumentMousedown);
+        $($.deco.document).bind('mousedown', DocumentMousedown);
 
         // Handle mouse move event
         var DocumentMousemove = function (e) {
 
             // Find resize helper
-            $(".deco-helper-tile-new").each(function () {
+            $(".deco-helper-tile-new", $.deco.document).each(function () {
 
                 // Get offset
                 var offset = $(this).parent().offset();
@@ -168,7 +169,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             });
 
             // Find resize helper
-            $(".deco-resize-handle-helper").each(function () {
+            $(".deco-resize-handle-helper", $.deco.document).each(function () {
 
                 var cur_snap_offset;
 
@@ -325,14 +326,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         };
 
         // Bind event and add to array
-        $(document).bind('mousemove', DocumentMousemove);
-        $(document).bind('dragover', DocumentMousemove);
+        $($.deco.document).bind('mousemove', DocumentMousemove);
+        $($.deco.document).bind('dragover', DocumentMousemove);
 
         // Handle mouse up event
         var DocumentMouseup = function (e) {
 
             // Find resize helper
-            $(".deco-resize-handle-helper").each(function () {
+            $(".deco-resize-handle-helper", $.deco.document).each(function () {
 
                 // Get panel
                 var panel = $(this).parents(".deco-panel");
