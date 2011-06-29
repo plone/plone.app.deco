@@ -45,14 +45,6 @@
               compression="none"
               cookable="False"
               enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.notify.js"
-              bundle="deco"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.upload.js"
               bundle="deco"
               inline="False"/>
