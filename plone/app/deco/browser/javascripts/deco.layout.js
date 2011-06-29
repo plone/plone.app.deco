@@ -445,7 +445,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     url: url,
                     success: function (value) {
 
-                        $.deco.notify({
+                        $.plone.notify({
                             title: "Info",
                             message: "Application tile removed"
                         });
@@ -1099,7 +1099,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
 
             // Notify user
-            $.deco.notify({
+            $.plone.notify({
                 title: "Info",
                 message: "You can't have more then 4 columns"
             });
@@ -1790,7 +1790,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         helper.decoInitTile();
 
         // Notify user
-        $.deco.notify({
+        $.plone.notify({
             title: "Inserting new tile",
             message: "Select the location for the new tile"
         });

@@ -167,10 +167,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             if (response.status === 1) {
 
                                 // Raise error
-                                $.deco.notify({
+                                $.plone.notify({
                                     type: "error",
                                     title: "Error",
-                                    message: response.message
+                                    message: response.message,
+                                    sticky: true
                                 });
 
                             // No error
@@ -191,10 +192,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                         // Set error handler
                         xhr.upload.addEventListener("error", function (error) {
-                            $.deco.notify({
+                            $.plone.notify({
                                 type: "error",
                                 title: "Error",
-                                message: "Error uploading file: " + error
+                                message: "Error uploading file: " + error,
+                                sticky: true
                             });
                         }, false);
 
@@ -226,11 +228,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     } else {
 
                         // Notify unsupported
-                        $.deco.notify({
+                        $.plone.notify({
                             type: "warning",
                             title: "Warning",
                             message: "The filetype of file " + file.fileName +
-                                " is unsupported"
+                                " is unsupported",
+                            sticky: true
                         });
                     }
                 }

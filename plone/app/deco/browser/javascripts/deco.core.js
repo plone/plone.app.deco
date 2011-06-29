@@ -75,7 +75,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Initialize modules
         $.deco.initActions();
-        $.deco.initNotify();
 
         // Get the url of the page
         match = options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/edit$/);
