@@ -369,7 +369,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         };
 
         // Bind event and add to array
-        $(document).bind('mouseup', DocumentMouseup);
+        $($.deco.document).bind('mouseup', DocumentMouseup);
 
         // Handle mousemove on tile
         var TileMousemove = function (e) {
@@ -378,7 +378,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
 
                 // Hide all dividers
-                $(".deco-selected-divider").removeClass("deco-selected-divider");
+                $(".deco-selected-divider", $.deco.document)
+                    .removeClass("deco-selected-divider");
 
                 // Don't show dividers if above original or floating tile
                 if (($(this).hasClass("deco-original-tile") === false) &&
@@ -410,17 +411,17 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         };
 
         // Bind events
-        $(".deco-tile").live("mousemove", TileMousemove);
-        $(".deco-tile").live("dragover", TileMousemove);
+        $(".deco-tile", $.deco.document).live("mousemove", TileMousemove);
+        $(".deco-tile", $.deco.document).live("dragover", TileMousemove);
 
         // On click select the current tile
-        $(".deco-tile").live("click", function () {
+        $(".deco-tile", $.deco.document).live("click", function () {
 
             // Select tile
             $(this).decoSelectTile();
         });
 
-        $(".deco-close-icon").live("click", function () {
+        $(".deco-close-icon", $.deco.document).live("click", function () {
 
             // Get tile config
             var tile_config = $(this).parents(".deco-tile").decoGetTileConfig();
@@ -481,7 +482,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
 
         // On click open dialog
-        $(".deco-info-icon").live("click", function () {
+        $(".deco-info-icon", $.deco.document).live("click", function () {
 
             // Get tile config
             var tile_config = $(this).parents(".deco-tile").decoGetTileConfig();
@@ -581,7 +582,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Generate random id
                 var random_id = 1 + Math.floor(100000 * Math.random());
-                while ($("#deco-rich-text-init-" + random_id).length > 0) {
+                while ($("#deco-rich-text-init-" + random_id,
+                         $.deco.document).length > 0) {
                     random_id = 1 + Math.floor(100000 * Math.random());
                 }
                 $(this).children('.deco-tile-content').attr('id', 'deco-rich-text-init-' + random_id);
@@ -597,10 +599,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Add border divs
             $(this).prepend(
-                $(document.createElement("div"))
+                $($.deco.document.createElement("div"))
                     .addClass("deco-tile-outer-border")
                     .append(
-                        $(document.createElement("div"))
+                        $($.deco.document.createElement("div"))
                             .addClass("deco-tile-inner-border")
                     )
             );
@@ -610,15 +612,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Add label
                 $(this).prepend(
-                    $(document.createElement("div"))
+                    $($.deco.document.createElement("div"))
                         .addClass("deco-tile-control deco-field-label")
                         .append(
-                            $(document.createElement("div"))
+                            $($.deco.document.createElement("div"))
                                 .addClass("deco-field-label-content")
                                 .html(tile_config.label)
                         )
                         .append(
-                            $(document.createElement("div"))
+                            $($.deco.document.createElement("div"))
                                 .addClass("deco-field-label-left")
                         )
                 );
@@ -629,7 +631,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Add drag handle
                 $(this).prepend(
-                    $(document.createElement("div"))
+                    $($.deco.document.createElement("div"))
                         .addClass("deco-tile-control deco-drag-handle")
                 );
             }
@@ -644,41 +646,41 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Add settings icon
             if (tile_config && tile_config.settings) {
                 $(this).prepend(
-                    $(document.createElement("div"))
+                    $($.deco.document.createElement("div"))
                         .addClass("deco-tile-control deco-info-icon")
                 );
             }
 
             // Add dividers
             $(this).prepend(
-                $(document.createElement("div"))
+                $($.deco.document.createElement("div"))
                     .addClass("deco-divider deco-divider-top")
                     .append(
-                        $(document.createElement("div"))
+                        $($.deco.document.createElement("div"))
                             .addClass("deco-divider-dot")
                     )
             );
             $(this).prepend(
-                $(document.createElement("div"))
+                $($.deco.document.createElement("div"))
                     .addClass("deco-divider deco-divider-bottom")
                     .append(
-                        $(document.createElement("div"))
+                        $($.deco.document.createElement("div"))
                             .addClass("deco-divider-dot")
                     )
             );
             $(this).prepend(
-                $(document.createElement("div"))
+                $($.deco.document.createElement("div"))
                     .addClass("deco-divider deco-divider-right")
                     .append(
-                        $(document.createElement("div"))
+                        $($.deco.document.createElement("div"))
                             .addClass("deco-divider-dot")
                     )
             );
             $(this).prepend(
-                $(document.createElement("div"))
+                $($.deco.document.createElement("div"))
                     .addClass("deco-divider deco-divider-left")
                     .append(
-                        $(document.createElement("div"))
+                        $($.deco.document.createElement("div"))
                             .addClass("deco-divider-dot")
                     )
             );
@@ -699,7 +701,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Check if not already selected
             if ($(this).hasClass("deco-selected-tile") === false) {
 
-                $(".deco-selected-tile").removeClass("deco-selected-tile").children(".deco-tile-content").blur();
+                $(".deco-selected-tile", $.deco.document)
+                    .removeClass("deco-selected-tile")
+                    .children(".deco-tile-content").blur();
                 $(this).addClass("deco-selected-tile");
 
                 // Set actions
@@ -732,7 +736,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 var ed = tinyMCE.get(tile_content.attr("id"));
 
                 // Append selection div to end of last block element
-                tile_content.children(":last").append($(document.createElement("span"))
+                tile_content.children(":last").append($($.deco.document.createElement("span"))
                     .addClass("deco-tile-selection-end")
                     .html("&nbsp;")
                 );
@@ -744,7 +748,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
 
                 // Fallback remove selection
-                $(".deco-tile-selection-end").remove();
+                $(".deco-tile-selection-end", $.deco.document).remove();
             }
         });
     };
@@ -770,7 +774,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 if (obj.hasClass("deco-panel-dragging")) {
 
                     // Hide all dividers
-                    $(".deco-selected-divider").removeClass("deco-selected-divider");
+                    $(".deco-selected-divider", $.deco.document)
+                        .removeClass("deco-selected-divider");
                     $(this).children("div").addClass("deco-selected-divider");
                 }
             });
@@ -797,15 +802,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // Check if first row
                     if (i === 0) {
                         $(this).before(
-                            $(document.createElement("div"))
+                            $($.deco.document.createElement("div"))
                                 .addClass("deco-grid-row deco-empty-row")
-                                .append($(document.createElement("div"))
+                                .append($($.deco.document.createElement("div"))
                                     .addClass("deco-grid-cell deco-width-full deco-position-leftmost")
-                                    .append($(document.createElement("div"))
-                                        .append($(document.createElement("div"))
+                                    .append($($.deco.document.createElement("div"))
+                                        .append($($.deco.document.createElement("div"))
                                             .addClass("deco-tile-outer-border")
                                             .append(
-                                                $(document.createElement("div"))
+                                                $($.deco.document.createElement("div"))
                                                     .addClass("deco-divider-dot")
                                             )
                                         )
@@ -818,15 +823,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // Check if last row or next row also contains columns
                     if (($(this).nextAll(".deco-grid-row").length === 0) || ($(this).next().children(".deco-grid-cell").length > 1)) {
                         $(this).after(
-                            $(document.createElement("div"))
+                            $($.deco.document.createElement("div"))
                                 .addClass("deco-grid-row deco-empty-row")
-                                .append($(document.createElement("div"))
+                                .append($($.deco.document.createElement("div"))
                                     .addClass("deco-grid-cell deco-width-full deco-position-leftmost")
-                                    .append($(document.createElement("div"))
-                                        .append($(document.createElement("div"))
+                                    .append($($.deco.document.createElement("div"))
+                                        .append($($.deco.document.createElement("div"))
                                             .addClass("deco-tile-outer-border")
                                             .append(
-                                                $(document.createElement("div"))
+                                                $($.deco.document.createElement("div"))
                                                     .addClass("deco-divider-dot")
                                             )
                                         )
@@ -931,14 +936,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             var tile = $(this);
 
             var DragMove = function (event) {
-                var helper = $('.deco-helper-tile');
+                var helper = $('.deco-helper-tile', $.deco.document);
                 var offset = helper.parents(".deco-panel").offset();
                 helper.css("top", event.pageY + 3 - offset.top);
                 helper.css("left", event.pageX + 3 - offset.left);
             };
             var DragStop = function () {
-                var helper = $('.deco-helper-tile');
-                $(document)
+                var helper = $('.deco-helper-tile', $.deco.document);
+                $($.deco.document)
                     .unbind('mousemove', DragMove)
                     .unbind('mouseup', DragStop);
 
@@ -961,7 +966,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                             // Add dragging class to content area
                             $.deco.options.panels.addClass("deco-panel-dragging");
-                            $(".deco-selected-tile").removeClass("deco-selected-tile").children(".deco-tile-content").blur();
+                            $(".deco-selected-tile", $.deco.document)
+                                .removeClass("deco-selected-tile")
+                                .children(".deco-tile-content").blur();
 
                             var originaltile = $(event.target).parents(".deco-tile");
 
@@ -976,14 +983,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                     "opacity": 0.5
                                 })
                                 .addClass("deco-helper-tile");
-                            $(document).mousemove(DragMove);
-                            $(document).mouseup(DragStop);
-                            $(document).unbind('mousemove', DragCheckMove);
+                            $($.deco.document).mousemove(DragMove);
+                            $($.deco.document).mouseup(DragStop);
+                            $($.deco.document).unbind('mousemove', DragCheckMove);
                         }
                     };
-                    $(document).bind('mousemove', DragCheckMove);
-                    $(document).bind('mouseup', function () {
-                        $(document).unbind('mousemove', DragCheckMove);
+                    $($.deco.document).bind('mousemove', DragCheckMove);
+                    $($.deco.document).bind('mouseup', function () {
+                        $($.deco.document).unbind('mousemove', DragCheckMove);
                     });
                 });
             });
@@ -1005,7 +1012,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.options.panels.removeClass("deco-panel-dragging deco-panel-dragging-new");
 
         // Get direction
-        var divider = $(".deco-selected-divider");
+        var divider = $(".deco-selected-divider", $.deco.document);
         var drop = divider.parent();
         var dir = "";
         if (divider.hasClass("deco-divider-top")) {
@@ -1023,8 +1030,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         divider.removeClass("deco-selected-divider");
 
         // True if new tile is inserted
-        var new_tile = $(".deco-helper-tile-new").length > 0;
-        var original_tile = $(".deco-original-tile");
+        var new_tile = $(".deco-helper-tile-new", $.deco.document).length > 0;
+        var original_tile = $(".deco-original-tile", $.deco.document);
 
         // Check if esc is pressed
         if (original_tile.hasClass("deco-drag-cancel")) {
@@ -1067,13 +1074,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             );
 
             // Remove remaining empty rows
-            $(".deco-empty-row").remove();
+            $(".deco-empty-row", $.deco.document).remove();
 
         // Not dropped on tile
         } else if (drop.hasClass("deco-tile") === false) {
 
             // Remove remaining empty rows
-            $(".deco-empty-row").remove();
+            $(".deco-empty-row", $.deco.document).remove();
 
             // Check if new tile
             if (!new_tile) {
@@ -1088,7 +1095,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         } else if ((drop.parent().parent().children(".deco-grid-cell").length === 4) && (dir === "left" || dir === "right")) {
 
             // Remove remaining empty rows
-            $(".deco-empty-row").remove();
+            $(".deco-empty-row", $.deco.document).remove();
 
             // Check if new tile
             if (!new_tile) {
@@ -1109,7 +1116,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         } else {
 
             // Remove empty rows
-            $(".deco-empty-row").remove();
+            $(".deco-empty-row", $.deco.document).remove();
 
             // If top
             if (dir === "top") {
@@ -1147,9 +1154,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     var prev_elms = drop.prevAll();
                     if (prev_elms.length > 0) {
                         drop.parent().parent()
-                            .before($(document.createElement("div"))
+                            .before($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-row")
-                                .append($(document.createElement("div"))
+                                .append($($.deco.document.createElement("div"))
                                     .addClass("deco-grid-cell deco-width-full deco-position-leftmost")
                                     .append($(prev_elms.get().reverse()).clone(true).decoAddDrag())
                                 )
@@ -1161,9 +1168,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     var next_elms = drop.nextAll();
                     if (next_elms.length > 0) {
                         drop.parent().parent()
-                            .after($(document.createElement("div"))
+                            .after($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-row")
-                                .append($(document.createElement("div"))
+                                .append($($.deco.document.createElement("div"))
                                     .addClass("deco-grid-cell deco-width-full deco-position-leftmost")
                                     .append(next_elms.clone(true).decoAddDrag())
                                 )
@@ -1181,7 +1188,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     if (dir === "left") {
                         drop.parent()
                             .addClass("deco-position-half")
-                            .before($(document.createElement("div"))
+                            .before($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-cell deco-width-half deco-position-leftmost")
                                 .append(
                                     original_tile
@@ -1195,7 +1202,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     } else {
                         drop.parent()
                             .addClass("deco-position-leftmost")
-                            .after($(document.createElement("div"))
+                            .after($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-cell deco-width-half deco-position-half")
                                 .append(
                                     original_tile
@@ -1217,7 +1224,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // Create new column
                     if (dir === "left") {
                         drop.parent()
-                            .before($(document.createElement("div"))
+                            .before($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-cell")
                                 .append(
                                     original_tile
@@ -1230,7 +1237,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             );
                     } else {
                         drop.parent()
-                            .after($(document.createElement("div"))
+                            .after($($.deco.document.createElement("div"))
                                 .addClass("deco-grid-cell")
                                 .append(
                                     original_tile
@@ -1254,7 +1261,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Remove original tile
         var original_row = original_tile.parent().parent();
-        $(".deco-original-tile").remove();
+        $(".deco-original-tile", $.deco.document).remove();
 
         // Cleanup original row
         original_row.decoCleanupRow();
@@ -1264,9 +1271,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Select new tile
         if (new_tile) {
-            $(".deco-new-tile").removeClass("deco-new-tile").decoSelectTile();
+            $(".deco-new-tile", $.deco.document).removeClass("deco-new-tile").decoSelectTile();
         } else {
-            $(".deco-new-tile").removeClass("deco-new-tile");
+            $(".deco-new-tile", $.deco.document).removeClass("deco-new-tile");
         }
     };
 
@@ -1364,19 +1371,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             var nr_of_columns = $(this).children(".deco-grid-cell").length;
             switch (nr_of_columns) {
             case 2:
-                $(this).append($(document.createElement("div"))
+                $(this).append($($.deco.document.createElement("div"))
                     .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
                         .decoGetPositionClass().replace("position", "resize")
                     )
                 );
                 break;
             case 3:
-                $(this).append($(document.createElement("div"))
+                $(this).append($($.deco.document.createElement("div"))
                     .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-one " + $($(this).children(".deco-grid-cell").get(1))
                         .decoGetPositionClass().replace("position", "resize")
                     )
                 );
-                $(this).append($(document.createElement("div"))
+                $(this).append($($.deco.document.createElement("div"))
                     .addClass("deco-resize-handle deco-resize-handle-center deco-resize-handle-two " + $($(this).children(".deco-grid-cell").get(2))
                         .decoGetPositionClass().replace("position", "resize")
                     )
@@ -1411,9 +1418,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     }
 
                     // Add placeholder
-                    $(this).parent().append($(document.createElement("div"))
+                    $(this).parent().append($($.deco.document.createElement("div"))
                         .addClass("deco-resize-placeholder " + $(this).decoGetWidthClass() + " " + $(this).decoGetPositionClass().replace("position", "resize"))
-                        .append($(document.createElement("div"))
+                        .append($($.deco.document.createElement("div"))
                             .addClass("deco-resize-placeholder-inner-border")
                         )
                     );
@@ -1426,7 +1433,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
 
                 // Add helper
-                $(this).parent().append($(document.createElement("div"))
+                $(this).parent().append($($.deco.document.createElement("div"))
                     .addClass("deco-resize-handle deco-resize-handle-helper")
                     .addClass($(this).decoGetPositionClass().replace("position", "resize"))
                     .data("row_width", $(this).parent().width())
@@ -1438,7 +1445,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Set resizing state
                 $(this).parents(".deco-panel").addClass("deco-panel-resizing");
                 $(this).parent().addClass("deco-row-resizing");
-                $(".deco-selected-tile").children(".deco-tile-content").blur();
+                $(".deco-selected-tile", $.deco.document).children(".deco-tile-content").blur();
 
                 // Prevent drag event
                 return false;
@@ -1685,7 +1692,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.dialog.close();
 
         // Focus on current window
-        window.focus();
+        window.parent.focus();
 
         // Get value
         $.ajax({
@@ -1719,7 +1726,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.dialog.close();
 
         // Focus on current window
-        window.focus();
+        window.parent.focus();
 
         // Get new value
         $.ajax({
@@ -1737,7 +1744,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.addHeadTags(url, value);
 
                 // Update tile
-                $('.deco-selected-tile .deco-tile-content').html('<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
+                $('.deco-selected-tile .deco-tile-content',
+                  $.deco.document).html('<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
             }
         });
     };
@@ -1756,13 +1764,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Add helper
         $($.deco.options.panels.get(0)).append(
-            $(document.createElement("div"))
+            $($.deco.document.createElement("div"))
                 .addClass("deco-grid-row")
-                .append($(document.createElement("div"))
+                .append($($.deco.document.createElement("div"))
                     .addClass("deco-grid-cell deco-width-half deco-position-leftmost")
-                    .append($(document.createElement("div"))
+                    .append($($.deco.document.createElement("div"))
                         .addClass("movable removable deco-tile deco-" + type + "-tile")
-                        .append($(document.createElement("div"))
+                        .append($($.deco.document.createElement("div"))
                             .addClass("deco-tile-content")
                             .html(value)
                         )
@@ -1810,11 +1818,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                return '<div>' + $("#" + tile_config.id).find('input').attr('value') + '</div>';
+                return '<div>' + $("#" + tile_config.id, $.deco.document).find('input').attr('value') + '</div>';
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                var lines = $("#" + tile_config.id).find('textarea').attr('value').split('\n');
+                var lines = $("#" + tile_config.id, $.deco.document).find('textarea').attr('value').split('\n');
                 var return_string = "";
                 for (var i = 0; i < lines.length; i += 1) {
                     return_string += '<div>' + lines[i] + '</div>';
@@ -1823,7 +1831,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
             case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                return $("#" + tile_config.id).find('textarea').attr('value');
+                return $("#" + tile_config.id, $.deco.document).find('textarea').attr('value');
                 break;
             default:
                 return '<div class="discreet">Placeholder for field:<br/><b>' + tile_config.label + '</b></div>';
@@ -1858,20 +1866,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').html());
+                $("#" + tile_config.id, $.deco.document).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
                 var value = "";
-                $('.deco-' + tiletype + '-tile').find('.deco-tile-content > *').each(function () {
+                $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').each(function () {
                     value += $(this).html() + "\n";
                 });
                 value = value.replace(/<br[^>]*>/ig, "\n");
-                $("#" + tile_config.id).find('textarea').attr('value', value);
+                $("#" + tile_config.id, $.deco.document).find('textarea').attr('value', value);
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
             case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile').find('.deco-tile-content').html());
+                $($.deco.document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
                 break;
             }
         }
@@ -1899,7 +1907,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         body += "  <body>\n";
 
         // Loop through panels
-        $(".deco-panel").each(function () {
+        $(".deco-panel", $.deco.document).each(function () {
 
             // Add open panel tag
             id = $(this).attr("id");
@@ -1987,12 +1995,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                                 // Save title and description
                                 if (tile_config.name === 'plone.app.standardtiles.title') {
-                                    $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure').remove();
-                                    $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content').text()));
+                                    $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure', $.deco.document).remove();
+                                    $("#formfield-form-widgets-IDublinCore-title", $.deco.document).find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content', $.deco.document).text()));
                                 }
                                 if (tile_config.name === 'plone.app.standardtiles.description') {
-                                    $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure').remove();
-                                    $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content').text()));
+                                    $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure', $.deco.document).remove();
+                                    $("#formfield-form-widgets-IDublinCore-description", $.deco.document).find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content', $.deco.document).text()));
                                 }
 
                                 break;
