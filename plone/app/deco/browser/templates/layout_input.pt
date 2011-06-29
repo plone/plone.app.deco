@@ -28,10 +28,3 @@
                     accesskey view/accesskey;
                     onselect view/onselect"
     tal:content="view/value" />
-<script type="text/javascript">
-(function($) {
-    // Hide form and edit controls
-    $('#content').hide();
-    $('#edit-bar').hide();
-})(jQuery);
-</script>
