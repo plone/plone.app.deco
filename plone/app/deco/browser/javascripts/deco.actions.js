@@ -128,7 +128,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @return {Object} jQuery object
      */
     $.deco.fixWebkitSpan = function () {
-        var webkit_span = $(".Apple-style-span");
+        var webkit_span = $(".Apple-style-span", $.deco.document);
         webkit_span.after(webkit_span.html());
         webkit_span.remove();
     };
@@ -325,7 +325,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             exec: function () {
 
                 // Remove left and right align classes
-                $(".deco-selected-tile")
+                $(".deco-selected-tile", $.deco.document)
                     .removeClass("deco-tile-align-right deco-tile-align-left");
             },
             shortcut: {
@@ -341,7 +341,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             exec: function () {
 
                 // Remove right align class, add left align class
-                $(".deco-selected-tile")
+                $(".deco-selected-tile", $.deco.document)
                     .removeClass("deco-tile-align-right")
                     .addClass("deco-tile-align-left");
             },
@@ -358,7 +358,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             exec: function () {
 
                 // Remove left align class, add right align class
-                $(".deco-selected-tile")
+                $(".deco-selected-tile", $.deco.document)
                     .removeClass("deco-tile-align-left")
                     .addClass("deco-tile-align-right");
             },
@@ -373,11 +373,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register save action
         $.deco.registerAction('save', {
             exec: function () {
-                $("#form-widgets-ILayoutAware-content")
-                    .attr("value", $.deco.getPageContent());
+                $("#form-widgets-ILayoutAware-content",
+                  $.deco.document)
+                      .attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
-                window.onbeforeunload = null;
+                window.parent.onbeforeunload = null;
                 $("#form-buttons-save").click();
             },
             shortcut: {
@@ -444,7 +445,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
 
                 // Deselect tiles
-                $(".deco-selected-tile")
+                $(".deco-selected-tile", $.deco.document)
                     .removeClass("deco-selected-tile")
                     .children(".deco-tile-content").blur();
 
