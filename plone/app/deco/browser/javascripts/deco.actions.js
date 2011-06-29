@@ -143,7 +143,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register strong action
         $.deco.registerAction('strong', {
             exec: function () {
-                tinyMCE.execCommand("Bold");
+                window.parent.tinyMCE.execCommand("Bold");
             },
             shortcut: {
                 ctrl: true,
@@ -156,42 +156,42 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register emphasis action
         $.deco.registerAction('em', {
             exec: function () {
-                tinyMCE.execCommand("Italic");
+                window.parent.tinyMCE.execCommand("Italic");
             }
         });
 
         // Register unordered list action
         $.deco.registerAction('ul', {
             exec: function () {
-                tinyMCE.execCommand("InsertUnorderedList");
+                window.parent.tinyMCE.execCommand("InsertUnorderedList");
             }
         });
 
         // Register ordered list action
         $.deco.registerAction('ol', {
             exec: function () {
-                tinyMCE.execCommand("InsertOrderedList");
+                window.parent.tinyMCE.execCommand("InsertOrderedList");
             }
         });
 
         // Register undo action
         $.deco.registerAction('undo', {
             exec: function () {
-                tinyMCE.execCommand("Undo");
+                window.parent.tinyMCE.execCommand("Undo");
             }
         });
 
         // Register redo action
         $.deco.registerAction('redo', {
             exec: function () {
-                tinyMCE.execCommand("Redo");
+                window.parent.tinyMCE.execCommand("Redo");
             }
         });
 
         // Register paragraph action
         $.deco.registerAction('paragraph', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "p");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "p");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -199,7 +199,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register heading action
         $.deco.registerAction('heading', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "h2");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "h2");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -207,7 +207,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register subheading action
         $.deco.registerAction('subheading', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "h3");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "h3");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -215,8 +215,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register discreet action
         $.deco.registerAction('discreet', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "p");
-                tinyMCE.execCommand("mceSetCSSClass", false, "discreet");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "p");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "discreet");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -224,7 +224,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register literal action
         $.deco.registerAction('literal', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "pre");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "pre");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -232,8 +232,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register quote action
         $.deco.registerAction('quote', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "div");
-                tinyMCE.execCommand("mceSetCSSClass", false, "pullquote");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "div");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "pullquote");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -241,8 +241,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register callout action
         $.deco.registerAction('callout', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "p");
-                tinyMCE.execCommand("mceSetCSSClass", false, "callout");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "p");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "callout");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -250,7 +250,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register highlight action
         $.deco.registerAction('highlight', {
             exec: function () {
-                tinyMCE.execCommand("mceSetCSSClass", false, "visualHighlight");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "visualHighlight");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -258,7 +258,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register sub action
         $.deco.registerAction('sub', {
             exec: function () {
-                tinyMCE.execCommand("Subscript");
+                window.parent.tinyMCE.execCommand("Subscript");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -266,7 +266,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register sup action
         $.deco.registerAction('sup', {
             exec: function () {
-                tinyMCE.execCommand("Superscript");
+                window.parent.tinyMCE.execCommand("Superscript");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -274,7 +274,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register remove format action
         $.deco.registerAction('remove-format', {
             exec: function () {
-                tinyMCE.execCommand("RemoveFormat");
+                window.parent.tinyMCE.execCommand("RemoveFormat");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -282,8 +282,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register pagebreak action
         $.deco.registerAction('pagebreak', {
             exec: function () {
-                tinyMCE.execCommand("FormatBlock", false, "p");
-                tinyMCE.execCommand("mceSetCSSClass", false, "pagebreak");
+                window.parent.tinyMCE.execCommand("FormatBlock", false, "p");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "pagebreak");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -291,7 +291,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register justify left action
         $.deco.registerAction('justify-left', {
             exec: function () {
-                tinyMCE.execCommand("mceSetCSSClass", false, "justify-left");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "justify-left");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -299,7 +299,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register justify center action
         $.deco.registerAction('justify-center', {
             exec: function () {
-                tinyMCE.execCommand("mceSetCSSClass", false, "justify-center");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "justify-center");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -307,7 +307,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register justify right action
         $.deco.registerAction('justify-right', {
             exec: function () {
-                tinyMCE.execCommand("mceSetCSSClass", false, "justify-right");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "justify-right");
                 $.deco.fixWebkitSpan();
             }
         });
@@ -315,7 +315,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register justify full action
         $.deco.registerAction('justify-justify', {
             exec: function () {
-                tinyMCE.execCommand("mceSetCSSClass", false, "justify-justify");
+                window.parent.tinyMCE.execCommand("mceSetCSSClass", false, "justify-justify");
                 $.deco.fixWebkitSpan();
             }
         });

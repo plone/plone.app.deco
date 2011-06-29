@@ -590,7 +590,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $(this).children('.deco-tile-content').attr('id', 'deco-rich-text-init-' + random_id);
 
                 // Init rich editor
-                tinyMCE.init({
+                window.parent.tinyMCE.init({
                     mode : "exact",
                     elements : "deco-rich-text-init-" + random_id,
                     content_editable : true,
@@ -734,7 +734,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if (tile_content.attr("id").indexOf('deco-rich-text-init') !== -1) {
 
                 // Get editor
-                var ed = tinyMCE.get(tile_content.attr("id"));
+                var ed = window.parent.tinyMCE.get(tile_content.attr("id"));
 
                 // Append selection div to end of last block element
                 tile_content.children(":last").append($($.deco.document.createElement("span"))
