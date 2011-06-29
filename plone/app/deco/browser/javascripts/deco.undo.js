@@ -67,7 +67,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         function handler(state) {
 
             for (var i = 0; i < state.length; i += 1) {
-                $("#" + state[i].target).html(state[i].source);
+                $("#" + state[i].target, $.deco.document)
+                    .html(state[i].source);
             }
         }
 
@@ -82,9 +83,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.undo.snapshot = function () {
         var state = [];
-        $(".deco-panel").each(function () {
+        $(".deco-panel", $.deco.document).each(function () {
             state.push({"target": $(this).attr("id"),
-                  "source": $(this).html()});
+                        "source": $(this).html()});
         });
         if (typeof($.deco.undo.undoManager) === "undefined") {
             $.deco.undo.init();
