@@ -449,7 +449,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                         $.plone.notify({
                             title: "Info",
-                            message: "Application tile removed"
+                            message: "Application tile removed",
+                            sticky: false
                         });
                     }
                 });
@@ -1109,7 +1110,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Notify user
             $.plone.notify({
                 title: "Info",
-                message: "You can't have more then 4 columns"
+                message: "You can't have more then 4 columns",
+                sticky: false
             });
 
         // Dropped on row
@@ -1801,7 +1803,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Notify user
         $.plone.notify({
             title: "Inserting new tile",
-            message: "Select the location for the new tile"
+            message: "Select the location for the new tile",
+            sticky: false
         });
     };
 
