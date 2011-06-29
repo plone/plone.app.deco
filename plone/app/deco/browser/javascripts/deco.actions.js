@@ -379,7 +379,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Remove KSS onunload protection
                 window.parent.onbeforeunload = null;
-                $("#form-buttons-save").click();
+                $("#form-buttons-save", $.deco.document).click();
             },
             shortcut: {
                 ctrl: true,
@@ -394,7 +394,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             exec: function () {
 
                 // Cancel form
-                $("#form-buttons-cancel").click();
+                $("#form-buttons-cancel", $.deco.document).click();
             }
         });
 

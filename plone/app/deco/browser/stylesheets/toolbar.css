@@ -8,7 +8,6 @@
 }
 
 .deco-toolbar-content {
-    padding: 4px 0px;
     background: #2c6596;
     background-image: -moz-linear-gradient(top, #2c6596, #3272aa);
     background-image: -ms-linear-gradient(top, #2c6596, #3272aa);
@@ -18,9 +17,10 @@
     background-image: linear-gradient(top, #2c6596, #3272aa);
     border-top: 1px solid #387fbe;
     border-bottom: 1px solid #1b3d5b;
-    height: 60px;
+    height: 36px;
     z-index: 800;
     position: relative;
+    padding: 16px;
 }
 .deco-toolbar fieldset {
     margin: 0;
@@ -30,15 +30,6 @@
 
 .deco-inline-toolbar {
     position: relative;
-}
-
-.deco-external-toolbar {
-    display: block;
-    top: 0px;
-    position: fixed;
-    _position: absolute;
-    _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
-    z-index: 501;
 }
 
 .deco-toolbar-primary-functions {
@@ -54,94 +45,27 @@
     float: left;
 }
 
-.deco-toolbar select optgroup {
-    text-shadow: 0 0px 0 rgba(255,255,255,1);
-    color: #999999;
-}
-.deco-toolbar select optgroup > option {
-    padding-left: 10px;
-}
-
-.deco-toolbar select option {
-    text-shadow: 0 0px 0 rgba(255,255,255,1);
-    color: #000000;
-}
-
 .deco-toolbar button,
 .deco-toolbar label.deco-icon {
-    margin: 0 4px;
-    padding: 4px 10px 2px 10px;
-    display: block;
-    text-decoration: none;
-    font-family: "Lucida Grande", Arial;
-    font-weight: bold;
-    font-size: 12px;
-    text-align: center;
-    text-shadow: 0px -1px 0px #1b4965;
-    color: #ffffff;
-    border: 1px solid #3d6e8c;
-    -moz-border-bottom-colors: #3d6e8c #65a5d3;
-    -moz-border-top-colors:    #3d6e8c #65a5d3;
-    -moz-border-left-colors:   #3d6e8c #65a5d3;
-    -moz-border-right-colors:  #3d6e8c #65a5d3;
-    -moz-box-shadow: 0 1px 0 #575556;
-    -webkit-box-shadow: 0 1px 0 #575556;
-    -moz-border-radius: 12px;
-    border-radius: 20px;
-    background: rgb(27,118,187) none;
-    background: -moz-linear-gradient(center bottom, rgb(27,118,187) 0%, rgb(83,178,219) 100%) transparent;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(27,118,187)), color-stop(1, rgb(83,178,219))) transparent;
-    border-width: 1px 2px 1px 2px;
 }
 
 deco-toolbar button, x:-moz-any-link, X:default {
-    border: 2px solid #3d6e8c;
 }
 
 .deco-toolbar button.deco-icon,
 .deco-toolbar label.deco-icon {
-    background-color: #262626;
-    -webkit-transition: background-color 0.4s;
-    width: 30px;
-    text-indent: -1000px;
-    overflow: hidden;
-    background-image: url(++resource++plone.app.deco.images/icons.png);
 }
 
 .deco-toolbar button:hover,
 .deco-toolbar label.deco-icon:hover {
-    border-color: #c1c1c1;
-    -moz-border-bottom-colors: #c1c1c1 #d7d7d7;
-    -moz-border-top-colors:    #c1c1c1 #f1f2f2;
-    -moz-border-left-colors:   #c1c1c1 #f1f2f2;
-    -moz-border-right-colors:  #c1c1c1 #f1f2f2;
-    background: rgb(208,210,212) none;
-    background: -moz-linear-gradient(center bottom,  rgb(208,210,212) 0%, rgb(250,250,250) 100%) transparent;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(208,210,212)), color-stop(1, rgb(250,250,250))) transparent;
-    color: #2f3e46;
-    text-shadow: 0px 1px 0px #f1f1f2;
 }
 
 .deco-toolbar select:hover,
 .deco-toolbar button.active,
 .deco-toolbar label.deco-icon.active {
-    background: url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 -45px;
 }
 
 .deco-toolbar select {
-    margin-top: 3px;
-    background: url(++resource++plone.app.deco.images/toolbar.png) repeat-x scroll 0 -27px;
-    color: #FFF;
-    border: 1px solid #1d1d1d;
-    font-size: 11px;
-    height: 20px;
-    margin-right: 8px;
-    padding: 1px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -moz-box-shadow: 0px 1px 0px #5a5a5a;
-    -webkit-box-shadow: 0px 1px 0px #5a5a5a;
 }
 
 /* @group Button Group */
@@ -162,24 +86,10 @@ deco-toolbar button, x:-moz-any-link, X:default {
 
 .deco-toolbar button.deco-first-half,
 .deco-toolbar label.deco-first-half {
-    -moz-border-radius-topright: 0;
-    -webkit-border-top-right-radius: 0;
-    border-top-right-radius: 0;
-    -moz-border-radius-bottomright: 0;
-    -webkit-border-bottom-right-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-right: 0;
 }
 
 .deco-toolbar button.deco-last-half,
 .deco-toolbar label.deco-last-half {
-    -moz-border-radius-topleft: 0;
-    -webkit-border-top-left-radius: 0;
-    border-top-left-radius: 0;
-    -moz-border-radius-bottomleft: 0;
-    -webkit-border-bottom-left-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-left: -1px;
 }
 
 /* @end */
@@ -187,113 +97,9 @@ deco-toolbar button, x:-moz-any-link, X:default {
 /* @group Selects */
 
 .deco-toolbar label.deco-icon {
-    padding: 0;
-    width: 35px;
-    position: relative;
-    float: left;
-    overflow: hidden;
-    text-indent: -1000px;
-    height: 20px;
-    background-position: 0 -1px;
 }
 
 .deco-toolbar .deco-icon select {
-    opacity: 0;
-    width: 35px;
-    height: 22px;
-    position: absolute;
-    margin: 0;
-    top: 0;
-    left: 0;
 }
 
 /* @end */
-
-/* @group Icons */
-
-.deco-button-save {
-    background-position: -96px 0px;
-}
-
-.deco-button-cancel {
-    background-position: -120px 0px;
-}
-
-.deco-button-strong {
-    font-weight: bold;
-    padding-right: 0!important;
-    padding-left: 0 !important;
-    width: 30px;
-    text-align: center;
-}
-
-.deco-button-em {
-    font-style: italic;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    text-transform: lowercase !important;
-    font-weight: bold;
-    text-align: center;
-    width: 30px;
-    padding-right: 0!important;
-    padding-left: 0 !important;
-}
-
-.deco-toolbar .deco-button-undo {
-    background-position: -240px 0px;
-}
-
-.deco-toolbar .deco-button-redo {
-    background-position: -240px 0px;
-}
-
-.deco-toolbar .deco-button-ol {
-    background-position: -300px -1px;
-}
-
-.deco-toolbar .deco-button-ul {
-    background-position: -270px -1px;
-}
-
-.deco-toolbar .deco-button-tile-align-block {
-    background-position: -240px 0px;
-}
-
-.deco-toolbar .deco-button-tile-align-left {
-    background-position: -240px 0px;
-}
-
-.deco-toolbar .deco-button-tile-align-right {
-    background-position: -240px 0px;
-}
-
-.deco-toolbar .deco-button-page-properties {
-    /* background-position: -240px 0px */
-}
-
-.deco-toolbar .deco-icon-menu-insert {
-    background-position: -27px -1px !important;
-}
-
-.deco-toolbar .deco-icon-menu-format {
-    background-position: -357px -1px !important;
-}
-
-.deco-toolbar .deco-icon-menu-actions {
-    background-position: 2px -1px !important;
-}
-
-.deco-toolbar .deco-icon-menu-save-options {
-    background-position: -45px -1px !important;
-}
-
-.deco-toolbar .deco-icon-menu-contentview-add {
-    background-position: -27px -1px !important;
-}
-
-.deco-toolbar .deco-icon-menu-save-options,
-.deco-toolbar .deco-menu-save-options {
-    width: 15px !important;
-}
-
-/* @end */
-
