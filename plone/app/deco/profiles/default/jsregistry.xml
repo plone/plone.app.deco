@@ -6,6 +6,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.core.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -13,6 +14,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.dialog.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -20,6 +22,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.layout.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -27,6 +30,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.toolbar.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -34,6 +38,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.actions.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -41,6 +46,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.notify.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -48,6 +54,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.upload.js"
+              bundle="deco"
               inline="False"/>
 
   <javascript cacheable="False"
@@ -55,6 +62,7 @@
               cookable="False"
               enabled="True"
               id="++resource++plone.app.deco.javascripts/deco.undo.js"
+              bundle="deco"
               inline="False"/>
 
 </object>
