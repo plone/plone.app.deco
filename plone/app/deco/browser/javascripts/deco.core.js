@@ -62,10 +62,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.init = function (options) {
         options = $.extend({
-            url: document.location.href,
+            url: window.parent.document.location.href,
             type: '',
             ignore_context: false
         }, options);
+
+        // Set document
+        $.deco.document = window.parent.document;
 
         // Local variables
         var match;
@@ -105,7 +108,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.options.ignore_context = options.ignore_context;
                 $.deco.options.tileheadelements = [];
 
-                content = $('#form-widgets-ILayoutAware-content').val();
+                content = $('#form-widgets-ILayoutAware-content',
+                            $.deco.document).val();
 
                 // Check if no layout
                 if (content === '') {
@@ -129,15 +133,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // If content, create a new div since the form data is in
                     // this panel
                     if (target === 'content') {
-                        $("#content").addClass('deco-original-content');
-                        $("#content").before($(document.createElement("div"))
-                            .attr("id", "content")
-                            .addClass('deco-panel')
-                            .html(content.find("#" + rev).html())
-                        );
+                        $("#content", $.deco.document)
+                            .addClass('deco-original-content');
+                        $("#content", $.deco.document)
+                            .before($($.deco.document.createElement("div"))
+                                .attr("id", "content")
+                                .addClass('deco-panel')
+                                .html(content.find("#" + rev).html())
+                            );
                     } else {
-                        $("#" + target).addClass('deco-panel');
-                        $("#" + target).html(content.find("#" + rev).html());
+                        $("#" + target, $.deco.document)
+                            .addClass('deco-panel');
+                        $("#" + target, $.deco.document)
+                            .html(content.find("#" + rev).html());
                     }
                 });
 
@@ -154,7 +162,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     href = $(this).attr("href");
 
                     // Get tile type
-                    tile_content = $('#' + target).parent();
+                    tile_content = $('#' + target, $.deco.document).parent();
                     tiletype = '';
                     classes = tile_content.parents('.deco-tile').attr('class')
                         .split(" ");
@@ -210,23 +218,24 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         case "z3c.form.browser.text.TextWidget":
                         case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<div>' +
-                                $("#" + tile_config.id).find('input')
-                                    .attr('value') +
-                                '</div>';
+                                $("#" + tile_config.id,
+                                  $.deco.document)
+                                      .find('input').attr('value') + '</div>';
                             break;
                         case "z3c.form.browser.textarea.TextAreaWidget":
                         case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id).find('textarea')
-                                .attr('value').split('\n');
+                            lines = $("#" + tile_config.id,
+                                      $.deco.document).find('textarea')
+                                          .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
-                                fieldhtml += '<div>' +
-                                    lines[i] + '</div>';
+                                fieldhtml += '<div>' + lines[i] + '</div>';
                             }
                             break;
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id)
-                                .find('textarea').attr('value');
+                            fieldhtml = $("#" + tile_config.id,
+                                          $.deco.document)
+                                              .find('textarea').attr('value');
                             break;
                         default:
                             fieldhtml = '<div class="discreet">Placeholder ' +
@@ -273,19 +282,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init dialog
-                $('#content.deco-original-content').decoDialog();
+                $('#content.deco-original-content',
+                  $.deco.document).decoDialog();
 
-                // Add toolbar div below content view and hide content
-                // view/contentActions
+                // Add toolbar div below menu
                 $("body").prepend($(document.createElement("div"))
                     .addClass("deco-toolbar")
                 );
-                $("#content-views").hide();
-                $(".contentActions").hide();
-                $("#edit-bar").hide();
 
                 // Add panel and toolbar to the options
-                $.deco.options.panels = $(".deco-panel");
+                $.deco.options.panels = $(".deco-panel", $.deco.document);
                 $.deco.options.toolbar = $(".deco-toolbar");
 
                 // Add page url to the options
@@ -298,7 +304,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.options.panels.decoLayout();
 
                 // Add blur to the rest of the content
-                $("*").each(function () {
+                $("*", $.deco.document).each(function () {
 
                     // Local variables
                     var obj;
@@ -387,7 +393,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Remove head elements
         headelements = $.deco.options.tileheadelements[html_id];
         for (i = 0; i < headelements.length; i += 1) {
-            $(headelements[i]).remove();
+            $(headelements[i], $.deco.document).remove();
         }
         $.deco.options.tileheadelements[html_id] = [];
     };
@@ -418,7 +424,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $.deco.options.tileheadelements[html_id].push(this);
 
             // Add head elements
-            $('head').append(this);
+            $('head', $.deco.document).append(this);
         });
     };
 
@@ -428,7 +434,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $(window).load(function () {
 
         // Check if layout exists
-        if ($('#form-widgets-ILayoutAware-content').length > 0) {
+        if ($('#form-widgets-ILayoutAware-content',
+              window.parent.document).length > 0) {
 
             // Init Deco
             $.deco.init();

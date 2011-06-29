@@ -1,11 +1,24 @@
 /* @group Toolbar */
 
+.deco-toolbar {
+    position: fixed;
+    top: 40px;
+    width: 100%;
+    z-index: 10000000;
+}
+
 .deco-toolbar-content {
     padding: 4px 0px;
-    background: -moz-linear-gradient(center bottom,  rgb(37,33,34) 0%, rgb(85,86,88) 100%) transparent;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(37,33,34)), color-stop(1, rgb(85,86,88))) transparent;
-    border: 1px solid #2a2a2a;
-    height:27px;
+    background: #2c6596;
+    background-image: -moz-linear-gradient(top, #2c6596, #3272aa);
+    background-image: -ms-linear-gradient(top, #2c6596, #3272aa);
+    background-image: -o-linear-gradient(top, #2c6596, #3272aa);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#2c6596), to(#3272aa));
+    background-image: -webkit-linear-gradient(top, #2c6596, #3272aa);
+    background-image: linear-gradient(top, #2c6596, #3272aa);
+    border-top: 1px solid #387fbe;
+    border-bottom: 1px solid #1b3d5b;
+    height: 60px;
     z-index: 800;
     position: relative;
 }
