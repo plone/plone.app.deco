@@ -231,8 +231,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .css({
                     'position': 'absolute',
                     'width': '900px',
-                    'height': '600px',
-                    'top': '0px',
+                    'height': '450px',
+                    'top': '130px',
                     'z-index': '3000',
                     'left': (($(window.parent).width() - 900) / 2),
                     'border': '0px'

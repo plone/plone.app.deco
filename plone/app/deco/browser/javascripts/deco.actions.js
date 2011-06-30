@@ -419,6 +419,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
         });
 
+         // Register add tile action
+        $.deco.registerAction('add-tile', {
+            exec: function () {
+
+                // Open overlay
+                $.deco.overlay.openIframe($.deco.options.parent +
+                    '@@add-tile?form.button.Create=Create');
+            }
+        });
+
         // Register format action
         $.deco.registerAction('format', {
             exec: function (source) {
