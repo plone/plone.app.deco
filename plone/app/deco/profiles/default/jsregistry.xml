@@ -57,4 +57,12 @@
               bundle="deco"
               inline="False"/>
 
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++plone.app.deco.javascripts/deco.editor.js"
+              bundle="deco"
+              inline="False"/>
+
 </object>

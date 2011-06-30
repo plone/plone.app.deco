@@ -26,7 +26,7 @@
  */
 "use strict";
 
-/*global tinyMCE: false, jQuery: false, window: false */
+/*global jQuery: false, window: false */
 /*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
 eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
 immed: true, strict: true, maxlen: 80, maxerr: 9999 */
@@ -581,21 +581,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                    tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygWidget' ||
                    tile_config.widget === 'plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget')))) {
 
-                // Generate random id
-                var random_id = 1 + Math.floor(100000 * Math.random());
-                while ($("#deco-rich-text-init-" + random_id,
-                         $.deco.document).length > 0) {
-                    random_id = 1 + Math.floor(100000 * Math.random());
-                }
-                $(this).children('.deco-tile-content').attr('id', 'deco-rich-text-init-' + random_id);
-
                 // Init rich editor
-                window.parent.tinyMCE.init({
-                    mode : "exact",
-                    elements : "deco-rich-text-init-" + random_id,
-                    content_editable : true,
-                    theme : "deco"
-                });
+                $(this).children('.deco-tile-content').decoEditor();
             }
 
             // Add border divs
@@ -731,10 +718,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Get content
             var tile_content = $(this).children(".deco-tile-content");
             tile_content.focus();
-            if (tile_content.attr("id").indexOf('deco-rich-text-init') !== -1) {
 
-                // Get editor
-                var ed = window.parent.tinyMCE.get(tile_content.attr("id"));
+            // Check if rich text
+            if (tile_content.hasClass('deco-rich-text')) {
 
                 // Append selection div to end of last block element
                 tile_content.children(":last").append($($.deco.document.createElement("span"))
@@ -743,10 +729,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 );
 
                 // Select node and delete the selection
-                if (typeof ed !== 'undefined') {
-                    ed.execCommand("mceSelectNode", false, tile_content.find(".deco-tile-selection-end").get(0));
-                    ed.execCommand("Delete");
-                }
+                $.deco.document.selection.select(tile_content.find(".deco-tile-selection-end").get(0));
+                $.deco.execCommand("Delete");
 
                 // Fallback remove selection
                 $(".deco-tile-selection-end", $.deco.document).remove();
