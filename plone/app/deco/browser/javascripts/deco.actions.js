@@ -415,7 +415,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register page properties action
         $.deco.registerAction('page-properties', {
             exec: function () {
-                $.deco.dialog.open('all');
+                $.deco.overlay.open('all');
             }
         });
 
@@ -464,8 +464,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 if (tile_config.tile_type === 'app') {
 
-                    // Open dialog
-                    $.deco.dialog.openIframe($.deco.options.parent +
+                    // Open overlay
+                    $.deco.overlay.openIframe($.deco.options.parent +
                         '@@add-tile?type=' + $(source).val() +
                         '&form.button.Create=Create');
 

@@ -104,8 +104,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     $(this).remove();
                 });
 
-                // Hide dialog
-                $.deco.dialog.close();
+                // Hide overlay
+                $.deco.overlay.close();
             }
         };
 
@@ -482,7 +482,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         });
 
 
-        // On click open dialog
+        // On click open overlay
         $(".deco-info-icon", $.deco.document).live("click", function () {
 
             // Get tile config
@@ -505,13 +505,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 }
                 tile_url = tile_url.replace(/@@/, '@@edit-tile/');
 
-                // Open dialog
-                $.deco.dialog.openIframe(tile_url);
+                // Open overlay
+                $.deco.overlay.openIframe(tile_url);
 
             } else {
 
                 // Edit field
-                $.deco.dialog.open('field', tile_config);
+                $.deco.overlay.open('field', tile_config);
             }
         })
 
@@ -719,6 +719,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             var tile_content = $(this).children(".deco-tile-content");
             tile_content.focus();
 
+/*
             // Check if rich text
             if (tile_content.hasClass('deco-rich-text')) {
 
@@ -735,6 +736,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Fallback remove selection
                 $(".deco-tile-selection-end", $.deco.document).remove();
             }
+*/
         });
     };
 
@@ -1674,8 +1676,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.addAppTile = function (type, url, id) {
 
-        // Close dialog
-        $.deco.dialog.close();
+        // Close overlay
+        $.deco.overlay.close();
 
         // Focus on current window
         window.parent.focus();
@@ -1708,8 +1710,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.editAppTile = function (url) {
 
-        // Close dialog
-        $.deco.dialog.close();
+        // Close overlay
+        $.deco.overlay.close();
 
         // Focus on current window
         window.parent.focus();

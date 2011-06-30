@@ -15,7 +15,7 @@ $.deco.addTile = function () {
 
 module("upload", {
     setup: function () {
-        // We'll create a div element for the dialog
+        // We'll create a div element for the overlay
         $(document.body)
             .append(
                 $(document.createElement("div"))

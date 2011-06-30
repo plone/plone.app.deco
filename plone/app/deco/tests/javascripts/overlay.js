@@ -21,11 +21,11 @@ $.deco.options = {
     }]
 };
 
-module("dialog", {
+module("overlay", {
     setup: function () {
-        // We'll create a div element for the dialog
+        // We'll create a div element for the overlay
         $.deco.options.panels = $(document.body);
-        var dialog = $(document.createElement("div"))
+        var overlay = $(document.createElement("div"))
             .append($(document.createElement("form"))
                 .append($(document.createElement("ul"))
                     .addClass("formTabs")
@@ -73,16 +73,16 @@ module("dialog", {
                 )
             )
             .attr("id", "content");
-        $(document.body).append(dialog);
+        $(document.body).append(overlay);
         $(document.body)
             .append($(document.createElement("div"))
                 .addClass("deco-title-tile")
             );
-        dialog.decoDialog();
+        overlay.decoOverlay();
     },
     teardown: function () {
         $("#content").remove();
-        $(".deco-dialog-blocker").remove();
+        $(".deco-overlay-blocker").remove();
         $(".deco-title-tile").remove();
     }
 });
@@ -90,24 +90,24 @@ module("dialog", {
 test("Initialisation", function() {
     expect(1);
 
-    ok($.deco.dialog, "$.deco.dialog");
+    ok($.deco.overlay, "$.deco.overlay");
 });
 
-test("decoDialog", function() {
+test("decoOverlay", function() {
     expect(3);
 
-    // Init dialog
+    // Init overlay
     $("#content").find(".button-field").trigger("click");
 
-    equals($(".deco-dialog").length, 1, "Dialog added");
-    equals($(".deco-dialog-blocker").length, 1, "Dialog blocker added");
+    equals($(".deco-overlay").length, 1, "Overlay added");
+    equals($(".deco-overlay-blocker").length, 1, "Overlay blocker added");
     equals($("#content").find("input:visible").length, 0, "Inputs are hidden");
 });
 
-test("dialog.open", function() {
+test("overlay.open", function() {
     expect(20);
 
-    $.deco.dialog.open("all", {});
+    $.deco.overlay.open("all", {});
 
     equals($("a[href=#fieldsetlegend-default]").hasClass("selected"), false, "First tab is deselected");
     equals($("a[href=#fieldsetlegend-default]").parent().hasClass("firstFormTab"), false, "First tab marker is removed");
@@ -125,11 +125,11 @@ test("dialog.open", function() {
 
     equals($('#fieldset-1').hasClass('hidden'), false, "Second fieldset is shown");
 
-    $.deco.dialog.close();
-    equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
-    equals($("#content:visible").length, 0, "Dialog removed");
+    $.deco.overlay.close();
+    equals($(".deco-overlay-blocker:visible").length, 0, "Overlay blocker removed");
+    equals($("#content:visible").length, 0, "Overlay removed");
 
-    $.deco.dialog.open("field", {id: "title-field"});
+    $.deco.overlay.open("field", {id: "title-field"});
 
     equals($('#fieldset-default').hasClass('hidden'), false, "First fieldset is shown");
     equals($('#fieldset-1').hasClass('hidden'), true, "Second fieldset is hidden");
@@ -140,17 +140,17 @@ test("dialog.open", function() {
     equals($('.formTabs').hasClass('deco-hidden'), true, "Tabs are hidden");
 
     $(".formControls input[value=Ok]").trigger("click");
-    equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
-    equals($("#content:visible").length, 0, "Dialog removed");
+    equals($(".deco-overlay-blocker:visible").length, 0, "Overlay blocker removed");
+    equals($("#content:visible").length, 0, "Overlay removed");
 });
 
-test("dialog.openIframe", function() {
+test("overlay.openIframe", function() {
     expect(3);
 
-    $.deco.dialog.openIframe("about:blank");
-    equals($(".deco-iframe-dialog").length, 1, "Iframe dialog added");
+    $.deco.overlay.openIframe("about:blank");
+    equals($(".deco-iframe-overlay").length, 1, "Iframe overlay added");
 
-    $.deco.dialog.close();
-    equals($(".deco-dialog-blocker:visible").length, 0, "Dialog blocker removed");
-    equals($(".deco-iframe-dialog").length, 0, "Iframe dialog removed");
+    $.deco.overlay.close();
+    equals($(".deco-overlay-blocker:visible").length, 0, "Overlay blocker removed");
+    equals($(".deco-iframe-overlay").length, 0, "Iframe overlay removed");
 });

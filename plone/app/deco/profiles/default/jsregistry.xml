@@ -13,7 +13,7 @@
               compression="none"
               cookable="False"
               enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.dialog.js"
+              id="++resource++plone.app.deco.javascripts/deco.overlay.js"
               bundle="deco"
               inline="False"/>
 

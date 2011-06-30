@@ -16,9 +16,9 @@ $.deco.initUpload = function () {
     $.deco.executed.push("initUpload");
 };
 
-// Create decoDialog stub function
-$.fn.decoDialog = function () {
-    $.deco.executed.push("decoDialog");
+// Create decoOverlay stub function
+$.fn.decoOverlay = function () {
+    $.deco.executed.push("decoOverlay");
 };
 
 // Create decoToolbar stub function
@@ -38,7 +38,7 @@ $.ajax = function (options) {
 
 module("core", {
     setup: function () {
-        // We'll create a div element for the dialog
+        // We'll create a div element for the overlay
         $(document.body)
             .append(
                 $(document.createElement("div"))
@@ -107,7 +107,7 @@ test("Init with data", function() {
     equals($.deco.options.test, 1, 'Options are stored');
     equals($.deco.options.url, 'http://nohost/test', 'Url is stripped of /edit');
 
-    equals($.deco.executed.indexOf("decoDialog") != -1, true, 'Dialog init is called');
+    equals($.deco.executed.indexOf("decoOverlay") != -1, true, 'Overlay init is called');
 
     equals($(".deco-toolbar").length, 1, 'Toolbar div is added');
 

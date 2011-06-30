@@ -1,5 +1,5 @@
 /**
- * This plugin is used to display a dialog
+ * This plugin is used to display an overlay
  *
  * @author Rob Gietema
  * @licstart  The following is the entire license notice for the JavaScript
@@ -38,18 +38,18 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco = {};
     }
 
-    // Define the dialog namespace
-    $.deco.dialog = {
+    // Define the overlay namespace
+    $.deco.overlay = {
     };
 
     /**
-     * Create a new instance of a deco dialog.
+     * Create a new instance of a deco overlay.
      *
      * @constructor
-     * @id jQuery.fn.decoDialog
+     * @id jQuery.fn.decoOverlay
      * @return {Object} Returns a jQuery object of the matched elements.
      */
-    $.fn.decoDialog = function () {
+    $.fn.decoOverlay = function () {
 
         // Loop through matched elements
         return this.each(function () {
@@ -57,19 +57,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Get current object
             var obj = $(this);
 
-            // Init dialog
+            // Init overlay
             obj
                 .hide()
                 .css({
                     'width': '900px',
                     'left': (($(window.parent).width() - 900) / 2)
                 })
-                .addClass("deco-dialog");
+                .addClass("deco-overlay");
 
             // Add lightbox
             $(document.body, $.deco.document)
                 .prepend($(document.createElement("div"))
-                    .addClass("deco-dialog-blocker")
+                    .addClass("deco-overlay-blocker")
             );
 
             // Clear actions
@@ -81,27 +81,27 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 })
                 .addClass('button-field context')
                 .click(function () {
-                    $.deco.dialog.close();
+                    $.deco.overlay.close();
                 })
             );
         });
     };
 
     /**
-     * Open the dialog
+     * Open the overlay
      *
-     * @id jQuery.deco.dialog.open
-     * @param {String} mode Mode of the dialog
+     * @id jQuery.deco.overlay.open
+     * @param {String} mode Mode of the overlay
      * @param {Object} tile_config Configuration of the tile
      */
-    $.deco.dialog.open = function (mode, tile_config) {
+    $.deco.overlay.open = function (mode, tile_config) {
 
         // Local variables
         var form, formtabs, tile_group, x, visible_tabs, offset_top,
             field_tile, field, fieldset;
 
         // Get form
-        form = $(".deco-dialog", $.deco.document).find("form");
+        form = $(".deco-overlay", $.deco.document).find("form");
 
         if (mode === 'all') {
 
@@ -196,35 +196,35 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Hide form tabs
             form.find(".formTabs").addClass('deco-hidden');
         }
-        $(".deco-dialog-blocker", $.deco.document).show();
-        offset_top = parseInt($(".deco-dialog",
+        $(".deco-overlay-blocker", $.deco.document).show();
+        offset_top = parseInt($(".deco-overlay",
                                 $.deco.document).css('top'), 10);
-        $(".deco-dialog", $.deco.document)
+        $(".deco-overlay", $.deco.document)
             .css({'top': offset_top - 300})
             .show()
             .animate({'top': offset_top}, 300);
     };
 
     /**
-     * Close the dialog
+     * Close the overlay
      *
-     * @id jQuery.deco.dialog.close
+     * @id jQuery.deco.overlay.close
      */
-    $.deco.dialog.close = function () {
-        $(".deco-dialog-blocker", $.deco.document).hide();
-        $(".deco-dialog", $.deco.document).hide();
-        $(".deco-iframe-dialog", $.deco.document).remove();
+    $.deco.overlay.close = function () {
+        $(".deco-overlay-blocker", $.deco.document).hide();
+        $(".deco-overlay", $.deco.document).hide();
+        $(".deco-iframe-overlay", $.deco.document).remove();
     };
 
     /**
-     * Open an iframe dialog
+     * Open an iframe overlay
      *
-     * @id jQuery.deco.dialog.openIframe
+     * @id jQuery.deco.overlay.openIframe
      * @param {String} url of the iframe
      */
-    $.deco.dialog.openIframe = function (url) {
+    $.deco.overlay.openIframe = function (url) {
 
-        $(".deco-dialog-blocker", $.deco.document).show();
+        $(".deco-overlay-blocker", $.deco.document).show();
         
         $($.deco.document.body).append(
             $($.deco.document.createElement("iframe"))
@@ -240,7 +240,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .attr({
                     'src': url
                 })
-                .addClass("deco-iframe-dialog")
+                .addClass("deco-iframe-overlay")
         );
     };
 }(jQuery));

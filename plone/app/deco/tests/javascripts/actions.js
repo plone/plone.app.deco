@@ -24,13 +24,13 @@ $.deco.getDefaultValue = function () {
     return "test value";
 };
 
-// Create dialog stub object
-$.deco.dialog = {
+// Create overlay stub object
+$.deco.overlay = {
     open: function () {
-        $.deco.lastexecuted = "dialog.open";
+        $.deco.lastexecuted = "overlay.open";
     },
     openIframe: function () {
-        $.deco.lastexecuted = "dialog.openIframe";
+        $.deco.lastexecuted = "overlay.openIframe";
     }
 };
 
@@ -256,7 +256,7 @@ test("initActions", function() {
     $("#form-buttons-cancel").remove();
 
     $.deco.actionManager.actions["page-properties"].exec();
-    equals($.deco.lastexecuted, "dialog.open", "Test page properties action");
+    equals($.deco.lastexecuted, "overlay.open", "Test page properties action");
 
     // We'll create a format menu
     $(document.body).append(
@@ -341,7 +341,7 @@ test("initActions", function() {
 
     $(".inserttest").val("pony");
     $.deco.actionManager.actions["insert"].exec($(".inserttest"));
-    equals($.deco.lastexecuted, "dialog.openIframe", "Test if openIframe is called");
+    equals($.deco.lastexecuted, "overlay.openIframe", "Test if openIframe is called");
     equals($(".inserttest").val(), "none", "Test if menu is reset after insert of app tile");
 
     // Cleanup

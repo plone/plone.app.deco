@@ -280,9 +280,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     }
                 });
 
-                // Init dialog
+                // Init overlay
                 $('#content.deco-original-content',
-                  $.deco.document).decoDialog();
+                  $.deco.document).decoOverlay();
 
                 // Add toolbar div below menu
                 $("body").prepend($(document.createElement("div"))
@@ -446,8 +446,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Check action
             if (tiledata.action === 'cancel') {
 
-                // Close dialog
-                window.parent.jQuery.deco.dialog.close();
+                // Close overlay
+                window.parent.jQuery.deco.overlay.close();
 
             } else if (tiledata.action === 'save') {
 
