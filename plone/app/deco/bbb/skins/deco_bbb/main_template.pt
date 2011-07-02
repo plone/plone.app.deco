@@ -1,0 +1,72 @@
+<metal:page define-macro="master">
+<tal:doctype tal:replace="structure string:&lt;!DOCTYPE html PUBLIC
+  &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;" />
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    tal:define="portal_state context/@@plone_portal_state;
+        context_state context/@@plone_context_state;
+        plone_view context/@@plone;
+        lang portal_state/language;
+        view nocall:view | nocall: plone_view;
+        dummy python: plone_view.mark_view(view);
+        portal_url portal_state/portal_url;
+        checkPermission nocall: context/portal_membership/checkPermission;
+        site_properties context/portal_properties/site_properties;
+        ajax_load request/ajax_load | nothing"
+    tal:attributes="lang lang;">
+
+    <metal:cache use-macro="context/global_cache_settings/macros/cacheheaders">
+    Get the global cache headers located in global_cache_settings.
+    </metal:cache>
+
+  <head>
+    <metal:baseslot define-slot="base" />
+    <metal:topslot define-slot="top_slot" />
+    <metal:headslot define-slot="head_slot" />
+    <metal:styleslot define-slot="style_slot" />
+    <metal:javascriptslot define-slot="javascript_head_slot" />
+    <link rel="layout" href="./@@page-site-layout" />
+  </head>
+
+  <body tal:define="isRTL portal_state/is_rtl;
+                    sl python:plone_view.have_portlets('plone.leftcolumn', view);
+                    sr python:plone_view.have_portlets('plone.rightcolumn', view);
+                    body_class python:plone_view.bodyClass(template, view);
+                    sunburst_view python:context.restrictedTraverse('@@sunburstview')"
+      tal:attributes="class body_class;
+                      dir python:isRTL and 'rtl' or 'ltr'">
+
+    <metal:block define-slot="content">
+      <metal:block define-macro="content"
+                   tal:define="show_border context/@@plone/showEditableBorder; show_border python:show_border and not ajax_load"
+                   tal:attributes="class python:show_border and 'documentEditable' or ''">
+        <metal:slot define-slot="body">
+          <div id="content">
+            <metal:header define-slot="header"/>
+            <metal:bodytext define-slot="main">
+              <metal:title define-slot="content-title"/>
+              <metal:description define-slot="content-description"/>
+              <metal:text define-slot="content-core"/>
+            </metal:bodytext>
+          </div>
+        </metal:slot>
+
+        <metal:sub define-slot="sub"/>
+
+      </metal:block>
+    </metal:block>
+
+    <div id="portal-column-two">
+      <metal:header define-slot="column_one_slot">
+        <metal:portlets define-slot="portlets_one_slot"/>
+      </metal:header>
+      <metal:header define-slot="column_two_slot">
+        <metal:portlets define-slot="portlets_two_slot"/>
+      </metal:header>
+    </div>
+
+  </body>
+</html>
+
+</metal:page>

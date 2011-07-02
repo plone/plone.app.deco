@@ -6,16 +6,7 @@
     
     <include file="widget.zcml" />
     
-    <adapter factory=".formlayout.formTemplateFactory" />
-    
-    <!-- XXX: Disable KSS inline validation for pages -->
-    <browser:page
-        name="kss_z3cform_inline_validation"
-        for="plone.app.page.content.IPage"
-        class=".disablekss.NullFormValidation"
-        attribute="validate_input"
-        permission="zope2.View"
-        />
+    <!-- <adapter factory=".formlayout.formTemplateFactory" /> -->
     
     <!-- Resources -->
     
