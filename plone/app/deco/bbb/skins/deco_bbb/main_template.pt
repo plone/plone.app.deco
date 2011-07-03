@@ -13,20 +13,30 @@
         portal_url portal_state/portal_url;
         checkPermission nocall: context/portal_membership/checkPermission;
         site_properties context/portal_properties/site_properties;
-        ajax_load request/ajax_load | nothing"
+        ajax_load request/ajax_load | nothing;
+        ajax_include_head request/ajax_include_head | nothing"
     tal:attributes="lang lang;">
 
     <metal:cache use-macro="context/global_cache_settings/macros/cacheheaders">
     Get the global cache headers located in global_cache_settings.
     </metal:cache>
 
-  <head>
+<head>
+    
+    <!-- Include the correct site layout -->
+    <link tal:condition="context_state/is_view_template"
+          tal:attributes="href string:${portal_state/portal_url}/@@page-site-layout"
+          rel="layout" />
+    <link tal:condition="not:context_state/is_view_template"
+          tal:attributes="href string:${portal_state/portal_url}/@@default-site-layout"
+          rel="layout" />
+    
+    <!-- Let views register things in the head that get merged into the site layout -->
     <metal:baseslot define-slot="base" />
     <metal:topslot define-slot="top_slot" />
     <metal:headslot define-slot="head_slot" />
     <metal:styleslot define-slot="style_slot" />
     <metal:javascriptslot define-slot="javascript_head_slot" />
-    <link rel="layout" href="./@@page-site-layout" />
   </head>
 
   <body tal:define="isRTL portal_state/is_rtl;
