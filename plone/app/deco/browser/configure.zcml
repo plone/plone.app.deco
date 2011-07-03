@@ -6,8 +6,6 @@
     
     <include file="widget.zcml" />
     
-    <!-- <adapter factory=".formlayout.formTemplateFactory" /> -->
-    
     <!-- Resources -->
     
     <plone:static
