@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<object name="portal_skins">
+<object name="portal_skins" default_skin="deco">
 
     <!-- BBB: We can lose this once we no longer need to customise stuff -->
     <object
@@ -8,7 +8,8 @@
         directory="plone.app.deco.bbb:skins/deco_bbb"
         />
 
-    <skin-path name="*">
+    <!-- Register the cmsui skin, which is associated with the cmsui bundle -->
+    <skin-path name="deco" based-on="Sunburst Theme">
         <layer name="deco_bbb" insert-after="custom" />
     </skin-path>
     
