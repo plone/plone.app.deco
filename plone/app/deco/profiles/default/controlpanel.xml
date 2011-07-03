@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+    
+    <configlet
+        title="Deco"
+        action_id="plone.app.deco"
+        appId="plone.app.deco"
+        category="Plone"
+        condition_expr=""
+        icon_expr="string:${portal_url}/++resource++plone.app.deco.images/deco_icon.gif"
+        url_expr="string:${portal_url}/@@deco-controlpanel"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Manage portal</permission>
+ </configlet>
+
+</object>

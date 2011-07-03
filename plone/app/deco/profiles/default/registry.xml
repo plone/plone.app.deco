@@ -1026,7 +1026,7 @@
     <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings"
             field="resourceBundlesForThemes">
         <value purge="false">
-            <element key="cmsui" purge="false">
+            <element key="cmsui">
                 <element>cmsui</element>
                 <element>jquerytools</element>
                 <element>tinymce</element>
