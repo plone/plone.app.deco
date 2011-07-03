@@ -5,8 +5,8 @@
   <head>
     <!-- Panels -->
     <link rel="panel" rev="content"             target="content" />
-    <link rel="panel" rev="left-column"         target="portal-column-one" />
-    <link rel="panel" rev="right-column"        target="portal-column-two" />
+    <link rel="panel" rev="portal-column-one"   target="portal-column-one" />
+    <link rel="panel" rev="portal-column-two"   target="portal-column-two" />
 
     <!-- Head elements -->
     <link  rel="tile"                           href="./plone.app.standardtiles.headtitle" />
@@ -28,7 +28,7 @@
     <link  rel="tile" target="logo"             href="./@@plone.app.standardtiles.logo" />
     <link  rel="tile" target="global-sections"  href="./@@plone.app.standardtiles.global_sections" />
 
-    <!-- <link  rel="tile" target="plone-portaltop"  href="./@@plone.app.standardtiles.viewletmanager/portal-top?manager=plone.portaltop" />     -->
+    <!-- <link  rel="tile" target="portaltop-viewlets"  href="./@@plone.app.standardtiles.viewletmanager/portal-top?manager=plone.portaltop" />     -->
     
     <!-- Portlets -->
     <link  rel="tile" target="left-portlets"    href="./@@plone.app.standardtiles.portletmanager/left-portlets?manager=plone.leftcolumn" />
@@ -37,10 +37,10 @@
     <!-- Above content -->
     <link  rel="tile" target="path-bar"         href="./@@plone.app.standardtiles.path_bar" />
     <link  rel="tile" target="lockinfo"         href="./@@plone.app.standardtiles.lockinfo" />
-    <link  rel="tile" target="above-content"    href="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.abovecontent" />
+    <!-- <link  rel="tile" target="abovecontent-viewlets"    href="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.abovecontent" /> -->
     
     <!-- Below content -->
-    <!-- <link  rel="tile" target="below-content"    href="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.belowcontent" /> -->
+    <!-- <link  rel="tile" target="belowcontent-viewlets"    href="./@@plone.app.standardtiles.viewletmanager/below-content?manager=plone.belowcontent" /> -->
     
     <!-- Edit bar -->
     <link  rel="tile" target="menu-link"        href="./@@plone.app.standardtiles.menu_link" />
@@ -51,7 +51,7 @@
     <link  rel="tile" target="site-actions"     href="./@@plone.app.standardtiles.site_actions" />
     <link  rel="tile" target="analytics"        href="./@@plone.app.standardtiles.analytics" />
     
-    <!-- <link  rel="tile" target="footer"           href="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.portalfooter" /> -->
+    <!-- <link  rel="tile" target="footer-viewlets"           href="./@@plone.app.standardtiles.viewletmanager/footer?manager=plone.portalfooter" /> -->
   </head>
   <body>
     <div id="menu-link" />
@@ -65,6 +65,7 @@
             <div id="searchbox" />
             <div id="logo" />
             <div id="global-sections" />
+            <div id="portaltop-viewlets" />
           </div>
         </div>
       </div>
@@ -78,9 +79,11 @@
         <div id="portal-column-content" class="cell width-1:2 position-1:4">
           <div id="path-bar" />
           <div id="lockinfo" />
-          <div class="documentEditable">
+          <div id="abovecontent-viewlets" />
+          <!-- <div class="documentEditable"> -->
             <div id="content" />
-          </div>
+          <!-- </div> -->
+          <div id="belowcontent-viewlets" />
         </div>
         <div class="cell width-1:4 position-3:4">
           <div id="portal-column-two">
@@ -95,6 +98,7 @@
           <div id="colophon" />
           <div id="site-actions" />
           <div id="analytics" />
+          <div id="footer-viewlets" />
         </div>
       </div>
 
