@@ -25,9 +25,10 @@
   <viewlet name="plone.logo"/>
   <viewlet name="plone.global_sections"/>
  </hidden>
- <order manager="plone.portaltop" skinname="deco">
+ <hidden manager="plone.portaltop" skinname="deco">
+  <viewlet name="plone.cmsui.menulink"/>
   <viewlet name="plone.header"/>
- </order>
+ </hidden>
  <hidden manager="plone.contentviews" skinname="deco">
   <viewlet name="plone.contentviews"/>
   <viewlet name="plone.contentactions"/>
