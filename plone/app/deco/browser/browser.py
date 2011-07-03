@@ -1,4 +1,4 @@
-from Products.Five import BrowserView
+from zope.publisher.browser import BrowserView
 from zope.component import getUtility
 try:
     import json

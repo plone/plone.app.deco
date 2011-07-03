@@ -34,6 +34,16 @@
         directory="javascripts"
         />
     
+    <!-- Control panel -->
+    
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="deco-controlpanel"
+        class=".manage.ManageDeco"
+        template="templates/manage.pt"
+        permission="plone.ManageDeco"
+        />
+    
     <!-- Deco support views -->
     
     <browser:page

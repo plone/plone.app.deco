@@ -15,6 +15,11 @@
         id="plone.ModifyPageLayout"
         title="Plone: Modify Page Layout"
         />
+    
+    <permission
+        id="plone.ManageDeco"
+        title="Plone: Manage Deco"
+        />
 
     <include package=".browser" />
     <include package=".bbb" />

@@ -33,4 +33,9 @@
   <viewlet name="plone.contentviews"/>
   <viewlet name="plone.contentactions"/>
  </hidden>
+ <hidden manager="plone.htmlhead" skinname="deco">
+  <viewlet name="plone.htmlhead.title"/>
+  <viewlet name="plone.htmlhead.dublincore"/>
+  <viewlet name="plone.resourceregistries"/>
+ </hidden>
 </object>
