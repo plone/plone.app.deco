@@ -33,7 +33,7 @@
         name="plone.app.deco.javascripts"
         directory="javascripts"
         />
-        
+    
     <!-- Deco support views -->
     
     <browser:page

@@ -1,0 +1,10 @@
+<rolemap>
+    <permissions>
+        <permission name="Plone: Modify Page Layout" acquire="False">
+            <role name="Manager" />
+            <role name="Site Administrator" />
+            <role name="Owner" />
+            <role name="Editor" />
+        </permission>
+    </permissions>
+</rolemap>

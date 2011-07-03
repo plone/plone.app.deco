@@ -11,10 +11,13 @@
     <include package="plone.app.page" />
     <include package="plone.app.cmsui" />
 
+    <permission
+        id="plone.ModifyPageLayout"
+        title="Plone: Modify Page Layout"
+        />
+
     <include package=".browser" />
     <include package=".bbb" />
-
-    <include file="profiles.zcml" />
 
     <adapter factory=".registry.DecoRegistry" />
     
