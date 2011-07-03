@@ -67,13 +67,20 @@
       </metal:block>
     </metal:block>
 
-    <div id="portal-column-two">
-      <metal:header define-slot="column_one_slot">
-        <metal:portlets define-slot="portlets_one_slot"/>
-      </metal:header>
-      <metal:header define-slot="column_two_slot">
-        <metal:portlets define-slot="portlets_two_slot"/>
-      </metal:header>
+    <div id="portal-column-one" 
+        metal:define-slot="column_one_slot" 
+        tal:condition="sl">
+        <metal:portlets define-slot="portlets_one_slot">
+            <tal:block replace="structure provider:plone.leftcolumn" />
+        </metal:portlets>
+    </div>
+
+    <div id="portal-column-two" 
+        metal:define-slot="column_two_slot" 
+        tal:condition="sr">
+        <metal:portlets define-slot="portlets_two_slot">
+            <tal:block replace="structure provider:plone.rightcolumn" />
+        </metal:portlets>
     </div>
 
   </body>
