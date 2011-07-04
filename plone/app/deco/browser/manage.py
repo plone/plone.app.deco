@@ -6,6 +6,7 @@ from zope.schema.interfaces import IVocabularyFactory
 
 from zope.publisher.browser import BrowserView
 
+from z3c.form.interfaces import HIDDEN_MODE
 from z3c.form import form, field, button
 
 from plone.protect import CheckAuthenticator
@@ -27,6 +28,7 @@ from plone.app.blocks.interfaces import SITE_LAYOUT_FILE_NAME
 
 from plone.app.page.interfaces import PAGE_LAYOUT_MANIFEST_FORMAT
 from plone.app.page.interfaces import PAGE_LAYOUT_RESOURCE_NAME
+from plone.app.page.interfaces import PAGE_LAYOUT_FILE_NAME
 
 from plone.app.page.utils import getPageTypes
 from plone.app.page.utils import createSiteLayout
@@ -79,7 +81,7 @@ class ManageDeco(BrowserView):
                 IStatusMessage(self.request).add(_(u"Default site layout updated"), type="info")
             
         elif 'form.button.DeletePageType' in form:
-            portal_type = form.get('id')
+            portal_type = form.get('name')
             if len(catalog({'portal_type': portal_type})) > 0:
                 IStatusMessage(self.request).add(_(u"Cannot delete a type that is in use"), type="error")
             else:
@@ -88,14 +90,14 @@ class ManageDeco(BrowserView):
                 IStatusMessage(self.request).add(_(u"Type deleted"), type="info")
         
         elif 'form.button.DeleteSiteLayout' in form:
-            name = form.get('id')
+            name = form.get('name')
             resources = getUtility(IResourceDirectory, name='persistent')
             sitelayouts = resources[SITE_LAYOUT_RESOURCE_NAME]
             del sitelayouts[name]
             IStatusMessage(self.request).add(_(u"Site layout deleted"), type="info")
         
         elif 'form.button.DeletePageLayout' in form:
-            name = form.get('id')
+            name = form.get('name')
             resources = getUtility(IResourceDirectory, name='persistent')
             pagelayouts = resources[PAGE_LAYOUT_RESOURCE_NAME]
             del pagelayouts[name]
@@ -119,7 +121,7 @@ class ManageDeco(BrowserView):
             editable = IWritableResourceDirectory.providedBy(directory)
             
             layouts.append({
-                    'id': name,
+                    'name': name,
                     'title': info.get('title', name.capitalize().replace('-', ' ').replace('.', ' ')),
                     'description':  info.get('description', None),
                     'url': "%s/++%s++%s" % (
@@ -143,7 +145,7 @@ class ManageDeco(BrowserView):
             editable = IWritableResourceDirectory.providedBy(directory)
             
             layouts.append({
-                    'id': name,
+                    'name': name,
                     'title': info.get('title', name.capitalize().replace('-', ' ').replace('.', ' ')),
                     'description':  info.get('description', None),
                     'url': "%s/++%s++%s" % (
@@ -173,8 +175,8 @@ class ManageDeco(BrowserView):
         vocabularyFactory = getUtility(IVocabularyFactory, name='plone.availableSiteLayouts')
         return vocabularyFactory(self.context)
 
-class IManageLayoutForm(Interface):
-    """Edit a site or page layout
+class IAddLayoutForm(Interface):
+    """Add a site or page layout
     """
     
     title = schema.TextLine(
@@ -188,14 +190,14 @@ class IManageLayoutForm(Interface):
             required=False,
         )
     
-    content = schema.Text(
+    content = schema.ASCII(
             title=_(u"Contents"),
             description=_(u"Layout contents (HTML)"),
         )
 
 class AddPageLayoutForm(form.Form):
     
-    fields = field.Fields(IManageLayoutForm)
+    fields = field.Fields(IAddLayoutForm)
     label = _(u"Add template page layout")
     
     def getContent(self):
@@ -221,16 +223,18 @@ class AddPageLayoutForm(form.Form):
         content = data['content']
         
         createTemplatePageLayout(title, description, content)
-                
-        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+        
+        IStatusMessage(self.request).add(_(u"Changes saved"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel#fieldset")
     
     @button.buttonAndHandler(_(u'Cancel'))
     def cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
     
 class AddSiteLayoutForm(form.Form):
     
-    fields = field.Fields(IManageLayoutForm)
+    fields = field.Fields(IAddLayoutForm)
     label = _(u"Add site layout")
     
     def getContent(self):
@@ -256,29 +260,63 @@ class AddSiteLayoutForm(form.Form):
         content = data['content']
         
         createSiteLayout(title, description, content)
-                
+        
+        IStatusMessage(self.request).add(_(u"Changes saved"), type="info")
         self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
     
     @button.buttonAndHandler(_(u'Cancel'))
     def cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+
+class IEditLayoutForm(IAddLayoutForm):
+    """Edit a site or page layout
+    """
     
-class ManagePageLayoutForm(form.Form):
+    # hidden fields
+    name = schema.ASCIILine()
+    filename = schema.ASCIILine()
+
+class EditPageLayoutForm(form.Form):
     
-    fields = field.Fields(IManageLayoutForm)
+    fields = field.Fields(IEditLayoutForm)
     
-    label = _(u"Edit layout")
+    label = _(u"Edit template page layout")
     
-    # def getContent(self):
-    # 
-    #     # TODO: Read layout - we need to distinguish between site and 
-    #     # page layout here :-/
-    #     
-    #     return {
-    #             'title': title,
-    #             'description': description,
-    #             'contents': contents,
-    #         }
+    def updateWidgets(self):
+        super(EditPageLayoutForm, self).updateWidgets()
+        self.widgets["content"].rows = 30
+        self.widgets["name"].mode = HIDDEN_MODE
+        self.widgets["filename"].mode = HIDDEN_MODE
+    
+    def getContent(self):
+        name = self.request.get('name', self.request.get('form.widgets.name'))
+        
+        title = u""
+        description = u""
+        filename = PAGE_LAYOUT_FILE_NAME
+        
+        directory = queryResourceDirectory(PAGE_LAYOUT_RESOURCE_NAME, name)
+        if directory.isFile(MANIFEST_FILENAME):
+            manifest = getManifest(directory.openFile(MANIFEST_FILENAME), PAGE_LAYOUT_MANIFEST_FORMAT)
+            title = manifest.get('title', title)
+            description = manifest.get('description', description)
+            filename = manifest.get('file', filename)
+        
+        if isinstance(title, str):
+            title = title.decode('utf-8')
+        if isinstance(description, str):
+            description = description.decode('utf-8')
+        
+        content = directory.readFile(filename)
+        
+        return {
+                'name': name,
+                'filename': filename,
+                'title': title,
+                'description': description,
+                'content': content,
+            }
     
     @button.buttonAndHandler(_(u"Save"))
     def handleSave(self, action):
@@ -287,13 +325,104 @@ class ManagePageLayoutForm(form.Form):
             self.status = self.formErrorsMessage
             return
         
+        name = data['name']
         title = data['title']
         description = data['description']
-        contents = data['contents']
+        content = data['content']
+        filename = data['filename']
         
+        title = title.encode('utf-8')
+        description = description.encode('utf-8')
         
-        self.request.response.redirect(self.context.absolute_url())
+        directory = queryResourceDirectory(PAGE_LAYOUT_RESOURCE_NAME, name)
+        directory.writeFile(MANIFEST_FILENAME, """\
+[%s]
+title = %s
+description = %s
+file = %s
+""" % (PAGE_LAYOUT_RESOURCE_NAME, title or '', description or '', filename))
+
+        directory.writeFile(filename, content)
+        
+        IStatusMessage(self.request).add(_(u"Changes saved"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
     
     @button.buttonAndHandler(_(u'Cancel'))
     def cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+
+class EditSiteLayoutForm(form.Form):
+    
+    fields = field.Fields(IEditLayoutForm)
+    
+    label = _(u"Edit site layout")
+    
+    def updateWidgets(self):
+        super(EditSiteLayoutForm, self).updateWidgets()
+        self.widgets["content"].rows = 30
+        self.widgets["name"].mode = HIDDEN_MODE
+        self.widgets["filename"].mode = HIDDEN_MODE
+    
+    def getContent(self):
+        name = self.request.get('name', self.request.get('form.widgets.name'))
+        
+        title = u""
+        description = u""
+        filename = SITE_LAYOUT_FILE_NAME
+        
+        directory = queryResourceDirectory(SITE_LAYOUT_RESOURCE_NAME, name)
+        if directory.isFile(MANIFEST_FILENAME):
+            manifest = getManifest(directory.openFile(MANIFEST_FILENAME), SITE_LAYOUT_MANIFEST_FORMAT)
+            title = manifest.get('title', title)
+            description = manifest.get('description', description)
+            filename = manifest.get('file', filename)
+        
+        if isinstance(title, str):
+            title = title.decode('utf-8')
+        if isinstance(description, str):
+            description = description.decode('utf-8')
+        
+        content = directory.readFile(filename)
+        
+        return {
+                'name': name,
+                'filename': filename,
+                'title': title,
+                'description': description,
+                'content': content,
+            }
+    
+    @button.buttonAndHandler(_(u"Save"))
+    def handleSave(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        
+        name = data['name']
+        title = data['title']
+        description = data['description']
+        content = data['content']
+        filename = data['filename']
+        
+        title = title.encode('utf-8')
+        description = description.encode('utf-8')
+        
+        directory = queryResourceDirectory(SITE_LAYOUT_RESOURCE_NAME, name)
+        directory.writeFile(MANIFEST_FILENAME, """\
+[%s]
+title = %s
+description = %s
+file = %s
+""" % (SITE_LAYOUT_RESOURCE_NAME, title or '', description or '', filename))
+
+        directory.writeFile(filename, content)
+        
+        IStatusMessage(self.request).add(_(u"Changes saved"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+    
+    @button.buttonAndHandler(_(u'Cancel'))
+    def cancel(self, action):
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")

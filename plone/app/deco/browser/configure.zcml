@@ -59,12 +59,19 @@
         />
     
     <browser:page
-        for="plone.resource.interfaces.IWritableResourceDirectory"
-        name="manage-layout"
-        class=".manage.ManagePageLayoutForm"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="edit-page-layout"
+        class=".manage.EditPageLayoutForm"
         permission="plone.ManageDeco"
         />
     
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="edit-site-layout"
+        class=".manage.EditSiteLayoutForm"
+        permission="plone.ManageDeco"
+        />
+
     <!-- Deco support views -->
     
     <browser:page

@@ -113,7 +113,7 @@
                                 tal:attributes="action request/URL">
                                 <input
                                     type="hidden"
-                                    name="id"
+                                    name="name"
                                     tal:attributes="value type/id"
                                     />
                                 <input
@@ -179,8 +179,8 @@
                                 tal:attributes="action request/URL">
                                 <input
                                     type="hidden"
-                                    name="id"
-                                    tal:attributes="value layout/id"
+                                    name="name"
+                                    tal:attributes="value layout/name"
                                     />
                                 <input
                                     type="submit"
@@ -191,12 +191,16 @@
                                     />
                                 <input tal:replace="structure context/@@authenticator/authenticator" />
                             </form>
-                            
                             <form
                                 style="display: inline"
                                 method="get" 
                                 tal:condition="layout/editable"
-                                tal:attributes="action string:${layout/url}/@@manage-layout">
+                                tal:attributes="action string:${context/absolute_url}/@@edit-site-layout">
+                                <input
+                                    type="hidden"
+                                    name="name"
+                                    tal:attributes="value layout/name"
+                                    />
                                 <input
                                     type="submit"
                                     name="form.button.EditSiteLayout"
@@ -262,8 +266,8 @@
                                 tal:attributes="action request/URL">
                                 <input
                                     type="hidden"
-                                    name="id"
-                                    tal:attributes="value layout/id"
+                                    name="name"
+                                    tal:attributes="value layout/name"
                                     />
                                 <input
                                     type="submit"
@@ -278,7 +282,12 @@
                                 style="display: inline"
                                 method="get" 
                                 tal:condition="layout/editable"
-                                tal:attributes="action string:${layout/url}/@@manage-layout">
+                                tal:attributes="action string:${context/absolute_url}/@@edit-page-layout">
+                                <input
+                                    type="hidden"
+                                    name="name"
+                                    tal:attributes="value layout/name"
+                                    />
                                 <input
                                     type="submit"
                                     name="form.button.EditPageLayout"

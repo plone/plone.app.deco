@@ -25,10 +25,10 @@
     
     <!-- Include the correct site layout -->
     <link tal:condition="context_state/is_view_template"
-          tal:attributes="href string:${portal_state/portal_url}/@@page-site-layout"
+          tal:attributes="href string:${context/absolute_url}/@@page-site-layout"
           rel="layout" />
     <link tal:condition="not:context_state/is_view_template"
-          tal:attributes="href string:${portal_state/portal_url}/@@default-site-layout"
+          tal:attributes="href string:${context/absolute_url}/@@default-site-layout"
           rel="layout" />
     
     <!-- Let views register things in the head that get merged into the site layout -->
