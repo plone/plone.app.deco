@@ -1034,7 +1034,6 @@
             </element>
             <element key="deco">
                 <element>jquerytools</element>
-                <element>deco</element>
                 <element>default</element>
             </element>
         </value>
