@@ -65,4 +65,12 @@
               bundle="deco"
               inline="False"/>
 
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++plone.app.deco.javascripts/deco.overlaytriggers.js"
+              bundle="default"
+              inline="False"/>
+
 </object>
