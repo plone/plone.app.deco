@@ -44,6 +44,27 @@
         permission="plone.ManageDeco"
         />
     
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="add-page-layout"
+        class=".manage.AddPageLayoutForm"
+        permission="plone.ManageDeco"
+        />
+    
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="add-site-layout"
+        class=".manage.AddSiteLayoutForm"
+        permission="plone.ManageDeco"
+        />
+    
+    <browser:page
+        for="plone.resource.interfaces.IWritableResourceDirectory"
+        name="manage-layout"
+        class=".manage.ManagePageLayoutForm"
+        permission="plone.ManageDeco"
+        />
+    
     <!-- Deco support views -->
     
     <browser:page

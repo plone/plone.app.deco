@@ -25,6 +25,61 @@
     </p>
 
     <dl class="enableFormTabbing">
+        
+        
+        <dt id="fieldsetlegend-general"
+            i18n:translate="legend_general">General</dt>
+        <dd id="fieldset-general">
+            
+            <div class="discreet" i18n:translate="description_general">
+                The following settings affect all Deco-managed content
+            </div>
+            
+            <form method="post" tal:attributes="action request/URL">
+            
+                <div class="field">
+                
+                    <label for="defaultSiteLayout"
+                        i18n:translate="label_default_site_layout">Default site layout</label>
+                
+                    <div class="formHelp">
+                        This layout is used by default for new pages in sections
+                        where there is no section-specific layout.
+                    </div>
+                
+                    <select
+                        type="text"
+                        name="defaultSiteLayout"
+                        id="defaultSiteLayout"
+                        tal:define="selected view/defaultSiteLayout">
+                    
+                        <option
+                            tal:repeat="layout view/availableSiteLayouts"
+                            tal:content="layout/title"
+                            tal:attributes="value layout/token;
+                                            selected python:layout.token == selected and 'selected' or None"
+                            />
+                        
+                    </select>
+                
+                </div>
+            
+                <div class="formControls">
+                
+                    <input
+                        type="submit"
+                        class="context"
+                        name="form.button.SaveGeneral"
+                        value="save"
+                        i18n:attributes="value"
+                        />
+                
+                </div>
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+            </form>
+            
+        </dd>
+        
         <dt id="fieldsetlegend-page-types"
             i18n:translate="legend_page_types">Page types</dt>
         <dd id="fieldset-page-types">
@@ -153,11 +208,23 @@
                             <span tal:condition="not:layout/editable"
                                 i18n:translate="description_not_editable">
                                 (not editable)
-                            </span>                            
+                            </span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            
+            <form
+                method="get" 
+                tal:attributes="action string:${context/absolute_url}/@@add-site-layout">
+                <input
+                    type="submit"
+                    name="form.button.AddSiteLayout"
+                    class="context"
+                    value="Add"
+                    i18n:attributes="value"
+                    />
+            </form>
                 
         </dd>
         
@@ -228,6 +295,18 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <form
+                method="get" 
+                tal:attributes="action string:${context/absolute_url}/@@add-page-layout">
+                <input
+                    type="submit"
+                    name="form.button.AddPageLayout"
+                    class="context"
+                    value="Add"
+                    i18n:attributes="value"
+                    />
+            </form>
                 
         </dd>
 
