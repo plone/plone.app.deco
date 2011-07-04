@@ -110,6 +110,7 @@
                             <form
                                 style="display: inline"
                                 method="post" 
+                                tal:condition="python:type.id != view.defaultPageType()"
                                 tal:attributes="action request/URL">
                                 <input
                                     type="hidden"
@@ -128,8 +129,9 @@
                             
                             <form
                                 style="display: inline"
-                                method="get" 
-                                tal:attributes="action string:${type/absolute_url}/@@manage-page-type">
+                                method="get"
+                                tal:condition="python:type.id != view.defaultPageType()"
+                                tal:attributes="action string:${type/absolute_url}/@@edit-page-type">
                                 <input
                                     type="submit"
                                     name="form.button.EditPageType"
@@ -142,6 +144,18 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <form
+                method="get" 
+                tal:attributes="action string:${context/absolute_url}/@@add-page-type">
+                <input
+                    type="submit"
+                    name="form.button.AddPageType"
+                    class="context"
+                    value="Add"
+                    i18n:attributes="value"
+                    />
+            </form>
             
         </dd>
         

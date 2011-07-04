@@ -12,6 +12,7 @@ from z3c.form import form, field, button
 from plone.protect import CheckAuthenticator
 from plone.registry.interfaces import IRegistry
 from plone.memoize.instance import memoize
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 from plone.resource.interfaces import IResourceDirectory
 from plone.resource.interfaces import IWritableResourceDirectory
@@ -29,10 +30,12 @@ from plone.app.blocks.interfaces import SITE_LAYOUT_FILE_NAME
 from plone.app.page.interfaces import PAGE_LAYOUT_MANIFEST_FORMAT
 from plone.app.page.interfaces import PAGE_LAYOUT_RESOURCE_NAME
 from plone.app.page.interfaces import PAGE_LAYOUT_FILE_NAME
+from plone.app.page.interfaces import DEFAULT_PAGE_TYPE_NAME
 
 from plone.app.page.utils import getPageTypes
 from plone.app.page.utils import createSiteLayout
 from plone.app.page.utils import createTemplatePageLayout
+from plone.app.page.utils import clonePageType
 
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
@@ -82,7 +85,9 @@ class ManageDeco(BrowserView):
             
         elif 'form.button.DeletePageType' in form:
             portal_type = form.get('name')
-            if len(catalog({'portal_type': portal_type})) > 0:
+            if portal_type == DEFAULT_PAGE_TYPE_NAME:
+                IStatusMessage(self.request).add(_(u"Cannot delete the default page type"), type="error")
+            elif len(catalog({'portal_type': portal_type})) > 0:
                 IStatusMessage(self.request).add(_(u"Cannot delete a type that is in use"), type="error")
             else:
                 portal_types = getToolByName(self, 'portal_types')
@@ -109,7 +114,10 @@ class ManageDeco(BrowserView):
     def pageTypes(self):
         portal_types = getToolByName(self.context, 'portal_types')
         return getPageTypes(portal_types)
-
+    
+    def defaultPageType(self):
+        return DEFAULT_PAGE_TYPE_NAME
+    
     @memoize
     def siteLayouts(self):
         layouts = []
@@ -174,6 +182,10 @@ class ManageDeco(BrowserView):
     def availableSiteLayouts(self):
         vocabularyFactory = getUtility(IVocabularyFactory, name='plone.availableSiteLayouts')
         return vocabularyFactory(self.context)
+
+#
+# Add forms
+# 
 
 class IAddLayoutForm(Interface):
     """Add a site or page layout
@@ -268,6 +280,11 @@ class AddSiteLayoutForm(form.Form):
     def cancel(self, action):
         IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
         self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+
+#
+# Edit forms
+# 
+
 
 class IEditLayoutForm(IAddLayoutForm):
     """Edit a site or page layout
@@ -426,3 +443,133 @@ file = %s
     def cancel(self, action):
         IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
         self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+
+#
+# Type edit form
+# 
+
+class IPageTypeForm(Interface):
+    """Fields for the page type edit form
+    """
+    
+    # TODO: Icon? Add permission? Type filtering? Behaviours?
+    
+    title = schema.TextLine(
+            title=_(u"Title"),
+            description=_(u"The title that appears in the add menu"),
+        )
+    
+    description = schema.Text(
+            title=_(u"Description"),
+            description=_(u"A short description for the page type"),
+            required=False,
+        )
+    
+    defaultSiteLayout = schema.Choice(
+            title=_(u"Default site layout"),
+            description=_(u"The default site layout used when creating new pages of this type" +
+                          u"If no value is selected, the parent or global default will be used."),
+            vocabulary='plone.availableSiteLayouts',
+            required=False,
+        )
+    
+    defaultPageLayoutTemplate = schema.Choice(
+            title=_(u"Default page layout template"),
+            description=_(u"The default page layout template used when creating new pages of this type"),
+            vocabulary='plone.availablePageLayouts',
+        )
+
+class AddPageTypeForm(form.Form):
+    
+    fields = field.Fields(IPageTypeForm)
+    ignoreContext = True
+    
+    defaultType = DEFAULT_PAGE_TYPE_NAME
+    
+    label = _(u"Add page type")
+    
+    @button.buttonAndHandler(_(u"Save"))
+    def handleSave(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        
+        title = data['title']
+        description = data['description']
+        defaultSiteLayout = data['defaultSiteLayout']
+        defaultPageLayoutTemplate = data['defaultPageLayoutTemplate']
+        
+        portal_types = getToolByName(self.context, 'portal_types')
+        
+        name = basename = getUtility(IIDNormalizer).normalize(title)
+        idx = 1
+        while name in portal_types:
+            name = "%s-%d" % (basename, idx,)
+            idx += 1
+        
+        clonePageType(portal_types, self.defaultType, name,
+                title=title,
+                description=description,
+                default_site_layout=defaultSiteLayout,
+                default_page_layout_template=defaultPageLayoutTemplate,
+            )
+        
+        IStatusMessage(self.request).add(_(u"Page type added"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+    
+    @button.buttonAndHandler(_(u'Cancel'))
+    def cancel(self, action):
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        self.request.response.redirect(self.context.absolute_url() + "/@@deco-controlpanel")
+
+class EditPageTypeForm(form.Form):
+    
+    fields = field.Fields(IPageTypeForm)
+    
+    label = _(u"Edit page type")
+    
+    def getContent(self):
+        
+        title = self.context.Title()
+        if isinstance(title, str):
+            title = title.decode('utf-8')
+        description = self.context.Description()
+        if isinstance(description, str):
+            description = description.decode('utf-8')
+        
+        return {
+                'title': title,
+                'description': description,
+                'defaultSiteLayout': self.context.default_site_layout,
+                'defaultPageLayoutTemplate': self.context.default_page_layout_template,
+            }
+    
+    @button.buttonAndHandler(_(u"Save"))
+    def handleSave(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        
+        title = data['title']
+        description = data['description']
+        defaultSiteLayout = data['defaultSiteLayout']
+        defaultPageLayoutTemplate = data['defaultPageLayoutTemplate']
+        
+        self.context.title = title
+        self.context.description = description
+        self.context.default_site_layout = defaultSiteLayout
+        self.context.default_page_layout_template = defaultPageLayoutTemplate
+        
+        IStatusMessage(self.request).add(_(u"Changes saved"), type="info")
+        
+        portal_url = getToolByName(self.context, 'portal_url')
+        self.request.response.redirect(portal_url() + "/@@deco-controlpanel")
+    
+    @button.buttonAndHandler(_(u'Cancel'))
+    def cancel(self, action):
+        IStatusMessage(self.request).add(_(u"Operation cancelled"), type="info")
+        
+        portal_url = getToolByName(self.context, 'portal_url')
+        self.request.response.redirect(portal_url() + "/@@deco-controlpanel")

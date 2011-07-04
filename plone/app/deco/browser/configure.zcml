@@ -71,6 +71,20 @@
         class=".manage.EditSiteLayoutForm"
         permission="plone.ManageDeco"
         />
+    
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="add-page-type"
+        class=".manage.AddPageTypeForm"
+        permission="plone.ManageDeco"
+        />
+    
+    <browser:page
+        for="plone.app.page.interfaces.IPageFTI"
+        name="edit-page-type"
+        class=".manage.EditPageTypeForm"
+        permission="plone.ManageDeco"
+        />
 
     <!-- Deco support views -->
     
