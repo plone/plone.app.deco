@@ -50,10 +50,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             return;
         }
         $.deco.loaded = true;
+
         // Take first snapshot
         $.deco.undo.snapshot();
     };
-  
+
     /**
      * Initialize the Deco UI
      *
@@ -438,35 +439,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Init Deco
             $.deco.init();
-        }
-
-        // Check if tiledata is available and valid
-        if (typeof(tiledata) !== 'undefined') {
-
-            // Check action
-            if (tiledata.action === 'cancel') {
-
-                // Close overlay
-                window.parent.jQuery.deco.overlay.close();
-
-            } else if (tiledata.action === 'save') {
-
-                // Check mode
-                if (tiledata.mode === 'add') {
-
-                    // Check url
-                    if (typeof(tiledata.url) !== 'undefined') {
-
-                        // Insert app tile
-                        window.parent.jQuery.deco.addAppTile(tiledata.tile_type,
-                            tiledata.url, tiledata.id);
-                    }
-                } else {
-
-                    // Update app tile
-                    window.parent.jQuery.deco.editAppTile(tiledata.url);
-                }
-            }
         }
     });
 
