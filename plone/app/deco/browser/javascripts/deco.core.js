@@ -108,8 +108,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.options.ignore_context = options.ignore_context;
                 $.deco.options.tileheadelements = [];
 
-                content = $('#form-widgets-ILayoutAware-content',
-                            $.deco.document).val();
+                content = $('#form-widgets-ILayoutAware-content').val();
 
                 // Check if no layout
                 if (content === '') {
@@ -130,23 +129,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     target = $(this).attr("target");
                     rev = $(this).attr("rev");
 
-                    // If content, create a new div since the form data is in
-                    // this panel
-                    if (target === 'content') {
-                        $("#content", $.deco.document)
-                            .addClass('deco-original-content');
-                        $("#content", $.deco.document)
-                            .before($($.deco.document.createElement("div"))
-                                .attr("id", "content")
-                                .addClass('deco-panel')
-                                .html(content.find("#" + rev).html())
-                            );
-                    } else {
-                        $("#" + target, $.deco.document)
-                            .addClass('deco-panel');
-                        $("#" + target, $.deco.document)
-                            .html(content.find("#" + rev).html());
-                    }
+                    $("#" + target, $.deco.document)
+                        .addClass('deco-panel');
+                    $("#" + target, $.deco.document)
+                        .html(content.find("#" + rev).html());
                 });
 
                 // Init app tiles
@@ -282,8 +268,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init overlay
-                $('#content.deco-original-content',
-                  $.deco.document).decoOverlay();
+//                $('#content.deco-original-content',
+//                  $.deco.document).decoOverlay();
 
                 // Add toolbar div below menu
                 $("body").prepend($(document.createElement("div"))
@@ -427,21 +413,5 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $('head', $.deco.document).append(this);
         });
     };
-
-//#JSCOVERAGE_IF 0
-
-    // Init Deco on load
-    $(window).load(function () {
-
-        // Check if layout exists
-        if ($('#form-widgets-ILayoutAware-content',
-              window.parent.document).length > 0) {
-
-            // Init Deco
-            $.deco.init();
-        }
-    });
-
-//#JSCOVERAGE_ENDIF
 
 }(jQuery));
