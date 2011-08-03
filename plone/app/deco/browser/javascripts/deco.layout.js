@@ -1197,7 +1197,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                         .clone(true)
                                         .removeClass("deco-original-tile deco-helper-tile deco-helper-tile-new deco-tile-align-right deco-tile-align-left")
                                         .css({width: "", left: "", top: ""})
-                                        .decoAddDrag() 
+                                        .decoAddDrag()
                                         .addClass("deco-new-tile")
                                 )
                         );
@@ -1970,7 +1970,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 var tile_type_id = url[1].split('/');
                                 html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
 
-                                body += '          <span id="' + html_id + '"></span>\n';
+                                body += '          <div id="' + html_id + '"></div>\n';
 
                                 links.push({
                                     rel: "tile",
@@ -2001,7 +2001,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 url = './@@plone.app.standardtiles.field?field=' + tiletype;
                                 html_id = 'tile-' + tiletype;
 
-                                body += '          <span id="' + html_id + '"></span>\n';
+                                body += '          <div id="' + html_id + '"></div>\n';
 
                                 links.push({
                                     rel: "tile",
