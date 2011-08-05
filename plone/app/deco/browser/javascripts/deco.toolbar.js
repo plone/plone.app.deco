@@ -365,6 +365,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 var obj, tiletype, selected_tile, classes, actions, x,
                 tile_group, y;
 
+                // Disable edit html source
+                $.deco.disableEditHtmlSource();
+
                 // Get object
                 obj = $(this);
 

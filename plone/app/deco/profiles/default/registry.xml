@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <registry>
-    
+
     <!-- Default (portal-wide) site layout -->
     <record name="plone.defaultSiteLayout">
         <field type="plone.registry.field.ASCIILine">
@@ -9,7 +9,7 @@
         </field>
         <value>./++sitelayout++default/site.html</value>
     </record>
-    
+
     <!-- Primary actions -->
     <records prefix="plone.app.deco.primary_actions.save"
             interface='plone.app.deco.interfaces.IAction'>
@@ -54,6 +54,18 @@
         <value key="menu">False</value>
         <value key="weight">40</value>
     </records>
+
+    <records prefix="plone.app.deco.primary_actions.html"
+            interface='plone.app.deco.interfaces.IAction'>
+        <value key="name">html</value>
+        <value key="fieldset"></value>
+        <value key="label">Edit HTML</value>
+        <value key="action">html</value>
+        <value key="icon">False</value>
+        <value key="menu">False</value>
+        <value key="weight">50</value>
+    </records>
+
 
     <!-- secondary actions -->
     <records prefix="plone.app.deco.secondary_actions.layout"
@@ -481,6 +493,7 @@
             <element>tile-align-block</element>
             <element>tile-align-left</element>
             <element>tile-align-right</element>
+            <element>html</element>
             <element>strong</element>
             <element>em</element>
             <element>paragraph</element>
@@ -521,6 +534,7 @@
             <element>tile-align-block</element>
             <element>tile-align-left</element>
             <element>tile-align-right</element>
+            <element>html</element>
             <element>strong</element>
             <element>em</element>
             <element>paragraph</element>
@@ -609,6 +623,7 @@
             <value_type type="plone.registry.field.TextLine" />
         </field>
         <value>
+            <element>html</element>
             <element>strong</element>
             <element>em</element>
             <element>paragraph</element>

@@ -397,6 +397,38 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
         });
 
+        // Register html action
+        $.deco.registerAction('html', {
+            exec: function () {
+
+                // Local variables
+                var tilecontent, text, height;
+
+                // Get tile content div
+                tilecontent = $(".deco-selected-tile", $.deco.document)
+                                  .children(".deco-tile-content");
+
+                // Check if not already html editable
+                if (tilecontent.find('.deco-rich-text-textarea')
+                        .length === 0) {
+
+                    // Disable rich editing
+                    tilecontent.decoDisableEditor();
+
+                    // Add new text area and set content
+                    text = tilecontent.html();
+                    height = tilecontent.height();
+                    tilecontent.empty();
+                    tilecontent.prepend(
+                        $($.deco.document.createElement("textarea"))
+                            .addClass("deco-rich-text-textarea")
+                            .html($.trim(text))
+                            .height(height)
+                    );
+                }
+            }
+        });
+
         // Register undo action
         $.deco.registerAction('undo', {
             exec: function () {

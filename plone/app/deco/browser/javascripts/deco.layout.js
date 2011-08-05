@@ -1667,6 +1667,29 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     };
 
     /**
+     * Disable edit html source
+     *
+     * @id jQuery.deco.disableEditHtmlSource
+     */
+    $.deco.disableEditHtmlSource = function () {
+
+        // Find rich text textareas
+        $(".deco-rich-text-textarea", $.deco.document).each(function () {
+
+            // Local variables
+            var tilecontent, text;
+
+            // Get text and tilecontent
+            text = $(this).val();
+            tilecontent = $(this).parent();
+            tilecontent
+                .html(text)
+                .decoEditor();
+        });
+    }
+
+
+    /**
      * Add an apptile with the given value
      *
      * @id jQuery.deco.addAppTile
@@ -1891,6 +1914,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var tilecount = 0;
         var id = "";
         links.push({rel: "layout", rev: "", target: "", href: "./@@page-site-layout"});
+
+        // Disable edit html source
+        $.deco.disableEditHtmlSource();
 
         // Add body tag
         body += "  <body>\n";

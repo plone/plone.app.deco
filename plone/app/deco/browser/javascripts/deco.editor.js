@@ -63,6 +63,27 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     }
 
     /**
+    * Disable the deco editor.
+    *
+    * @constructor
+    * @id jQuery.fn.decoDisableEditor
+    * @return {Object} Returns the deselected object.
+    */
+    $.fn.decoDisableEditor = function () {
+        var obj;
+
+        // Get element
+        obj = $(this);
+
+        // Set content editable to false
+        obj.attr('contentEditable', false);
+
+        // Remove editor class
+        obj.removeClass('deco-rich-text');
+    }
+
+
+    /**
      * Exec a command on the editor
      *
      * @id jQuery.deco.execCommand
