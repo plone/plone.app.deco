@@ -1,5 +1,6 @@
 from zope.component import queryUtility, getMultiAdapter
 from zope.interface import Interface
+from zope.schema.interfaces import IField
 
 from zope.security.interfaces import IPermission
 from AccessControl import getSecurityManager
@@ -132,6 +133,8 @@ def extractFieldInformation(schema, context, request, prefix):
                 read_only.append(name)
         if isVisible(name, omitted):
             field = schema[name]
+            if not IField.providedBy(field):
+                continue
             if not IOmittedField.providedBy(field):
                 yield {
                     'id': "%s.%s" % (schema.__identifier__, name),

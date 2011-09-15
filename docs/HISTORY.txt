@@ -5,6 +5,9 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Skip non-fields (such as Attributes) when finding schema fields.
+  [davisagli]
+
 - Bind tile events using live so new dom elements get correct events.
   [robgietema]
 
