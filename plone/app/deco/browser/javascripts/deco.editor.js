@@ -97,5 +97,27 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.document.execCommand(command, ui, value);
     };
 
+    /**
+     * Apply formatting to the current selection
+     *
+     * @id jQuery.deco.applyFormat
+     * @param {String} tag Tag which needs to be applied
+     * @param {String} className Classname which needs to be applied can be
+     *                           emtpy
+     * @param {String} display Display of the format (either inline or block)
+     */
+    $.deco.applyFormat = function (tag, className, display) {
+        var range = $.textSelect('getRange');
+        if (display == 'block') {
+            var elem = $('<h1>');
+            var orig = range.startElement.parentNode;
+            for (var i = 0; i < orig.attributes.length; i++) {
+                var a = orig.attributes[i];
+                elem.attr(a.name, a.value);
+            }
+            $(orig).replaceWith(elem);
+        }
+    };
+
 }(jQuery));
 
