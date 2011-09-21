@@ -53,8 +53,8 @@ test("Apply inline formatting", function() {
         endElement : $('#line1')
     });
 
-    // Set header tag
-    $.deco.applyFormat('string', '', 'inline');
+    // Set strong to selection
+    tinyMCE.execCommand('FormatBlock', false, 'strong');
 
     // Check if the tag is replaced
     equals($('#line1').html(), 'Some <strong>paragraph</strong> with text', "The strong tag was applied");
