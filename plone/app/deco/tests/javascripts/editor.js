@@ -23,7 +23,7 @@ test("Apply block formatting", function() {
     $.deco.applyFormat('h1', '', 'block');
 
     // Check if the tag is replaced
-    equals(document.getElementById('line1').tagName.toLowerCase(), 'h1', "Header format was applied");
+    equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
 });
 
 test("Apply inline formatting", function() {
