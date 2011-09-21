@@ -4,6 +4,14 @@ module("editor", {
             '<p id="line1">Some paragraph with text</p>' +
             '<p id="line2">Some more text</p>' +
             '</div>'));
+        // Init editor
+        tinyMCE.init({
+                    mode : "exact",
+                    elements : "test",
+                    content_editable : true,
+                    theme : "deco",
+                    language_load : false
+                });
         $.deco.document = window.document;  // Set document
     },
     teardown: function () {
@@ -23,7 +31,7 @@ test("Apply block formatting", function() {
     });
     
     // Set header tag
-    $.deco.applyFormat('h1', '', 'block');
+    tinyMCE.execCommand("FormatBlock", false, 'h1');
 
     // Check if the tag is replaced
     equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
