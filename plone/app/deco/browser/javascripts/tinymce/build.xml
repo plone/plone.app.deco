@@ -46,14 +46,14 @@
 			<fileset dir="${classes_dir}" includes="adapter/jquery/adapter.js" />
 
 			<!-- tinymce.util.* -->
-			<!--fileset dir="${classes_dir}" includes="util/Dispatcher.js" />
+			<fileset dir="${classes_dir}" includes="util/Dispatcher.js" />
 			<fileset dir="${classes_dir}" includes="util/URI.js" />
 			<fileset dir="${classes_dir}" includes="util/Cookie.js" />
 			<fileset dir="${classes_dir}" includes="util/JSON.js" />
 			<fileset dir="${classes_dir}" includes="util/XHR.js" />
 			<fileset dir="${classes_dir}" includes="util/JSONRequest.js" />
 			<fileset dir="${classes_dir}" includes="util/VK.js" />
-			<fileset dir="${classes_dir}" includes="util/Quirks.js" /-->
+			<fileset dir="${classes_dir}" includes="util/Quirks.js" />
 
 			<!-- tinymce.html.* -->
 			<fileset dir="${classes_dir}" includes="html/Entities.js" />
