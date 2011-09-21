@@ -70,9 +70,9 @@ content of that page as a standalone, publishable resource devoid of any site
 layout content (e.g. global navigation elements). This is referred to as the
 **page layout**.
 
-In its ``<head />``, each page layout will have a link like this::
+In its ``<html />`` a page layout will have a data attribute like this::
 
-    <link rel="layout" href="..." />
+    <html data-layout="..." />
 
 Blocks runs as a post-publication transformation that turns the page layout
 into the final page that is returned to the user's browser by merging the page
@@ -85,8 +85,8 @@ just the page's content, in a valid, standalone HTML document.
 It is important to realise that Blocks does not care how a page was rendered:
 it could be a verbatim chunk of HTML fetched from the database (as is usually
 the case with Deco-managed pages), the result of rendering a page template, or
-some other dynamically generated content. If it has a ``layout`` link in the
-head, it will be transformed and merged into the site layout.
+some other dynamically generated content. If it has a ``data-layout`` attribute in the
+html tag, it will be transformed and merged into the site layout.
 
 **Note:** When ``plone.app.deco`` is installed, it will enable a theme called
 ``deco`` in portal_skins and switch to it as the default. This installs an
@@ -164,10 +164,10 @@ section:
   to be changed.
 
 For this to work without having to modify every page each time the default
-or section layout is changed, most page will use a layout link like the
+or section layout is changed, most page will use a layout attribute like the
 following::
 
-    <link rel="layout" href="./@@page-site-layout" />
+    <html data-layout="./@@page-site-layout">...
 
 The ``@@page-site-layout`` view will locate the correct page layout to
 use in any given context and return its contents, taking per-page layouts into
@@ -175,7 +175,7 @@ account.
 
 For other views, there is a more appropriate site layout indirection view::
 
-    <link rel="layout" href="./@@default-site-layout" />
+    <html data-layout="./@@default-site-layout">...
 
 This still respects global and section layouts, but will not utilise the
 page's site layout, which should only apply to the specific view of that page.

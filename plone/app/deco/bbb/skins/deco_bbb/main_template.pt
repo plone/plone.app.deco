@@ -14,23 +14,15 @@
         checkPermission nocall: context/portal_membership/checkPermission;
         site_properties context/portal_properties/site_properties;
         ajax_load request/ajax_load | nothing;
+        data_layout python: '%s/%s' % (context.absolute_url(), context_state.is_view_template and '@@page-site-layout' or '/@@default-site-layout');
         ajax_include_head request/ajax_include_head | nothing"
-    tal:attributes="lang lang;">
+    tal:attributes="lang lang; data-layout data_layout">
 
     <metal:cache use-macro="context/global_cache_settings/macros/cacheheaders">
     Get the global cache headers located in global_cache_settings.
     </metal:cache>
 
 <head>
-    
-    <!-- Include the correct site layout -->
-    <link tal:condition="context_state/is_view_template"
-          tal:attributes="href string:${context/absolute_url}/@@page-site-layout"
-          rel="layout" />
-    <link tal:condition="not:context_state/is_view_template"
-          tal:attributes="href string:${context/absolute_url}/@@default-site-layout"
-          rel="layout" />
-    
     <!-- Let views register things in the head that get merged into the site layout -->
     <metal:baseslot define-slot="base" />
     <metal:topslot define-slot="top_slot" />
