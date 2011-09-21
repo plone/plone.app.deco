@@ -6,12 +6,16 @@ module("editor", {
             '</div>'));
         // Init editor
         tinyMCE.init({
-                    mode : "exact",
-                    elements : "test",
-                    content_editable : true,
-                    theme : "deco",
-                    language_load : false
-                });
+            mode : "exact",
+            elements : "test",
+            content_editable : true,
+            theme : "deco",
+            language_load : false,
+            formats : {
+                strong : {inline : 'strong'},
+                h1 : {block : 'h1', remove : 'all'}
+            }
+        });
         $.deco.document = window.document;  // Set document
     },
     teardown: function () {
@@ -31,7 +35,7 @@ test("Apply block formatting", function() {
     });
     
     // Set header tag
-    tinyMCE.execCommand("FormatBlock", false, 'h1');
+    tinyMCE.execCommand('FormatBlock', false, 'h1');
 
     // Check if the tag is replaced
     equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
