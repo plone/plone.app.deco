@@ -9,7 +9,7 @@ module("editor", {
 });
 
 test("Apply block formatting", function() {
-    expect(1);
+    expect(2);
 
     // Set selection within test paragraph
     $.textSelect('setRange', {
@@ -24,6 +24,7 @@ test("Apply block formatting", function() {
 
     // Check if the tag is replaced
     equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
+    equals($('#line1').html(), 'Some paragraph with text', "Children were cloned");
 });
 
 test("Apply inline formatting", function() {

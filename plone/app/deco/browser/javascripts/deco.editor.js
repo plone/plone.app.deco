@@ -115,6 +115,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 var a = orig.attributes[i];
                 elem.attr(a.name, a.value);
             }
+            elem.html($(orig).html());
             $(orig).replaceWith(elem);
         }
     };
