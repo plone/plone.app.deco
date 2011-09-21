@@ -11111,13 +11111,8 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			});
 			t.formatter = new tinymce.Formatter(t);
 
-
-			// Register default formats
-			t.formatter.register({
-				h1 : [
-					{block : 'h1', remove : 'all'}
-				]
-            });
+			// Register user defined formats
+			t.formatter.register(t.settings.formats);
 
 			t.editorCommands = new tinymce.EditorCommands(t);
 
