@@ -1,6 +1,9 @@
 module("editor", {
     setup: function () {
-        $(document.body).append($('<p id="line1">Some paragraph with text</p><p id="line2">Some more text</p>'));
+        $(document.body).append($('<div id="test">' +
+            '<p id="line1">Some paragraph with text</p>' +
+            '<p id="line2">Some more text</p>' +
+            '</div>'));
         $.deco.document = window.document;  // Set document
     },
     teardown: function () {
