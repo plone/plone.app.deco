@@ -31,7 +31,21 @@ test("Apply block formatting", function() {
 });
 
 test("Apply inline formatting", function() {
-    ok(false, "not implemented");
+    expect(1);
+
+    // Set selection within test paragraph
+    $.textSelect('setRange', {
+        start : 5,
+        startElement : $('#line1'),
+        end : 14,
+        endElement : $('#line1')
+    });
+
+    // Set header tag
+    $.deco.applyFormat('string', '', 'inline');
+
+    // Check if the tag is replaced
+    equals($('#line1').html(), 'Some <strong>paragraph</strong> with text', "The strong tag was applied");
 });
 
 test("Apply block formatting with a classname", function() {
