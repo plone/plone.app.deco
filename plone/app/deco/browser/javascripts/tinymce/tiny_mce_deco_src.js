@@ -11099,12 +11099,25 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 				update_styles : 1
 			});
 
-			t.serializer = new tinymce.dom.Serializer(s, t.dom, schema);
+            // ### BBB ###
+			t.undoManager = new tinymce.UndoManager(t);
+			t.schema = new tinymce.html.Schema(s);
+
+			t.serializer = new tinymce.dom.Serializer(s, t.dom, t.schema);
 
 			t.selection = new tinymce.dom.Selection(t.dom, t.getWin(), t.serializer);
 			t.forceBlocks = new tinymce.ForceBlocks(t, {
 				forced_root_block : s.forced_root_block
 			});
+			t.formatter = new tinymce.Formatter(t);
+
+
+			// Register default formats
+			t.formatter.register({
+				h1 : [
+					{block : 'h1', remove : 'all'}
+				]
+            });
 
 			t.editorCommands = new tinymce.EditorCommands(t);
 
