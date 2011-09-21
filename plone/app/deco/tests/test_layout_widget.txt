@@ -40,13 +40,6 @@ If we render the widget we get an empty layout widget:
 
   >>> print widget.render()
   <textarea id="id" name="name" class="layout-widget"></textarea>
-  <script type="text/javascript">
-  (function($) {
-      // Hide form and edit controls
-      $('#content').hide();
-      $('#edit-bar').hide();
-  })(jQuery);
-  </script>
 
 
 Adding some more attributes to the widget will make it display more:
@@ -58,13 +51,6 @@ Adding some more attributes to the widget will make it display more:
   >>> print widget.render()
   <textarea id="id" name="name" class="layout-widget">foo
   bar</textarea>
-  <script type="text/javascript">
-  (function($) {
-      // Hide form and edit controls
-      $('#content').hide();
-      $('#edit-bar').hide();
-  })(jQuery);
-  </script>
 
 
 We can also render the widget in display mode:
@@ -109,7 +95,7 @@ We didn't set a value for the field yet so we will get an empty widget like
 this:
 
   >>> layoutWidget.render()
-  u'<textarea id="id" name="name" class="layout-widget"></textarea>\n<script type="text/javascript">\n(function($) {\n    // Hide form and edit controls\n    $(\'#content\').hide();\n    $(\'#edit-bar\').hide();\n})(jQuery);\n</script>'
+  u'<textarea id="id" name="name" class="layout-widget"></textarea>\n'
 
 Now let's set the value of the field.
 
@@ -118,7 +104,7 @@ Now let's set the value of the field.
 The rendered edit widget will look like this:
 
   >>> layoutWidget.render()
-  u'<textarea id="id" name="name" class="layout-widget">foo\nbar</textarea>\n<script type="text/javascript">\n(function($) {\n    // Hide form and edit controls\n    $(\'#content\').hide();\n    $(\'#edit-bar\').hide();\n})(jQuery);\n</script>'
+  u'<textarea id="id" name="name" class="layout-widget">foo\nbar</textarea>\n'
 
 And the view widget will look like this:
   >>> layoutWidget.mode = interfaces.DISPLAY_MODE
