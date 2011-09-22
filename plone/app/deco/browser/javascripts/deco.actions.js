@@ -412,9 +412,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 if (tilecontent.find('.deco-rich-text-textarea')
                         .length === 0) {
 
-                    // Disable rich editing
-                    tilecontent.decoDisableEditor();
-
                     // Add new text area and set content
                     text = tilecontent.html();
                     height = tilecontent.height();
