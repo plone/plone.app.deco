@@ -35,7 +35,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     var DOM = tinymce.DOM;
 
-    tinymce.create('tinymce.themes.PloneTheme', {
+    window.parent.tinymce.create('tinymce.themes.PloneTheme', {
         init: function(ed, url) {
             var t = this,
                 s = ed.settings;
@@ -58,7 +58,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         }
     });
 
-    tinymce.ThemeManager.add('deco', tinymce.themes.PloneTheme);
+    window.parent.tinymce.ThemeManager.add('deco', window.parent.tinymce.themes.PloneTheme);
 
     // Define deco namespace if it doesn't exist
     if (typeof($.deco) === "undefined") {
@@ -82,8 +82,26 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Get element
         obj = $(this);
 
-        // Set content editable
-        obj.attr('contentEditable', true);
+        // Generate random id
+        var random_id = 1 + Math.floor(100000 * Math.random());
+        while ($("#deco-rich-text-init-" + random_id,
+               $.deco.document).length > 0) {
+            random_id = 1 + Math.floor(100000 * Math.random());
+        }
+        $(this).attr('id', 'deco-rich-text-init-' + random_id);
+
+        // Init rich editor
+        window.parent.tinyMCE.init({
+            mode : "exact",
+            elements : "deco-rich-text-init-" + random_id,
+            content_editable : true,
+            theme : "deco",
+            language_load : false,
+            formats : {
+                strong : {inline : 'strong'},
+                h1 : {block : 'h1', remove : 'all'}
+            }
+        });
 
         // Set editor class
         obj.addClass('deco-rich-text');
