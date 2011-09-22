@@ -40,7 +40,7 @@ $.fn.decoLayout = function() {
 
 // Create ajax stub function
 $.ajax = function (options) {
-    options.success("{test: 1}");
+    options.success({test: 1});
 };
 
 module("core", {
