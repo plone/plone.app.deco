@@ -81,7 +81,7 @@ test("Initialisation", function() {
 });
 
 test("Init without data", function() {
-    expect(4);
+    expect(3);
 
     // Empty data
     $("#form-widgets-ILayoutAware-content").val('');
@@ -90,7 +90,6 @@ test("Init without data", function() {
     equals($("#content").html(), "", 'Region content is still empty');
     equals($("#portal-column-one").html(), "", 'Portal column one is still empty');
     equals($.deco.executed.indexOf("initActions") != -1, true, 'Init actions is called');
-    equals($.deco.executed.indexOf("initNotify") != -1, true, 'Init notify is called');
 });
 
 test("Init with data", function() {
