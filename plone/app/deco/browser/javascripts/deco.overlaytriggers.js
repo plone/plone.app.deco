@@ -43,7 +43,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if (tiledata.action === 'cancel') {
 
                 // Close overlay
-                window.parent.jQuery.deco.overlay.close();
+                window.parent.frames['plone-cmsui-menu'].jQuery.deco.overlay.close();
 
             } else if (tiledata.action === 'save') {
 
