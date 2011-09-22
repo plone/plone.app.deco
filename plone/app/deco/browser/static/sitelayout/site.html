@@ -3,11 +3,6 @@
       xml:lang="en"
       lang="en">
   <head>
-    <!-- Panels -->
-    <link rel="panel" rev="content"           target="content" />
-    <link rel="panel" rev="portal-column-one" target="portal-column-one" />
-    <link rel="panel" rev="portal-column-two" target="portal-column-two" />
-
     <!-- Head elements -->
     <link  rel="tile" href="./@@plone.app.standardtiles.headtitle" />
     <link  rel="tile" href="./@@plone.app.standardtiles.stylesheets" />
@@ -72,19 +67,19 @@
 
       <div id="portal-columns" class="row">
         <div class="cell width-1:4 position-0">
-          <div id="portal-column-one">
+          <div data-panel="portal-column-one" id="portal-column-one">
             <div id="left-portlets" />
           </div>
         </div>
-        <div id="portal-column-content" class="cell width-1:2 position-1:4">
+        <divid="portal-column-content" class="cell width-1:2 position-1:4">
           <div id="path-bar" />
           <div id="lockinfo" />
           <div id="abovecontent-viewlets" />
-          <div id="content" />
+          <div data-panel="content" id="content" />
           <div id="belowcontent-viewlets" />
         </div>
         <div class="cell width-1:4 position-3:4">
-          <div id="portal-column-two">
+          <div data-panel="portal-column-two" id="portal-column-two">
             <div id="right-portlets" />
           </div>
         </div>

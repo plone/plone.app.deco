@@ -44,26 +44,26 @@ module("core", {
         $(document.body)
             .append(
                 $(document.createElement("div"))
-                    .attr("id", "content")
+                    .attr("data-panel", "content")
             );
         $(document.body)
             .append(
                 $(document.createElement("div"))
-                    .attr("id", "portal-column-one")
+                    .attr("data-panel", "portal-column-one")
             );
         $(document.body)
             .append($(document.createElement("textarea"))
                 .attr('id', 'form-widgets-ILayoutAware-content')
-                .val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><head><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></body></html>')
+                .val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><head></head><body><div data-panel="content">content text</div><div data-panel="portal-column-one">portal-column-one text</div></body></html>')
             );
 
         // Empty executed
         $.deco.executed = [];
     },
     teardown: function () {
-        $("#content").remove();
+        $("[data-panel=content]").remove();
         $("#content-edit").remove();
-        $("#portal-column-one").remove();
+        $("[data-panel=portal-column-one]").remove();
         $(".deco-toolbar").remove();
         $("#form-widgets-ILayoutAware-content").remove();
         $("#content-views").remove();
@@ -86,8 +86,8 @@ test("Init without data", function() {
     $("#form-widgets-ILayoutAware-content").val('');
 
     $.deco.init({url: 'http://nohost/test/edit'});
-    equals($("#content").html(), "", 'Region content is still empty');
-    equals($("#portal-column-one").html(), "", 'Portal column one is still empty');
+    equals($("[data-panel=content]").html(), "", 'Region content is still empty');
+    equals($("[data-panel=portal-column-one]").html(), "", 'Portal column one is still empty');
     equals($.deco.executed.indexOf("initActions") != -1, true, 'Init actions is called');
 });
 
@@ -96,11 +96,11 @@ test("Init with data", function() {
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
-    equals($("#content").html(), "content text", 'Region content is populated');
-    equals($("#portal-column-one").html(), "portal-column-one text", 'Portal column one is populated');
+    equals($("[data-panel=content]").html(), "content text", 'Region content is populated');
+    equals($("[data-panel=portal-column-one]").html(), "portal-column-one text", 'Portal column one is populated');
 
-    equals($("#content").hasClass('deco-panel'), true, 'Region content has deco-panel class');
-    equals($("#portal-column-one").hasClass('deco-panel'), true, 'Portal column one has deco-panel class');
+    equals($("[data-panel=content]").hasClass('deco-panel'), true, 'Region content has deco-panel class');
+    equals($("[data-panel=portal-column-one]").hasClass('deco-panel'), true, 'Portal column one has deco-panel class');
 
     equals($.deco.options.test, 1, 'Options are stored');
     equals($.deco.options.url, 'http://nohost/test', 'Url is stripped of /edit');
@@ -120,7 +120,7 @@ test("Init with data add url", function() {
     expect(0);
 
     // Set layout content
-    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><head><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" />    <link  rel="tile" target="tile-title" href="./@@plone.app.standardtiles.field?field=title" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one"><span id="tile-title"></span></div></body></html>')
+    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><head><link  rel="tile" target="tile-title" href="./@@plone.app.standardtiles.field?field=title" /></head><body><div data-panel="content">content text</div><div data-panel="portal-column-one"><span id="tile-title"></span></div></body></html>')
 
     // Init with add url
     // $.deco.init({url: 'http://nohost/test/++add++page'});

@@ -121,18 +121,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 content = $.deco.getDomTreeFromHtml(content);
 
                 // Find panels
-                content.find("link[rel=panel]").each(function () {
+                content.find("[data-panel]").each(function () {
 
                     // Local variables
-                    var target, rev;
-
-                    target = $(this).attr("target");
-                    rev = $(this).attr("rev");
-
-                    $("#" + target, $.deco.document)
-                        .addClass('deco-panel');
-                    $("#" + target, $.deco.document)
-                        .html(content.find("#" + rev).html());
+                    var panel_id = $(this).attr("data-panel");
+                    var target = $("[data-panel="+ panel_id + "]", $.deco.document)
+                    target.addClass('deco-panel');
+                    target.html(content.find("[data-panel="+ panel_id + "]").html());
                 });
 
                 // Init app tiles
