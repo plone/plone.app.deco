@@ -23,11 +23,6 @@ $.deco.initUpload = function () {
     $.deco.executed.push("initUpload");
 };
 
-// Create decoOverlay stub function
-$.fn.decoOverlay = function () {
-    $.deco.executed.push("decoOverlay");
-};
-
 // Create decoToolbar stub function
 $.fn.decoToolbar = function() {
     $.deco.executed.push("decoToolbar");
@@ -61,9 +56,6 @@ module("core", {
                 .attr('id', 'form-widgets-ILayoutAware-content')
                 .val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><link rel="layout" href="./@@test-layout" /><link rel="panel" rev="content" target="content" /><link rel="panel" rev="portal-column-one" target="portal-column-one" /></head><body><div class="deco-panel" id="content">content text</div><div class="deco-panel" id="portal-column-one">portal-column-one text</div></body></html>')
             );
-        $(document.body).append($(document.createElement("div")).attr("id", "content-views"));
-        $(document.body).append($(document.createElement("div")).addClass("contentActions"));
-        $(document.body).append($(document.createElement("div")).attr("id", "edit-bar"));
 
         // Empty executed
         $.deco.executed = [];
@@ -100,26 +92,20 @@ test("Init without data", function() {
 });
 
 test("Init with data", function() {
-    expect(17);
+    expect(12);
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
-    equals($("#content-edit").html(), "content text", 'Region content is populated');
+    equals($("#content").html(), "content text", 'Region content is populated');
     equals($("#portal-column-one").html(), "portal-column-one text", 'Portal column one is populated');
 
-    equals($("#content-edit").hasClass('deco-panel'), true, 'Region content has deco-panel class');
+    equals($("#content").hasClass('deco-panel'), true, 'Region content has deco-panel class');
     equals($("#portal-column-one").hasClass('deco-panel'), true, 'Portal column one has deco-panel class');
 
     equals($.deco.options.test, 1, 'Options are stored');
     equals($.deco.options.url, 'http://nohost/test', 'Url is stripped of /edit');
 
-    equals($.deco.executed.indexOf("decoOverlay") != -1, true, 'Overlay init is called');
-
     equals($(".deco-toolbar").length, 1, 'Toolbar div is added');
-
-    equals($("#content-views:hidden").length, 1, 'Content views are hidden');
-    equals($(".contentActions:hidden").length, 1, 'Content actions are hidden');
-    equals($("#edit-bar:hidden").length, 1, 'Edit bar is hidden');
 
     equals($.deco.options.panels.length, 2, "Two panels are stored on the options");
     equals($.deco.options.toolbar.length, 1, "Toolbar is stored on the options");
@@ -128,8 +114,6 @@ test("Init with data", function() {
 
     equals($(".deco-panel").hasClass('deco-blur'), false, "Panels are not blurred");
     equals($(".deco-toolbar").hasClass('deco-blur'), false, "Toolbar is not blurred");
-
-    equals($.deco.executed.indexOf("initUpload") != -1, true, 'Init upload is called');
 });
 
 test("Init with data add url", function() {
@@ -141,7 +125,7 @@ test("Init with data add url", function() {
     // Init with add url
     $.deco.init({url: 'http://nohost/test/++add++page'});
 
-    equals($("#content-edit").html(), "content text", 'Region content is populated');
+    equals($("#content").html(), "content text", 'Region content is populated');
     equals($('#portal-column-one').html().indexOf("tileUrl") != -1, true, 'App tile is loaded');
 });
 
