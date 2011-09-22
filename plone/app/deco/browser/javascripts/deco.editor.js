@@ -33,6 +33,33 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
 (function ($) {
 
+    var DOM = tinymce.DOM;
+
+    window.parent.tinymce.create('tinymce.themes.PloneTheme', {
+        init: function(ed, url) {
+            var t = this,
+                s = ed.settings;
+            t.editor = ed;
+        },
+
+        renderUI: function(o) {
+            return {
+                deltaHeight: 0
+            };
+        },
+
+        getInfo: function() {
+            return {
+                longname: 'Deco theme',
+                author: 'Four Digits',
+                authorurl: 'http://www.fourdigits.nl',
+                version: tinymce.majorVersion + "." + tinymce.minorVersion
+            }
+        }
+    });
+
+    window.parent.tinymce.ThemeManager.add('deco', window.parent.tinymce.themes.PloneTheme);
+
     // Define deco namespace if it doesn't exist
     if (typeof($.deco) === "undefined") {
         $.deco = {};
@@ -55,33 +82,30 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Get element
         obj = $(this);
 
-        // Set content editable
-        obj.attr('contentEditable', true);
+        // Generate random id
+        var random_id = 1 + Math.floor(100000 * Math.random());
+        while ($("#deco-rich-text-init-" + random_id,
+               $.deco.document).length > 0) {
+            random_id = 1 + Math.floor(100000 * Math.random());
+        }
+        $(this).attr('id', 'deco-rich-text-init-' + random_id);
+
+        // Init rich editor
+        window.parent.tinyMCE.init({
+            mode : "exact",
+            elements : "deco-rich-text-init-" + random_id,
+            content_editable : true,
+            theme : "deco",
+            language_load : false,
+            formats : {
+                strong : {inline : 'strong'},
+                h1 : {block : 'h1', remove : 'all'}
+            }
+        });
 
         // Set editor class
         obj.addClass('deco-rich-text');
     }
-
-    /**
-    * Disable the deco editor.
-    *
-    * @constructor
-    * @id jQuery.fn.decoDisableEditor
-    * @return {Object} Returns the deselected object.
-    */
-    $.fn.decoDisableEditor = function () {
-        var obj;
-
-        // Get element
-        obj = $(this);
-
-        // Set content editable to false
-        obj.attr('contentEditable', false);
-
-        // Remove editor class
-        obj.removeClass('deco-rich-text');
-    }
-
 
     /**
      * Exec a command on the editor
@@ -95,6 +119,29 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Exec command
         $.deco.document.execCommand(command, ui, value);
+    };
+
+    /**
+     * Apply formatting to the current selection
+     *
+     * @id jQuery.deco.applyFormat
+     * @param {String} tag Tag which needs to be applied
+     * @param {String} className Classname which needs to be applied can be
+     *                           emtpy
+     * @param {String} display Display of the format (either inline or block)
+     */
+    $.deco.applyFormat = function (tag, className, display) {
+        var range = $.textSelect('getRange');
+        if (display == 'block') {
+            var elem = $('<h1>');
+            var orig = range.startElement.parentNode;
+            for (var i = 0; i < orig.attributes.length; i++) {
+                var a = orig.attributes[i];
+                elem.attr(a.name, a.value);
+            }
+            elem.html($(orig).html());
+            $(orig).replaceWith(elem);
+        }
     };
 
 }(jQuery));

@@ -73,4 +73,12 @@
               bundle="default"
               inline="False"/>
 
+  <javascript cacheable="False"
+              compression="none"
+              cookable="False"
+              enabled="True"
+              id="++resource++plone.app.deco.javascripts/tinymce/tiny_mce_deco_src.js"
+              bundle="default"
+              inline="False"/>
+
 </object>
