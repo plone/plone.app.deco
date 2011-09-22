@@ -10,6 +10,7 @@ import plone.app.deco.tests.registry_testdata as td
 class DecoRegistryTest(unittest.TestCase):
 
     layer = DECO_INTEGRATION_TESTING
+    maxDiff = None
 
     def getLogger(self, value):
         return 'plone.app.deco'
