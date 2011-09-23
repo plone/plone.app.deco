@@ -44,7 +44,7 @@
                    tal:define="show_border context/@@plone/showEditableBorder; show_border python:show_border and not ajax_load"
                    tal:attributes="class python:show_border and 'documentEditable' or ''">
         <metal:slot define-slot="body">
-          <div id="content">
+          <div id="content" data-panel="content">
             <metal:header define-slot="header"/>
             <metal:bodytext define-slot="main">                                                            
 
@@ -87,7 +87,7 @@
       </metal:block>
     </metal:block>
 
-    <div id="portal-column-one" 
+    <div id="portal-column-one" data-panel="portal-column-one" 
         metal:define-slot="column_one_slot" 
         tal:condition="sl">
         <metal:portlets define-slot="portlets_one_slot">
@@ -95,7 +95,7 @@
         </metal:portlets>
     </div>
 
-    <div id="portal-column-two" 
+    <div id="portal-column-two" data-panel="portal-column-two"
         metal:define-slot="column_two_slot" 
         tal:condition="sr">
         <metal:portlets define-slot="portlets_two_slot">
