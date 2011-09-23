@@ -7,9 +7,15 @@ module("editor", {
 
         // Init editor
         $('.test').decoEditor();
-        $.deco.document = window.document;  // Set document
+        $.deco.editor.registerFormat('blockclass', {block : 'div', attributes : {'class' : 'callout'}, remove : 'all'})
+        $.deco.editor.registerFormat('inlineclass', {block : 'span', attributes : {'class' : 'highlight'}, remove : 'all'})
+
+        // Set document
+        $.deco.document = window.document;
     },
     teardown: function () {
+
+        // Remove test div
         $('.test').remove();
     }
 });
@@ -51,7 +57,22 @@ test("Apply inline formatting", function() {
 });
 
 test("Apply block formatting with a classname", function() {
-    ok(false, "not implemented");
+    expect(2);
+
+    // Set selection within test paragraph
+    $.textSelect('setRange', {
+    	start : 5,
+    	startElement : $('#line1'),
+    	end : 14,
+    	endElement : $('#line1')
+    });
+    
+    // Set header tag
+    $.deco.editor.applyFormat('blockclass');
+
+    // Check if the tag is replaced
+    equals($('#line1').get(0).tagName.toLowerCase(), 'div', "Div format was applied");
+    equals($('#line1').hasClass('callout'), true, "Callout class was applied");
 });
 
 test("Apply inline formatting with a classname", function() {
