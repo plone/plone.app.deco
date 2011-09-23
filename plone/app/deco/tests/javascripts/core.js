@@ -15,8 +15,12 @@ $.deco.initNotify = function () {
 $.deco.undo = {
     init : function () {
         $.deco.executed.push("undo.init");
-    }
-}
+    },
+    snapshot : function () {
+        $.deco.executed.push("undo.snapshot");
+    },
+
+};
 
 // Create initUpload stub function
 $.deco.initUpload = function () {
@@ -35,7 +39,50 @@ $.fn.decoLayout = function() {
 
 // Create ajax stub function
 $.ajax = function (options) {
-    options.success({test: 1});
+    if (options.url ===  "http://nohost/test/@@deco-config") {
+        options.success({test: 1,
+            tiles: [
+                { "label" : "Fields",
+                "name" : "fields",
+                "tiles" : [ { "available_actions" : [ "tile-align-block",
+                          "tile-align-right",
+                          "tile-align-left"
+                        ],
+                      "category" : "fields",
+                      "default_value" : null,
+                      "favorite" : false,
+                      "label" : "Title",
+                      "name" : "plone.app.standardtiles.title",
+                      "read_only" : false,
+                      "rich_text" : true,
+                      "settings" : false,
+                      "tile_type" : "app",
+                      "weight" : 10
+                    },
+                    { "available_actions" : [ "tile-align-block",
+                          "tile-align-right",
+                          "tile-align-left"
+                        ],
+                      "category" : "fields",
+                      "default_value" : null,
+                      "favorite" : false,
+                      "label" : "Description",
+                      "name" : "plone.app.standardtiles.description",
+                      "read_only" : false,
+                      "rich_text" : true,
+                      "settings" : false,
+                      "tile_type" : "app",
+                      "weight" : 20
+                    }
+                  ],
+                "weight" : 30
+                } 
+            ]
+        });
+    }
+    else if (options.url === "./@@plone.app.standardtiles.field?field=title?ignore_context=false") {
+        options.success('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"</head><body><p>Samuel L. Ipsum</p></body></html>');
+    }
 };
 
 module("core", {
@@ -116,17 +163,17 @@ test("Init with data", function() {
     equals($(".deco-toolbar").hasClass('deco-blur'), false, "Toolbar is not blurred");
 });
 
-test("Init with data add url", function() {
-    expect(0);
+test("Init with tile data", function() {
+    expect(2);
 
     // Set layout content
-    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><head><link  rel="tile" target="tile-title" href="./@@plone.app.standardtiles.field?field=title" /></head><body><div data-panel="content">content text</div><div data-panel="portal-column-one"><span id="tile-title"></span></div></body></html>')
+    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><body><div data-panel="content">content text</div><div data-panel="portal-column-one"><div class="deco-tile deco-plone.app.standardtiles.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title"></span></div></div></div></body></html>');
 
     // Init with add url
-    // $.deco.init({url: 'http://nohost/test/++add++page'});
+    $.deco.init({url: 'http://nohost/test/edit'});
 
-    // equals($("#content").html(), "content text", 'Region content is populated');
-    // equals($('#portal-column-one').html().indexOf("tileUrl") != -1, true, 'App tile is loaded');
+    equals($("[data-panel=content]").html(), "content text", 'Region content is populated');
+    equals($('[data-panel=portal-column-one]').html().indexOf("Samuel L. Ipsum") != -1, true, 'App tile is loaded');
 });
 
 test("Add/remove head tags", function() {
