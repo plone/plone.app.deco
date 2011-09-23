@@ -44,7 +44,7 @@ test("Apply inline formatting", function() {
     });
 
     // Set strong to selection
-    tinyMCE.execCommand('FormatBlock', false, 'strong');
+    $.deco.editor.applyFormat('strong');
 
     // Check if the tag is replaced
     equals($('#line1').html(), 'Some <strong>paragraph</strong> with text', "The strong tag was applied");
