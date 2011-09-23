@@ -26,7 +26,7 @@ test("Apply block formatting", function() {
     });
     
     // Set header tag
-    tinyMCE.execCommand('FormatBlock', false, 'h1');
+    $.deco.editor.applyFormat('h1');
 
     // Check if the tag is replaced
     equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");

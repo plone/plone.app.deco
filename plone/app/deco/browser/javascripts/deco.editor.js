@@ -124,24 +124,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     /**
      * Apply formatting to the current selection
      *
-     * @id jQuery.deco.applyFormat
-     * @param {String} tag Tag which needs to be applied
-     * @param {String} className Classname which needs to be applied can be
-     *                           emtpy
-     * @param {String} display Display of the format (either inline or block)
+     * @id jQuery.deco.editor.applyFormat
+     * @param {String} format Name of the registered format to apply
      */
-    $.deco.applyFormat = function (tag, className, display) {
-        var range = $.textSelect('getRange');
-        if (display == 'block') {
-            var elem = $('<h1>');
-            var orig = range.startElement.parentNode;
-            for (var i = 0; i < orig.attributes.length; i++) {
-                var a = orig.attributes[i];
-                elem.attr(a.name, a.value);
-            }
-            elem.html($(orig).html());
-            $(orig).replaceWith(elem);
-        }
+    $.deco.editor.applyFormat = function (format) {
+
+        // Apply format
+        tinyMCE.activeEditor.formatter.apply(format);
     };
 
 }(jQuery));
