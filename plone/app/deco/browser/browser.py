@@ -129,9 +129,12 @@ class DecoConfigView(BrowserView):
         self.request.response.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
         adapted = IDecoRegistryAdapter(registry)
+        pm = getToolByName(self.context, 'portal_membership')
         kwargs = {
             'type': self.obtainType(),
             'context': self.context,
             'request': self.request,
         }
-        return json.dumps(adapted(**kwargs))
+        result = adapted(**kwargs)
+        result['can_change_layout'] = bool(pm.checkPermission('Plone: Change Deco Layout', self.context))
+        return json.dumps(result)
