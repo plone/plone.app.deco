@@ -91,6 +91,7 @@ module("layout", {
 
         // Empty executed
         $.deco.executed = [];
+        $.deco.document = document;
     },
     teardown: function () {
         $("#content").remove();

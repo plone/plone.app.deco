@@ -22,8 +22,7 @@ $.deco.undo = {
     },
     snapshot : function () {
         $.deco.executed.push("undo.snapshot");
-    },
-
+    }
 };
 
 // Create initUpload stub function
