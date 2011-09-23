@@ -11,6 +11,10 @@ $.deco.initNotify = function () {
     $.deco.executed.push("initNotify");
 };
 
+$.deco.execCommand = function () {
+    $.deco.executed.push("execCommand");
+};
+
 // Create undo stub class
 $.deco.undo = {
     init : function () {
