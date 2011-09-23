@@ -136,5 +136,11 @@ class DecoConfigView(BrowserView):
             'request': self.request,
         }
         result = adapted(**kwargs)
-        result['can_change_layout'] = bool(pm.checkPermission('Plone: Change Deco Layout', self.context))
+        can_change_layout = pm.checkPermission('Plone: Change Deco Layout', self.context)
+        result['can_change_layout'] = bool(can_change_layout)
+        if not can_change_layout:
+            if 'insert' in result['default_available_actions']:
+                result['default_available_actions'].remove('insert')
+            if 'add-tile' in result['default_available_actions']:
+                result['default_available_actions'].remove('add-tile')
         return json.dumps(result)
