@@ -25,10 +25,10 @@ test("Apply block formatting", function() {
 
     // Set selection within test paragraph
     $.textSelect('setRange', {
-    	start : 5,
-    	startElement : $('#line1'),
-    	end : 14,
-    	endElement : $('#line1')
+        start : 5,
+        startElement : $('#line1'),
+        end : 14,
+        endElement : $('#line1')
     });
     
     // Set header tag
@@ -61,10 +61,10 @@ test("Apply block formatting with a classname", function() {
 
     // Set selection within test paragraph
     $.textSelect('setRange', {
-    	start : 5,
-    	startElement : $('#line1'),
-    	end : 14,
-    	endElement : $('#line1')
+        start : 5,
+        startElement : $('#line1'),
+        end : 14,
+        endElement : $('#line1')
     });
     
     // Set header tag
