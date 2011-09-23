@@ -7,8 +7,8 @@ module("editor", {
 
         // Init editor
         $('.test').decoEditor();
-        $.deco.editor.registerFormat('blockclass', {block : 'div', attributes : {'class' : 'callout'}, remove : 'all'})
-        $.deco.editor.registerFormat('inlineclass', {block : 'span', attributes : {'class' : 'highlight'}, remove : 'all'})
+        $.deco.editor.registerFormat('blockclass', {block : 'div', attributes : {'class' : 'callout'}, expand : false, wrapper : true })
+        $.deco.editor.registerFormat('inlineclass', {inline : 'span', attributes : {'class' : 'highlight'}})
 
         // Set document
         $.deco.document = window.document;
@@ -30,7 +30,7 @@ test("Apply block formatting", function() {
         end : 14,
         endElement : $('#line1')
     });
-    
+
     // Set header tag
     $.deco.editor.applyFormat('h1');
 
@@ -76,7 +76,21 @@ test("Apply block formatting with a classname", function() {
 });
 
 test("Apply inline formatting with a classname", function() {
-    ok(false, "not implemented");
+    expect(1);
+
+    // Set selection within test paragraph
+    $.textSelect('setRange', {
+        start : 5,
+        startElement : $('#line1'),
+        end : 14,
+        endElement : $('#line1')
+    });
+    
+    // Set header tag
+    $.deco.editor.applyFormat('inlineclass');
+
+    // Check if the tag is replaced
+    equals($('#line1').html(), 'Some <span class="highlight">paragraph</span> with text', "The strong tag was applied");
 });
 
 test("Apply block formatting to a selection covering multiple block elements", function() {

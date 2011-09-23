@@ -130,7 +130,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.editor.applyFormat = function (format) {
 
         // Apply format
-        tinyMCE.activeEditor.formatter.apply(format);
+        tinymce.activeEditor.formatter.apply(format);
+    };
+
+    /**
+     * Register format
+     *
+     * @id jQuery.deco.editor.registerFormat
+     * @param {String} name Name of the registered format to apply
+     * @param {Object} format Formatting object
+     */
+    $.deco.editor.registerFormat = function (name, format) {
+
+        // Apply format
+        tinymce.activeEditor.formatter.register(name, format);
     };
 
 }(jQuery));
