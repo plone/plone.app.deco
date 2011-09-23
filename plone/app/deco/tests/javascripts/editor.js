@@ -1,30 +1,21 @@
 module("editor", {
     setup: function () {
-        $(document.body).append($('<div id="test">' +
+        $(document.body).append($('<div class="test">' +
             '<p id="line1">Some paragraph with text</p>' +
             '<p id="line2">Some more text</p>' +
             '</div>'));
+
         // Init editor
-        tinyMCE.init({
-            mode : "exact",
-            elements : "test",
-            content_editable : true,
-            theme : "deco",
-            language_load : false,
-            formats : {
-                strong : {inline : 'strong'},
-                h1 : {block : 'h1', remove : 'all'}
-            }
-        });
+        $('.test').decoEditor();
         $.deco.document = window.document;  // Set document
     },
     teardown: function () {
-        $('#test').remove();
+        $('.test').remove();
     }
 });
 
 test("Apply block formatting", function() {
-    expect(2);
+    expect(1);
 
     // Set selection within test paragraph
     $.textSelect('setRange', {
@@ -39,7 +30,6 @@ test("Apply block formatting", function() {
 
     // Check if the tag is replaced
     equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
-    equals($('#line1').html(), 'Some paragraph with text', "Children were cloned");
 });
 
 test("Apply inline formatting", function() {
