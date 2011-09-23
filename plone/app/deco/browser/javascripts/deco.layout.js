@@ -1906,14 +1906,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.getPageContent = function () {
 
         // Content
-        var content = "";
-        var header = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n';
-        var footer = '</html>\n';
-        var body = "";
-        var links = new Array();
-        var tilecount = 0;
-        var id = "";
-        links.push({rel: "layout", rev: "", target: "", href: "./@@page-site-layout"});
+        var content,
+            body = "",
+            tilecount = 0,
+            panel_id = "";
 
         // Disable edit html source
         $.deco.disableEditHtmlSource();
@@ -1922,14 +1918,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         body += "  <body>\n";
 
         // Loop through panels
-        $(".deco-panel", $.deco.document).each(function () {
+        $("[data-panel]", $.deco.document).each(function () {
 
             // Add open panel tag
-            id = $(this).attr("id");
-            body += '    <div id="' + id + '">\n';
-
-            // Add panel link
-            links.push({rel: "panel", rev: id, target: id, href: ""});
+            panel_id = $(this).attr("panel_id");
+            body += '    <div data-panel="' + panel_id + '">\n';
 
             // Loop through rows
             $(this).children(".deco-grid-row").each(function () {
@@ -2061,30 +2054,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Add close tag
         body += "  </body>\n";
 
-        // Add header
-        content += header;
-        content += '  <head>\n';
-        $(links).each(function () {
-            content += '    <link ';
-            if (this.rel !== "") {
-                content += ' rel="' + this.rel + '"';
-            }
-            if (this.rev !== "") {
-                content += ' rev="' + this.rev + '"';
-            }
-            if (this.target !== "") {
-                content += ' target="' + this.target + '"';
-            }
-            if (this.href !== "") {
-                content += ' href="' + this.href + '"';
-            }
-            content += ' />\n';
-        });
-        content += '  </head>\n';
+        content = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n';
         content += body;
-        content += footer;
-
-        // Return content
+        content += '</html>\n';
         return content;
     };
 

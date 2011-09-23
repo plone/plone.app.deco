@@ -52,34 +52,13 @@ $.deco.options = {
     ]
 };
 
+var content_html = '<div data-panel="content">content text</div><div data-panel="portal-column-one">column one text</div>';
+
 module("layout", {
     setup: function () {
         // We'll create a div element for the overlay
         $(document.body)
-            .append(
-                $(document.createElement("div"))
-                    .attr("id", "content")
-                    .addClass("deco-panel")
-                    .append(
-                        $(document.createElement("div"))
-                            .addClass("deco-text-tile deco-tile")
-                            .html("text content")
-                            .append(
-                                $(document.createElement("div"))
-                                    .addClass("deco-tile-content")
-                                    .append(
-                                        $(document.createElement("p"))
-                                            .html("text content")
-                                    )
-                            )
-                    )
-            );
-        $(document.body)
-            .append(
-                $(document.createElement("div"))
-                    .attr("id", "portal-column-one")
-                    .addClass("deco-panel")
-            );
+            .append($(content_html));
         $(document.body)
             .append(
                 $(document.createElement("div"))
@@ -94,10 +73,8 @@ module("layout", {
         $.deco.document = document;
     },
     teardown: function () {
-        $("#content").remove();
-        $("#content-edit").remove();
-        $("#portal-column-one").remove();
-        $("#form-widgets-ILayoutAware-layout").remove();
+        $("[data-panel=content]").remove();
+        $("[data-panel=portal-column-one]").remove();
     }
 });
 
@@ -115,5 +92,6 @@ test("Init without data", function() {
 
     // Init panel
     $.deco.options.panels.decoLayout();
+    equals($.deco.getPageContent().indexOf(content_html) != -1, true, "getPageContent is round-tripable");
 
 });
