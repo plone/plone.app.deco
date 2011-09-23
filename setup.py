@@ -9,6 +9,12 @@ if sys.version_info[0] == 2 and sys.version_info[1] < 6:
 else:
     requires = []
 
+tests_require = ['interlude',
+                 'z3c.form [test]',
+                 'unittest2',
+                 'plone.app.testing',
+                 'selenium>=2.0a5']
+
 setup(name='plone.app.deco',
       version=version,
       description="Package for Deco UI functionality",
@@ -40,12 +46,8 @@ setup(name='plone.app.deco',
           'plone.app.page',
           'plone.app.cmsui',
       ] + requires,
-      extras_require={
-          'test': [
-            'interlude',
-            'z3c.form [test]',
-            'unittest2',
-            'plone.app.testing', ]},
+      tests_require=tests_require,
+      extras_require={'test': tests_require},
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone
