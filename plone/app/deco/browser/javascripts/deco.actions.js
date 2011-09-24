@@ -191,132 +191,112 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register paragraph action
         $.deco.registerAction('paragraph', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "p");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("p");
             }
         });
 
         // Register heading action
         $.deco.registerAction('heading', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "h2");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("h2");
             }
         });
 
         // Register subheading action
         $.deco.registerAction('subheading', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "h3");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("h3");
             }
         });
 
         // Register discreet action
         $.deco.registerAction('discreet', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "p");
-                $.deco.execCommand("mceSetCSSClass", false, "discreet");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("discreet");
             }
         });
 
         // Register literal action
         $.deco.registerAction('literal', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "pre");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("pre");
             }
         });
 
         // Register quote action
         $.deco.registerAction('quote', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "div");
-                $.deco.execCommand("mceSetCSSClass", false, "pullquote");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("pullquote");
             }
         });
 
         // Register callout action
         $.deco.registerAction('callout', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "p");
-                $.deco.execCommand("mceSetCSSClass", false, "callout");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("callout");
             }
         });
 
         // Register highlight action
         $.deco.registerAction('highlight', {
             exec: function () {
-                $.deco.execCommand("mceSetCSSClass", false, "visualHighlight");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("highlight");
             }
         });
 
         // Register sub action
         $.deco.registerAction('sub', {
             exec: function () {
-                $.deco.execCommand("Subscript");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("sub");
             }
         });
 
         // Register sup action
         $.deco.registerAction('sup', {
             exec: function () {
-                $.deco.execCommand("Superscript");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("sup");
             }
         });
 
         // Register remove format action
         $.deco.registerAction('remove-format', {
             exec: function () {
-                $.deco.execCommand("RemoveFormat");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("removeformat");
             }
         });
 
         // Register pagebreak action
         $.deco.registerAction('pagebreak', {
             exec: function () {
-                $.deco.execCommand("FormatBlock", false, "p");
-                $.deco.execCommand("mceSetCSSClass", false, "pagebreak");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("pagebreak");
             }
         });
 
         // Register justify left action
         $.deco.registerAction('justify-left', {
             exec: function () {
-                $.deco.execCommand("mceSetCSSClass", false, "justify-left");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("justify-left");
             }
         });
 
         // Register justify center action
         $.deco.registerAction('justify-center', {
             exec: function () {
-                $.deco.execCommand("mceSetCSSClass", false, "justify-center");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("justify-center");
             }
         });
 
         // Register justify right action
         $.deco.registerAction('justify-right', {
             exec: function () {
-                $.deco.execCommand("mceSetCSSClass", false, "justify-right");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("justify-right");
             }
         });
 
         // Register justify full action
         $.deco.registerAction('justify-justify', {
             exec: function () {
-                $.deco.execCommand("mceSetCSSClass", false, "justify-justify");
-                $.deco.fixWebkitSpan();
+                $.deco.editor.applyFormat("justify-justify");
             }
         });
 

@@ -29,10 +29,10 @@ test("Apply block formatting", function() {
     rng.setEnd($('#line1').get(0).firstChild, 14);
 
     // Set header tag
-    $.deco.editor.applyFormat('h1');
+    $.deco.editor.applyFormat('h2');
 
     // Check if the tag is replaced
-    equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Header format was applied");
+    equals($('#line1').get(0).tagName.toLowerCase(), 'h2', "Header format was applied");
 });
 
 test("Apply inline formatting", function() {
@@ -90,11 +90,11 @@ test("Apply block formatting to a selection covering multiple block elements", f
     rng.setEnd($('#line2').get(0).firstChild, 14);
 
     // Set header tag
-    $.deco.editor.applyFormat('h1');
+    $.deco.editor.applyFormat('h2');
 
     // Check if the tag is replaced
-    equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Line 1 has the header format applied");
-    equals($('#line2').get(0).tagName.toLowerCase(), 'h1', "Line 2 has the header format applied");
+    equals($('#line1').get(0).tagName.toLowerCase(), 'h2', "Line 1 has the header format applied");
+    equals($('#line2').get(0).tagName.toLowerCase(), 'h2', "Line 2 has the header format applied");
 });
 
 test("Apply inline formatting to a selection covering multiple block elements", function() {
