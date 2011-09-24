@@ -11104,6 +11104,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			t.schema = new tinymce.html.Schema(s);
 
 			t.serializer = new tinymce.dom.Serializer(s, t.dom, t.schema);
+			t.parser = new tinymce.html.DomParser(s, t.schema);
 
 			t.selection = new tinymce.dom.Selection(t.dom, t.getWin(), t.serializer);
 			t.forceBlocks = new tinymce.ForceBlocks(t, {

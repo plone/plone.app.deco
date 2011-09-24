@@ -127,7 +127,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.execCommand = function (command, ui, value) {
 
         // Exec command
-        $.deco.document.execCommand(command, ui, value);
+        window.parent.tinyMCE.activeEditor.execCommand(command, ui, value);
     };
 
     /**
@@ -139,7 +139,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.editor.applyFormat = function (format) {
 
         // Apply format
-        tinymce.activeEditor.formatter.apply(format);
+        window.parent.tinyMCE.activeEditor.formatter.apply(format);
     };
 
     /**

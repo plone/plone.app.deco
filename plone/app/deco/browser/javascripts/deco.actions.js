@@ -143,7 +143,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register strong action
         $.deco.registerAction('strong', {
             exec: function () {
-                $.deco.execCommand("Bold");
+                $.deco.editor.applyFormat("strong");
             },
             shortcut: {
                 ctrl: true,
@@ -156,7 +156,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register emphasis action
         $.deco.registerAction('em', {
             exec: function () {
-                $.deco.execCommand("Italic");
+                $.deco.editor.applyFormat("em");
             }
         });
 
