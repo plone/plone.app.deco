@@ -99,8 +99,31 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             language_load : false,
             formats : {
                 strong : {inline : 'strong'},
-                h1 : {block : 'h1', remove : 'all'}
-            }
+                em : {inline : 'em'},
+                h2 : {block : 'h2', remove : 'all'},
+                h3 : {block : 'h3', remove : 'all'},
+                p : {block : 'p', remove : 'all'},
+                sub : {inline : 'sub', remove : 'all'},
+                sup : {inline : 'sup', remove : 'all'},
+                discreet : {block : 'p',  attributes : {'class' : 'discreet'}, remove : 'all'},
+                pre : {block : 'pre', remove : 'all'},
+                pullquote : {block : 'q',  attributes : {'class' : 'pullquote'}, remove : 'all'},
+                callout : {block : 'p',  attributes : {'class' : 'callout'}, remove : 'all'},
+                highlight : {inline : 'span',  attributes : {'class' : 'visualHighlight'}, remove : 'all'},
+                pagebreak : {block : 'p',  attributes : {'class' : 'pagebreak'}, remove : 'all'},
+                'justify-left' : {selector : 'p,h2,h3,pre,q', attributes : {'class' : 'justify-left'}, remove : 'all'},
+                'justify-center' : {selector : 'p,h2,h3,pre,q', attributes : {'class' : 'justify-center'}, remove : 'all'},
+                'justify-right' : {selector : 'p,h2,h3,pre,q', attributes : {'class' : 'justify-right'}, remove : 'all'},
+                'justify-justify' : {selector : 'p,h2,h3,pre,q', attributes : {'class' : 'justify-justify'}, remove : 'all'}
+            },
+            valid_elements : "@[id|class|title|dir<ltr?rtl|lang|xml::lang]," +
+                "a[rel|rev|charset|hreflang|tabindex|accesskey|type|" +
+                "name|href|target|title|class]," +
+                "strong/b,em/i,strike,u,#p,-sub,-sup,-blockquote," +
+                "-div,-span,-code,-pre,address,-h1,-h2,-h3,-h4,-h5,-h6,hr," +
+                "-ol[type|compact],-ul[type|compact],-li,dd,dl,dt," +
+                "br,abbr,acronym,del[datetime|cite],ins[datetime|cite]," +
+                "bdo,dfn,kbd,q[cite],samp,small,var,big"
         });
 
         // Set editor class
@@ -118,30 +141,32 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.execCommand = function (command, ui, value) {
 
         // Exec command
-        $.deco.document.execCommand(command, ui, value);
+        window.parent.tinyMCE.activeEditor.execCommand(command, ui, value);
     };
 
     /**
      * Apply formatting to the current selection
      *
-     * @id jQuery.deco.applyFormat
-     * @param {String} tag Tag which needs to be applied
-     * @param {String} className Classname which needs to be applied can be
-     *                           emtpy
-     * @param {String} display Display of the format (either inline or block)
+     * @id jQuery.deco.editor.applyFormat
+     * @param {String} format Name of the registered format to apply
      */
-    $.deco.applyFormat = function (tag, className, display) {
-        var range = $.textSelect('getRange');
-        if (display == 'block') {
-            var elem = $('<h1>');
-            var orig = range.startElement.parentNode;
-            for (var i = 0; i < orig.attributes.length; i++) {
-                var a = orig.attributes[i];
-                elem.attr(a.name, a.value);
-            }
-            elem.html($(orig).html());
-            $(orig).replaceWith(elem);
-        }
+    $.deco.editor.applyFormat = function (format) {
+
+        // Apply format
+        window.parent.tinyMCE.activeEditor.formatter.apply(format);
+    };
+
+    /**
+     * Register format
+     *
+     * @id jQuery.deco.editor.registerFormat
+     * @param {String} name Name of the registered format to apply
+     * @param {Object} format Formatting object
+     */
+    $.deco.editor.registerFormat = function (name, format) {
+
+        // Apply format
+        tinymce.activeEditor.formatter.register(name, format);
     };
 
 }(jQuery));
