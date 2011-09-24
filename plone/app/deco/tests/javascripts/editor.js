@@ -94,11 +94,41 @@ test("Apply inline formatting with a classname", function() {
 });
 
 test("Apply block formatting to a selection covering multiple block elements", function() {
-    ok(false, "not implemented");
+    expect(2);
+
+    // Set selection within test paragraph
+    $.textSelect('setRange', {
+        start : 5,
+        startElement : $('#line1'),
+        end : 14,
+        endElement : $('#line2')
+    });
+
+    // Set header tag
+    $.deco.editor.applyFormat('h1');
+
+    // Check if the tag is replaced
+    equals($('#line1').get(0).tagName.toLowerCase(), 'h1', "Line 1 has the header format applied");
+    equals($('#line2').get(0).tagName.toLowerCase(), 'h1', "Line 2 has the header format applied");
 });
 
 test("Apply inline formatting to a selection covering multiple block elements", function() {
-    ok(false, "not implemented");
+    expect(2);
+
+    // Set selection within test paragraph
+    $.textSelect('setRange', {
+        start : 5,
+        startElement : $('#line1'),
+        end : 4,
+        endElement : $('#line2')
+    });
+
+    // Set strong to selection
+    $.deco.editor.applyFormat('strong');
+
+    // Check if the tag is replaced
+    equals($('#line1').html(), 'Some <strong>paragraph with text</strong>', "The strong tag was applied to line 1");
+    equals($('#line2').html(), '<strong>Some</strong> more text', "The strong tag was applied to line 2");
 });
 
 test("Apply inline formatting to a selection spanning partial elements", function() {
