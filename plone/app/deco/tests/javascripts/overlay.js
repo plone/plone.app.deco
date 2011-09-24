@@ -78,6 +78,7 @@ module("overlay", {
             .append($(document.createElement("div"))
                 .addClass("deco-title-tile")
             );
+        $.deco.document = document;
         overlay.decoOverlay();
     },
     teardown: function () {

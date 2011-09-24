@@ -94,7 +94,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                   $.deco.document).each(function () {
 
                     // Remove resizing state
-                    $(this).parents(".deco-panel")
+                    $(this).parents("[data-panel]")
                         .removeClass("deco-panel-resizing");
                     $(this).parent().removeClass("deco-row-resizing");
                     $(this).parent().children(".deco-resize-placeholder")
@@ -336,7 +336,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(".deco-resize-handle-helper", $.deco.document).each(function () {
 
                 // Get panel
-                var panel = $(this).parents(".deco-panel");
+                var panel = $(this).parents("[data-panel]");
 
                 // Get column sizes
                 var column_sizes = $(this).data("column_sizes").split(" ");
@@ -375,7 +375,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var TileMousemove = function (e) {
 
             // Check if dragging
-            if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
+            if ($(this).parents("[data-panel]").hasClass("deco-panel-dragging")) {
 
                 // Hide all dividers
                 $(".deco-selected-divider", $.deco.document)
@@ -558,7 +558,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Get layout object
             var tile = $(this);
-            var obj = tile.parents(".deco-panel");
+            var obj = tile.parents("[data-panel]");
 
             var tile_config = $(this).decoGetTileConfig();
 
@@ -755,7 +755,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(this).mousemove(function (e) {
 
                 // Get layout object
-                var obj = $(this).parents(".deco-panel");
+                var obj = $(this).parents("[data-panel]");
 
                 // Check if dragging
                 if (obj.hasClass("deco-panel-dragging")) {
@@ -924,7 +924,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             var DragMove = function (event) {
                 var helper = $('.deco-helper-tile', $.deco.document);
-                var offset = helper.parents(".deco-panel").offset();
+                var offset = helper.parents("[data-panel]").offset();
                 helper.css("top", event.pageY + 3 - offset.top);
                 helper.css("left", event.pageX + 3 - offset.left);
             };
@@ -962,7 +962,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             var clone = originaltile.clone(true);
                             originaltile.addClass("deco-original-tile");
 
-                            originaltile.parents(".deco-panel").append(clone);
+                            originaltile.parents("[data-panel]").append(clone);
                             clone
                                 .css({
                                     "width": originaltile.width(),
@@ -993,7 +993,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.fn.decoHandleDragEnd = function () {
 
         // Get layout object
-        var obj = $(this).parents(".deco-panel");
+        var obj = $(this).parents("[data-panel]");
 
         // Remove dragging class from content
         $.deco.options.panels.removeClass("deco-panel-dragging deco-panel-dragging-new");
@@ -1431,7 +1431,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 );
 
                 // Set resizing state
-                $(this).parents(".deco-panel").addClass("deco-panel-resizing");
+                $(this).parents("[data-panel]").addClass("deco-panel-resizing");
                 $(this).parent().addClass("deco-row-resizing");
                 $(".deco-selected-tile", $.deco.document).children(".deco-tile-content").blur();
 
@@ -1686,7 +1686,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .html(text)
                 .decoEditor();
         });
-    }
+    };
 
 
     /**
@@ -1718,7 +1718,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.addHeadTags(url, value);
 
                 // Add tile
-                $.deco.addTile(type, '<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
+                $.deco.addTile(type,
+                    '<p class="hiddenStructure tileUrl">' + url + '</p>' + 
+                        value.find('.temp_body_tag').html());
             }
         });
     };
@@ -1878,7 +1880,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                $("#" + tile_config.id, $.deco.document).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
+                $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
@@ -1887,11 +1889,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     value += $(this).html() + "\n";
                 });
                 value = value.replace(/<br[^>]*>/ig, "\n");
-                $("#" + tile_config.id, $.deco.document).find('textarea').attr('value', value);
+                $("#" + tile_config.id).find('textarea').attr('value', value);
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
             case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                $($.deco.document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
+                $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
                 break;
             }
         }
@@ -1906,14 +1908,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.deco.getPageContent = function () {
 
         // Content
-        var content = "";
-        var header = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n';
-        var footer = '</html>\n';
-        var body = "";
-        var links = new Array();
-        var tilecount = 0;
-        var id = "";
-        links.push({rel: "layout", rev: "", target: "", href: "./@@page-site-layout"});
+        var content,
+            body = "",
+            tilecount = 0,
+            panel_id = "";
 
         // Disable edit html source
         $.deco.disableEditHtmlSource();
@@ -1922,14 +1920,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         body += "  <body>\n";
 
         // Loop through panels
-        $(".deco-panel", $.deco.document).each(function () {
+        $("[data-panel]", $.deco.document).each(function () {
 
             // Add open panel tag
-            id = $(this).attr("id");
-            body += '    <div id="' + id + '">\n';
-
-            // Add panel link
-            links.push({rel: "panel", rev: id, target: id, href: ""});
+            panel_id = $(this).attr("data-panel");
+            body += '    <div data-panel="' + panel_id + '">\n';
 
             // Loop through rows
             $(this).children(".deco-grid-row").each(function () {
@@ -1944,14 +1939,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     $(this).children(".deco-grid-cell").each(function () {
 
                         // Add cell start tag
-                        body += '        <div class="' + $(this).attr("class") + '">\n';
+                        body += '        <div class="' +
+                            $(this).attr("class") + '">\n';
 
                         // Loop through tiles
                         $(this).children(".deco-tile").each(function () {
 
                             // Get tile type
-                            var tiletype = '';
-                            var classes = $(this).attr('class').split(" ");
+                            var tiletype = '',
+                                classes = $(this).attr('class').split(" ");
                             $(classes).each(function () {
                                 var classname = this.match(/^deco-(.*)-tile$/);
                                 if (classname !== null) {
@@ -1973,7 +1969,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             }
 
                             // Predefine vars
-                            var url, html_id;
+                            var tile_url;
 
                             switch (tile_config.tile_type) {
                             case "text":
@@ -1988,23 +1984,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 body += '          <div class="deco-tile-content">\n';
 
                                 // Get url
-                                var tile_url = $(this).find('.tileUrl').html();
-
-                                // Calc url
-                                url = tile_url.split('?')[0];
-                                url = url.split('@@');
-                                var tile_type_id = url[1].split('/');
-                                html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
-
-                                body += '          <div id="' + html_id + '"></div>\n';
-
-                                links.push({
-                                    rel: "tile",
-                                    rev: "",
-                                    target: html_id,
-                                    href: tile_url
-                                });
-
+                                tile_url = $(this).find('.tileUrl').html();
+                                if (tile_url === null) {
+                                    break;
+                                }
+                                body += '          <span data-tile="' + tile_url + '"></span>\n';
                                 body += '          </div>\n';
                                 body += '          </div>\n';
 
@@ -2024,18 +2008,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 body += '          <div class="deco-tile-content">\n';
 
                                 // Calc url
-                                url = './@@plone.app.standardtiles.field?field=' + tiletype;
-                                html_id = 'tile-' + tiletype;
+                                tile_url = './@@plone.app.standardtiles.field?field=' + tiletype;
 
-                                body += '          <div id="' + html_id + '"></div>\n';
-
-                                links.push({
-                                    rel: "tile",
-                                    rev: "",
-                                    target: html_id,
-                                    href: url
-                                });
-
+                                body += '          <span data-tile="' + tile_url + '"></span>\n';
                                 body += '          </div>\n';
                                 body += '          </div>\n';
 
@@ -2061,30 +2036,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Add close tag
         body += "  </body>\n";
 
-        // Add header
-        content += header;
-        content += '  <head>\n';
-        $(links).each(function () {
-            content += '    <link ';
-            if (this.rel !== "") {
-                content += ' rel="' + this.rel + '"';
-            }
-            if (this.rev !== "") {
-                content += ' rev="' + this.rev + '"';
-            }
-            if (this.target !== "") {
-                content += ' target="' + this.target + '"';
-            }
-            if (this.href !== "") {
-                content += ' href="' + this.href + '"';
-            }
-            content += ' />\n';
-        });
-        content += '  </head>\n';
+        content = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="' + $.deco.options.layout + '">\n';
         content += body;
-        content += footer;
-
-        // Return content
+        content += '</html>\n';
         return content;
     };
 
