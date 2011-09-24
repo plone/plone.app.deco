@@ -35,7 +35,7 @@ $.deco.options = {
                 'name': 'text',
                 "label": "Text",
                 'type': 'structure'
-            },
+            }
         ]
     },
     {
@@ -52,7 +52,7 @@ $.deco.options = {
     ]
 };
 
-var content_html = '<div data-panel="content">content text</div><div data-panel="portal-column-one">column one text</div>';
+var content_html = '<div data-panel="content"></div><div data-panel="portal-column-one"></div>';
 
 module("layout", {
     setup: function () {
@@ -92,6 +92,7 @@ test("Init without data", function() {
 
     // Init panel
     $.deco.options.panels.decoLayout();
-    equals($.deco.getPageContent().indexOf(content_html) != -1, true, "getPageContent is round-tripable");
+    equals($.deco.getPageContent().indexOf('<div data-panel="content">') != -1, true, "getPageContent is round-tripable");
+    equals($.deco.getPageContent().indexOf('<div data-panel="portal-column-one">') != -1, true, "getPageContent is round-tripable");
 
 });

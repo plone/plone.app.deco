@@ -1921,7 +1921,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $("[data-panel]", $.deco.document).each(function () {
 
             // Add open panel tag
-            panel_id = $(this).attr("panel_id");
+            panel_id = $(this).attr("data-panel");
             body += '    <div data-panel="' + panel_id + '">\n';
 
             // Loop through rows
