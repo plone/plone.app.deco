@@ -24,12 +24,9 @@ test("Apply block formatting", function() {
     expect(1);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 14,
-        endElement : $('#line1')
-    });
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line1').get(0).firstChild, 14);
 
     // Set header tag
     $.deco.editor.applyFormat('h1');
@@ -42,12 +39,9 @@ test("Apply inline formatting", function() {
     expect(1);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 14,
-        endElement : $('#line1')
-    });
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line1').get(0).firstChild, 14);
 
     // Set strong to selection
     $.deco.editor.applyFormat('strong');
@@ -60,13 +54,10 @@ test("Apply block formatting with a classname", function() {
     expect(2);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 14,
-        endElement : $('#line1')
-    });
-    
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line1').get(0).firstChild, 14);
+
     // Set header tag
     $.deco.editor.applyFormat('blockclass');
 
@@ -79,13 +70,10 @@ test("Apply inline formatting with a classname", function() {
     expect(1);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 14,
-        endElement : $('#line1')
-    });
-    
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line1').get(0).firstChild, 14);
+
     // Set header tag
     $.deco.editor.applyFormat('inlineclass');
 
@@ -97,12 +85,9 @@ test("Apply block formatting to a selection covering multiple block elements", f
     expect(2);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 14,
-        endElement : $('#line2')
-    });
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line2').get(0).firstChild, 14);
 
     // Set header tag
     $.deco.editor.applyFormat('h1');
@@ -116,12 +101,9 @@ test("Apply inline formatting to a selection covering multiple block elements", 
     expect(2);
 
     // Set selection within test paragraph
-    $.textSelect('setRange', {
-        start : 5,
-        startElement : $('#line1'),
-        end : 4,
-        endElement : $('#line2')
-    });
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 5);
+    rng.setEnd($('#line2').get(0).firstChild, 4);
 
     // Set strong to selection
     $.deco.editor.applyFormat('strong');
