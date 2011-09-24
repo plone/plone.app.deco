@@ -1046,6 +1046,7 @@
                 <element>jquerytools</element>
                 <element>tinymce</element>
                 <element>deco</element>
+                <element>quickupload</element>
             </element>
             <element key="deco">
                 <element>jquerytools</element>
