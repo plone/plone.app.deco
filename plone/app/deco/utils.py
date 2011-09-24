@@ -19,7 +19,7 @@ from plone.dexterity.utils import resolveDottedName
 
 from plone.app.blocks.interfaces import IOmittedField
 
-# BBB: this should be in plone.autoform.utils
+
 class PermissionChecker(object):
 
     def __init__(self, permissions, context):
