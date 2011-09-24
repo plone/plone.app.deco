@@ -201,24 +201,22 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         case "z3c.form.browser.text.TextWidget":
                         case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<div>' +
-                                $("#" + tile_config.id,
-                                  $.deco.document)
+                                $("#" + tile_config.id)
                                       .find('input').attr('value') + '</div>';
                             break;
                         case "z3c.form.browser.textarea.TextAreaWidget":
                         case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id,
-                                      $.deco.document).find('textarea')
-                                          .attr('value').split('\n');
+                            lines = $("#" + tile_config.id)
+                                        .find('textarea')
+                                        .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
                                 fieldhtml += '<div>' + lines[i] + '</div>';
                             }
                             break;
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id,
-                                          $.deco.document)
-                                              .find('textarea').attr('value');
+                            fieldhtml = $("#" + tile_config.id)
+                                            .find('textarea').attr('value');
                             break;
                         default:
                             fieldhtml = '<div class="discreet">Placeholder ' +

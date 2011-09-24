@@ -1880,7 +1880,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                $("#" + tile_config.id, $.deco.document).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
+                $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
@@ -1889,11 +1889,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     value += $(this).html() + "\n";
                 });
                 value = value.replace(/<br[^>]*>/ig, "\n");
-                $("#" + tile_config.id, $.deco.document).find('textarea').attr('value', value);
+                $("#" + tile_config.id).find('textarea').attr('value', value);
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
             case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                $($.deco.document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
+                $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
                 break;
             }
         }
