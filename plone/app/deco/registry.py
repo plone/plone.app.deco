@@ -3,10 +3,11 @@ from zope.i18n import translate
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistryAdapter
+from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.interfaces._content import IFolderish
 from operator import itemgetter
 
-from utils import iterSchemataForType, extractFieldInformation
+from plone.app.deco.utils import extractFieldInformation
 
 
 class DottedDict(dict):

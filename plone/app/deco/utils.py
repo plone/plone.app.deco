@@ -43,26 +43,6 @@ class PermissionChecker(object):
         return self.cache.get(permission_name, True)
 
 
-def iterSchemataForType(portal_type):
-    # BBB: merge this with plone.dexterity.utils.iterSchemata, which should
-    # really call this function
-    fti = queryUtility(IDexterityFTI, name=portal_type)
-    if fti is None:
-        return
-
-    yield fti.lookupSchema()
-
-    for behavior in fti.behaviors:
-        try:
-            behaviorInterface = resolveDottedName(behavior)
-        except ValueError:
-            continue
-        if behaviorInterface is not None:
-            behaviorSchema = IFormFieldProvider(behaviorInterface, None)
-            if behaviorSchema is not None:
-                yield behaviorSchema
-
-
 def _getWidgetName(field, widgets, request):
     if field.__name__ in widgets:
         factory = widgets[field.__name__]
