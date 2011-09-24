@@ -3,100 +3,61 @@
       xml:lang="en"
       lang="en">
   <head>
-    <!-- Panels -->
-    <link rel="panel" rev="content"           target="content" />
-    <link rel="panel" rev="portal-column-one" target="portal-column-one" />
-    <link rel="panel" rev="portal-column-two" target="portal-column-two" />
-
-    <!-- Head elements -->
-    <link  rel="tile" href="./@@plone.app.standardtiles.headtitle" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.stylesheets" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.javascripts" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.authorlink" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.faviconlink" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.navigationlink" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.rsslink" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.searchlink" />
-    
-    <link  rel="tile" href="./@@plone.app.standardtiles.viewletmanager?manager=plone.htmlhead&amp;section=head" />
-    <link  rel="tile" href="./@@plone.app.standardtiles.viewletmanager?manager=plone.htmlhead.links&amp;section=head" />
-
-    <!-- Portal top -->
-    <link  rel="tile" target="skip-links"               href="./@@plone.app.standardtiles.skip_links" />
-    <link  rel="tile" target="languageselector"         href="./@@plone.app.standardtiles.languageselector" />
-    <link  rel="tile" target="searchbox"                href="./@@plone.app.standardtiles.searchbox" />
-    <link  rel="tile" target="logo"                     href="./@@plone.app.standardtiles.logo" />
-    <link  rel="tile" target="global-sections"          href="./@@plone.app.standardtiles.global_sections" />
-
-    <link  rel="tile" target="portaltop-viewlets"       href="./@@plone.app.standardtiles.viewletmanager/portal-top?manager=plone.portaltop" />    
-    
-    <!-- Portlets -->
-    <link  rel="tile" target="left-portlets"            href="./@@plone.app.standardtiles.portletmanager/left-portlets?manager=plone.leftcolumn" />
-    <link  rel="tile" target="right-portlets"           href="./@@plone.app.standardtiles.portletmanager/left-portlets?manager=plone.rightcolumn" />
-    
-    <!-- Above content -->
-    <link  rel="tile" target="path-bar"                 href="./@@plone.app.standardtiles.path_bar" />
-    <link  rel="tile" target="lockinfo"                 href="./@@plone.app.standardtiles.lockinfo" />
-    <link  rel="tile" target="abovecontent-viewlets"    href="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.abovecontent" />
-    
-    <!-- Below content -->
-    <link  rel="tile" target="belowcontent-viewlets"    href="./@@plone.app.standardtiles.viewletmanager/below-content?manager=plone.belowcontent" />
-    
-    <!-- Edit bar -->
-    <link  rel="tile" target="menu-link"                href="./@@plone.app.standardtiles.menu_link" />
-
-    <!-- Portal Footer -->
-    <link  rel="tile" target="footer"                   href="./@@plone.app.standardtiles.footer" />
-    <link  rel="tile" target="colophon"                 href="./@@plone.app.standardtiles.colophon" />
-    <link  rel="tile" target="site-actions"             href="./@@plone.app.standardtiles.site_actions" />
-    <link  rel="tile" target="analytics"                href="./@@plone.app.standardtiles.analytics" />
-    
-    <link  rel="tile" target="footer-viewlets"          href="./@@plone.app.standardtiles.viewletmanager/footer?manager=plone.portalfooter" />
+    <link  data-tile="./@@plone.app.standardtiles.headtitle" />
+    <link  data-tile="./@@plone.app.standardtiles.stylesheets" />
+    <link  data-tile="./@@plone.app.standardtiles.javascripts" />
+    <link  data-tile="./@@plone.app.standardtiles.authorlink" />
+    <link  data-tile="./@@plone.app.standardtiles.faviconlink" />
+    <link  data-tile="./@@plone.app.standardtiles.navigationlink" />
+    <link  data-tile="./@@plone.app.standardtiles.rsslink" />
+    <link  data-tile="./@@plone.app.standardtiles.searchlink" />  
+    <link  data-tile="./@@plone.app.standardtiles.viewletmanager?manager=plone.htmlhead&amp;section=head" />
+    <link  data-tile="./@@plone.app.standardtiles.viewletmanager?manager=plone.htmlhead.links&amp;section=head" />    
   </head>
   <body>
-    <div id="menu-link" />
+    <div data-tile="./@@plone.app.standardtiles.menu_link" />
     <div id="visual-portal-wrapper">
 
       <div id="portal-top" class="row">
         <div class="cell width-full position-0">
           <div id="plone-portaltop">
-            <div id="skip-links" />
-            <div id="languageselector" />
-            <div id="searchbox" />
-            <div id="logo" />
-            <div id="global-sections" />
-            <div id="portaltop-viewlets" />
+            <div data-tile="./@@plone.app.standardtiles.skip_links" />
+            <div data-tile="./@@plone.app.standardtiles.languageselector" />
+            <div data-tile="./@@plone.app.standardtiles.searchbox" />
+            <div data-tile="./@@plone.app.standardtiles.logo" />
+            <div data-tile="./@@plone.app.standardtiles.global_sections" />
+            <div data-tile="./@@plone.app.standardtiles.viewletmanager/portal-top?manager=plone.portaltop" />
           </div>
         </div>
       </div>
 
       <div id="portal-columns" class="row">
         <div class="cell width-1:4 position-0">
-          <div id="portal-column-one">
-            <div id="left-portlets" />
+          <div data-panel="portal-column-one" id="portal-column-one">
+            <div data-tile="./@@plone.app.standardtiles.portletmanager/left-portlets?manager=plone.leftcolumn" />
           </div>
         </div>
         <div id="portal-column-content" class="cell width-1:2 position-1:4">
-          <div id="path-bar" />
-          <div id="lockinfo" />
-          <div id="abovecontent-viewlets" />
-          <div id="content" />
-          <div id="belowcontent-viewlets" />
+          <div data-tile="./@@plone.app.standardtiles.path_bar" />
+          <div data-tile="./@@plone.app.standardtiles.lockinfo" />
+          <div data-tile="./@@plone.app.standardtiles.viewletmanager/above-content?manager=plone.abovecontent" />
+          <div data-panel="content" id="content" />
+          <div data-tile="./@@plone.app.standardtiles.viewletmanager/below-content?manager=plone.belowcontent" />
         </div>
         <div class="cell width-1:4 position-3:4">
-          <div id="portal-column-two">
-            <div id="right-portlets" />
+          <div data-panel="portal-column-two" id="portal-column-two">
+            <div data-tile="./@@plone.app.standardtiles.portletmanager/right-portlets?manager=plone.rightcolumn" />
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="cell width-full position-0">
-          <div id="footer" />
-          <div id="colophon" />
-          <div id="site-actions" />
-          <div id="analytics" />
-          <div id="footer-viewlets" />
+          <div data-tile="./@@plone.app.standardtiles.footer" />
+          <div data-tile="./@@plone.app.standardtiles.colophon" />
+          <div data-tile="./@@plone.app.standardtiles.site_actions" />
+          <div data-tile="./@@plone.app.standardtiles.analytics" />
+          <div data-tile="./@@plone.app.standardtiles.viewletmanager/footer?manager=plone.portalfooter" />
         </div>
       </div>
 
