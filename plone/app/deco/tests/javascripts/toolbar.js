@@ -133,6 +133,11 @@ $.deco.options = {
     ]
 };
 
+// Create disableEditHtmlSource stub function
+$.deco.disableEditHtmlSource = function () {
+    $.deco.executed.push("decoExecAction");
+};
+
 // Create decoExecAction stub function
 $.fn.decoExecAction = function() {
     $.deco.executed.push("decoExecAction");
