@@ -5,9 +5,8 @@ from plone.app.deco import PloneMessageFactory as _
 
 DEFAULT_PAGE_LAYOUT_CONTENT = u"""\
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@page-site-layout">
   <head>
-    <link rel="layout" href="./@@page-site-layout" />
     <link rel="panel" rev="content" target="content" />
   </head>
   <body>

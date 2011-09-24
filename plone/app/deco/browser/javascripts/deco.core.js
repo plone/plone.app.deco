@@ -119,36 +119,33 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Get dom tree
                 content = $.deco.getDomTreeFromHtml(content);
-
+                $.deco.options.layout = content.attr('data-layout');
                 // Find panels
-                content.find("link[rel=panel]").each(function () {
+                content.find("[data-panel]").each(function () {
 
                     // Local variables
-                    var target, rev;
-
-                    target = $(this).attr("target");
-                    rev = $(this).attr("rev");
-
-                    $("#" + target, $.deco.document)
-                        .addClass('deco-panel');
-                    $("#" + target, $.deco.document)
-                        .html(content.find("#" + rev).html());
+                    var panel_id = $(this).attr("data-panel"),
+                        target = $("[data-panel=" + panel_id + "]",
+                        $.deco.document);
+                    target.addClass('deco-panel');
+                    target.html(content.find("[data-panel=" +
+                        panel_id + "]").html());
                 });
 
                 // Init app tiles
-                $.deco.nrOfTiles = content.find("link[rel=tile]").size();
+                $.deco.options.panels = $(".deco-panel", $.deco.document);
+                $.deco.nrOfTiles = $.deco.options.panels.find("[data-tile]").size();
 
-                content.find("link[rel=tile]").each(function () {
+                $.deco.options.panels.find("[data-tile]").each(function () {
 
                     // Local variables
                     var target, href, tile_content, tiletype, classes, url,
                         tile_config, x, tile_group, y, fieldhtml, lines, i;
 
-                    target = $(this).attr("target");
-                    href = $(this).attr("href");
+                    href = $(this).attr("data-tile");
 
                     // Get tile type
-                    tile_content = $('#' + target, $.deco.document).parent();
+                    tile_content = $(this).parent();
                     tiletype = '';
                     classes = tile_content.parents('.deco-tile').attr('class')
                         .split(" ");
@@ -274,8 +271,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     .addClass("deco-toolbar")
                 );
 
-                // Add panel and toolbar to the options
-                $.deco.options.panels = $(".deco-panel", $.deco.document);
+                // Add the toolbar to the options
                 $.deco.options.toolbar = $(".deco-toolbar");
 
                 // Add page url to the options

@@ -8,6 +8,7 @@ from plone.app.testing.layers import FunctionalTesting
 
 from plone.dexterity.utils import createContent
 
+
 class PADeco(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
