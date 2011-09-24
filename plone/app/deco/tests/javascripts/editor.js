@@ -114,7 +114,26 @@ test("Apply inline formatting to a selection covering multiple block elements", 
 });
 
 test("Apply inline formatting to a selection spanning partial elements", function() {
-    // <p><b>some text</b> here</p>
-    ok(false, "not implemented");
+    expect(1);
+
+    // Set selection within test paragraph
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1').get(0).firstChild, 0);
+    rng.setEnd($('#line1').get(0).firstChild, 14);
+
+    // Set strong to selection
+    $.deco.editor.applyFormat('strong');
+
+    // Set selection within test paragraph
+    var rng = tinyMCE.activeEditor.selection.getRng();
+    rng.setStart($('#line1 strong').get(0).firstChild, 5);
+    rng.setEnd($('#line1').get(0).lastChild, 5);
+
+    // Set em to selection
+    $.deco.editor.applyFormat('em');
+
+
+    // Check if the tag is replaced
+    equals($('#line1').html(), '<strong>Some <em>paragraph</em></strong><em> with</em> text', "The strong and the em tag were applied to line 1");
 });
 
