@@ -124,10 +124,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 content.find("[data-panel]").each(function () {
 
                     // Local variables
-                    var panel_id = $(this).attr("data-panel");
-                    var target = $("[data-panel="+ panel_id + "]", $.deco.document);
+                    var panel_id = $(this).attr("data-panel"),
+                        target = $("[data-panel=" + panel_id + "]",
+                        $.deco.document);
                     target.addClass('deco-panel');
-                    target.html(content.find("[data-panel=" + panel_id + "]").html());
+                    target.html(content.find("[data-panel=" +
+                        panel_id + "]").html());
                 });
 
                 // Init app tiles
