@@ -94,7 +94,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                   $.deco.document).each(function () {
 
                     // Remove resizing state
-                    $(this).parents(".deco-panel")
+                    $(this).parents("[data-panel]")
                         .removeClass("deco-panel-resizing");
                     $(this).parent().removeClass("deco-row-resizing");
                     $(this).parent().children(".deco-resize-placeholder")
@@ -336,7 +336,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(".deco-resize-handle-helper", $.deco.document).each(function () {
 
                 // Get panel
-                var panel = $(this).parents(".deco-panel");
+                var panel = $(this).parents("[data-panel]");
 
                 // Get column sizes
                 var column_sizes = $(this).data("column_sizes").split(" ");
@@ -375,7 +375,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var TileMousemove = function (e) {
 
             // Check if dragging
-            if ($(this).parents(".deco-panel").hasClass("deco-panel-dragging")) {
+            if ($(this).parents("[data-panel]").hasClass("deco-panel-dragging")) {
 
                 // Hide all dividers
                 $(".deco-selected-divider", $.deco.document)
@@ -558,7 +558,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Get layout object
             var tile = $(this);
-            var obj = tile.parents(".deco-panel");
+            var obj = tile.parents("[data-panel]");
 
             var tile_config = $(this).decoGetTileConfig();
 
@@ -755,7 +755,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(this).mousemove(function (e) {
 
                 // Get layout object
-                var obj = $(this).parents(".deco-panel");
+                var obj = $(this).parents("[data-panel]");
 
                 // Check if dragging
                 if (obj.hasClass("deco-panel-dragging")) {
@@ -924,7 +924,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             var DragMove = function (event) {
                 var helper = $('.deco-helper-tile', $.deco.document);
-                var offset = helper.parents(".deco-panel").offset();
+                var offset = helper.parents("[data-panel]").offset();
                 helper.css("top", event.pageY + 3 - offset.top);
                 helper.css("left", event.pageX + 3 - offset.left);
             };
@@ -962,7 +962,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             var clone = originaltile.clone(true);
                             originaltile.addClass("deco-original-tile");
 
-                            originaltile.parents(".deco-panel").append(clone);
+                            originaltile.parents("[data-panel]").append(clone);
                             clone
                                 .css({
                                     "width": originaltile.width(),
@@ -993,7 +993,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     $.fn.decoHandleDragEnd = function () {
 
         // Get layout object
-        var obj = $(this).parents(".deco-panel");
+        var obj = $(this).parents("[data-panel]");
 
         // Remove dragging class from content
         $.deco.options.panels.removeClass("deco-panel-dragging deco-panel-dragging-new");
@@ -1431,7 +1431,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 );
 
                 // Set resizing state
-                $(this).parents(".deco-panel").addClass("deco-panel-resizing");
+                $(this).parents("[data-panel]").addClass("deco-panel-resizing");
                 $(this).parent().addClass("deco-row-resizing");
                 $(".deco-selected-tile", $.deco.document).children(".deco-tile-content").blur();
 
@@ -1686,7 +1686,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .html(text)
                 .decoEditor();
         });
-    }
+    };
 
 
     /**
@@ -1718,7 +1718,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.addHeadTags(url, value);
 
                 // Add tile
-                $.deco.addTile(type, '<p class="hiddenStructure tileUrl">' + url + '</p>' + value.find('.temp_body_tag').html());
+                $.deco.addTile(type,
+                    '<p class="hiddenStructure tileUrl">' + url + '</p>' + 
+                        value.find('.temp_body_tag').html());
             }
         });
     };
@@ -1937,14 +1939,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     $(this).children(".deco-grid-cell").each(function () {
 
                         // Add cell start tag
-                        body += '        <div class="' + $(this).attr("class") + '">\n';
+                        body += '        <div class="' +
+                            $(this).attr("class") + '">\n';
 
                         // Loop through tiles
                         $(this).children(".deco-tile").each(function () {
 
                             // Get tile type
-                            var tiletype = '';
-                            var classes = $(this).attr('class').split(" ");
+                            var tiletype = '',
+                                classes = $(this).attr('class').split(" ");
                             $(classes).each(function () {
                                 var classname = this.match(/^deco-(.*)-tile$/);
                                 if (classname !== null) {
@@ -1982,21 +1985,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                                 // Get url
                                 var tile_url = $(this).find('.tileUrl').html();
-
+                                if (tile_url === null) {
+                                    break;
+                                }
                                 // Calc url
                                 url = tile_url.split('?')[0];
                                 url = url.split('@@');
                                 var tile_type_id = url[1].split('/');
                                 html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
 
-                                body += '          <div id="' + html_id + '"></div>\n';
-
-                                links.push({
-                                    rel: "tile",
-                                    rev: "",
-                                    target: html_id,
-                                    href: tile_url
-                                });
+                                body += '          <span data-tile="' + tile_url + '"></span>\n';
 
                                 body += '          </div>\n';
                                 body += '          </div>\n';

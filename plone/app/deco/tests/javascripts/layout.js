@@ -2,57 +2,56 @@
 $.deco.executed = [];
 
 $.deco.options = {
-    "tiles": [{
-        'name': 'fields',
-        'label': 'Fields',
-        'tiles': [
-            {
-                "name": "title",
-                "label": "Title",
-                "type": "field",
-                "id": "title-field",
-                "available_actions": ["strong"]
-            },
-            {
-                "name": "description",
-                "type": "field",
-                "label": "Description",
-                "id": "description-field",
-                "available_actions": []
-            }
-        ]
-    },
-    {
-        'name': 'app',
-        'label': 'App',
-        'tiles': [
-            {
-                'name': 'pony',
-                "label": "Pony",
-                'type': 'app'
-            },
-            {
-                'name': 'text',
-                "label": "Text",
-                'type': 'structure'
-            }
-        ]
-    },
-    {
-        'name': 'other',
-        'label': 'Other',
-        'tiles': []
-    }],
-    "default_available_actions": [
-        "save",
-        "cancel",
-        "page-properties",
-        "format",
-        "insert"
+    tiles: [
+    { "label" : "Fields",
+    "name" : "fields",
+    "tiles" : [ { "available_actions" : [ "tile-align-block",
+              "tile-align-right",
+              "tile-align-left"
+            ],
+          "category" : "fields",
+          "default_value" : null,
+          "favorite" : false,
+          "label" : "Title",
+          "name" : "plone.app.standardtiles.title",
+          "read_only" : false,
+          "rich_text" : true,
+          "settings" : false,
+          "tile_type" : "app",
+          "weight" : 10
+        },
+        { "available_actions" : [ "tile-align-block",
+              "tile-align-right",
+              "tile-align-left"
+            ],
+          "category" : "fields",
+          "default_value" : null,
+          "favorite" : false,
+          "label" : "Description",
+          "name" : "plone.app.standardtiles.description",
+          "read_only" : false,
+          "rich_text" : true,
+          "settings" : false,
+          "tile_type" : "app",
+          "weight" : 20
+        }
+      ],
+    "weight" : 30
+    } 
     ]
 };
 
-var content_html = '<div data-panel="content"></div><div data-panel="portal-column-one"></div>';
+$.fn.decoEditor = function() {
+    $.deco.executed.push("decoEditor");
+};
+
+// Create ajax stub function
+$.ajax = function (options) {
+    options.success();
+};
+
+
+var content_html = '<div data-panel="content"></div><div data-panel="portal-column-one"><div class="deco-grid-row"><div class="deco-grid-cell"><div class="deco-tile deco-plone.app.standardtiles.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title"></span></div></div></div></div></div>';
 
 module("layout", {
     setup: function () {
@@ -65,7 +64,7 @@ module("layout", {
                     .addClass("deco-toolbar")
             );
 
-        $.deco.options.panels = $(".deco-panel");
+        $.deco.options.panels = $("[data-panel]");
         $.deco.options.toolbar = $(".deco-toolbar");
 
         // Empty executed
@@ -88,11 +87,15 @@ test("Initialisation", function() {
 });
 
 test("Init without data", function() {
-    expect(0);
+    expect(3);
 
     // Init panel
     $.deco.options.panels.decoLayout();
+    // simulate app tile init
+    $('[data-tile]').before($('<p class="hiddenStructure tileUrl">./@@plone.app.standardtiles.field?field=title</p>'));
+    var saved_html = $.deco.getPageContent();
     equals($.deco.getPageContent().indexOf('<div data-panel="content">') != -1, true, "getPageContent is round-tripable");
     equals($.deco.getPageContent().indexOf('<div data-panel="portal-column-one">') != -1, true, "getPageContent is round-tripable");
-
+    equals(saved_html.indexOf('<span data-tile="./@@plone.app.standardtiles.field?field=title"></span>') != -1, true, "getPageContent preserves tiles");
+ 
 });
