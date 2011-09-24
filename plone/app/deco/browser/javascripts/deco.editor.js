@@ -101,7 +101,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 strong : {inline : 'strong'},
                 em : {inline : 'em'},
                 h1 : {block : 'h1', remove : 'all'}
-            }
+            },
+            valid_elements : "@[id|class|title|dir<ltr?rtl|lang|xml::lang]," +
+                "a[rel|rev|charset|hreflang|tabindex|accesskey|type|" +
+                "name|href|target|title|class]," +
+                "strong/b,em/i,strike,u,#p,-sub,-sup,-blockquote," +
+                "-div,-span,-code,-pre,address,-h1,-h2,-h3,-h4,-h5,-h6,hr," +
+                "-ol[type|compact],-ul[type|compact],-li,dd,dl,dt," +
+                "br,abbr,acronym,del[datetime|cite],ins[datetime|cite]," +
+                "bdo,dfn,kbd,q[cite],samp,small,var,big"
         });
 
         // Set editor class
