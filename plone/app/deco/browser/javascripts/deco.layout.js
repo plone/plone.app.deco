@@ -1969,7 +1969,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             }
 
                             // Predefine vars
-                            var url, html_id;
+                            var tile_url;
 
                             switch (tile_config.tile_type) {
                             case "text":
@@ -1984,18 +1984,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 body += '          <div class="deco-tile-content">\n';
 
                                 // Get url
-                                var tile_url = $(this).find('.tileUrl').html();
+                                tile_url = $(this).find('.tileUrl').html();
                                 if (tile_url === null) {
                                     break;
                                 }
-                                // Calc url
-                                url = tile_url.split('?')[0];
-                                url = url.split('@@');
-                                var tile_type_id = url[1].split('/');
-                                html_id = 'tile-' + tile_type_id[0].replace(/\./g, '-') + '-' + tile_type_id[1];
-
                                 body += '          <span data-tile="' + tile_url + '"></span>\n';
-
                                 body += '          </div>\n';
                                 body += '          </div>\n';
 
@@ -2015,18 +2008,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 body += '          <div class="deco-tile-content">\n';
 
                                 // Calc url
-                                url = './@@plone.app.standardtiles.field?field=' + tiletype;
-                                html_id = 'tile-' + tiletype;
+                                tile_url = './@@plone.app.standardtiles.field?field=' + tiletype;
 
-                                body += '          <div id="' + html_id + '"></div>\n';
-
-                                links.push({
-                                    rel: "tile",
-                                    rev: "",
-                                    target: html_id,
-                                    href: url
-                                });
-
+                                body += '          <span data-tile="' + tile_url + '"></span>\n';
                                 body += '          </div>\n';
                                 body += '          </div>\n';
 
