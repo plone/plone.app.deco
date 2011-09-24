@@ -99,6 +99,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             language_load : false,
             formats : {
                 strong : {inline : 'strong'},
+                em : {inline : 'em'},
                 h1 : {block : 'h1', remove : 'all'}
             }
         });
