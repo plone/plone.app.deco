@@ -12,8 +12,6 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.autoform.interfaces import OMITTED_KEY, WIDGETS_KEY, MODES_KEY
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
                                       WRITE_PERMISSIONS_KEY
-
-# BBB: 2011-09-24 import here after moving it there
 from plone.autoform.utils import mergedTaggedValuesForIRO
 
 from plone.dexterity.interfaces import IDexterityFTI
