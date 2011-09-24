@@ -13,6 +13,9 @@ from plone.autoform.interfaces import OMITTED_KEY, WIDGETS_KEY, MODES_KEY
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
                                       WRITE_PERMISSIONS_KEY
 
+# BBB: 2011-09-24 import here after moving it there
+from plone.autoform.utils import mergedTaggedValuesForIRO
+
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
 
@@ -40,25 +43,6 @@ class PermissionChecker(object):
                                                 self.context),
                     )
         return self.cache.get(permission_name, True)
-
-
-def mergedTaggedValuesForIRO(schema, name, iro):
-    # BBB: this should be in plone.autoform.utils, and
-    # mergedTaggedValuesForForm should use this
-
-    # filter out settings irrelevant to this form
-    threeples = [t for t in mergedTaggedValueList(schema, name)
-                 if t[0] in iro]
-
-    def by_iro(threeple):
-        interface = threeple[0]
-        return iro.index(interface)
-    threeples.sort(key=by_iro)
-    d = {}
-    # Now iterate through in the reverse order -- the values assigned last win.
-    for _, fieldName, value in reversed(threeples):
-        d[fieldName] = value
-    return d
 
 
 def iterSchemataForType(portal_type):
