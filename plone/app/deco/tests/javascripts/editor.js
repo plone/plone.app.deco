@@ -7,7 +7,7 @@ module("editor", {
 
         // Init editor
         $('.test').decoEditor();
-        $.deco.editor.registerFormat('blockclass', {block : 'div', attributes : {'class' : 'callout'}, expand : false, wrapper : true })
+        $.deco.editor.registerFormat('blockclass', {block : 'q', attributes : {'class' : 'callout'}})
         $.deco.editor.registerFormat('inlineclass', {inline : 'span', attributes : {'class' : 'highlight'}})
 
         // Set document
@@ -62,7 +62,7 @@ test("Apply block formatting with a classname", function() {
     $.deco.editor.applyFormat('blockclass');
 
     // Check if the tag is replaced
-    equals($('#line1').get(0).tagName.toLowerCase(), 'div', "Div format was applied");
+    equals($('#line1').get(0).tagName.toLowerCase(), 'q', "Q tag was applied");
     equals($('#line1').hasClass('callout'), true, "Callout class was applied");
 });
 
