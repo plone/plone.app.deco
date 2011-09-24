@@ -51,19 +51,17 @@ $.ajax = function (options) {
 };
 
 
-var content_html = '<div data-panel="content"></div><div data-panel="portal-column-one"><div class="deco-grid-row"><div class="deco-grid-cell"><div class="deco-tile deco-plone.app.standardtiles.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title"></span></div></div></div></div></div>';
-
 module("layout", {
     setup: function () {
         // We'll create a div element for the overlay
         $(document.body)
-            .append($(content_html));
+            .append($('<div data-panel="content"></div><div data-panel="portal-column-one"><div class="deco-grid-row"><div class="deco-grid-cell"><div class="deco-tile deco-plone.app.standardtiles.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title">Samuel L. Ipsum</span></div></div></div></div></div>'));
         $(document.body)
             .append(
                 $(document.createElement("div"))
                     .addClass("deco-toolbar")
             );
-
+        $(document.body).append($('<div id="formfield-form-widgets-IDublinCore-title"><input type="text" /></div>'));
         $.deco.options.panels = $("[data-panel]");
         $.deco.options.toolbar = $(".deco-toolbar");
 
@@ -74,6 +72,7 @@ module("layout", {
     teardown: function () {
         $("[data-panel=content]").remove();
         $("[data-panel=portal-column-one]").remove();
+        $("#formfield-form-widgets-IDublinCore-title").remove();
     }
 });
 
@@ -87,7 +86,7 @@ test("Initialisation", function() {
 });
 
 test("Init without data", function() {
-    expect(3);
+    expect(4);
 
     // Init panel
     $.deco.options.panels.decoLayout();
@@ -97,5 +96,5 @@ test("Init without data", function() {
     equals($.deco.getPageContent().indexOf('<div data-panel="content">') != -1, true, "getPageContent is round-tripable");
     equals($.deco.getPageContent().indexOf('<div data-panel="portal-column-one">') != -1, true, "getPageContent is round-tripable");
     equals(saved_html.indexOf('<span data-tile="./@@plone.app.standardtiles.field?field=title"></span>') != -1, true, "getPageContent preserves tiles");
- 
+    equals($("#formfield-form-widgets-IDublinCore-title input").val(), "Samuel L. Ipsum", "title value preserved in form");
 });
