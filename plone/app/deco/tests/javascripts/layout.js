@@ -120,12 +120,14 @@ test("Initialisation", function() {
 });
 
 test("Init without data", function() {
-    expect(7);
+    expect(8);
 
     // Init panel
     $.deco.options.panels.decoLayout();
     // simulate app tile init
     $('.deco-plone\\.app\\.standardtiles\\.title-tile [data-tile]').before($('<p class="hiddenStructure tileUrl">./@@plone.app.standardtiles.title</p>'));
+    // simulate layout init
+    $.deco.options.layout = "./@@test-layout";
     var saved_html = $.deco.getPageContent();
     equals($.deco.getPageContent().indexOf('<div data-panel="content">') != -1, true, "getPageContent is round-tripable");
     equals($.deco.getPageContent().indexOf('<div data-panel="portal-column-one">') != -1, true, "getPageContent is round-tripable");
@@ -134,4 +136,5 @@ test("Init without data", function() {
     equals(saved_html.indexOf('<span data-tile="./@@plone.app.standardtiles.field?field=alcohol_volume"></span>') != -1, true, "getPageContent preserves custom field");
     equals($("#formfield-form-widgets-alcohol_volume input").val(), "5.4", "custom field value preserved in form");
     equals(saved_html.indexOf("<p>Free <strong>text</strong></p>") != -1, true, "text tiles are preserved");
+    equals(saved_html.indexOf('data-layout="./@@test-layout"') != -1, true, "layout attribute preserved");
 });

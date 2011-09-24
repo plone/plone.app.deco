@@ -119,7 +119,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Get dom tree
                 content = $.deco.getDomTreeFromHtml(content);
-
+                $.deco.options.layout = content.attr('data-layout');
                 // Find panels
                 content.find("[data-panel]").each(function () {
 

@@ -142,7 +142,7 @@ test("Init without data", function() {
 });
 
 test("Init with data", function() {
-    expect(12);
+    expect(13);
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
@@ -164,6 +164,7 @@ test("Init with data", function() {
 
     equals($(".deco-panel").hasClass('deco-blur'), false, "Panels are not blurred");
     equals($(".deco-toolbar").hasClass('deco-blur'), false, "Toolbar is not blurred");
+    equals($.deco.options.layout, "./@@test-layout", "site layout is preserved");
 });
 
 test("Init with tile data", function() {
