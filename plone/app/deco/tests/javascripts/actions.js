@@ -1,10 +1,35 @@
+// Create executed property
+$.deco.lastexecuted = "";
+
 // Create tinyMCE stub object
 var tinyMCE = {
     execCommand: function (cmd) {
-        tinyMCE.lastexecuted = cmd;
+        $.deco.lastexecuted = cmd;
     },
     lastexecuted: ''
 };
+
+// Add stub for deco editor
+$.deco.editor = {
+    applyFormat: function (cmd) {
+        $.deco.lastexecuted = cmd;
+    }
+}
+
+// Add stub for deco editor
+$.deco.execCommand = function (cmd) {
+    $.deco.lastexecuted = cmd;
+}
+
+// Add stub for undo
+$.deco.undo = {
+    undo: function () {
+        $.deco.lastexecuted = 'undo';
+    },
+    redo: function () {
+        $.deco.lastexecuted = 'redo';
+    }
+}
 
 // Create last executed method
 $.deco.lastexecuted = "";
@@ -42,7 +67,7 @@ module("actions", {
         $.deco.lastexecuted = "";
 
         // Reset tinymce stub
-        tinyMCE.lastexecuted = "";
+        $.deco.lastexecuted = "";
     }
 });
 
@@ -137,70 +162,70 @@ test("initActions", function() {
     $.deco.initActions();
 
     $.deco.actionManager.actions["strong"].exec();
-    equals(tinyMCE.lastexecuted, "Bold", "Strong action");
+    equals($.deco.lastexecuted, "strong", "Strong action");
 
     $.deco.actionManager.actions["em"].exec();
-    equals(tinyMCE.lastexecuted, "Italic", "Emphasis action");
+    equals($.deco.lastexecuted, "em", "Emphasis action");
 
     $.deco.actionManager.actions["ul"].exec();
-    equals(tinyMCE.lastexecuted, "InsertUnorderedList", "Unordered list action");
+    equals($.deco.lastexecuted, "InsertUnorderedList", "Unordered list action");
 
     $.deco.actionManager.actions["ol"].exec();
-    equals(tinyMCE.lastexecuted, "InsertOrderedList", "Ordered list action");
+    equals($.deco.lastexecuted, "InsertOrderedList", "Ordered list action");
 
     $.deco.actionManager.actions["undo"].exec();
-    equals(tinyMCE.lastexecuted, "Undo", "Undo action");
+    equals($.deco.lastexecuted, "undo", "Undo action");
 
     $.deco.actionManager.actions["redo"].exec();
-    equals(tinyMCE.lastexecuted, "Redo", "Redo action");
+    equals($.deco.lastexecuted, "redo", "Redo action");
 
     $.deco.actionManager.actions["paragraph"].exec();
-    equals(tinyMCE.lastexecuted, "FormatBlock", "Paragraph action");
+    equals($.deco.lastexecuted, "p", "Paragraph action");
 
     $.deco.actionManager.actions["heading"].exec();
-    equals(tinyMCE.lastexecuted, "FormatBlock", "Heading action");
+    equals($.deco.lastexecuted, "h2", "Heading action");
 
     $.deco.actionManager.actions["subheading"].exec();
-    equals(tinyMCE.lastexecuted, "FormatBlock", "Subheading action");
+    equals($.deco.lastexecuted, "h3", "Subheading action");
 
     $.deco.actionManager.actions["discreet"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Discreet action");
+    equals($.deco.lastexecuted, "discreet", "Discreet action");
 
     $.deco.actionManager.actions["literal"].exec();
-    equals(tinyMCE.lastexecuted, "FormatBlock", "Literal action");
+    equals($.deco.lastexecuted, "pre", "Literal action");
 
     $.deco.actionManager.actions["quote"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "discreet action");
+    equals($.deco.lastexecuted, "pullquote", "discreet action");
 
     $.deco.actionManager.actions["callout"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Callout action");
+    equals($.deco.lastexecuted, "callout", "Callout action");
 
     $.deco.actionManager.actions["highlight"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Highlight action");
+    equals($.deco.lastexecuted, "highlight", "Highlight action");
 
     $.deco.actionManager.actions["sub"].exec();
-    equals(tinyMCE.lastexecuted, "Subscript", "Sub action");
+    equals($.deco.lastexecuted, "sub", "Sub action");
 
     $.deco.actionManager.actions["sup"].exec();
-    equals(tinyMCE.lastexecuted, "Superscript", "Sup action");
+    equals($.deco.lastexecuted, "sup", "Sup action");
 
     $.deco.actionManager.actions["remove-format"].exec();
-    equals(tinyMCE.lastexecuted, "RemoveFormat", "Remove format action");
+    equals($.deco.lastexecuted, "removeformat", "Remove format action");
 
     $.deco.actionManager.actions["pagebreak"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Pagebreak action");
+    equals($.deco.lastexecuted, "pagebreak", "Pagebreak action");
 
     $.deco.actionManager.actions["justify-left"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Justify left action");
+    equals($.deco.lastexecuted, "justify-left", "Justify left action");
 
     $.deco.actionManager.actions["justify-center"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Justify center action");
+    equals($.deco.lastexecuted, "justify-center", "Justify center action");
 
     $.deco.actionManager.actions["justify-right"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Justify right action");
+    equals($.deco.lastexecuted, "justify-right", "Justify right action");
 
     $.deco.actionManager.actions["justify-justify"].exec();
-    equals(tinyMCE.lastexecuted, "mceSetCSSClass", "Justify justify action");
+    equals($.deco.lastexecuted, "justify-justify", "Justify justify action");
 
     // Create selected tile div
     $(document.body).append(
@@ -270,7 +295,7 @@ test("initActions", function() {
     );
 
     $.deco.actionManager.actions["format"].exec($(".formattest"));
-    equals(tinyMCE.lastexecuted, "Bold", "Format action");
+    equals($.deco.lastexecuted, "strong", "Format action");
 
     // Cleanup
     $(".formattest").remove();
@@ -354,12 +379,12 @@ test("Shortcuts", function() {
 
     var event = jQuery.Event("keypress");
     $(document).trigger(event);
-    equals(tinyMCE.lastexecuted, "", "Test none existing shortcut.");
+    equals($.deco.lastexecuted, "", "Test none existing shortcut.");
 
     event.ctrlKey = true;
     event.altKey = false;
     event.shiftKey = false;
     event.charCode = "B".charCodeAt(0);
     $(document).trigger(event);
-    equals(tinyMCE.lastexecuted, "Bold", "Test strong shortcut.");
+    equals($.deco.lastexecuted, "strong", "Test strong shortcut.");
 });
