@@ -44,20 +44,6 @@ $.deco.addTile = function () {
     $.deco.lastexecuted = "addTile";
 };
 
-$.deco.execCommand = function () {
-    $.deco.lastexecuted = "execCommand";
-};
-
-$.deco.undo = {
-    undo : function () {
-    $.deco.lastexecuted = "deco.undo.undo";
-    },
-    redo : function () {
-    $.deco.lastexecuted = "deco.undo.redo";
-    }
-};
-
-
 // Create getDefaultValue stub function
 $.deco.getDefaultValue = function () {
     return "test value";
