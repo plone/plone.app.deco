@@ -103,3 +103,7 @@ deco-toolbar button, x:-moz-any-link, X:default {
 }
 
 /* @end */
+
+.deco-hidden {
+    display: none !important;
+}

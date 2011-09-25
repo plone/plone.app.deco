@@ -531,7 +531,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Exec actions
                 $.deco.actionManager.actions[action].exec();
-                
+
                 if ($.deco.actionManager.actions[action].undoable) {
                     $.deco.undo.snapshot();
                 }

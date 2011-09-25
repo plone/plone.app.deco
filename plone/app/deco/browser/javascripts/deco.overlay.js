@@ -100,8 +100,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var form, formtabs, tile_group, x, visible_tabs, offset_top,
             field_tile, field, fieldset;
 
+        // Expand the overlay
+        expandMenu();
+        $('.overlay').show();
+
         // Get form
-        form = $(".deco-overlay", $.deco.document).find("form");
+        form = $(".overlay").find("form");
 
         if (mode === 'all') {
 
