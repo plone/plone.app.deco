@@ -210,9 +210,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @id jQuery.deco.overlay.close
      */
     $.deco.overlay.close = function () {
-        $(".deco-overlay-blocker", $.deco.document).hide();
-        $(".deco-overlay", $.deco.document).hide();
-        $(".deco-iframe-overlay", $.deco.document).remove();
+
+        // Check if iframe is open
+        if ($(".deco-iframe-overlay", $.deco.document).length !== 0) {
+            $(".deco-iframe-overlay", $.deco.document).remove();
+        } else {
+            // Expand the overlay
+            $('.overlay').hide();
+            forceContractMenu();
+        }
     };
 
     /**
