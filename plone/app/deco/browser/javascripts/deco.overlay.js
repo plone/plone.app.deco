@@ -71,19 +71,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .prepend($(document.createElement("div"))
                     .addClass("deco-overlay-blocker")
             );
-
-            // Clear actions
-            $(".formControls", $.deco.document).children("input").hide();
-            $(".formControls", $.deco.document).append(
-                $($.deco.document.createElement("input")).attr({
-                    'type': 'button',
-                    'value': 'Ok'
-                })
-                .addClass('button-field context')
-                .click(function () {
-                    $.deco.overlay.close();
-                })
-            );
         });
     };
 
@@ -100,9 +87,28 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var form, formtabs, tile_group, x, visible_tabs, offset_top,
             field_tile, field, fieldset;
 
-        // Get form
-        form = $(".deco-overlay", $.deco.document).find("form");
+        // Expand the overlay
+        expandMenu();
+        $('.overlay').show();
 
+        // Get form
+        form = $(".overlay").find("form");
+
+        // Clear actions
+        if ($(".deco-overlay-ok-button").length === 0) {
+            $(".overlay .formControls").children("input").hide();
+            $(".overlay .formControls").append(
+                $(document.createElement("input")).attr({
+                    'type': 'button',
+                    'value': 'Ok'
+                })
+                .addClass('button-field context deco-overlay-ok-button')
+                .click(function () {
+                    $.deco.overlay.close();
+                })
+            );
+        }
+ 
         if (mode === 'all') {
 
             // Get form tabs
@@ -115,7 +121,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             form.find("fieldset").children().removeClass('deco-hidden');
 
             // Hide all fieldsets
-            form.find('fieldset').addClass('hidden');
+            form.find('fieldset').hide();
 
             // Deselect all tabs
             formtabs.find('a').removeClass('selected');
@@ -127,7 +133,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Hide layout field
             form.find('#formfield-form-widgets-ILayoutAware-content')
                 .addClass('deco-hidden');
-            form.find('#formfield-form-widgets-ILayoutAware-layout')
+            form.find('#formfield-form-widgets-ILayoutAware-pageSiteLayout')
+                .addClass('deco-hidden');
+            form.find('#formfield-form-widgets-ILayoutAware-sectionSiteLayout')
                 .addClass('deco-hidden');
 
             // Hide title and description
@@ -155,8 +163,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             form.find("fieldset").each(function () {
                 if ($(this).children("div:not(.deco-hidden)").length === 0) {
                     $('a[href=#fieldsetlegend-' +
-                        $(this).attr('id').split('-')[1] + ']',
-                      $.deco.document)
+                        $(this).attr('id').split('-')[1] + ']')
                         .parent().addClass('deco-hidden');
                 }
             });
@@ -171,14 +178,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Select first tab
             visible_tabs.eq(0).children('a').addClass('selected');
             form.find('#fieldset-' +
-                visible_tabs.eq(0).children('a').attr('href').split('-')[1],
-                $.deco.document)
-                .removeClass('hidden');
+                visible_tabs.eq(0).children('a').attr('href').split('-')[1])
+                .show()
 
         } else if (mode === 'field') {
 
             // Get fieldset and field
-            field = $("#" + tile_config.id, $.deco.document);
+            field = $("#" + tile_config.id);
             fieldset = field.parents("fieldset");
 
             // Hide all fieldsets
@@ -196,13 +202,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Hide form tabs
             form.find(".formTabs").addClass('deco-hidden');
         }
-        $(".deco-overlay-blocker", $.deco.document).show();
-        offset_top = parseInt($(".deco-overlay",
-                                $.deco.document).css('top'), 10);
-        $(".deco-overlay", $.deco.document)
-            .css({'top': offset_top - 300})
-            .show()
-            .animate({'top': offset_top}, 300);
     };
 
     /**
@@ -211,9 +210,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @id jQuery.deco.overlay.close
      */
     $.deco.overlay.close = function () {
-        $(".deco-overlay-blocker", $.deco.document).hide();
-        $(".deco-overlay", $.deco.document).hide();
-        $(".deco-iframe-overlay", $.deco.document).remove();
+
+        // Check if iframe is open
+        if ($(".deco-iframe-overlay", $.deco.document).length !== 0) {
+            $(".deco-iframe-overlay", $.deco.document).remove();
+        } else {
+            // Expand the overlay
+            $('.overlay').hide();
+            forceContractMenu();
+        }
     };
 
     /**
