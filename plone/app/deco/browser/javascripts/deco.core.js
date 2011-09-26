@@ -134,7 +134,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Init app tiles
                 $.deco.options.panels = $(".deco-panel", $.deco.document);
-                $.deco.nrOfTiles = $.deco.options.panels.find("[data-tile]").size();
+                $.deco.nrOfTiles =
+                    $.deco.options.panels.find("[data-tile]").size();
 
                 $.deco.options.panels.find("[data-tile]").each(function () {
 

@@ -64,7 +64,7 @@ module("overlay", {
                 .append($(document.createElement("fieldset"))
                     .attr("id", "fieldset-2")
                     .append($(document.createElement("div"))
-                        .attr("id", "formfield-form-widgets-ILayoutAwareAware-layout")
+                        .attr("id", "formfield-form-widgets-ILayoutAware-layout")
                     )
                 )
                 .append($(document.createElement("div"))
@@ -132,9 +132,9 @@ test("overlay.open", function() {
 
     $.deco.overlay.open("field", {id: "title-field"});
 
-    equals($('#fieldset-default').hasClass('hidden'), false, "First fieldset is shown");
-    equals($('#fieldset-1').hasClass('hidden'), true, "Second fieldset is hidden");
-    equals($('#fieldset-2').hasClass('hidden'), true, "Third fieldset is shown");
+    equals($('#fieldset-default').hasClass('hidden'), true, "First fieldset is hidden");
+    equals($('#fieldset-1').hasClass('hidden'), false, "Second fieldset is shown");
+    equals($('#fieldset-2').hasClass('hidden'), true, "Third fieldset is hidden");
 
     equals($('#title-field').hasClass('deco-hidden'), false, "Title field is shown");
 
