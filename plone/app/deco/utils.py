@@ -12,13 +12,14 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.autoform.interfaces import OMITTED_KEY, WIDGETS_KEY, MODES_KEY
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
                                       WRITE_PERMISSIONS_KEY
+from plone.autoform.utils import mergedTaggedValuesForIRO
 
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import resolveDottedName
 
 from plone.app.blocks.interfaces import IOmittedField
 
-# BBB: this should be in plone.autoform.utils
+
 class PermissionChecker(object):
 
     def __init__(self, permissions, context):
@@ -40,45 +41,6 @@ class PermissionChecker(object):
                                                 self.context),
                     )
         return self.cache.get(permission_name, True)
-
-
-def mergedTaggedValuesForIRO(schema, name, iro):
-    # BBB: this should be in plone.autoform.utils, and
-    # mergedTaggedValuesForForm should use this
-
-    # filter out settings irrelevant to this form
-    threeples = [t for t in mergedTaggedValueList(schema, name)
-                 if t[0] in iro]
-
-    def by_iro(threeple):
-        interface = threeple[0]
-        return iro.index(interface)
-    threeples.sort(key=by_iro)
-    d = {}
-    # Now iterate through in the reverse order -- the values assigned last win.
-    for _, fieldName, value in reversed(threeples):
-        d[fieldName] = value
-    return d
-
-
-def iterSchemataForType(portal_type):
-    # BBB: merge this with plone.dexterity.utils.iterSchemata, which should
-    # really call this function
-    fti = queryUtility(IDexterityFTI, name=portal_type)
-    if fti is None:
-        return
-
-    yield fti.lookupSchema()
-
-    for behavior in fti.behaviors:
-        try:
-            behaviorInterface = resolveDottedName(behavior)
-        except ValueError:
-            continue
-        if behaviorInterface is not None:
-            behaviorSchema = IFormFieldProvider(behaviorInterface, None)
-            if behaviorSchema is not None:
-                yield behaviorSchema
 
 
 def _getWidgetName(field, widgets, request):
