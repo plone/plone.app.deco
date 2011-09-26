@@ -21,6 +21,11 @@
         title="Plone: Manage Deco"
         />
 
+    <permission
+        id="plone.ChangeLayout"
+        title="Plone: Change Deco Layout"
+        />
+
     <include package=".browser" />
     <include package=".bbb" />
 

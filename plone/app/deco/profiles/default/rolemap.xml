@@ -10,5 +10,9 @@
             <role name="Manager" />
             <role name="Site Administrator" />
         </permission>
+        <permission name="Plone: Change Deco Layout" acquire="False">
+            <role name="Manager" />
+            <role name="Site Administrator" />
+        </permission>
     </permissions>
 </rolemap>

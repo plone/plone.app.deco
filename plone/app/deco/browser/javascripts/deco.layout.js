@@ -615,7 +615,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
 
             // If the tile is movable
-            if ($(this).hasClass("movable")) {
+            if ($(this).hasClass("movable") && $.deco.options.can_change_layout) {
 
                 // Add drag handle
                 $(this).prepend(
@@ -625,7 +625,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             }
 
             // If tile is removable
-            if ($(this).hasClass("removable")) {
+            if ($(this).hasClass("removable") && $.deco.options.can_change_layout) {
 
                 // Add close icon
                 $(this).prepend('<div class="deco-tile-control deco-close-icon"></div>');

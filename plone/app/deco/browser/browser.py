@@ -129,9 +129,18 @@ class DecoConfigView(BrowserView):
         self.request.response.setHeader('Content-Type', 'application/json')
         registry = getUtility(IRegistry)
         adapted = IDecoRegistryAdapter(registry)
+        pm = getToolByName(self.context, 'portal_membership')
         kwargs = {
             'type': self.obtainType(),
             'context': self.context,
             'request': self.request,
         }
-        return json.dumps(adapted(**kwargs))
+        result = adapted(**kwargs)
+        can_change_layout = pm.checkPermission('Plone: Change Deco Layout', self.context)
+        result['can_change_layout'] = bool(can_change_layout)
+        if not can_change_layout:
+            if 'insert' in result['default_available_actions']:
+                result['default_available_actions'].remove('insert')
+            if 'add-tile' in result['default_available_actions']:
+                result['default_available_actions'].remove('add-tile')
+        return json.dumps(result)
