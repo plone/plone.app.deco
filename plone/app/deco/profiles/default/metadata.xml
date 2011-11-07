@@ -7,6 +7,7 @@
     <dependency>profile-plone.app.dexterity:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
     <dependency>profile-plone.app.standardtiles:default</dependency>
+    <dependency>profile-plone.app.contentlistingtile:default</dependency>
     <dependency>profile-plone.app.page:default</dependency>
     <dependency>profile-plone.app.cmsui:default</dependency>
     
