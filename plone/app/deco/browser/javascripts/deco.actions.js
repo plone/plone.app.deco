@@ -400,7 +400,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         $($.deco.document.createElement("textarea"))
                             .addClass("deco-rich-text-textarea")
                             .html($.trim(text))
-                            .height(height)
+                            .height(height);
                     );
                 }
             }

@@ -54,7 +54,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 author: 'Four Digits',
                 authorurl: 'http://www.fourdigits.nl',
                 version: tinymce.majorVersion + "." + tinymce.minorVersion
-            }
+            };
         }
     });
 
@@ -128,7 +128,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Set editor class
         obj.addClass('deco-rich-text');
-    }
+    };
 
     /**
      * Exec a command on the editor

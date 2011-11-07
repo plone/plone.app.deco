@@ -513,7 +513,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Edit field
                 $.deco.overlay.open('field', tile_config);
             }
-        })
+        });
 
         // Loop through matched elements
         var total = this.length;
