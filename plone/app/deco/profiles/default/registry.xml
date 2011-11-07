@@ -610,7 +610,7 @@
         <value key="category">structure</value>
         <value key="read_only">False</value>
         <value key="name">text</value>
-        <value key="settings">True</value>
+        <value key="settings">False</value>
         <value key="favorite">False</value>
         <value key="label">Text</value>
         <value key="tile_type">text</value>
