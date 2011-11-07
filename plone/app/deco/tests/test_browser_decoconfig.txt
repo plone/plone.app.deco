@@ -30,9 +30,15 @@ Config
 ------
 
 Now let's open the Deco config view.
+
     >>> browser.open('http://nohost/plone/page/@@deco-config')
 
 The config view should contain a json structure with settings like
 'primary_actions'.
-    >>> browser.contents
-    '{...primary_actions...}'
+
+    >>> try:
+    ...     import json
+    ... except:
+    ...     import simplejson as json
+    >>> sorted(json.loads(browser.contents).keys())
+    [u'can_change_layout', u'default_available_actions', u'formats', u'parent', u'primary_actions', u'secondary_actions', u'tiles']
