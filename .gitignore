@@ -3,3 +3,4 @@
 *.sw?
 
 plone.app.deco.egg-info/
+build/
