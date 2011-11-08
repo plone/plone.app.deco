@@ -558,8 +558,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
             // Get layout object
             var tile = $(this);
-            var obj = tile.parents("[data-panel]");
-
             var tile_config = $(this).decoGetTileConfig();
 
             // Check read only
@@ -1880,7 +1878,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             switch (tile_config.widget) {
             case "z3c.form.browser.text.TextWidget":
             case "z3c.form.browser.text.TextFieldWidget":
-                $("#" + tile_config.id).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
+                $("#" + tile_config.id, $.deco.formdocument).find('input').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content > *').html());
                 break;
             case "z3c.form.browser.textarea.TextAreaWidget":
             case "z3c.form.browser.textarea.TextAreaFieldWidget":
@@ -1889,11 +1887,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     value += $(this).html() + "\n";
                 });
                 value = value.replace(/<br[^>]*>/ig, "\n");
-                $("#" + tile_config.id).find('textarea').attr('value', value);
+                $("#" + tile_config.id, $.deco.formdocument).find('textarea').attr('value', value);
                 break;
             case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
             case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                $(document.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
+                $($.deco.formdocument.getElementById(tile_config.id)).find('textarea').attr('value', $('.deco-' + tiletype + '-tile', $.deco.document).find('.deco-tile-content').html());
                 break;
             }
         }
@@ -1995,11 +1993,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 // Save title and description
                                 if (tile_config.name === 'plone.app.standardtiles.title') {
                                     $('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content .hiddenStructure', $.deco.document).remove();
-                                    $("#formfield-form-widgets-IDublinCore-title").find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content', $.deco.document).text()));
+                                    $("#formfield-form-widgets-IDublinCore-title", $.deco.formdocument).find('input').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.title-tile .deco-tile-content', $.deco.document).text()));
                                 }
                                 if (tile_config.name === 'plone.app.standardtiles.description') {
                                     $('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content .hiddenStructure', $.deco.document).remove();
-                                    $("#formfield-form-widgets-IDublinCore-description").find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content', $.deco.document).text()));
+                                    $("#formfield-form-widgets-IDublinCore-description", $.deco.formdocument).find('textarea').attr('value', $.trim($('.deco-plone\\.app\\.standardtiles\\.description-tile .deco-tile-content', $.deco.document).text()));
                                 }
 
                                 break;
