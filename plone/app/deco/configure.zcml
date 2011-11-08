@@ -15,7 +15,7 @@
         id="plone.ModifyPageLayout"
         title="Plone: Modify Page Layout"
         />
-    
+
     <permission
         id="plone.ManageDeco"
         title="Plone: Manage Deco"
@@ -30,7 +30,7 @@
     <include package=".bbb" />
 
     <adapter factory=".registry.DecoRegistry" />
-    
+
     <genericsetup:registerProfile
         name="default"
         title="Deco"
@@ -38,7 +38,7 @@
         description='The Deco visual layout editor'
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-    
+
     <!-- BBB profile -->
     <genericsetup:registerProfile
         name="z_bbb"
