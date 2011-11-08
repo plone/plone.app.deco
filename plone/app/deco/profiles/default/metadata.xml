@@ -6,6 +6,7 @@
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
+<<<<<<< .merge_file_AtUDbz
 
     <dependency>profile-plone.app.contentlistingtile:default</dependency>
     <dependency>profile-plone.app.imagetile:default</dependency>
@@ -13,5 +14,9 @@
 
     <!-- BBB: Remove once we don't need BBB anymore -->
     <dependency>profile-plone.app.deco:z_bbb</dependency>
+=======
+    <dependency>profile-plone.app.standardtiles:default</dependency>
+    <dependency>profile-plone.app.cmsui:default</dependency>
+>>>>>>> .merge_file_5YWBd0
   </dependencies>
 </metadata>

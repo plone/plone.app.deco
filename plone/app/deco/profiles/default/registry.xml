@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <registry>
 
-    <!-- Default (portal-wide) site layout -->
-    <record name="plone.defaultSiteLayout">
-        <field type="plone.registry.field.ASCIILine">
-            <title>Default site layout</title>
-            <description>The site layout used</description>
-        </field>
-        <value>./++sitelayout++default/site.html</value>
-    </record>
-
     <!-- Primary actions -->
     <records prefix="plone.app.deco.primary_actions.save"
             interface='plone.app.deco.interfaces.IAction'>

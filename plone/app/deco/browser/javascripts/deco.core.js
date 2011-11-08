@@ -108,13 +108,18 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $.deco.options.ignore_context = options.ignore_context;
                 $.deco.options.tileheadelements = [];
 
+                // Get the layout
+                $.deco.formdocument = document;
                 content = $('#form-widgets-ILayoutAware-content').val();
+                if (!content) {
+                    // try the parent frame
+                    $.deco.formdocument = $.deco.document;
+                    content = window.parent.jQuery('#form-widgets-ILayoutAware-content').val();
 
-                // Check if no layout
-                if (content === '') {
-
-                    // Exit
-                    return;
+                    if (content == '') {
+                        // Exit
+                        return;
+                    }
                 }
 
                 // Get dom tree
@@ -127,9 +132,24 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     var panel_id = $(this).attr("data-panel"),
                         target = $("[data-panel=" + panel_id + "]",
                         $.deco.document);
-                    target.addClass('deco-panel');
-                    target.html(content.find("[data-panel=" +
-                        panel_id + "]").html());
+                        
+                    // If it's the content panel and the form is in the main frame,
+                    // create a new div to replace the form
+                    var content_panel = content.find("[data-panel=" + panel_id + "]");
+                    if (panel_id === 'content' && $.deco.document == $.deco.formdocument) {
+                        $("#content", $.deco.document)
+                            .addClass('deco-original-content');
+                        $("#content", $.deco.document)
+                            .before($($.deco.document.createElement("div"))
+                                .attr("id", "content")
+                                .addClass('deco-panel')
+                                .attr("data-panel", content_panel.attr("data-panel"))
+                                .html(content_panel.html())
+                            );
+                    } else {
+                        target.addClass('deco-panel');
+                        target.html(content_panel.html());
+                    }
                 });
 
                 // Init app tiles
@@ -202,12 +222,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         case "z3c.form.browser.text.TextWidget":
                         case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<div>' +
-                                $("#" + tile_config.id)
+                                $("#" + tile_config.id, $.deco.formdocument)
                                       .find('input').attr('value') + '</div>';
                             break;
                         case "z3c.form.browser.textarea.TextAreaWidget":
                         case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id)
+                            lines = $("#" + tile_config.id, $.deco.formdocument)
                                         .find('textarea')
                                         .attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
@@ -216,7 +236,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             break;
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id)
+                            fieldhtml = $("#" + tile_config.id, $.deco.formdocument)
                                             .find('textarea').attr('value');
                             break;
                         default:
@@ -264,8 +284,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init overlay
-//                $('#content.deco-original-content',
-//                  $.deco.document).decoOverlay();
+                if ($.deco.document == $.deco.formdocument) {
+                    $('#content.deco-original-content',
+                      $.deco.document).decoOverlay().addClass('overlay');
+                }
 
                 // Add toolbar div below menu
                 $("body").prepend($(document.createElement("div"))
@@ -408,5 +430,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $('head', $.deco.document).append(this);
         });
     };
+    
+    //#JSCOVERAGE_IF 0
+    
+        // Init Deco on load if the main frame has a layout field
+        $(window).load(function () {
+            // Check if layout exists
+            if ($('#form-widgets-ILayoutAware-content',
+                  window.parent.document).length > 0) {
+                // Init Deco
+                $.deco.init();
+            }
+        });
+    
+    //#JSCOVERAGE_ENDIF
 
 }(jQuery));

@@ -8,17 +8,6 @@
     
     <!-- Resources -->
     
-    <plone:static
-        type="sitelayout"
-        name="default"
-        directory="static/sitelayout"
-        />
-    <plone:static
-        type="pagelayout"
-        name="default"
-        directory="static/pagelayout"
-        />
-    
     <browser:resourceDirectory
         name="plone.app.deco.stylesheets"
         directory="stylesheets"
@@ -32,58 +21,6 @@
     <browser:resourceDirectory
         name="plone.app.deco.javascripts"
         directory="javascripts"
-        />
-    
-    <!-- Control panel -->
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="deco-controlpanel"
-        class=".manage.ManageDeco"
-        template="templates/manage.pt"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="add-page-layout"
-        class=".manage.AddPageLayoutForm"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="add-site-layout"
-        class=".manage.AddSiteLayoutForm"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="edit-page-layout"
-        class=".manage.EditPageLayoutForm"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="edit-site-layout"
-        class=".manage.EditSiteLayoutForm"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="add-page-type"
-        class=".manage.AddPageTypeForm"
-        permission="plone.ManageDeco"
-        />
-    
-    <browser:page
-        for="plone.app.page.interfaces.IPageFTI"
-        name="edit-page-type"
-        class=".manage.EditPageTypeForm"
-        permission="plone.ManageDeco"
         />
 
     <!-- Deco support views -->
