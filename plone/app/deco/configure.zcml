@@ -7,9 +7,10 @@
     <include package="plone.app.registry" />
     <include package="plone.app.dexterity" />
     <include package="plone.app.tiles" />
-    <include package="plone.app.standardtiles" />
-    <include package="plone.app.page" />
-    <include package="plone.app.cmsui" />
+
+    <include package="plone.app.contentlistingtile" />
+    <include package="plone.app.imagetile" />
+    <include package="plone.app.texttile" />
 
     <permission
         id="plone.ModifyPageLayout"
