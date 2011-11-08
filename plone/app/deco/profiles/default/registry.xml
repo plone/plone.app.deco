@@ -704,6 +704,7 @@
             <element key="deco">
                 <element>jquerytools</element>
                 <element>default</element>
+                <element>deco</element>
             </element>
         </value>
     </record>
