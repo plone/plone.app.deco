@@ -27,6 +27,7 @@
         />
 
     <include package=".browser" />
+    <include package=".tiles" />
 
     <adapter factory=".registry.DecoRegistry" />
 
