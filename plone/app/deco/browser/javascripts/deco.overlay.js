@@ -87,18 +87,20 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         var form, formtabs, tile_group, x, visible_tabs, offset_top,
             field_tile, field, fieldset;
 
-        // Expand the overlay
-        expandMenu();
-        $('.overlay').show();
+        // Expand the menu if the overlay is in it
+        if ($.deco.document != $.deco.formdocument) {
+            expandMenu();
+        }
+        $('.overlay', $.deco.formdocument).show();
 
         // Get form
-        form = $(".overlay").find("form");
+        form = $(".overlay", $.deco.formdocument).find("form");
 
         // Clear actions
-        if ($(".deco-overlay-ok-button").length === 0) {
-            $(".overlay .formControls").children("input").hide();
-            $(".overlay .formControls").append(
-                $(document.createElement("input")).attr({
+        if ($(".deco-overlay-ok-button", $.deco.formdocument).length === 0) {
+            $(".overlay .formControls", $.deco.formdocument).children("input").hide();
+            $(".overlay .formControls", $.deco.formdocument).append(
+                $($.deco.formdocument.createElement("input")).attr({
                     'type': 'button',
                     'value': 'Ok'
                 })
@@ -179,12 +181,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             visible_tabs.eq(0).children('a').addClass('selected');
             form.find('#fieldset-' +
                 visible_tabs.eq(0).children('a').attr('href').split('-')[1])
-                .show()
+                .show();
 
         } else if (mode === 'field') {
 
             // Get fieldset and field
-            field = $("#" + tile_config.id);
+            field = $("#" + tile_config.id, $.deco.formdocument);
             fieldset = field.parents("fieldset");
 
             // Hide all fieldsets
@@ -216,7 +218,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(".deco-iframe-overlay", $.deco.document).remove();
         } else {
             // Expand the overlay
-            $('.overlay').hide();
+            $('.overlay', $.deco.formdocument).hide();
             forceContractMenu();
         }
     };

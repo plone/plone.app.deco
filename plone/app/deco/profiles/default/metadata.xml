@@ -6,11 +6,8 @@
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
-    <dependency>profile-plone.app.standardtiles:default</dependency>
-    <dependency>profile-plone.app.page:default</dependency>
-    <dependency>profile-plone.app.cmsui:default</dependency>
-    
-    <!-- BBB: Remove once we don't need BBB anymore -->
-    <dependency>profile-plone.app.deco:z_bbb</dependency>
+    <dependency>profile-plone.app.contentlistingtile:default</dependency>
+    <dependency>profile-plone.app.imagetile:default</dependency>
+    <dependency>profile-plone.app.texttile:default</dependency>
   </dependencies>
 </metadata>
