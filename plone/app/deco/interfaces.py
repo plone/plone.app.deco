@@ -22,11 +22,11 @@ DEFAULT_SITE_LAYOUT_CONTENT = u"""\
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <link rel="panel" rev="content" target="content" />
-    
+
     <link rel="tile" href="./@@plone.app.standardtiles.headtitle" />
     <link rel="tile" href="./@@plone.app.standardtiles.stylesheets" />
     <link rel="tile" href="./@@plone.app.standardtiles.javascripts" />
-    
+
     <link rel="tile" target="menu-link" href="./@@plone.app.standardtiles.menu_link" />
 </head>
 <body>
@@ -104,3 +104,12 @@ class IWidgetAction(Interface):
 class ILayoutWidget(Interface):
     """Marker interface for the layout widget
     """
+
+
+class IMetadataTile(Interface):
+    """Metadata tiles are application tiles that handle metadata
+    """
+
+    def get_value(self):
+        """Returns the value to display through the template.
+        """

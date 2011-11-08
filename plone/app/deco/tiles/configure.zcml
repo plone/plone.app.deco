@@ -1,0 +1,44 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone">
+
+  <plone:tile
+      name="plone.app.deco.titletile"
+      title="Title"
+      description="A tile which displays the context title"
+      add_permission="zope.Public"
+      class=".metadata.DefaultTitleTile"
+      for="*"
+      permission="zope2.View"
+      template="templates/title.pt"
+      />
+
+  <plone:tile
+      name="plone.app.deco.titletile"
+      class=".metadata.DexterityTitleTile"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      permission="zope2.View"
+      template="templates/title.pt"
+      />
+
+  <plone:tile
+      name="plone.app.deco.descriptiontile"
+      title="Description"
+      description="A tile which displays the context description"
+      add_permission="zope.Public"
+      class=".metadata.DefaultDescriptionTile"
+      for="*"
+      permission="zope2.View"
+      template="templates/description.pt"
+      />
+
+  <plone:tile
+      name="plone.app.deco.descriptiontile"
+      class=".metadata.DexterityDescriptionTile"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      permission="zope2.View"
+      template="templates/description.pt"
+      />
+
+</configure>
