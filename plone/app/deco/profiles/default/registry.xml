@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <registry>
 
+    <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings"
+            field="resourceBundlesForThemes">
+        <value purge="false">
+            <element key="toolbar">
+                <element>default</element>
+                <element>toolbar</element>
+                <element>deco</element>
+            </element>
+        </value>
+    </record>
+
     <!-- Primary actions -->
     <records prefix="plone.app.deco.primary_actions.save"
             interface='plone.app.deco.interfaces.IAction'>
@@ -691,15 +702,4 @@
         </value>
     </record>
 
-    <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings"
-            field="resourceBundlesForThemes">
-        <value purge="false">
-            <element key="deco">
-                <element>default</element>
-                <element>toolbar</element>
-                <element>deco</element>
-            </element>
-        </value>
-    </record>
-    
 </registry>
