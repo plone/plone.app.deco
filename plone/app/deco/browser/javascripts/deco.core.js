@@ -291,7 +291,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Hide toolbar
                 // XXX: not really nice to hide it here
-                $(".toolbar .toolbarleft > *").remove();
+                $('.toolbar .toolbarleft > *').remove();
+                $('.toolbar').removeClass('toolbarglobal')
+                        .addClass('toolbarlocal');
 
                 // Add toolbar div below menu
                 $(".toolbar .toolbarleft").addClass("deco-toolbar");
