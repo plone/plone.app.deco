@@ -251,9 +251,9 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     } else {
                         url = href;
                         if (tile_config.name ===
-                            'plone.app.standardtiles.title' ||
+                            'plone.app.deco.title' ||
                             tile_config.name ===
-                            'plone.app.standardtiles.description') {
+                            'plone.app.deco.description') {
                             url += '?ignore_context=' +
                                 $.deco.options.ignore_context;
                         }

@@ -55,7 +55,7 @@ $.ajax = function (options) {
                       "default_value" : null,
                       "favorite" : false,
                       "label" : "Title",
-                      "name" : "plone.app.standardtiles.title",
+                      "name" : "plone.app.deco.title",
                       "read_only" : false,
                       "rich_text" : true,
                       "settings" : false,
@@ -70,7 +70,7 @@ $.ajax = function (options) {
                       "default_value" : null,
                       "favorite" : false,
                       "label" : "Description",
-                      "name" : "plone.app.standardtiles.description",
+                      "name" : "plone.app.deco.description",
                       "read_only" : false,
                       "rich_text" : true,
                       "settings" : false,
@@ -171,7 +171,7 @@ test("Init with tile data", function() {
     expect(2);
 
     // Set layout content
-    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><body><div data-panel="content">content text</div><div data-panel="portal-column-one"><div class="deco-tile deco-plone.app.standardtiles.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title"></span></div></div></div></body></html>');
+    $("#form-widgets-ILayoutAware-content").val('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-layout="./@@test-layout"><body><div data-panel="content">content text</div><div data-panel="portal-column-one"><div class="deco-tile deco-plone.app.deco.title-tile"><div class="deco-tile-content"><span data-tile="./@@plone.app.standardtiles.field?field=title"></span></div></div></div></body></html>');
 
     // Init with add url
     $.deco.init({url: 'http://nohost/test/edit'});
