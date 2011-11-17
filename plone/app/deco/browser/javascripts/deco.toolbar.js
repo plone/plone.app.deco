@@ -185,35 +185,26 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             RepositionToolbar, SelectedTileChange;
 
             // Get current object
-            obj = $(this);
+            content = $(this);
 
             // Empty object
-            obj.html("");
-
-            // Add deco toolbar class
-            obj.append($(document.createElement("div"))
-                .addClass("deco-inline-toolbar")
-            );
-            obj = obj.children(".deco-inline-toolbar");
-
-            // Add content
-            obj.append($(document.createElement("div"))
-                .addClass("deco-toolbar-content")
-            );
-            content = obj.children(".deco-toolbar-content");
+            content.html("");
 
             // Add primary and secondary function div's
             actions = {};
             content.append($(document.createElement("div"))
-                .addClass("deco-toolbar-primary-functions")
-            );
-            actions.primary_actions =
-                content.children(".deco-toolbar-primary-functions");
-            content.append($(document.createElement("div"))
                 .addClass("deco-toolbar-secondary-functions")
+                .addClass("portaltabs")
+                .addClass("rightactions")
             );
             actions.secondary_actions =
                 content.children(".deco-toolbar-secondary-functions");
+            content.append($(document.createElement("div"))
+                .addClass("deco-toolbar-primary-functions")
+                .addClass("portaltabs")
+            );
+            actions.primary_actions =
+                content.children(".deco-toolbar-primary-functions");
 
             // Loop through action groups
             for (a in actions) {

@@ -289,10 +289,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                       $.deco.document).decoOverlay().addClass('overlay');
                 }
 
+                // Hide toolbar
+                // XXX: not really nice to hide it here
+                $(".toolbar .toolbarleft > *").remove();
+
                 // Add toolbar div below menu
-                $("body").prepend($(document.createElement("div"))
-                    .addClass("deco-toolbar")
-                );
+                $(".toolbar .toolbarleft").addClass("deco-toolbar");
 
                 // Add the toolbar to the options
                 $.deco.options.toolbar = $(".deco-toolbar");
@@ -321,7 +323,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         if (!obj.hasClass('deco-panel') &&
                             !obj.hasClass('deco-toolbar') &&
                             !obj.hasClass('deco-notifications') &&
-                            obj.attr('id') !== 'plone-cmsui-menu') {
+                            obj.attr('id') !== 'plone-toolbar') {
 
                             // Check if inside panel or toolbar
                             if (obj.parents('.deco-panel, .deco-toolbar')
