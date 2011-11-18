@@ -46,17 +46,6 @@
         <value key="weight">30</value>
     </records>
 
-    <records prefix="plone.app.deco.primary_actions.add_tile"
-             interface='plone.app.deco.interfaces.IAction'>
-        <value key="name">add_tile</value>
-        <value key="fieldset"></value>
-        <value key="label">Add tile</value>
-        <value key="action">add-tile</value>
-        <value key="icon">False</value>
-        <value key="menu">False</value>
-        <value key="weight">40</value>
-    </records>
-
     <records prefix="plone.app.deco.primary_actions.html"
             interface='plone.app.deco.interfaces.IAction'>
         <value key="name">html</value>
