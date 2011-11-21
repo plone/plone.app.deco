@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<object name="portal_skins">
-
-    <!-- Register the deco skin, based on Sunburst theme -->
-    <skin-path name="deco" based-on="Sunburst Theme">
-    </skin-path>
-    
-</object>
