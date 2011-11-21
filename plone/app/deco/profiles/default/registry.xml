@@ -10,6 +10,7 @@
                 <element>tinymce</element>
                 <element>toolbar</element>
                 <element>deco</element>
+            </element>
         </value>
     </record>
 
