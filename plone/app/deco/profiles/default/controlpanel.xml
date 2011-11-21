@@ -12,7 +12,7 @@
         condition_expr=""
         icon_expr="string:${portal_url}/++resource++plone.app.deco.images/deco_icon.gif"
         url_expr="string:${portal_url}/@@deco-controlpanel"
-        visible="True"
+        visible="False"
         i18n:attributes="title">
             <permission>Manage portal</permission>
  </configlet>
