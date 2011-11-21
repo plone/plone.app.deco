@@ -11,6 +11,7 @@
     <include package="plone.app.imagetile" />
     <include package="plone.app.texttile" />
     <include package="plone.app.toolbar" />
+    <include package="plone.app.layoutpage" />
 
     <permission
         id="plone.ModifyPageLayout"

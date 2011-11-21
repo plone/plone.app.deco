@@ -14,17 +14,4 @@
               enabled="1"
               expression=""/>
 
-  <stylesheet title=""
-              id="++resource++plone.app.deco.stylesheets/toolbar.css"
-              bundle="deco"
-              applyPrefix="true"
-              media="screen"
-              rel="stylesheet"
-              rendering="import"
-              cacheable="True"
-              compression="safe"
-              cookable="True"
-              enabled="1"
-              expression=""/>
-
 </object>
