@@ -353,12 +353,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register save action
         $.deco.registerAction('save', {
             exec: function () {
-                $("#form-widgets-ILayoutAware-content")
-                      .attr("value", $.deco.getPageContent());
+                $($.deco.document)
+                    .find("#form-widgets-ILayoutAware-content")
+                    .attr("value", $.deco.getPageContent());
 
                 // Remove KSS onunload protection
                 window.parent.onbeforeunload = null;
-                $("#form-buttons-save").click();
+                $($.deco.document).find("#form-buttons-save").click();
             },
             shortcut: {
                 ctrl: true,
@@ -373,7 +374,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             exec: function () {
 
                 // Cancel form
-                $("#form-buttons-cancel").click();
+                $($.deco.document).find("#form-buttons-cancel").click();
             }
         });
 
