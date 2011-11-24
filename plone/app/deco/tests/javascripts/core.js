@@ -119,7 +119,7 @@ module("core", {
         $("#content-views").remove();
         $(".contentActions").remove();
         $("#edit-bar").remove();
-        $(".deco-blur").removeClass("deco-blur");
+        $.mask.close();
     }
 });
 
@@ -142,7 +142,7 @@ test("Init without data", function() {
 });
 
 test("Init with data", function() {
-    expect(13);
+    expect(14);
 
     $.deco.init({url: 'http://nohost/test/edit'});
 
@@ -162,8 +162,10 @@ test("Init with data", function() {
 
     equals($.deco.executed.indexOf("decoToolbar") != -1, true, "Toolbar init is called");
 
-    equals($(".deco-panel").hasClass('deco-blur'), false, "Panels are not blurred");
-    equals($(".deco-toolbar").hasClass('deco-blur'), false, "Toolbar is not blurred");
+    equals($.deco.options.panels.parents("html").find("#exposeMask").length, 1, "Expose mask is created in panels' document");
+    equals($.deco.options.toolbar.parents("html").find("#exposeMask").length, 0, "Expose mask is not created in toolbar's document");
+    equals(parseInt($("#exposeMask").css('z-index'), 10) < parseInt($(".deco-panel").css('z-index'), 10), true, "Panels have higher z-index than the mask");
+
     equals($.deco.options.layout, "./@@test-layout", "site layout is preserved");
 });
 

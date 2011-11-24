@@ -310,44 +310,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Init panel
                 $.deco.options.panels.decoLayout();
 
-                // Add blur to the rest of the content
-                $("*", $.deco.document).each(function () {
-
-                    // Local variables
-                    var obj;
-
-                    obj = $(this);
-
-                    // Check if block element
-                    if (obj.css('display') === 'block') {
-
-                        // Check if panel or toolbar
-                        if (!obj.hasClass('deco-panel') &&
-                            !obj.hasClass('deco-toolbar') &&
-                            !obj.hasClass('deco-notifications') &&
-                            obj.attr('id') !== 'plone-toolbar') {
-
-                            // Check if inside panel or toolbar
-                            if (obj.parents('.deco-panel, .deco-toolbar')
-                                .length === 0) {
-
-                                // Check if parent of a panel or toolbar
-                                if (obj.find('.deco-panel, .deco-toolbar')
-                                    .length === 0) {
-
-                                    // Check if parent has a child who is a
-                                    // panel or a toolbar
-                                    if (obj.parent()
-                                        .find('.deco-panel, .deco-toolbar')
-                                        .length !== 0) {
-
-                                        // Add blur class
-                                        obj.addClass('deco-blur');
-                                    }
-                                }
-                            }
-                        }
-                    }
+                // Add blur to the rest of the content using jQT expose
+                // XXX: window.parent.$ !== $; this may need refactoring
+                window.parent.$($.deco.options.panels).expose({
+                    closeOnEsc: false,
+                    closeOnClick: false,
                 });
 
                 // Init upload

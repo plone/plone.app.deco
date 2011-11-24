@@ -62,7 +62,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 .hide()
                 .css({
                     'width': '900px',
-                    'left': (($(window.parent).width() - 900) / 2)
+                    'left': (($(window.parent).width() - 900) / 2),
+                    'z-index': 9999  // must be above jQT expose mask
                 })
                 .addClass("deco-overlay");
 
