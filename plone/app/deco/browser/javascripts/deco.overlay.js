@@ -241,7 +241,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     'width': '900px',
                     'height': '450px',
                     'top': '130px',
-                    'z-index': '3000',
+                    'z-index': 9999,  // must be above jQT expose mask
                     'left': (($(window.parent).width() - 900) / 2),
                     'border': '0px'
                 })

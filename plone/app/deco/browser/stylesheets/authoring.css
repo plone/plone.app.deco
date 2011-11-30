@@ -503,7 +503,7 @@
     position: fixed;
     _position: absolute;
     _top: expression(eval((document.body.scrollTop)?document.body.scrollTop:document.documentElement.scrollTop));
-    z-index: 3000;
+    z-index: 9999;  /* must be above jQT expose mask */
     padding: 1em;
     background-color: white;
 }
