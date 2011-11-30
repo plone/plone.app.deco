@@ -165,7 +165,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             // Hide tab if fieldset has no visible items
             form.find("fieldset").each(function () {
                 if ($(this).children("div:not(.deco-hidden)").length === 0) {
-                    $('a[href=#fieldsetlegend-' +
+                    $($.deco.document).find('a[href=#fieldsetlegend-' +
                         $(this).attr('id').split('-')[1] + ']')
                         .parent().addClass('deco-hidden');
                 }
