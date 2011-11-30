@@ -43,7 +43,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             if (tiledata.action === 'cancel') {
 
                 // Close overlay
-                window.parent.frames['plone-cmsui-menu'].jQuery.deco.overlay.close();
+                window.parent.frames['plone-toolbar'].jQuery.deco.overlay.close();
 
             } else if (tiledata.action === 'save') {
 
@@ -54,13 +54,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     if (typeof(tiledata.url) !== 'undefined') {
 
                         // Insert app tile
-                         window.parent.frames['plone-cmsui-menu'].jQuery.deco.addAppTile(tiledata.tile_type,
+                         window.parent.frames['plone-toolbar'].jQuery.deco.addAppTile(tiledata.tile_type,
                             tiledata.url, tiledata.id);
                     }
                 } else {
 
                     // Update app tile
-                     window.parent.frames['plone-cmsui-menu'].jQuery.deco.editAppTile(tiledata.url);
+                     window.parent.frames['plone-toolbar'].jQuery.deco.editAppTile(tiledata.url);
                 }
             }
         }
