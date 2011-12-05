@@ -388,11 +388,11 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Are we currently in HTML edit mode?
                 disable = $('.deco-button-html').hasClass('active');
                 
-                if (disable == false) {
-
-                    // Get tile content div
-                    tilecontent = $(".deco-selected-tile", $.deco.document)
-                                      .children(".deco-tile-content");
+                // Get tile content div
+                tilecontent = $(".deco-selected-tile", $.deco.document)
+                                  .children(".deco-tile-content");
+                
+                if (disable === false) {
             
                     // Set HTML Edit button to appear active
                     $('.deco-button-html').addClass('active', 0);
@@ -404,17 +404,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // Check if not already html editable
                     if (tilecontent.find('.deco-rich-text-textarea')
                             .length === 0) {
-
+                        
                         // Add new text area and set content
                         text = tilecontent.html();
                         height = tilecontent.height() > 100 ? tilecontent.height() : 100;
-                        tilecontent.empty();
+                        
+                        // Disable TinyMce for this tile to prevent conflict with textarea
+                        window.parent.tinymce.execCommand('mceRemoveControl', false, tilecontent.attr('id'));
                         tilecontent.html(
                             $($.deco.document.createElement("textarea"))
                                 .addClass("deco-rich-text-textarea")
                                 .html($.trim(text))
                                 .height(height));
-                    
+
                     }
                 } else {
                     $.deco.disableEditHtmlSource();
