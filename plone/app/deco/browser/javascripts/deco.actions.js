@@ -381,27 +381,43 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Register html action
         $.deco.registerAction('html', {
             exec: function () {
-
+                
                 // Local variables
-                var tilecontent, text, height;
+                var tilecontent, text, height, disable;
+                
+                // Are we currently in HTML edit mode?
+                disable = $('.deco-button-html').hasClass('active');
+                
+                if (disable == false) {
 
-                // Get tile content div
-                tilecontent = $(".deco-selected-tile", $.deco.document)
-                                  .children(".deco-tile-content");
+                    // Get tile content div
+                    tilecontent = $(".deco-selected-tile", $.deco.document)
+                                      .children(".deco-tile-content");
+            
+                    // Set HTML Edit button to appear active
+                    $('.deco-button-html').addClass('active', 0);
+            
+                    // Set format, insert, styles to hidden
+                    $('.deco-toolbar-secondary-functions').hide();
+                    $('.deco-button-group-text').hide();
+            
+                    // Check if not already html editable
+                    if (tilecontent.find('.deco-rich-text-textarea')
+                            .length === 0) {
 
-                // Check if not already html editable
-                if (tilecontent.find('.deco-rich-text-textarea')
-                        .length === 0) {
-
-                    // Add new text area and set content
-                    text = tilecontent.html();
-                    height = tilecontent.height();
-                    tilecontent.empty();
-                    tilecontent.prepend(
-                        $($.deco.document.createElement("textarea"))
-                            .addClass("deco-rich-text-textarea")
-                            .html($.trim(text))
-                            .height(height));
+                        // Add new text area and set content
+                        text = tilecontent.html();
+                        height = tilecontent.height() > 100 ? tilecontent.height() : 100;
+                        tilecontent.empty();
+                        tilecontent.html(
+                            $($.deco.document.createElement("textarea"))
+                                .addClass("deco-rich-text-textarea")
+                                .html($.trim(text))
+                                .height(height));
+                    
+                    }
+                } else {
+                    $.deco.disableEditHtmlSource();
                 }
             }
         });

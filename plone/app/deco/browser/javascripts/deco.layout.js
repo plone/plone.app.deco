@@ -1670,7 +1670,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @id jQuery.deco.disableEditHtmlSource
      */
     $.deco.disableEditHtmlSource = function () {
-
+        
+        // Set HTML Edit button to appear active
+        $('.deco-button-html').removeClass('active', 0);
+    
+        // Show the actions if they were disabled
+        $('.deco-toolbar-secondary-functions:hidden').show();
+        $('.deco-button-group-text:hidden').show();
+        
         // Find rich text textareas
         $(".deco-rich-text-textarea", $.deco.document).each(function () {
 
