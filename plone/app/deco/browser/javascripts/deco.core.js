@@ -84,8 +84,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         }
 
         // Chop add
-        match = options.url
-            .match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
+        match = options.url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
         if (match) {
             options.url = match[1];
             options.type = match[2];
@@ -116,7 +115,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     $.deco.formdocument = $.deco.document;
                     content = window.parent.jQuery('#form-widgets-ILayoutAware-content').val();
 
-                    if (content == '') {
+                    if (content === '') {
                         // Exit
                         return;
                     }
@@ -137,15 +136,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // create a new div to replace the form
                     var content_panel = content.find("[data-panel=" + panel_id + "]");
                     if (panel_id === 'content' && $.deco.document == $.deco.formdocument) {
-                        $("#content", $.deco.document)
-                            .addClass('deco-original-content');
-                        $("#content", $.deco.document)
-                            .before($($.deco.document.createElement("div"))
-                                .attr("id", "content")
-                                .addClass('deco-panel')
-                                .attr("data-panel", content_panel.attr("data-panel"))
-                                .html(content_panel.html())
-                            );
+                        $("#content", $.deco.document).addClass('deco-original-content');
+                        $("#content", $.deco.document).before(
+                            $($.deco.document.createElement("div")).attr({
+                                'id': 'content',
+                                'data-panel': content_panel.attr("data-panel")
+                            }).addClass('deco-panel').html(content_panel.html()));
                     } else {
                         target.addClass('deco-panel');
                         target.html(content_panel.html());
@@ -168,8 +164,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // Get tile type
                     tile_content = $(this).parent();
                     tiletype = '';
-                    classes = tile_content.parents('.deco-tile').attr('class')
-                        .split(" ");
+                    classes = tile_content.parents('.deco-tile').attr('class').split(" ");
                     $(classes).each(function () {
 
                         // Local variables
@@ -195,16 +190,17 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             // Set settings value
                             if (tile_group.tiles[y].tile_type === 'field') {
                                 switch (tile_group.tiles[y].widget) {
-                                case "z3c.form.browser.text.TextWidget":
-                                case "z3c.form.browser.text.TextFieldWidget":
-                                case "z3c.form.browser.textarea.TextAreaWidget":
-                                case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                                case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
-                                case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                                    tile_group.tiles[y].settings = false;
-                                    break;
-                                default:
-                                    tile_group.tiles[y].settings = true;
+                                    case "z3c.form.browser.text.TextWidget":
+                                    case "z3c.form.browser.text.TextFieldWidget":
+                                    case "z3c.form.browser.textarea.TextAreaWidget":
+                                    case "z3c.form.browser.textarea.TextAreaFieldWidget":
+                                    case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+                                    case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
+                                        tile_group.tiles[y].settings = false;
+                                        break;
+                                    default:
+                                        tile_group.tiles[y].settings = true;
+                                        break;
                                 }
                             }
                             if (tile_group.tiles[y].name === tiletype) {
@@ -222,22 +218,18 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                         case "z3c.form.browser.text.TextWidget":
                         case "z3c.form.browser.text.TextFieldWidget":
                             fieldhtml = '<div>' +
-                                $("#" + tile_config.id, $.deco.formdocument)
-                                      .find('input').attr('value') + '</div>';
+                                $("#" + tile_config.id, $.deco.formdocument).find('input').attr('value') + '</div>';
                             break;
                         case "z3c.form.browser.textarea.TextAreaWidget":
                         case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id, $.deco.formdocument)
-                                        .find('textarea')
-                                        .attr('value').split('\n');
+                            lines = $("#" + tile_config.id, $.deco.formdocument).find('textarea').attr('value').split('\n');
                             for (i = 0; i < lines.length; i += 1) {
                                 fieldhtml += '<div>' + lines[i] + '</div>';
                             }
                             break;
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
                         case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id, $.deco.formdocument)
-                                            .find('textarea').attr('value');
+                            fieldhtml = $("#" + tile_config.id, $.deco.formdocument).find('textarea').attr('value');
                             break;
                         default:
                             fieldhtml = '<div class="discreet">Placeholder ' +
@@ -268,8 +260,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                                 // Add head tags
                                 $.deco.addHeadTags(href, value);
 
-                                tile_content
-                                    .html('<p class="hiddenStructure ' +
+                                tile_content.html('<p class="hiddenStructure ' +
                                         'tileUrl">' + href + '</p>' +
                                         value.find('.temp_body_tag').html());
 
@@ -292,8 +283,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Hide toolbar
                 // XXX: not really nice to hide it here
                 $('.toolbar .toolbarleft > *').remove();
-                $('.toolbar').removeClass('toolbarglobal')
-                        .addClass('toolbarlocal');
+                $('.toolbar').removeClass('toolbarglobal').addClass('toolbarlocal');
 
                 // Add toolbar div below menu
                 $(".toolbar .toolbarleft").addClass("deco-toolbar");
@@ -314,7 +304,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // XXX: window.parent.$ !== $; this may need refactoring
                 window.parent.$($.deco.options.panels).expose({
                     closeOnEsc: false,
-                    closeOnClick: false,
+                    closeOnClick: false
                 });
 
                 // Init upload
