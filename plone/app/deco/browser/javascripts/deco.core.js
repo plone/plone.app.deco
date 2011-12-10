@@ -391,19 +391,25 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $('head', $.deco.document).append(this);
         });
     };
-    
-    //#JSCOVERAGE_IF 0
-    
-        // Init Deco on load if the main frame has a layout field
-        $(window.parent.document).ready(function () {
-            // Check if layout exists
-            if ($('#form-widgets-ILayoutAware-content',
-                  window.parent.document).length > 0) {
-                // Init Deco
-                $.deco.init();
-            }
-        });
-    
-    //#JSCOVERAGE_ENDIF
 
 }(jQuery));
+
+
+// Deco initialization
+//
+// XXX: maybe this should be done outside this script
+(function() {
+
+    var document = window.parent.document;
+
+    $(document).ready(function () {
+
+        var layout = $('#form-widgets-ILayoutAware-content', document);
+
+        // Check if layout exists
+        if (layout.length > 0) {
+            $.deco.init();
+        }
+    });
+
+})();
