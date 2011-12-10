@@ -405,7 +405,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
     //#JSCOVERAGE_IF 0
     
         // Init Deco on load if the main frame has a layout field
-        $(window).load(function () {
+        $(window.parent.document).ready(function () {
             // Check if layout exists
             if ($('#form-widgets-ILayoutAware-content',
                   window.parent.document).length > 0) {
