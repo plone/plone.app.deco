@@ -131,7 +131,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     var panel_id = $(this).attr("data-panel"),
                         target = $("[data-panel=" + panel_id + "]",
                         $.deco.document);
-                        
+
                     // If it's the content panel and the form is in the main frame,
                     // create a new div to replace the form
                     var content_panel = content.find("[data-panel=" + panel_id + "]");
