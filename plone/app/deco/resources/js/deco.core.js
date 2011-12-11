@@ -34,13 +34,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 (function ($) {
 
     // # Namespace
-    //
-    // Clear and init deco namespace
-    $.deco = {
-        loaded: false,
-        nrOfTiles: 0,
-        tileInitCount: 0
-    };
+    $.deco = $.deco || {};
+
+    // TODO: docs needed what each variable does
+    $.deco.loaded = false;
+    $.deco.nrOfTiles = 0;
+    $.deco.tileInitCount = 0;
+
 
     /**
      * Called upon full initialization (that is: when all tiles have
