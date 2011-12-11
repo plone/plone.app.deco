@@ -1,17 +1,10 @@
 <?xml version="1.0"?>
 <object name="portal_css">
 
-  <stylesheet title=""
-              id="++resource++plone.app.deco.stylesheets/authoring.css"
-              bundle="default"
-              applyPrefix="true"
-              media="screen"
-              rel="stylesheet"
-              rendering="import"
-              cacheable="True"
-              compression="safe"
-              cookable="True"
-              enabled="1"
-              expression=""/>
+  <!-- TODO: not sure we need this, for sure we can give it better name :P -->
+  <!--stylesheet title="" bundle="default" applyPrefix="true" media="screen"
+      rel="stylesheet" rendering="import" cacheable="True" compression="safe"
+      cookable="True" enabled="1" expression=""
+      id="++resource++plone.app.deco/css/authoring.css" /-->
 
 </object>

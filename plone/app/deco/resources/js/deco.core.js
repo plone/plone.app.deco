@@ -33,11 +33,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
 (function ($) {
 
-    // Create the deco namespace
+    // # Namespace
+    //
+    // Clear and init deco namespace
     $.deco = {
-        "loaded": false,
-        "nrOfTiles": 0,
-        "tileInitCount": 0
+        loaded: false,
+        nrOfTiles: 0,
+        tileInitCount: 0
     };
 
     /**
@@ -55,61 +57,57 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.undo.snapshot();
     };
 
+    // default deco options
+    $.deco.options = $.deco.default_options = {
+        url: window.parent.document.location.href,
+        type: '',
+        ignore_context: false
+    };
+
     /**
      * Initialize the Deco UI
      *
      * @id jQuery.deco.init
      * @param {Object} options Options used to initialize the UI
      */
-    $.deco.init = function (options) {
-        options = $.extend({
-            url: window.parent.document.location.href,
-            type: '',
-            ignore_context: false
-        }, options);
+    $.deco.init = function (content, options) {
+
+        // merging options
+        $.deco.options = $.extend($.deco.default_options, options);
 
         // Set document
         $.deco.document = window.parent.document;
 
-        // Local variables
-        var match;
-
         // Initialize modules
-        $.deco.initActions();
+        $.deco.actions.init();
 
         // Get the url of the page
-        match = options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/edit$/);
+        var match = $.deco.options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/edit$/);
         if (match) {
-            options.url = match[1];
+            $.deco.options.url = match[1];
         }
 
         // Chop add
-        match = options.url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
+        match = $.deco.options.url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
         if (match) {
-            options.url = match[1];
-            options.type = match[2];
-            options.ignore_context = true;
+            $.deco.options.url = match[1];
+            $.deco.options.type = match[2];
+            $.deco.options.ignore_context = true;
         }
 
         // Get the configuration from the backend
         $.ajax({
             type: "GET",
-            url: options.url + "/@@deco-config" +
-                (options.type === '' ? '' : "?type=" + options.type),
+            url: $.deco.options.url + "/@@deco-config" +
+                ($.deco.options.type === '' ? '' : "?type=" + $.deco.options.type),
             success: function (configdata) {
 
-                // Local variables
-                var content;
-
                 // Add global options
-                $.deco.options = configdata;
-                $.deco.options.url = options.url;
-                $.deco.options.ignore_context = options.ignore_context;
+                $.extend($.deco.options, configdata);
                 $.deco.options.tileheadelements = [];
 
                 // Get the layout
                 $.deco.formdocument = document;
-                content = $('#form-widgets-ILayoutAware-content').val();
                 if (!content) {
                     // try the parent frame
                     $.deco.formdocument = $.deco.document;
@@ -398,7 +396,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 // Deco initialization
 //
 // XXX: maybe this should be done outside this script
-(function() {
+(function($) {
 
     var document = window.parent.document;
 
@@ -412,4 +410,4 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         }
     });
 
-})();
+})(jQuery);
