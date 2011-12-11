@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
@@ -26,6 +27,11 @@
     <permission
         id="plone.ChangeLayout"
         title="Plone: Change Deco Layout"
+        />
+
+    <browser:resourceDirectory
+        name="plone.app.deco"
+        directory="resources"
         />
 
     <include package=".browser" />

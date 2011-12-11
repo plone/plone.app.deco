@@ -6,23 +6,6 @@
 
     <include file="widget.zcml" />
 
-    <!-- Resources -->
-
-    <browser:resourceDirectory
-        name="plone.app.deco.stylesheets"
-        directory="stylesheets"
-        />
-
-    <browser:resourceDirectory
-        name="plone.app.deco.images"
-        directory="images"
-        />
-
-    <browser:resourceDirectory
-        name="plone.app.deco.javascripts"
-        directory="javascripts"
-        />
-
     <!-- Deco support views -->
 
     <browser:page
