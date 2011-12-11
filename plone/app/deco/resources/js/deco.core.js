@@ -405,7 +405,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
         // Check if layout exists
         if (layout.length > 0) {
-            $.deco.init();
+
+            // initialize deco
+            $.deco.init(layout, window.$.deco.options);
+
         }
     });
 
