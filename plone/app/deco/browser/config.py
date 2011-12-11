@@ -32,7 +32,7 @@ class DecoConfigView(BrowserView):
     def config(self):
         registry = IDecoRegistry(getUtility(IRegistry))
         config = registry(**{
-            'type': self.type(),
+            'type': self._type(),
             'context': self.context,
             'request': self.request,
             })
