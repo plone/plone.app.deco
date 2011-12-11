@@ -1,0 +1,6 @@
+<script type="text/javascript"
+        tal:define="view context/@@deco-config"
+        tal:content="structure python:
+            '$.deco = $.deco || {};' + 
+            '$.deco.default_config = ' + view.config + ';'">
+</script>

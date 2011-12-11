@@ -28,7 +28,14 @@
     <browser:page
         for="*"
         name="deco-config"
-        class=".browser.DecoConfigView"
+        class=".config.DecoConfigView"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <browser:page
+        for="*"
+        name="deco-config.json"
+        class=".config.DecoConfigJSONView"
         permission="cmf.ModifyPortalContent"
         />
 
@@ -36,6 +43,17 @@
         for="*"
         name="deco-upload"
         class=".browser.DecoUploadView"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <!-- Viewlets -->
+
+    <browser:viewlet
+        name="plone.deco.config"
+        for="*"
+        manager="plone.app.layout.viewlets.interfaces.IPortalTop"
+        template="config.pt"
+        class="plone.app.layout.viewlets.common.ViewletBase"
         permission="cmf.ModifyPortalContent"
         />
 
