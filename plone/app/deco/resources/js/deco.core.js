@@ -401,13 +401,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     $(document).ready(function () {
 
-        var layout = $('#form-widgets-ILayoutAware-content', document).val();
+        var layout = $('#form-widgets-ILayoutAware-content', document);
 
         // Check if layout exists
         if (layout.length > 0) {
 
             // initialize deco
-            $.deco.init(layout, window.$.deco.options);
+            $.deco.init(layout.val(), window.$.deco.options);
 
         }
     });
