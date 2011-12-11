@@ -78,9 +78,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Set document
         $.deco.document = window.parent.document;
 
-        // Initialize modules
-        $.deco.actions.init();
-
         // Get the url of the page
         var match = $.deco.options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/edit$/);
         if (match) {
@@ -398,11 +395,13 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 // XXX: maybe this should be done outside this script
 (function($) {
 
-    var document = window.parent.document;
+    // we wait 
+    var window = window.parent,
+        document = window.document;
 
     $(document).ready(function () {
 
-        var layout = $('#form-widgets-ILayoutAware-content', document);
+        var layout = $('#form-widgets-ILayoutAware-content', document).val();
 
         // Check if layout exists
         if (layout.length > 0) {
