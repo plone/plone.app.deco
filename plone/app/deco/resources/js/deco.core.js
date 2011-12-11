@@ -78,25 +78,10 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         // Set document
         $.deco.document = window.parent.document;
 
-        // Get the url of the page
-        var match = $.deco.options.url.match(/^([\w#!:.?+=&%@!\-\/]+)\/edit$/);
-        if (match) {
-            $.deco.options.url = match[1];
-        }
-
-        // Chop add
-        match = $.deco.options.url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
-        if (match) {
-            $.deco.options.url = match[1];
-            $.deco.options.type = match[2];
-            $.deco.options.ignore_context = true;
-        }
-
         // Get the configuration from the backend
         $.ajax({
             type: "GET",
-            url: $.deco.options.url + "/@@deco-config" +
-                ($.deco.options.type === '' ? '' : "?type=" + $.deco.options.type),
+            url: $.deco.options.url + "/@@deco-config",
             success: function (configdata) {
 
                 // Add global options

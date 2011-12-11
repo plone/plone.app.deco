@@ -13,13 +13,14 @@ from Products.CMFCore.utils import getToolByName
 
 class DecoConfigView(BrowserView):
 
-    def obtain_type(self):
+    # TODO: this should move to DecoRegistry
+    def _type(self):
         """ Obtains the type of the context object or of the object we are
             adding.
         """
 
-        if 'type' in self.request.form:
-            return self.request.form['type']
+        if '++add++' in self.request.getURL():
+            return self.request.getURL().split('++add++')[1]
 
         else:
             if hasattr(self.context, 'portal_type'):
@@ -31,7 +32,7 @@ class DecoConfigView(BrowserView):
     def config(self):
         registry = IDecoRegistry(getUtility(IRegistry))
         config = registry(**{
-            'type': self.obtain_type(),
+            'type': self.type(),
             'context': self.context,
             'request': self.request,
             })
