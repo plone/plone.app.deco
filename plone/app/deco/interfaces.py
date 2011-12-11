@@ -4,8 +4,9 @@ from zope import schema
 from plone.app.deco import PloneMessageFactory as _
 
 
-class IDecoRegistryAdapter(Interface):
-    """Marker interface for the registry adapter"""
+class IDecoRegistry(Interface):
+    """ Marker Interface for registry of deco, wrapper arounf plone.registry
+    """
 
 
 class IWeightedDict(Interface):

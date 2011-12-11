@@ -2,7 +2,7 @@ import unittest2 as unittest
 from zope.component import getGlobalSiteManager
 from plone.registry import Registry
 from plone.registry.interfaces import IRegistry
-from plone.app.deco.interfaces import IDecoRegistryAdapter
+from plone.app.deco.interfaces import IDecoRegistry
 from plone.app.deco.testing import DECO_INTEGRATION_TESTING
 import plone.app.deco.tests.registry_testdata as td
 
@@ -30,14 +30,14 @@ class DecoRegistryTest(unittest.TestCase):
 
     def test_format_categories(self):
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapFormatCategories(settings, {})
         self.assertEqual(config, td.parsed_format_categories_data)
 
     def test_formats(self):
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapFormatCategories(settings, {})
         config = adapted.mapFormats(settings, config)
@@ -45,7 +45,7 @@ class DecoRegistryTest(unittest.TestCase):
 
     def test_actions(self):
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapActions(settings, {})
         self.assertEqual(config['primary_actions'],
@@ -55,7 +55,7 @@ class DecoRegistryTest(unittest.TestCase):
 
     def test_tiles_categories(self):
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
         self.assertEqual(config, td.parsed_tiles_categories_data)
@@ -63,7 +63,7 @@ class DecoRegistryTest(unittest.TestCase):
     def test_structure_tiles(self):
         self.maxDiff = None
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
         config = adapted.mapTiles(settings, config, 'structure_tiles')
@@ -73,7 +73,7 @@ class DecoRegistryTest(unittest.TestCase):
     def test_application_tiles(self):
         self.maxDiff = None
         registry = self.createRegistry(td.xml)
-        adapted = IDecoRegistryAdapter(registry)
+        adapted = IDecoRegistry(registry)
         settings = adapted.parseRegistry()
         config = adapted.mapTilesCategories(settings, {})
         config = adapted.mapTiles(settings, config, 'app_tiles')
@@ -83,5 +83,5 @@ class DecoRegistryTest(unittest.TestCase):
     def test_config(self):
         """tests if the parsed registry data is correct"""
         registry = self.createRegistry(td.xml)
-        settings = IDecoRegistryAdapter(registry)()
+        settings = IDecoRegistry(registry)()
         self.assertEqual(settings, td.parsed_data)

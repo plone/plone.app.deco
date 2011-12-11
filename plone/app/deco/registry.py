@@ -2,7 +2,7 @@ from zope.component import adapts
 from zope.i18n import translate
 from zope.interface import implements
 from plone.registry.interfaces import IRegistry
-from plone.app.deco.interfaces import IDecoRegistryAdapter
+from plone.app.deco.interfaces import IDecoRegistry
 from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.interfaces._content import IFolderish
 from operator import itemgetter
@@ -47,7 +47,7 @@ def weightedSort(x, y):
 class DecoRegistry(object):
     """Adapts a registry object to parse the deco settings data"""
 
-    implements(IDecoRegistryAdapter)
+    implements(IDecoRegistry)
     adapts(IRegistry)
     prefix = "plone.app.deco"
 
