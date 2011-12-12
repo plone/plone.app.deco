@@ -1,11 +1,11 @@
 
-from zope.publisher.browser import BrowserView
-from zope.component import getUtility
 try:
     import json
 except:
     import simplejson as json
 
+from zope.component import getUtility
+from zope.publisher.browser import BrowserView
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import IDecoRegistry
 from Products.CMFCore.utils import getToolByName
