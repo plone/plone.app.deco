@@ -38,8 +38,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
     // TODO: docs needed what each variable does
     $.deco.loaded = false;
-    $.deco.nrOfTiles = 0;
-    $.deco.tileInitCount = 0;
 
 
     /**
@@ -54,257 +52,236 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco.loaded = true;
 
         // Take first snapshot
-        $.deco.undo.snapshot();
+        //$.deco.undo.snapshot();
     };
 
-    // default deco options
-    $.deco.options = $.deco.default_options = {
-        url: window.parent.document.location.href,
-        type: '',
-        ignore_context: false
-    };
-
-    /**
-     * Initialize the Deco UI
-     *
-     * @id jQuery.deco.init
-     * @param {Object} options Options used to initialize the UI
-     */
-    $.deco.init = function (content, options) {
+    // # Initialize the Deco UI
+    //
+    // @id jQuery.deco.init
+    // @param {Object} options Options used to initialize the UI
+    $.deco.init = function (layout_el, options) {
 
         // merging options
-        $.deco.options = $.extend($.deco.default_options, options);
+        $.deco.options = $.extend({
+            window: window.parent,
+            document: window.parent.document,
+            tileheadelements: []
+        }, options);
 
-        // Set document
-        $.deco.document = window.parent.document;
 
-        // Get the configuration from the backend
-        $.ajax({
-            type: "GET",
-            url: $.deco.options.url + "/@@deco-config",
-            success: function (configdata) {
+        // ## Tiles - by name - and their configuration
+        // TODO: tiles passed in options should be flat list
+        $.deco.tiles = {};
+        $.deco.tiles_categories = {};
+        $.each($.deco.options.tiles, function(index, tile_category) {
+            $.deco.tiles_categories[tile_category.name] = tile_category;
+            $.each(tile_category.tiles, function(index, tile_options) {
+                $.deco.tiles[tile_options.name] = tile_options;
+            });
+        });
 
-                // Add global options
-                $.extend($.deco.options, configdata);
-                $.deco.options.tileheadelements = [];
 
-                // Get the layout
-                $.deco.formdocument = document;
-                if (!content) {
-                    // try the parent frame
-                    $.deco.formdocument = $.deco.document;
-                    content = window.parent.jQuery('#form-widgets-ILayoutAware-content').val();
+        // ## Layout
+        $.deco.layout = {
+            raw_el: layout_el,
+            el: $.deco.utils.getDomTreeFromHtml(layout_el.val())
+        };
 
-                    if (content === '') {
-                        // Exit
-                        return;
-                    }
-                }
+        // ### Layout name
+        $.deco.layout.name = $.deco.layout.el.attr('data-layout');
 
-                // Get dom tree
-                content = $.deco.getDomTreeFromHtml(content);
-                $.deco.options.layout = content.attr('data-layout');
-                // Find panels
-                content.find("[data-panel]").each(function () {
+        // ### Layout panels
+        $.deco.layout.panels = {};
+        $.deco.layout.el.find("[data-panel]").each(function () {
 
-                    // Local variables
-                    var panel_id = $(this).attr("data-panel"),
-                        target = $("[data-panel=" + panel_id + "]",
-                        $.deco.document);
+            var panel_id = $(this).attr("data-panel"),
+                panel_el = $("[data-panel=" + panel_id + "]", $.deco.options.document),
+                panel_content = $.deco.layout.el.find("[data-panel=" + panel_id + "]");
 
-                    // If it's the content panel and the form is in the main frame,
-                    // create a new div to replace the form
-                    var content_panel = content.find("[data-panel=" + panel_id + "]");
-                    if (panel_id === 'content' && $.deco.document == $.deco.formdocument) {
-                        $("#content", $.deco.document).addClass('deco-original-content');
-                        $("#content", $.deco.document).before(
-                            $($.deco.document.createElement("div")).attr({
-                                'id': 'content',
-                                'data-panel': content_panel.attr("data-panel")
-                            }).addClass('deco-panel').html(content_panel.html()));
-                    } else {
-                        target.addClass('deco-panel');
-                        target.html(content_panel.html());
+            if (panel_el.length === 0) {
+                $.deco.layout.raw_el.hide();
+                panel_el = $('<div class="deco-panel" data-panel="' + panel_id + '"></div>');
+                panel_el.html(panel_content.html());
+                $.deco.layout.raw_el.after(panel_el);
+                // TODO: should this be initialized here?
+                // Init overlay
+                // if ($.deco.document == $.deco.formdocument) {
+                //      $('#content.deco-original-content',
+                //      $.deco.document).decoOverlay().addClass('overlay');
+                //  }
+
+            } else {
+                panel_el.addClass('deco-panel');
+                panel_el.html(panel.html());
+            }
+
+            $.deco.layout.panels[panel_id] = {
+                el: panel_el,
+                tiles: []
+            };
+
+            // Panel Tiles
+            panel_el.find("[data-tile]").each(function () {
+
+                // Tile name
+                //
+                // TODO: tile name should be passed as "data-tile-name"
+                // attribute so we can avoid this magic.
+                var tile_name = '';
+                $($(this).parents('.deco-tile').attr('class').split(" ")).each(function (index, klass) {
+                    var type_from_klass = klass.match(/^deco-([\w.\-]+)-tile$/);
+                    if ((type_from_klass !== null) &&
+                        (type_from_klass[1] !== 'selected') &&
+                        (type_from_klass[1] !== 'new') &&
+                        (type_from_klass[1] !== 'read-only') &&
+                        (type_from_klass[1] !== 'helper') &&
+                        (type_from_klass[1] !== 'original')) {
+                        tile_name = type_from_klass[1];
                     }
                 });
 
-                // Init app tiles
-                $.deco.options.panels = $(".deco-panel", $.deco.document);
-                $.deco.nrOfTiles =
-                    $.deco.options.panels.find("[data-tile]").size();
+                // Tile configuration
+                var tile = $.extend({
+                    label: '',
+                    value: '',
+                    url: $(this).attr("data-tile")
+                }, $.deco.tiles[tile_name]);
 
-                $.deco.options.panels.find("[data-tile]").each(function () {
+                // Tile value / content
+                //
+                // TODO: below solution is not really nice, since we will need
+                // to change deco code for each new widget. also its impossible
+                // to use deco outside plone because of this specific
+                if ((tile.value === undefined) ||
+                    tile.value === '') {
 
-                    // Local variables
-                    var target, href, tile_content, tiletype, classes, url,
-                        tile_config, x, tile_group, y, fieldhtml, lines, i;
+                    if (tile.tile_type === 'field') {
 
-                    href = $(this).attr("data-tile");
+                        var tile_field = $("#" + tile.id, $.deco.document);
 
-                    // Get tile type
-                    tile_content = $(this).parent();
-                    tiletype = '';
-                    classes = tile_content.parents('.deco-tile').attr('class').split(" ");
-                    $(classes).each(function () {
+                        switch (tile.widget) {
 
-                        // Local variables
-                        var classname;
+                            case "z3c.form.browser.text.TextWidget":
+                            case "z3c.form.browser.text.TextFieldWidget":
+                                tile.value = tile_field.find('input').attr('value');
+                                break;
 
-                        classname = this.match(/^deco-([\w.\-]+)-tile$/);
-                        if (classname !== null) {
-                            if ((classname[1] !== 'selected') &&
-                                (classname[1] !== 'new') &&
-                                (classname[1] !== 'read-only') &&
-                                (classname[1] !== 'helper') &&
-                                (classname[1] !== 'original')) {
-                                tiletype = classname[1];
-                            }
-                        }
-                    });
-
-                    // Get tile config
-                    for (x = 0; x < $.deco.options.tiles.length; x += 1) {
-                        tile_group = $.deco.options.tiles[x];
-                        for (y = 0; y < tile_group.tiles.length; y += 1) {
-
-                            // Set settings value
-                            if (tile_group.tiles[y].tile_type === 'field') {
-                                switch (tile_group.tiles[y].widget) {
-                                    case "z3c.form.browser.text.TextWidget":
-                                    case "z3c.form.browser.text.TextFieldWidget":
-                                    case "z3c.form.browser.textarea.TextAreaWidget":
-                                    case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                                    case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
-                                    case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                                        tile_group.tiles[y].settings = false;
-                                        break;
-                                    default:
-                                        tile_group.tiles[y].settings = true;
-                                        break;
+                            case "z3c.form.browser.textarea.TextAreaWidget":
+                            case "z3c.form.browser.textarea.TextAreaFieldWidget":
+                                var lines = tile_field.find('textarea').attr('value').split('\n');
+                                for (var i = 0; i < lines.length; i += 1) {
+                                    tile.value += '<p>' + lines[i] + '<p>';
                                 }
-                            }
-                            if (tile_group.tiles[y].name === tiletype) {
-                                tile_config = tile_group.tiles[y];
-                            }
+                                break;
+
+                            case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
+                            case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
+                                tile.value = tile_field.find('textarea').attr('value');
+                                break;
+
+                            default:
+                                tile_field = '' +
+                                    '<div class="discreet">' +
+                                        'Placeholder for field:<br/>' +
+                                        '<b>' + tile.label + '</b>' +
+                                    '</div>';
+                                break;
                         }
-                    }
 
-                    // Check if a field tile
-                    if (tile_config.tile_type === 'field') {
-
-                        fieldhtml = '';
-
-                        switch (tile_config.widget) {
-                        case "z3c.form.browser.text.TextWidget":
-                        case "z3c.form.browser.text.TextFieldWidget":
-                            fieldhtml = '<div>' +
-                                $("#" + tile_config.id, $.deco.formdocument).find('input').attr('value') + '</div>';
-                            break;
-                        case "z3c.form.browser.textarea.TextAreaWidget":
-                        case "z3c.form.browser.textarea.TextAreaFieldWidget":
-                            lines = $("#" + tile_config.id, $.deco.formdocument).find('textarea').attr('value').split('\n');
-                            for (i = 0; i < lines.length; i += 1) {
-                                fieldhtml += '<div>' + lines[i] + '</div>';
-                            }
-                            break;
-                        case "plone.app.z3cform.wysiwyg.widget.WysiwygWidget":
-                        case "plone.app.z3cform.wysiwyg.widget.WysiwygFieldWidget":
-                            fieldhtml = $("#" + tile_config.id, $.deco.formdocument).find('textarea').attr('value');
-                            break;
-                        default:
-                            fieldhtml = '<div class="discreet">Placeholder ' +
-                                'for field:<br/><b>' + tile_config.label +
-                                '</b></div>';
-                            break;
-                        }
-                        tile_content.html(fieldhtml);
+                        tile.value = '<div>' + tile.value + '</div>';
 
                     // Get data from app tile
                     } else {
-                        url = href;
-                        if (tile_config.name ===
-                            'plone.app.deco.title' ||
-                            tile_config.name ===
-                            'plone.app.deco.description') {
-                            url += '?ignore_context=' +
-                                $.deco.options.ignore_context;
+
+                        var url = tile.url;
+                        if ((tile.name === 'plone.app.deco.title') ||
+                            (tile.name === 'plone.app.deco.description')) {
+                            url += '?ignore_context=' + $.deco.options.ignore_context;
                         }
+
                         $.ajax({
                             type: "GET",
                             url: url,
                             success: function (value) {
 
                                 // Get dom tree
-                                value = $.deco.getDomTreeFromHtml(value);
+                                tile_domtree = $.deco.utils.getDomTreeFromHtml(value);
 
                                 // Add head tags
-                                $.deco.addHeadTags(href, value);
+                                $.deco.utils.addHeadTags(tile.url, tile_domtree);
 
-                                tile_content.html('<p class="hiddenStructure ' +
-                                        'tileUrl">' + href + '</p>' +
-                                        value.find('.temp_body_tag').html());
+                                // TODO: are we sure there is no better way to pass
+                                // tileUrl?
+                                tile.value = '' +
+                                    '<p class="hiddenStructure tileUrl">' +
+                                        tile.url +
+                                    '</p>' +
+                                     tile_domtree.find('.temp_body_tag').html();
 
-                                $.deco.tileInitCount += 1;
-
-                                if ($.deco.tileInitCount >= $.deco.nrOfTiles) {
-                                    $.deco.initialized();
-                                }
                             }
                         });
-                    }
-                });
 
-                // Init overlay
-                if ($.deco.document == $.deco.formdocument) {
-                    $('#content.deco-original-content',
-                      $.deco.document).decoOverlay().addClass('overlay');
+                    }
+
                 }
 
-                // Hide toolbar
-                // XXX: not really nice to hide it here
-                $('.toolbar .toolbarleft > *').remove();
-                $('.toolbar').removeClass('toolbarglobal').addClass('toolbarlocal');
+                // set value of tile
+                $(this).html(tile.value);
 
-                // Add toolbar div below menu
-                $(".toolbar .toolbarleft").addClass("deco-toolbar");
+                // add tile to panel list
+                $.deco.layout.panels[panel_id].tiles.push(tile);
 
-                // Add the toolbar to the options
-                $.deco.options.toolbar = $(".deco-toolbar");
+            });
 
-                // Add page url to the options
-                $.deco.options.url = options.url;
-
-                // Init toolbar
-                $.deco.options.toolbar.decoToolbar();
-
-                // Init panel
-                $.deco.options.panels.decoLayout();
-
-                // Add blur to the rest of the content using jQT expose
-                // XXX: window.parent.$ !== $; this may need refactoring
-                window.parent.$($.deco.options.panels).expose({
-                    closeOnEsc: false,
-                    closeOnClick: false
-                });
-
-                // Init upload
-                // $.deco.initUpload();
-                $.deco.undo.init();
-            }
         });
+
+
+        // TODO: this should be part of deco.actions.js script
+        //$.deco.loaded(function(e) {
+        //
+        //    // hide toolbar-left and show toolbar-deco
+        //    $('.toolbar-left').hide();
+        //    $('.toolbar-deco').show();
+
+        //    // Add blur to the rest of the content using jQT expose
+        //    // XXX: window.parent.$ !== $; this may need refactoring
+        //    window.parent.$($.deco.options.panels).expose({
+        //        closeOnEsc: false,
+        //        closeOnClick: false
+        //    });
+
+        //});
+
+        // TODO: at some point we have to call this this should trigger
+        // 'decoLoaded' event then other scripts could register to this event
+        // via $.deco.loaded
+        $.deco.initialized();
+
+        // Init panel
+        // TODO: need to check what this does
+        //$.deco.options.panels.decoLayout();
+        //$.deco.undo.init();
+
     };
 
-    /**
-     * Get the dom tree of the specified content
-     *
-     * @id jQuery.deco.getDomTreeFromHtml
-     * @param {String} content Html content
-     * @return {Object} Dom tree of the html
-     */
-    $.deco.getDomTreeFromHtml = function (content) {
 
-        // Remove doctype and replace html, head and body tag since the are
-        // stripped when converting to jQuery object
+
+    // # Utils
+
+    // ## Utils namespace
+    $.deco.utils = $.deco.utils || {};
+
+
+    // ## Get the dom tree of the specified content
+    //
+    // Remove doctype and replace html, head and body tag since the are
+    // stripped when converting to jQuery object
+    //
+    // @id jQuery.deco.getDomTreeFromHtml
+    // @param {String} content Html content
+    // @return {Object} Dom tree of the html
+    //
+    $.deco.utils.getDomTreeFromHtml = function (content) {
         content = content.replace(/<!DOCTYPE[\w\s\- .\/\":]+>/, '');
         content = content.replace(/<html/, "<div class=\"temp_html_tag\"");
         content = content.replace(/<\/html/, "</div");
@@ -315,13 +292,12 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         return $($(content)[0]);
     };
 
-    /**
-     * Remove head tags based on tile url
-     *
-     * @id jQuery.deco.removeHeadTags
-     * @param {String} url Url of the tile
-     */
-    $.deco.removeHeadTags = function (url) {
+    // ## Remove head tags based on tile url
+    //
+    // @id jQuery.deco.removeHeadTags
+    // @param {String} url Url of the tile
+    //
+    $.deco.utils.removeHeadTags = function (url) {
 
         // Local variables
         var tile_type_id, html_id, headelements, i;
@@ -340,16 +316,16 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             $(headelements[i], $.deco.document).remove();
         }
         $.deco.options.tileheadelements[html_id] = [];
+
     };
 
-    /**
-     * Add head tags based on tile url and dom
-     *
-     * @id jQuery.deco.addHeadTags
-     * @param {String} url Url of the tile
-     * @param {Object} dom Dom object of the tile
-     */
-    $.deco.addHeadTags = function (url, dom) {
+    // ## Add head tags based on tile url and dom
+    //
+    // @id jQuery.deco.addHeadTags
+    // @param {String} url Url of the tile
+    // @param {Object} dom Dom object of the tile
+    //
+    $.deco.utils.addHeadTags = function (url, dom) {
 
         // Local variables
         var tile_type_id, html_id;
@@ -377,24 +353,18 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
 // Deco initialization
 //
-// XXX: maybe this should be done outside this script
-(function($) {
+// XXX: this should be done outside this script
+$(document).ready(function () {
 
-    // we wait 
-    var window = window.parent,
-        document = window.document;
+    var layout = $('#form-widgets-ILayoutAware-content',
+        window.parent.document);
 
-    $(document).ready(function () {
+    // Check if layout exists
+    if (layout.length > 0) {
 
-        var layout = $('#form-widgets-ILayoutAware-content', document);
+        // initialize deco
+        $.deco.init(layout, window.parent.$.deco.options);
 
-        // Check if layout exists
-        if (layout.length > 0) {
+    }
 
-            // initialize deco
-            $.deco.init(layout.val(), window.$.deco.options);
-
-        }
-    });
-
-})(jQuery);
+});
