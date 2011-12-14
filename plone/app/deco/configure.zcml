@@ -5,7 +5,6 @@
 
     <include package="plone.app.blocks" />
     <include package="plone.app.registry" />
-    <include package="plone.app.dexterity" />
     <include package="plone.app.tiles" />
     <include package="plone.app.contentlistingtile" />
     <include package="plone.app.imagetile" />
