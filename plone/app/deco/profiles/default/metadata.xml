@@ -5,7 +5,6 @@
     <dependency>profile-plone.app.blocks:default</dependency>
     <dependency>profile-plone.app.toolbar:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
-    <dependency>profile-plone.app.dexterity:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
     <dependency>profile-plone.app.contentlistingtile:default</dependency>
     <dependency>profile-plone.app.imagetile:default</dependency>
