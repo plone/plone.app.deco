@@ -205,7 +205,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                             success: function (value) {
 
                                 // Get dom tree
-                                tile_domtree = $.deco.utils.getDomTreeFromHtml(value);
+                                var tile_domtree = $.deco.utils.getDomTreeFromHtml(value);
 
                                 // Add head tags
                                 $.deco.utils.addHeadTags(tile.url, tile_domtree);
