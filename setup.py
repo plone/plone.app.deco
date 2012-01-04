@@ -12,6 +12,7 @@ else:
 tests_require = ['interlude',
                  'z3c.form [test]',
                  'unittest2',
+                 'gocept.jslint',
                  'plone.app.testing',
                  'selenium>=2.0a5']
 
