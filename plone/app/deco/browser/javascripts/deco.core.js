@@ -24,14 +24,14 @@
  *          this page.
  * @version 0.1
  */
-"use strict";
 
-/*global tiledata: false, jQuery: false, window: false */
-/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true,
-eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true,
-immed: true, strict: true, maxlen: 80, maxerr: 9999 */
+/*jshint bitwise:true, curly:true, eqeqeq:true, immed:true, latedef:true,
+  newcap:true, noarg:true, noempty:true, nonew:true, plusplus:true,
+  regexp:true, undef:true, strict:true, trailing:true, browser:true */
+/*global $:false, jQuery:false */
 
 (function ($) {
+    "use strict";
 
     // Create the deco namespace
     $.deco = {
@@ -62,6 +62,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      * @param {Object} options Options used to initialize the UI
      */
     $.deco.init = function (options) {
+
         options = $.extend({
             url: window.parent.document.location.href,
             type: '',
@@ -135,7 +136,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                     // If it's the content panel and the form is in the main frame,
                     // create a new div to replace the form
                     var content_panel = content.find("[data-panel=" + panel_id + "]");
-                    if (panel_id === 'content' && $.deco.document == $.deco.formdocument) {
+                    if (panel_id === 'content' && $.deco.document === $.deco.formdocument) {
                         $("#content", $.deco.document).addClass('deco-original-content');
                         $("#content", $.deco.document).before(
                             $($.deco.document.createElement("div")).attr({
@@ -275,7 +276,7 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 });
 
                 // Init overlay
-                if ($.deco.document == $.deco.formdocument) {
+                if ($.deco.document === $.deco.formdocument) {
                     $('#content.deco-original-content',
                       $.deco.document).decoOverlay().addClass('overlay');
                 }
@@ -399,17 +400,23 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 //
 // XXX: maybe this should be done outside this script
 (function() {
+    "use strict";
 
     var document = window.parent.document;
 
     $(document).ready(function () {
 
-        var layout = $('#form-widgets-ILayoutAware-content', document);
+        $('#toolbar-button-edit').click(function(e) {
+            var panel_ids = [];
+            $('[data-panel]', document).each(function(index, item) {
+                panel_ids.push($(item).attr('data-panel'));
+            });
 
-        // Check if layout exists
-        if (layout.length > 0) {
-            $.deco.init();
-        }
+            if (panel_ids.length !== 0) {
+                $.deco.init({ panel_ids: panel_ids });
+            }
+            return false;
+        });
     });
 
-})();
+}());

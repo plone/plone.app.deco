@@ -140,6 +140,45 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
      */
     $.deco.initActions = function () {
 
+        var el = $('.toolbar-left'),
+            toolbar = window.parent.$('iframe').toolbar(),
+            buttons = toolbar.create_buttons([
+                {
+                    category: "deco-leftactions",
+                    id: "toolbar-button-deco-save",
+                    title: "Save",
+                    exec: function (item) {
+                        item.click(function (e) {
+                            alert('for now we don\'t do anything');
+                            return false;
+                        });
+                    }
+                },
+                {
+                    category: "deco-leftactions",
+                    id: "toolbar-button-deco-cancel",
+                    title: "Cancel",
+                    exec: function (item) {
+                        item.click(function (e) {
+                            $('.toolbar').removeClass('toolbar-deco');
+                            return false;
+                        });
+                    }
+                }
+            ]);
+
+        $.each(buttons.categories, function (category, items) {
+            if ($('.toolbar-category-' + category, el).length === 0) {
+                el.append(buttons.render_category(items, category));
+            }
+        });
+
+        $('.toolbar').addClass('toolbar-deco');
+    };
+
+    // we disable this for time being above code will replace this
+    // functionality
+    function hidden() {
         // Register strong action
         $.deco.registerAction('strong', {
             exec: function () {
