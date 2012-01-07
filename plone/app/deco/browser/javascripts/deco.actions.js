@@ -33,139 +33,60 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
 (function ($) {
 
-    // Define deco namespace if it doesn't exist
-    if (typeof($.deco) === "undefined") {
-        $.deco = {};
-    }
+    // # Namespace
+    $.deco = $.deco || {};
 
-    // Global array containing actions and shortcuts
-    $.deco.actionManager = {
-        actions: [],                // Array with all the actions
-        shortcuts: []               // Lookup array for shortcuts
-    };
-
-    /**
-     * Register an action
-     *
-     * @id jQuery.deco.registerAction
-     * @param {String} name Name of the action.
-     * @param {Object} options Object containing all the options of the action
-     */
-    $.deco.registerAction = function (name, options) {
-
-        // Extend default settings
-        options = $.extend({
-
-            // Handler for executing the action
-            exec: function () {
-            },
-
-            // Shortcut can be any key + ctrl/shift/alt or a combination of
-            // those
-            shortcut: {
-                ctrl: false,
-                alt: false,
-                shift: false,
-                key: ""
-            },
-
-            // Method to see if the actions should be visible based on the
-            // current tile state
-            visible: function (tile) {
-                return true;
-            },
-
-            // Should the action be undo-able?
-            undoable: false
-
-        }, options);
-
-        // Add action to manager
-        $.deco.actionManager.actions[name] = options;
-
-        // Check if shortcut is defined
-        if (options.shortcut.key !== "") {
-
-            // Set keyCode and charCode
-            options.shortcut.charCode = options.shortcut.key.toUpperCase()
-                .charCodeAt(0);
-            options.shortcut.action = name;
-
-            // Set shortcut
-            $.deco.actionManager.shortcuts.push(options.shortcut);
-        }
-    };
-
-    /**
-     * Execute an action
-     *
-     * @id jQuery.decoExecAction
-     * @return {Object} Returns a jQuery object of the matched elements.
-     */
-    $.fn.decoExecAction = function () {
-
-        // Loop through matched elements
-        return this.each(function () {
-
-            // Check if actions specified
-            if ($(this).data("action") !== "") {
-
-                var mgr = $.deco.actionManager;
-
-                // Exec actions
-                mgr.actions[$(this).data("action")].exec(this);
-                if (mgr.actions[$(this).data("action")].undoable) {
-                    $.deco.undo.snapshot();
-                }
+    // # Buttons
+    $.deco.buttons = $.deco.buttons || [];
+    $.each([
+        {
+            category: "deco-leftactions",
+            id: "toolbar-button-deco-save",
+            title: "Save",
+            exec: function (item) {
+                item.click(function (e) {
+                    alert("for now we don't do anything");
+                    return false;
+                });
             }
-        });
-    };
+        },
+        {
+            category: "deco-leftactions",
+            id: "toolbar-button-deco-cancel",
+            title: "Cancel",
+            exec: function (item) {
+                item.click(function (e) {
+                    $('.toolbar').removeClass('toolbar-deco');
 
-    /**
-     * Remove spans inserted by webkit
-     *
-     * @id jQuery.deco.fixWebkitSpan
-     * @return {Object} jQuery object
-     */
-    $.deco.fixWebkitSpan = function () {
-        var webkit_span = $(".Apple-style-span", $.deco.document);
-        webkit_span.after(webkit_span.html());
-        webkit_span.remove();
-    };
+                    // bring original panels back
+                    var doc = window.parent.document;
+                    $('[data-panel]', doc).each(function (i, el) {
+                        $(el).replaceWith($(el).data('original_panel'));
+                    });
 
-    /**
-     * Initialize the action manager
-     *
-     * @id jQuery.deco.initActions
-     */
-    $.deco.initActions = function () {
+                    return false;
+                });
+            }
+        },
+        {
+            category: "deco-leftactions",
+            id: "toolbar-button-deco-properties",
+            title: "Properties",
+            exec: function (item) {
+                item.click(function (e) {
+                    return false;
+                });
+            }
+        }
+    ], function (i, button) { $.deco.buttons.push(button); });
+
+
+    // # Trigger buttons when deco is initialized
+    $(document).bind('decoInitialized', function (e) {
 
         var el = $('.toolbar-left'),
             toolbar = window.parent.$('iframe').toolbar(),
-            buttons = toolbar.create_buttons([
-                {
-                    category: "deco-leftactions",
-                    id: "toolbar-button-deco-save",
-                    title: "Save",
-                    exec: function (item) {
-                        item.click(function (e) {
-                            alert('for now we don\'t do anything');
-                            return false;
-                        });
-                    }
-                },
-                {
-                    category: "deco-leftactions",
-                    id: "toolbar-button-deco-cancel",
-                    title: "Cancel",
-                    exec: function (item) {
-                        item.click(function (e) {
-                            $('.toolbar').removeClass('toolbar-deco');
-                            return false;
-                        });
-                    }
-                }
-            ]);
+            buttons = toolbar.create_buttons($.deco.buttons);
 
         $.each(buttons.categories, function (category, items) {
             if ($('.toolbar-category-' + category, el).length === 0) {
@@ -174,171 +95,14 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         });
 
         $('.toolbar').addClass('toolbar-deco');
-    };
 
-    // we disable this for time being above code will replace this
-    // functionality
-    function hidden() {
-        // Register strong action
-        $.deco.registerAction('strong', {
-            exec: function () {
-                $.deco.editor.applyFormat("strong");
-            },
-            shortcut: {
-                ctrl: true,
-                alt: false,
-                shift: false,
-                key: 'b'
-            }
-        });
+        return buttons;
 
-        // Register emphasis action
-        $.deco.registerAction('em', {
-            exec: function () {
-                $.deco.editor.applyFormat("em");
-            }
-        });
+    });
 
-        // Register unordered list action
-        $.deco.registerAction('ul', {
-            exec: function () {
-                $.deco.execCommand("InsertUnorderedList");
-            }
-        });
+}(jQuery));
 
-        // Register ordered list action
-        $.deco.registerAction('ol', {
-            exec: function () {
-                $.deco.execCommand("InsertOrderedList");
-            }
-        });
-
-        // Register undo action
-        $.deco.registerAction('undo', {
-            exec: function () {
-                $.deco.execCommand("Undo");
-            }
-        });
-
-        // Register redo action
-        $.deco.registerAction('redo', {
-            exec: function () {
-                $.deco.execCommand("Redo");
-            }
-        });
-
-        // Register paragraph action
-        $.deco.registerAction('paragraph', {
-            exec: function () {
-                $.deco.editor.applyFormat("p");
-            }
-        });
-
-        // Register heading action
-        $.deco.registerAction('heading', {
-            exec: function () {
-                $.deco.editor.applyFormat("h2");
-            }
-        });
-
-        // Register subheading action
-        $.deco.registerAction('subheading', {
-            exec: function () {
-                $.deco.editor.applyFormat("h3");
-            }
-        });
-
-        // Register discreet action
-        $.deco.registerAction('discreet', {
-            exec: function () {
-                $.deco.editor.applyFormat("discreet");
-            }
-        });
-
-        // Register literal action
-        $.deco.registerAction('literal', {
-            exec: function () {
-                $.deco.editor.applyFormat("pre");
-            }
-        });
-
-        // Register quote action
-        $.deco.registerAction('quote', {
-            exec: function () {
-                $.deco.editor.applyFormat("pullquote");
-            }
-        });
-
-        // Register callout action
-        $.deco.registerAction('callout', {
-            exec: function () {
-                $.deco.editor.applyFormat("callout");
-            }
-        });
-
-        // Register highlight action
-        $.deco.registerAction('highlight', {
-            exec: function () {
-                $.deco.editor.applyFormat("highlight");
-            }
-        });
-
-        // Register sub action
-        $.deco.registerAction('sub', {
-            exec: function () {
-                $.deco.editor.applyFormat("sub");
-            }
-        });
-
-        // Register sup action
-        $.deco.registerAction('sup', {
-            exec: function () {
-                $.deco.editor.applyFormat("sup");
-            }
-        });
-
-        // Register remove format action
-        $.deco.registerAction('remove-format', {
-            exec: function () {
-                $.deco.editor.applyFormat("removeformat");
-            }
-        });
-
-        // Register pagebreak action
-        $.deco.registerAction('pagebreak', {
-            exec: function () {
-                $.deco.editor.applyFormat("pagebreak");
-            }
-        });
-
-        // Register justify left action
-        $.deco.registerAction('justify-left', {
-            exec: function () {
-                $.deco.editor.applyFormat("justify-left");
-            }
-        });
-
-        // Register justify center action
-        $.deco.registerAction('justify-center', {
-            exec: function () {
-                $.deco.editor.applyFormat("justify-center");
-            }
-        });
-
-        // Register justify right action
-        $.deco.registerAction('justify-right', {
-            exec: function () {
-                $.deco.editor.applyFormat("justify-right");
-            }
-        });
-
-        // Register justify full action
-        $.deco.registerAction('justify-justify', {
-            exec: function () {
-                $.deco.editor.applyFormat("justify-justify");
-            }
-        });
-
+    /*
         // Register tile align block action
         $.deco.registerAction('tile-align-block', {
             exec: function () {
@@ -414,52 +178,6 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
 
                 // Cancel form
                 $($.deco.document).find("#form-buttons-cancel").click();
-            }
-        });
-
-        // Register html action
-        $.deco.registerAction('html', {
-            exec: function () {
-                
-                // Local variables
-                var tilecontent, text, height, disable;
-                
-                // Are we currently in HTML edit mode?
-                disable = $('.deco-button-html').hasClass('active');
-                
-                // Get tile content div
-                tilecontent = $(".deco-selected-tile", $.deco.document)
-                                  .children(".deco-tile-content");
-                
-                if (disable === false) {
-            
-                    // Set HTML Edit button to appear active
-                    $('.deco-button-html').addClass('active', 0);
-            
-                    // Set format, insert, styles to hidden
-                    $('.deco-toolbar-secondary-functions').hide();
-                    $('.deco-button-group-text').hide();
-            
-                    // Check if not already html editable
-                    if (tilecontent.find('.deco-rich-text-textarea')
-                            .length === 0) {
-                        
-                        // Add new text area and set content
-                        text = tilecontent.html();
-                        height = tilecontent.height() > 100 ? tilecontent.height() : 100;
-                        
-                        // Disable TinyMce for this tile to prevent conflict with textarea
-                        window.parent.tinymce.execCommand('mceRemoveControl', false, tilecontent.attr('id'));
-                        tilecontent.html(
-                            $($.deco.document.createElement("textarea"))
-                                .addClass("deco-rich-text-textarea")
-                                .html($.trim(text))
-                                .height(height));
-
-                    }
-                } else {
-                    $.deco.disableEditHtmlSource();
-                }
             }
         });
 
@@ -601,4 +319,4 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             return true;
         });
     };
-}(jQuery));
+    */

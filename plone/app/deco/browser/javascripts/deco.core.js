@@ -115,23 +115,51 @@
         });
     };
 
+
+
+
+
+
+
+
+
+
+
+    // # Deco initialization
+    //
+    // - get configuration options
+    // - 
     $.deco.init = function () {
 
-        // panels on page that we want to enable deco editor for
-        var panels = {};
-        $('[data-panel]', window.parent.document).each(function(i, item) {
-            panels[$(item).attr('data-panel')] = $(item);
+        if ($.deco.options === undefined) {
+
+            // trigger 'decoInitialized' event when initialization is done 
+            $(document).trigger('decoInitialized');
+        }
+
+        // collect panels from page we are visiting so that will enable
+        // deco editor for them
+        $.deco.panels = {};
+        $('[data-panel]', window.parent.document).each(function(i, el) {
+
+            // in case of Cancel button is pressed we need a quick way to get
+            // to get into old state, thats why we store clone of the original
+            // panel
+            var panel_el = $(el);
+            panel_el.data('original_panel', panel_el.clone());
+
+            // add it to the list of panels
+            $.deco.panels[panel_el.attr('data-panel')] = panel_el;
+
         });
 
-        // TODO: deco.actions.js needs to be refractored
-        $.deco.initActions();
-
     };
+
 
     // # Triggering deco
     //
     // Initialize deco when edit button is pressed
-    $('#toolbar-button-edit').click(function () {
+    $('#toolbar-button-edit').click(function (e) {
         $.deco.init();
         return false;
     });
