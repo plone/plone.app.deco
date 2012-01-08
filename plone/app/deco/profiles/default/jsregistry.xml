@@ -1,84 +1,24 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.core.js"
-              bundle="deco"
-              inline="False"/>
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.core.js" />
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.overlay.js"
-              bundle="deco"
-              inline="False"/>
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.actions.js" />
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.layout.js"
-              bundle="deco"
-              inline="False"/>
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.layout.js" />
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.toolbar.js"
-              bundle="deco"
-              inline="False"/>
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.undo.js" />
 
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.actions.js"
-              bundle="deco"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.upload.js"
-              bundle="deco"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.undo.js"
-              bundle="deco"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.editor.js"
-              bundle="deco"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/deco.overlaytriggers.js"
-              bundle="default"
-              inline="False"/>
-
-  <javascript cacheable="False"
-              compression="none"
-              cookable="False"
-              enabled="True"
-              id="++resource++plone.app.deco.javascripts/tinymce/tiny_mce_deco_src.js"
-              bundle="default"
-              inline="False"/>
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="default"
+        id="++resource++plone.app.deco/js/tinymce/tiny_mce_deco_src.js" />
 
 </object>

@@ -4,7 +4,7 @@ from zope import schema
 from plone.app.deco import PloneMessageFactory as _
 
 
-class IDecoRegistryAdapter(Interface):
+class IDecoConfig(Interface):
     """Marker interface for the registry adapter"""
 
 
@@ -68,10 +68,6 @@ class IWidgetAction(Interface):
     name = schema.TextLine(title=_(u"Name"))
     actions = schema.List(title=_(u"Actions"),
                           value_type=schema.TextLine())
-
-class ILayoutWidget(Interface):
-    """Marker interface for the layout widget
-    """
 
 
 class IMetadataTile(Interface):
