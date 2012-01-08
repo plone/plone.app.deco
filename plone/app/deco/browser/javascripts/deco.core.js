@@ -121,37 +121,101 @@
 
 
 
-
-
-
-
     // # Deco initialization
     //
     // - get configuration options
     // - 
     $.deco.init = function () {
 
-        if ($.deco.options === undefined) {
+        // tile
+        function initTile(tile) {
+            //tile.html($.deco.tile_instances[tile.attr('data-tile')]);
+            tile.html('<p>Some text</p>');
+        }
 
-            // trigger 'decoInitialized' event when initialization is done 
+        // panel
+        function initPanel(panel) {
+
+            var panel_id = panel.attr("data-panel");
+
+            // we only process panels that are shown on page
+            if ($.deco.panels[panel_id] === undefined) {
+                return true;  // continue
+            }
+
+            panel.find("[data-tile]").each(function () {
+                initTile($(this));
+            });
+
+            $.deco.panels[panel_id].html(panel.html());
+        }
+
+        // layout
+        function initLayout() {
+
+            // collect panels from page we are visiting so that will enable
+            // deco editor for them
+            $.deco.panels = {};
+            $('[data-panel]', window.parent.document).each(function(i, el) {
+
+                // in case of Cancel button is pressed we need a quick way to
+                // get to get into old state, thats why we store clone of the
+                // original panel
+                var panel_el = $(el);
+                panel_el.data('original_panel', panel_el.clone());
+
+                // add it to the list of panels
+                $.deco.panels[panel_el.attr('data-panel')] = panel_el;
+
+            });
+
+            $.deco.layout = $.deco.getDomTreeFromHtml(
+                    $.deco.editform_fields['form.widgets.ILayoutAware.content']);
+
+            $.deco.layout.find("[data-panel]").each(function () {
+                initPanel($(this));
+            });
+
             $(document).trigger('decoInitialized');
         }
 
-        // collect panels from page we are visiting so that will enable
-        // deco editor for them
-        $.deco.panels = {};
-        $('[data-panel]', window.parent.document).each(function(i, el) {
 
-            // in case of Cancel button is pressed we need a quick way to get
-            // to get into old state, thats why we store clone of the original
-            // panel
-            var panel_el = $(el);
-            panel_el.data('original_panel', panel_el.clone());
+        // check if need to get configuration and editform
+        if (($.deco.editform === undefined) || ($.deco.options === undefined)) {
 
-            // add it to the list of panels
-            $.deco.panels[panel_el.attr('data-panel')] = panel_el;
+            // TODO: this should be url without any query string or hash values
+            // best here would be to use some js library like URL.js or even better
+            // would be to set 
+            var url = window.parent.document.location.href;
 
-        });
+            // on add form we need to pass which content type we are adding so
+            // we get appropriate configuration options
+            var content_type = '';
+            var match = url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
+            if (match) { content_type = '?type=' + match[2]; }
+
+            $.when(
+                $.get(url + '/edit'),
+                $.get(url + '/@@deco-config' + content_type)
+            ).done(function(editform, options) {
+
+                // editform
+                $.deco.editform = $('#form', $.deco.getDomTreeFromHtml(editform[0]));
+
+                $.deco.editform_fields = {};
+                $.each($.deco.editform.serializeArray(), function (i, item) {
+                    $.deco.editform_fields[item.name] = item.value;
+                });
+
+                // options
+                $.deco.options = options[0];
+
+                initLayout();
+            });
+
+        } else {
+            initLayout();
+        }
 
     };
 
@@ -164,6 +228,10 @@
         return false;
     });
 
+
+}(jQuery));
+
+/*
     function hidden() {
         options = $.extend({
             url: window.parent.document.location.href,
@@ -416,5 +484,4 @@
             }
         });
     };
-
-}(jQuery));
+    */
