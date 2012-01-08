@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
@@ -27,10 +28,22 @@
         title="Plone: Change Deco Layout"
         />
 
-    <include package=".browser" />
+    <!-- title and description tile -->
     <include package=".tiles" />
 
-    <adapter factory=".registry.DecoRegistry" />
+    <adapter factory=".config.DecoConfig" />
+
+    <browser:resourceDirectory
+        name="plone.app.deco"
+        directory="resources"
+        />
+
+    <browser:page
+        for="*"
+        name="deco-config"
+        class=".config.DecoConfigView"
+        permission="cmf.ModifyPortalContent"
+        />
 
     <genericsetup:registerProfile
         name="default"

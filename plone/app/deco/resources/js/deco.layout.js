@@ -532,15 +532,17 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 // Get biggest panel
                 var width = 0;
                 var index = 0;
-                $.deco.options.panels.each(function (j) {
-                    if ($(this).width() > width) {
-                        width = $(this).width();
+                $.each($.deco.panels, function (j, panel) {
+                    if ($(panel).width() > width) {
+                        width = $(panel).width();
                         index = j;
                     }
                 });
 
                 // Select first tile in biggest panel
-                $.deco.options.panels.eq(index).find('.deco-tile:first').decoSelectTile();
+                //TODO
+                //$.deco.options.panels.eq(index).find('.deco-tile:first').decoSelectTile();
+                $.deco.panels[index].find('.deco-tile:first').decoSelectTile();
             }
         });
     };
@@ -693,8 +695,8 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
                 $(this).addClass("deco-selected-tile");
 
                 // Set actions
-                $.deco.options.toolbar.trigger("selectedtilechange");
-                $.deco.options.panels.decoSetResizeHandleLocation();
+                // TODO: $.deco.options.toolbar.trigger("selectedtilechange");
+                $.deco.layout.decoSetResizeHandleLocation();
 
                 // Focus the tile content field
                 $(this).decoFocusTileContent();
