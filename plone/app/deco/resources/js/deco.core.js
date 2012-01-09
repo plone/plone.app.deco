@@ -129,8 +129,7 @@
 
         // tile
         function initTile(tile) {
-            //tile.html($.deco.tile_instances[tile.attr('data-tile')]);
-            tile.html('<p>Some text</p>');
+            tile.html($.deco.tiles_instances[tile.attr('data-tile')]);
         }
 
         // panel
@@ -212,6 +211,10 @@
 
                 // options
                 $.deco.options = options[0];
+
+                // tiles_instances
+                $.deco.tiles_instances = $.parseJSON(
+                    window.parent.$('#deco-tiles-instances').val());
 
                 initLayout();
             });
