@@ -59,21 +59,34 @@
     </record>
 
     <!-- Tiles -->
-    <records prefix="plone.app.deco.tiles.text"
+    <record name="plone.app.deco.tiles">
+        <field type="plone.registry.field.List">
+            <title>Tile Categories</title>
+            <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value>
+            <element>plone.app.deco.tile_text</element>
+            <element>plone.app.deco.tile_title</element>
+            <element>plone.app.deco.tile_description</element>
+        </value>
+    </record>
+
+    <!-- Text Tile -->
+    <records prefix="plone.app.deco.tile_text"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">text</value>
         <value key="category">structure</value>
         <value key="weight">10</value>
     </records>
 
-    <records prefix="plone.app.deco.tiles.plone_app_deco_title"
+    <records prefix="plone.app.deco.tile_title"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">plone.app.deco.title</value>
         <value key="category">fields</value>
         <value key="weight">20</value>
     </records>
 
-    <records prefix="plone.app.deco.tiles.plone_app_deco_description"
+    <records prefix="plone.app.deco.tile_description"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">plone.app.deco.description</value>
         <value key="category">fields</value>
