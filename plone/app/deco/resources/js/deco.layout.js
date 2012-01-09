@@ -38,6 +38,25 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         $.deco = {};
     }
 
+    /*
+    $.deco.layout = {
+        widthClasses: [
+            'deco-width-1:4',
+            'deco-width-1:3',
+            'deco-width-1:2',
+            'deco-width-2:3',
+            'deco-width-3:4',
+            'deco-width-full'
+        ],
+        positionClasses: [
+            'deco-position-0',
+            'deco-position-1:4',
+            'deco-position-1:3',
+            'deco-position-1:2',
+            'deco-position-2:3',
+            'deco-position-3:4'
+        ]
+    };*/
     // Define the layout namespace
     $.deco.layout = {
         widthClasses: ['deco-width-quarter', 'deco-width-third',
@@ -1595,15 +1614,15 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
         });
 
         // Get tile config
-        var tile_config;
-        for (var x = 0; x < $.deco.options.tiles.length; x += 1) {
-            var tile_group = $.deco.options.tiles[x];
-            for (var y = 0; y < tile_group.tiles.length; y += 1) {
-                if (tile_group.tiles[y].name === tiletype) {
-                    tile_config = tile_group.tiles[y];
-                }
+        var tile_config = {};
+        $.each($.deco.options.tiles_categories, function(i, item) {
+            tile_config[item.name] = item;
+        });
+        $.each($.deco.options.tiles, function(i, item) {
+            if (tile_config[item.category] !== undefined) {
+                tile_config[item.category] = item;
             }
-        }
+        });
 
         // Return config
         return tile_config;
