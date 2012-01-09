@@ -43,7 +43,7 @@
     </record>
 
     <!-- Tile categories -->
-    <record name="plone.app.deco.tile_categories">
+    <record name="plone.app.deco.tiles_categories">
         <field type="plone.registry.field.List">
             <title>Tile Categories</title>
             <value_type type="plone.registry.field.TextLine" />
@@ -59,100 +59,25 @@
     </record>
 
     <!-- Tiles -->
-    <records prefix="plone.app.deco.structure_tiles.text"
-            interface="plone.app.deco.interfaces.ITile">
-        <value key="default_value">&lt;p&gt;New block&lt;/p&gt;</value>
-        <value key="category">structure</value>
-        <value key="read_only">False</value>
+    <records prefix="plone.app.deco.tiles.text"
+             interface="plone.app.deco.interfaces.ITile">
         <value key="name">text</value>
-        <value key="settings">False</value>
-        <value key="favorite">False</value>
-        <value key="label">Text</value>
-        <value key="tile_type">text</value>
-        <value key="rich_text">True</value>
+        <value key="category">structure</value>
         <value key="weight">10</value>
     </records>
-    <record name="plone.app.deco.structure_tiles.text.available_actions">
-        <field type="plone.registry.field.List">
-            <title>Available actions for the Text structure tile</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element>html</element>
-            <element>strong</element>
-            <element>em</element>
-            <element>paragraph</element>
-            <element>heading</element>
-            <element>subheading</element>
-            <element>discreet</element>
-            <element>literal</element>
-            <element>quote</element>
-            <element>callout</element>
-            <element>highlight</element>
-            <element>sub</element>
-            <element>sup</element>
-            <element>remove-format</element>
-            <element>pagebreak</element>
-            <element>ul</element>
-            <element>ol</element>
-            <element>justify-left</element>
-            <element>justify-center</element>
-            <element>justify-right</element>
-            <element>justify-justify</element>
-            <element>tile-align-block</element>
-            <element>tile-align-left</element>
-            <element>tile-align-right</element>
-        </value>
-    </record>
 
-   <records prefix="plone.app.deco.app_tiles.plone_app_deco_title"
-            interface="plone.app.deco.interfaces.ITile">
+    <records prefix="plone.app.deco.tiles.plone_app_deco_title"
+             interface="plone.app.deco.interfaces.ITile">
         <value key="name">plone.app.deco.title</value>
-        <value key="label">Title</value>
         <value key="category">fields</value>
-        <value key="tile_type">app</value>
-        <value key="default_value"></value>
-        <value key="read_only">false</value>
-        <value key="settings">false</value>
-        <value key="favorite">false</value>
-        <value key="rich_text">true</value>
-        <value key="weight">10</value>
-    </records>
-    <record name="plone.app.deco.app_tiles.plone_app_deco_title.available_actions">
-        <field type="plone.registry.field.List">
-            <title>Available actions for the Title tile</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-             <element>tile-align-block</element>
-             <element>tile-align-right</element>
-             <element>tile-align-left</element>
-        </value>
-    </record>  
-
-   <records prefix="plone.app.deco.app_tiles.plone_app_deco_description"
-            interface="plone.app.deco.interfaces.ITile">
-        <value key="name">plone.app.deco.description</value>
-        <value key="label">Description</value>
-        <value key="category">fields</value>
-        <value key="tile_type">app</value>
-        <value key="default_value"></value>
-        <value key="read_only">false</value>
-        <value key="settings">false</value>
-        <value key="favorite">false</value>
-        <value key="rich_text">true</value>
         <value key="weight">20</value>
     </records>
-    <record name="plone.app.deco.app_tiles.plone_app_deco_description.available_actions">
-        <field type="plone.registry.field.List">
-            <title>Available actions for the Description tile</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-             <element>tile-align-block</element>
-             <element>tile-align-right</element>
-             <element>tile-align-left</element>
-        </value>
-    </record>
+
+    <records prefix="plone.app.deco.tiles.plone_app_deco_description"
+             interface="plone.app.deco.interfaces.ITile">
+        <value key="name">plone.app.deco.description</value>
+        <value key="category">fields</value>
+        <value key="weight">30</value>
+    </records>
 
 </registry>
