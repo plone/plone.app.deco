@@ -34,6 +34,132 @@
 (function ($) {
     "use strict";
 
+    // # Namespaces
+    //
+    // Ensure that used namespaces are there
+    $.deco = $.deco || {};
+
+
+    // # Utils
+    function get_event_target(e) {
+        var el;
+
+        if (e.target) {
+            el = e.target;
+        } else if (e.srcElement) {
+            el = e.srcElement;
+        }
+
+        if (targ.nodeType == 3) {  // defeat Safari bug
+            el = el.parentNode;
+        }
+
+        return $(el);
+    }
+
+    // Tile
+
+    // Panel
+    var Panel = function(el) {
+
+        var self = this;
+
+        self.el = el;
+
+        return {
+            cancel: function() {
+                console.log('cancel');
+                return this
+            },
+            show: function() {
+                console.log(self.el);
+                return this
+            }
+        }
+    }
+
+
+    // # Single deco panel initialization
+    $.fn.deco_panel = function () {
+        var panel_el = $(this),
+            panel = panel_el.data('panel');
+
+        if (panel !== undefined) {
+            return panel;
+        }
+
+        panel = new Panel(panel_el);
+        panel_el.data('panel', panel);
+        return panel
+    };
+
+
+    // # Deco panels initialization
+    $(document).bind('decoInitialized', function() {
+
+        // collect panels from page we are visiting. this will restrict
+        // deco editor only for this panels. it also add a bit of
+        // optimisation in case Cancel button is pressed
+        $.deco.panels = {};
+        $('[data-panel]', window.parent.document).each(function(i, el) {
+
+            // in case of Cancel button is pressed we need a quick way to
+            // get to get into old state, thats why we store clone of the
+            // original panel
+            var panel_el = $(el);
+            panel_el.data('original_panel', panel_el.clone());
+
+            // add it to the list of panels
+            $.deco.panels[panel_el.attr('data-panel')] = panel_el;
+
+        });
+
+        // 
+        window.parent.$.mask.load({
+            zIndex: 499,
+            opacity: 0.6,
+            color: '#FFF',
+            closeOnEsc: false,
+            closeOnClick: false
+        });
+
+        // 
+        $.deco.layout.find("[data-panel]").each(function () {
+
+            var panel = $(this),
+                panel_id = panel.attr("data-panel");
+
+            // we only process panels that are shown on page
+            if ($.deco.panels[panel_id] === undefined) {
+                return true;  // continue
+            }
+
+            panel.find("[data-tile]").each(function () {
+                var tile = $(this);
+                tile.html($.deco.tiles_instances[panel_id][tile.attr('data-tile')]);
+            });
+
+            // add panel to deco list of panels
+            $.deco.panels[panel_id].html(panel.html());
+
+            // expose panel
+            $.deco.panels[panel_id].css('position', 'relative')
+                                   .css('z-index', '600');
+
+            // Initialize panel
+            $.deco.document = window.parent.document;
+            $.deco.panels[panel_id].decoLayout();
+
+        });
+
+        $.mask.close();
+    });
+
+}(jQuery));
+
+
+(function ($) {
+
     // # Namespace
     $.deco = $.deco || {};
 
@@ -153,8 +279,10 @@
                         .children(".deco-tile-content").blur();
 
                     // Set actions
-                    $.deco.options.toolbar.trigger("selectedtilechange");
-                    $.deco.options.panels.decoSetResizeHandleLocation();
+                    // TODO:$.deco.options.toolbar.trigger("selectedtilechange");
+                    $.each($.deco.panels, function(panel_id, panel) {
+                        panel.decoSetResizeHandleLocation();
+                    });
                 }
             }
 

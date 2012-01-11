@@ -56,13 +56,19 @@ immed: true, strict: true, maxlen: 80, maxerr: 9999 */
             title: "Cancel",
             exec: function (item) {
                 item.click(function (e) {
+
+                    // hide custom deco toolbar
                     $('.toolbar').removeClass('toolbar-deco');
 
                     // bring original panels back
-                    var doc = window.parent.document;
-                    $('[data-panel]', doc).each(function (i, el) {
-                        $(el).replaceWith($(el).data('original_panel'));
-                    });
+                    $('[data-panel]', window.parent.document).each(
+                        function (i, el) {
+                            $(el).replaceWith($(el).data('original_panel'));
+                        }
+                    );
+
+                    // hide mask
+                    window.parent.$.mask.close();
 
                     return false;
                 });

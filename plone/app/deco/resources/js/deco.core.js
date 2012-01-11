@@ -127,58 +127,12 @@
     // - 
     $.deco.init = function () {
 
-        // tile
-        function initTile(tile) {
-            tile.html($.deco.tiles_instances[tile.attr('data-tile')]);
-        }
-
-        // panel
-        function initPanel(panel) {
-
-            var panel_id = panel.attr("data-panel");
-
-            // we only process panels that are shown on page
-            if ($.deco.panels[panel_id] === undefined) {
-                return true;  // continue
-            }
-
-            panel.find("[data-tile]").each(function () {
-                initTile($(this));
-            });
-
-            $.deco.panels[panel_id].html(panel.html());
-        }
-
         // layout
-        function initLayout() {
+        function initialization() {
 
-            // collect panels from page we are visiting so that will enable
-            // deco editor for them
-            $.deco.panels = {};
-            $('[data-panel]', window.parent.document).each(function(i, el) {
-
-                // in case of Cancel button is pressed we need a quick way to
-                // get to get into old state, thats why we store clone of the
-                // original panel
-                var panel_el = $(el);
-                panel_el.data('original_panel', panel_el.clone());
-
-                // add it to the list of panels
-                $.deco.panels[panel_el.attr('data-panel')] = panel_el;
-
-            });
-
-            $.deco.layout = $.deco.getDomTreeFromHtml(
-                    $.deco.editform_fields['form.widgets.ILayoutAware.content']);
-
-            $.deco.layout.find("[data-panel]").each(function () {
-                initPanel($(this));
-            });
 
             $(document).trigger('decoInitialized');
 
-            $.deco.document = window.parent.document;
-            $.deco.layout.decoLayout();
         }
 
 
@@ -209,6 +163,10 @@
                     $.deco.editform_fields[item.name] = item.value;
                 });
 
+                // layout is taken from editform
+                $.deco.layout = $.deco.getDomTreeFromHtml(
+                        $.deco.editform_fields['form.widgets.ILayoutAware.content']);
+
                 // options
                 $.deco.options = options[0];
 
@@ -216,11 +174,12 @@
                 $.deco.tiles_instances = $.parseJSON(
                     window.parent.$('#deco-tiles-instances').val());
 
-                initLayout();
+                $(document).trigger('decoInitialized');
+
             });
 
         } else {
-            initLayout();
+            $(document).trigger('decoInitialized');
         }
 
     };
