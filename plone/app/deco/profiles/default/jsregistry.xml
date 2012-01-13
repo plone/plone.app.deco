@@ -3,26 +3,22 @@
 
     <javascript cacheable="False" compression="none" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.core.js" />
+        id="++resource++plone.app.deco/js/jquery.event.drag.js" />
 
     <javascript cacheable="False" compression="none" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.actions.js" />
+        id="++resource++plone.app.deco/js/jquery.event.drop.js" />
+
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.init.js" />
+
+    <javascript cacheable="False" compression="none" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/js/deco.toolbar.js" />
 
     <javascript cacheable="False" compression="none" cookable="False"
         enabled="True" inline="False" bundle="deco"
         id="++resource++plone.app.deco/js/deco.layout.js" />
-
-    <javascript cacheable="False" compression="none" cookable="False"
-        enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.editor.js" />
-
-    <javascript cacheable="False" compression="none" cookable="False"
-        enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.undo.js" />
-
-    <javascript cacheable="False" compression="none" cookable="False"
-        enabled="True" inline="False" bundle="default"
-        id="++resource++plone.app.deco/js/tinymce/tiny_mce_deco_src.js" />
 
 </object>

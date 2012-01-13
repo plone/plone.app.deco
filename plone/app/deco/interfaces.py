@@ -51,17 +51,30 @@ class IFieldTile(Interface):
 
 
 class ITile(Interface):
-    """Interface for the tile configuration in the registry"""
-    name = schema.TextLine(title=_(u"Name"))
-    label = schema.TextLine(title=_(u"Label"))
-    category = schema.TextLine(title=_(u"Category"))
-    tile_type = schema.TextLine(title=_(u"Type"))
-    default_value = schema.TextLine(title=_(u"Default value"), required=False)
-    read_only = schema.Bool(title=_(u"Read only"))
-    settings = schema.Bool(title=_(u"Settings"))
-    favorite = schema.Bool(title=_(u"Favorite"))
-    rich_text = schema.Bool(title=_(u"Rich Text"))
-    weight = schema.Int(title=_(u"Weight"))
+    """ Interface for the tile configuration in the registry.
+    """
+
+    name = schema.TextLine(
+            title=_(u"Name"),
+            required=True,
+            )
+    label = schema.TextLine(
+            title=_(u"Label"),
+            required=True,
+            )
+    category = schema.TextLine(
+            title=_(u"Category"),
+            required=True,
+            default=u'other',
+            )
+    icon = schema.TextLine(
+            title=_(u"Label"),
+            default=u'++resource++plone.app.deco/images/defualt_tile_icon.png',
+            )
+    weight = schema.Int(
+            title=_(u"Weight"),
+            default=100,
+            )
 
 
 class IWidgetAction(Interface):

@@ -52,9 +52,7 @@
             <element>structure</element>
             <element>media</element>
             <element>fields</element>
-            <element>applications</element>
-            <element>properties</element>
-            <element>advanced</element>
+            <element>other</element>
         </value>
     </record>
 
@@ -75,21 +73,27 @@
     <records prefix="plone.app.deco.tile_text"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">text</value>
+        <value key="label">Text</value>
         <value key="category">structure</value>
+        <value key="icon"></value>
         <value key="weight">10</value>
     </records>
 
     <records prefix="plone.app.deco.tile_title"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">plone.app.deco.title</value>
+        <value key="label">Title</value>
         <value key="category">fields</value>
+        <value key="icon"></value>
         <value key="weight">20</value>
     </records>
 
     <records prefix="plone.app.deco.tile_description"
              interface="plone.app.deco.interfaces.ITile">
         <value key="name">plone.app.deco.description</value>
+        <value key="label">Description</value>
         <value key="category">fields</value>
+        <value key="icon"></value>
         <value key="weight">30</value>
     </records>
 

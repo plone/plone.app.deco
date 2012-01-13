@@ -66,7 +66,13 @@
 
         self.el = el;
 
+            panel_el.find("[data-tile]").each(function () {
+                var tile = $(this);
+                tile.html($.deco.tiles_instances[panel_id][tile.attr('data-tile')]);
+            });
+
         return {
+            el: self.el,
             cancel: function() {
                 console.log('cancel');
                 return this
@@ -94,7 +100,7 @@
     };
 
 
-    // # Deco panels initialization
+    // # 
     $(document).bind('decoInitialized', function() {
 
         // collect panels from page we are visiting. this will restrict
@@ -116,7 +122,7 @@
 
         // 
         window.parent.$.mask.load({
-            zIndex: 499,
+            zIndex: 499,  // right below toolbar z-index
             opacity: 0.6,
             color: '#FFF',
             closeOnEsc: false,
@@ -126,29 +132,26 @@
         // 
         $.deco.layout.find("[data-panel]").each(function () {
 
-            var panel = $(this),
-                panel_id = panel.attr("data-panel");
+            var panel_el = $(this),
+                panel_id = panel_el.attr("data-panel");
 
             // we only process panels that are shown on page
             if ($.deco.panels[panel_id] === undefined) {
                 return true;  // continue
             }
 
-            panel.find("[data-tile]").each(function () {
-                var tile = $(this);
-                tile.html($.deco.tiles_instances[panel_id][tile.attr('data-tile')]);
-            });
+            // initialize panel
+            var panel = panel_el.deco_panel();
 
-            // add panel to deco list of panels
-            $.deco.panels[panel_id].html(panel.html());
+            // 
+            //$.deco.panels[panel_id].html(panel.el.html());
 
             // expose panel
             $.deco.panels[panel_id].css('position', 'relative')
                                    .css('z-index', '600');
 
             // Initialize panel
-            $.deco.document = window.parent.document;
-            $.deco.panels[panel_id].decoLayout();
+            $.deco.panels[panel_id].deco_panel();
 
         });
 
