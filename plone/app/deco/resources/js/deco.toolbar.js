@@ -61,12 +61,12 @@
             exec: function (item) {
 
                 var toolbar = $('iframe#plone-toolbar').toolbar(),
-                    toolbar_iframe_el = toolbar.el.contents();
+                    toolbar_document = toolbar.el.contents();
 
                 item.click(function (e) {
 
                     // hide custom deco toolbar
-                    $('.toolbar', toolbar_iframe_el).removeClass('toolbar-deco');
+                    $('.toolbar', toolbar_document).removeClass('toolbar-deco');
 
                     // bring original panels back
                     $('[data-panel]').each(
@@ -102,8 +102,8 @@
     $(document).bind('decoInitialized', function (e) {
 
         var toolbar = $('iframe#plone-toolbar').toolbar(),
-            toolbar_iframe_el = toolbar.el.contents(),
-            toolbar_left_el = $('.toolbar-left', toolbar_iframe_el);
+            toolbar_document = toolbar.el.contents(),
+            toolbar_left = $('.toolbar-left', toolbar_document);
 
 
         // Tiles List
@@ -152,10 +152,10 @@
                         // TODO: this should be part of toolbar api. eg:
                         //  - $.plone.toolbar.shrink()
                         //  - $.plone.toolbar.stretch()
-                        toolbar.el.height(toolbar.initial_height);
+                        toolbar.el.height(toolbar.options.initial_height);
                         toolbar.el.removeClass('toolbar-dropdown-activated');
-                        $('.activated', toolbar_iframe_el).removeClass('activated');
-                        $('.toolbar-submenu', toolbar_iframe_el).hide();
+                        $('.activated', toolbar_document).removeClass('activated');
+                        $('.toolbar-submenu', toolbar_document).hide();
 
                         // clear placeholder and add new tile
 
@@ -176,14 +176,14 @@
         var buttons = toolbar.create_buttons($.deco.buttons, toolbar.options);
 
         $.each(buttons.categories, function (category, items) {
-            var el = $('.toolbar-category-' + category, toolbar_left_el);
+            var el = $('.toolbar-category-' + category, toolbar_left);
             if (el.length === 0) {
-                toolbar_left_el.append(
+                toolbar_left.append(
                     buttons.render_category(items, category));
             }
         });
 
-        $('.toolbar', toolbar_iframe_el).addClass('toolbar-deco');
+        $('.toolbar', toolbar_document).addClass('toolbar-deco');
 
         return buttons;
 
