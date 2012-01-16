@@ -7,7 +7,7 @@
 // Updated: 2010-09-03
 // REQUIRES: jquery 1.4.2+, event.drag 2.1+
 
-;(function($){ // secure $ jQuery alias
+(function( window, $, document ){ // secure $ jQuery alias
 
 // Events: drop, dropstart, dropend
 
@@ -296,4 +296,6 @@ drop = $.event.special.drop = {
 // share the same special event configuration with related events...
 $special.dropinit = $special.dropstart = $special.dropend = drop;
 
-})(jQuery); // confine scope	
+}( window.parent ? window.parent : window,
+   window.parent ? window.parent.jQuery : window.jQuery,
+   window.parent ? window.parent.document : window.document ));

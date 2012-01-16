@@ -30,7 +30,7 @@
   regexp:true, undef:true, strict:true, trailing:true, browser:true */
 /*global $:false, jQuery:false */
 
-(function ($) {
+(function ( window, $, document ) {
     "use strict";
 
     // # Namespace
@@ -39,36 +39,47 @@
     // # Buttons
     $.deco.buttons = $.deco.buttons || [];
     $.each([
+
+        // ## Save button
         {
             category: "deco-leftactions",
             id: "toolbar-button-deco-save",
             title: "Save",
             exec: function (item) {
                 item.click(function (e) {
-                    alert("for now we don't do anything");
+                    alert("For now we don't do anything, this will be implemented last!");
                     return false;
                 });
             }
         },
+
+        // ## Cancel button
         {
             category: "deco-leftactions",
             id: "toolbar-button-deco-cancel",
             title: "Cancel",
             exec: function (item) {
+
+                var toolbar = $('iframe#plone-toolbar').toolbar(),
+                    toolbar_iframe_el = toolbar.el.contents();
+
                 item.click(function (e) {
 
                     // hide custom deco toolbar
-                    $('.toolbar').removeClass('toolbar-deco');
+                    $('.toolbar', toolbar_iframe_el).removeClass('toolbar-deco');
 
                     // bring original panels back
-                    $('[data-panel]', window.parent.document).each(
+                    $('[data-panel]').each(
                         function (i, el) {
-                            $(el).replaceWith($(el).data('original_panel'));
+                            $(el).replaceWith($(el).decoPanel().el_original);
                         }
                     );
 
                     // hide mask
-                    window.parent.$.mask.close();
+                    $.mask.close();
+
+                    // remove deco helpers
+                    $('.deco-helper').remove();
 
                     return false;
                 });
@@ -90,20 +101,65 @@
     // # Trigger buttons when deco is initialized
     $(document).bind('decoInitialized', function (e) {
 
-        var el = $('.toolbar-left'),
-            toolbar = window.parent.$('iframe').toolbar();
+        var toolbar = $('iframe#plone-toolbar').toolbar(),
+            toolbar_iframe_el = toolbar.el.contents(),
+            toolbar_left_el = $('.toolbar-left', toolbar_iframe_el);
+
 
         // Tiles List
         var tiles = [];
-        $.each($.deco.options.tiles, function(i, tile) {
+        $.each($.deco.options.tiles, function(i, tile_options) {
             tiles.push({
-                category: "tile-category-" + tile.category,
-                id: "tile-" + tile.name,
-                title: tile.label,
-                icon: tile.icon || 'default_tile_icon.png',  // TODO: add default tile icon
+                category: "tile-category-" + tile_options.category,
+                id: "tile-" + tile_options.name,
+                title: tile_options.label,
+                icon: tile_options.icon,
                 exec: function(button) {
                     button.click(function(e) {
-                        $.deco.add_tile(tile.name);
+                        var mask = $.mask.getMask(),
+                            tile = $('<div/>')
+                                .html(tile_options['default'])
+                                .attr({ 'data-tile': './@@' + tile_options.name })
+                                .addClass('deco-helper')
+                                .decoTile({
+                                    style: {
+                                        background: '#F0E56E'
+                                    }
+                                });
+
+                        // put mask over deco panels(450) but under
+                        // toolbar(500)
+                        mask.css('z-index', '490');
+                        tile.el
+                            // when start dragging put mask back behind deco
+                            // panels(450)
+                            .drag('start', function(e, el) {
+                                    mask.css('z-index', '400');
+                                })
+                            // place tile into center
+                            .css({
+                                'top': (($(window).height() -
+                                            tile.el.outerHeight()) / 2) +
+                                            $(window).scrollTop() + 'px',
+                                'left': (($(window).width() -
+                                            tile.el.outerWidth()) / 2) +
+                                            $(window).scrollLeft() + 'px'
+                                })
+                            // and append it to body
+                            .appendTo($('body'));
+
+
+                        // TODO: this should be part of toolbar api. eg:
+                        //  - $.plone.toolbar.shrink()
+                        //  - $.plone.toolbar.stretch()
+                        toolbar.el.height(toolbar.initial_height);
+                        toolbar.el.removeClass('toolbar-dropdown-activated');
+                        $('.activated', toolbar_iframe_el).removeClass('activated');
+                        $('.toolbar-submenu', toolbar_iframe_el).hide();
+
+                        // clear placeholder and add new tile
+
+                        return false;
                     });
                 }
             });
@@ -120,18 +176,22 @@
         var buttons = toolbar.create_buttons($.deco.buttons, toolbar.options);
 
         $.each(buttons.categories, function (category, items) {
-            if ($('.toolbar-category-' + category, el).length === 0) {
-                el.append(buttons.render_category(items, category));
+            var el = $('.toolbar-category-' + category, toolbar_left_el);
+            if (el.length === 0) {
+                toolbar_left_el.append(
+                    buttons.render_category(items, category));
             }
         });
 
-        $('.toolbar').addClass('toolbar-deco');
+        $('.toolbar', toolbar_iframe_el).addClass('toolbar-deco');
 
         return buttons;
 
     });
 
-}(jQuery));
+}( window.parent ? window.parent : window,
+   window.parent ? window.parent.jQuery : window.jQuery,
+   window.parent ? window.parent.document : window.document ));
 
     /*
         // Register tile align block action

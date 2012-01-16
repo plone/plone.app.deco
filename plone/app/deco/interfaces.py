@@ -69,7 +69,7 @@ class ITile(Interface):
             )
     icon = schema.TextLine(
             title=_(u"Label"),
-            default=u'++resource++plone.app.deco/images/defualt_tile_icon.png',
+            default=u'++resource++plone.app.deco/images/default_tile_icon.png',
             )
     weight = schema.Int(
             title=_(u"Weight"),

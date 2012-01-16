@@ -1,9 +1,12 @@
 
+import lxml
+from urlparse import urljoin
 from zope.interface import implements
 from zope.component import adapts
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
+from plone.app.blocks import utils
 from plone.registry.interfaces import IRegistry
 from plone.app.deco.interfaces import ITile
 from plone.app.deco.interfaces import IDecoConfig
@@ -89,6 +92,7 @@ class DecoConfig(object):
                 })
 
         # tiles
+        baseURL = request.getURL()
         config['tiles'] = []
         for tile_id in self.registry[self.prefix + '.tiles']:
             tile = self.registry.forInterface(ITile, prefix=tile_id)
@@ -104,12 +108,22 @@ class DecoConfig(object):
                         _(tile_label_id, default=tile.label),
                         context=request)
 
+            tile_default = ''
+            try:
+                tile_url = urljoin(baseURL, '@@' + tile.name)
+                tile_el = utils.resolve(tile_url).find('body')
+                tile_default = (tile_el.text or '') + \
+                    ''.join([lxml.html.tostring(child) for child in tile_el])
+            except:
+                pass
+
             config['tiles'].append({
                 'name': tile.name,
                 'label': tile_label,
                 'icon': tile.icon,
                 'category': tile.category,
                 'weight': tile.weight,
+                'default': tile_default,
                 })
 
         # TODO: add field tiles

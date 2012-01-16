@@ -31,7 +31,7 @@
 /*global $:false, jQuery:false */
 
 
-(function ($) {
+(function ( window, $, document ) {
     "use strict";
 
     // # Namespaces
@@ -40,125 +40,301 @@
     $.deco = $.deco || {};
 
 
-    // # Utils
-    function get_event_target(e) {
-        var el;
+    // # Grid
 
-        if (e.target) {
-            el = e.target;
-        } else if (e.srcElement) {
-            el = e.srcElement;
-        }
 
-        if (targ.nodeType == 3) {  // defeat Safari bug
-            el = el.parentNode;
-        }
 
-        return $(el);
-    }
+    // # Tile
+    //
+    // ## Tile construstor
+    var Tile = function(el, options) {
+        options = options || {};
+        this.api = {};
+        this.init(el, options);
+        return this.api;
+    };
+    // ## Tile prototype
+    Tile.prototype = {
 
-    // Tile
+        init: function(el, options) {
+            var self = this;
+            self.api.style = $.extend({
+                'cursor': 'move',
+                'border': 'solid 2px transparent',
+                'background': 'transparent',
+                'z-index': '600',
+                'position': 'absolute'
+            }, options.style || {});
+            self.api.hover_style = $.extend({
+                'border': 'dashed 2px #3469d0',
+                'background': '#F0E56E'
+            }, options.hover_style || {});
 
-    // Panel
-    var Panel = function(el) {
-
-        var self = this;
-
-        self.el = el;
-
-            panel_el.find("[data-tile]").each(function () {
-                var tile = $(this);
-                tile.html($.deco.tiles_instances[panel_id][tile.attr('data-tile')]);
+            self.api.el = el
+                .css(self.api.style)
+                .hover(
+                    // execute when the mouse pointer enters the element
+                    function(e) { $(this).css(self.api.hover_style); },
+                    // execute when the mouse pointer leaves the element
+                    function(e) { $(this).css(self.api.style); })
+                .drag(function(e, dd) {
+                    $(this).css({
+                        top: dd.offsetY,
+                        left: dd.offsetX
+                    }, { which: 0 });  // this means any button will drag
+            }, {
+                which: 0,
+                relative: true,
+                document: window.parent.document
             });
 
-        return {
-            el: self.el,
-            cancel: function() {
-                console.log('cancel');
-                return this
-            },
-            show: function() {
-                console.log(self.el);
-                return this
-            }
+        }
+
+    };
+    // ## Tile jQuery Integration
+    $.fn.decoTile = function (options) {
+        var el = $(this),
+            tile = el.data('deco-tile');
+        if (tile === undefined) {
+            tile = new Tile(el, options);
+            el.data('deco-tile', tile);
+        }
+        return tile
+    };
+
+
+    // # PanelCol
+    //
+    // ## PanelCol construstor
+    var PanelCol = function(el) {
+        this.api = {};
+        this.init(el);
+        return this.api;
+    };
+    // ## PanelCol prototype
+    PanelCol.prototype = {
+        init: function(el) {
+            var api = this.api = {
+                el: el,
+                tiles: []
+            };
         }
     }
+    // ## PanelCol jQuery Integration
+    $.fn.decoPanelCol = function () {
+        var el = $(this),
+            column = el.data('deco-panel-column');
+        if (column === undefined) {
+            column = new PanelCol(el, column);
+            el.data('deco-panel-column', column);
+        }
+        return column
+    };
 
 
-    // # Single deco panel initialization
-    $.fn.deco_panel = function () {
-        var panel_el = $(this),
-            panel = panel_el.data('panel');
+    // # PanelRow
+    //
+    // ## PanelRow construstor
+    var PanelRow = function(el) {
+        this.api = {};
+        this.init(el);
+        return this.api;
+    };
+    // ## PanelRow prototype
+    PanelRow.prototype = {
+
+        init: function(el) {
+            var api = this.api = {
+                addColumn: this.addColumn,
+                el: el,
+                columns: []
+            };
+
+        },
+        addColumn: function() {
+            console.log('adding col!');
+        }
+
+    };
+    // ## PanelRow jQuery Integration
+    $.fn.decoPanelRow = function () {
+        var el = $(this),
+            row = el.data('deco-panel-row');
+        if (row === undefined) {
+            row = new PanelRow(el, row);
+            el.data('deco-panel-row', row);
+        }
+        return row
+    };
+
+
+    // # Panel
+    //
+    // ## Panel construstor
+    var Panel = function(el) {
+        this.api = {};
+        this.init(el);
+        return this.api;
+    };
+    // ## Panel prototype
+    Panel.prototype = {
+        // ### Panel initialization
+        init: function(el) {
+            // inner wrapper of rows, create it if its not there
+            if (el.children().length !== 1) {
+                el.html('<div style="position: relative;"></div>');
+            }
+
+            // public API of Panel
+            var api = this.api = {
+                addRow: this.addRow,
+                el: el,
+                el_original: el.clone(),
+                el_wrapper: el.find('> div'),
+                rows: []
+            };
+
+            // initialize existing rows, this also Initializes everything else
+            // that they hold (cols, tiles)
+            this.api.el_wrapper.find('> div').each(function () {
+                var row = new PanelRow($(this));
+                api.rows.push(row);
+            });
+
+            // 
+            this.applyHelpers();
+        },
+        // ### Add row helpers to panel
+        //
+        // - place one helper at the top
+        // - and other after every row
+        applyHelpers: function() {
+
+            // check if first element is helper
+            var self = this,
+                helper = $('> div', self.api.el_wrapper).first();
+            if (!helper.hasClass('deco-helper')) {
+                self.api.el_wrapper.prepend(self.addHelperRow());
+            };
+
+            // check if after every row there is helper
+            $.each(self.api.rows, function(i, row) {
+                helper = row.el.next();
+                if ((helper.length === 0) || (!helper.hasClass('deco-helper'))) {
+                    row.el.after(self.addHelperRow());
+                }
+            });
+
+        },
+
+        addHelperRow: function() {
+            var self = this,
+                el = $('<div/>')
+                .addClass('deco-helper')
+                .css({ 'background': '#DDDDDD' })
+                .append(
+                    $('<p/>')
+                        .html('Add tile to new row')
+                        .css({
+                            'font-size': '0.8em',
+                            'line-height': '2em',
+                            'text-align': 'center'
+                        })),
+                el_html = el.html(),
+                el_style = el.attr('style');
+
+            el.drop("start", function(e, dd) {
+                $(this).html('');
+                $('<div/>')
+                    .attr('data-tile', $(dd.drag).attr('data-tile'))
+                    .html($(dd.drag).html())
+                    .css({background: '#F0E56E'})
+                    .appendTo($(this));
+                $(dd.drag).css('opacity', '0.4');
+                dd.update();
+            });
+
+            el.drop(function(e, el) {
+                self.addRow(
+                    $($(el.drop).html()).removeAttr('style'),
+                    $(el.drop));
+                $(el.drag).remove();
+                $(el.drop).html('');
+            });
+
+            el.drop("end", function(e, dd) {
+                $(dd.drag).css('opacity', '1');
+                $(this)
+                    .attr('style', el_style)
+                    .html(el_html);
+            });
+
+            return el;
+        },
+
+        addRow: function(tile_el, after_el) {
+
+            var column_el = $('<div/>').append(tile_el),
+                row_el = $('<div/>').append(column_el);
+
+            after_el.after(row_el);
+
+            var row = row_el.decoPanelRow();
+            this.api.rows.push(row);
+
+            this.applyHelpers();
+        }
+
+    };
+
+    // ## Panel jQuery Integration
+    $.fn.decoPanel = function () {
+        var el = $(this),
+            panel = el.data('deco-panel');
 
         if (panel !== undefined) {
             return panel;
         }
 
-        panel = new Panel(panel_el);
-        panel_el.data('panel', panel);
+        panel = new Panel(el);
+        el.data('deco-panel', panel);
+
         return panel
     };
 
 
-    // # 
+    // # Layout initialization
+    //
+    //  - create mask and place it over page, but below toolbar.
+    //  - find panels in top frame (clone them for later quick Canceling) this
+    //    will be list of panels that we want to manage.
+    //  - show every panel over initialy created mask
     $(document).bind('decoInitialized', function() {
 
-        // collect panels from page we are visiting. this will restrict
-        // deco editor only for this panels. it also add a bit of
-        // optimisation in case Cancel button is pressed
+        //  find panels in top frame (clone them for later quick Canceling) this
+        //  will be list of panels that we want to manage.
         $.deco.panels = {};
-        $('[data-panel]', window.parent.document).each(function(i, el) {
+        $('[data-panel]').each(function(i, el) {
 
-            // in case of Cancel button is pressed we need a quick way to
-            // get to get into old state, thats why we store clone of the
-            // original panel
-            var panel_el = $(el);
-            panel_el.data('original_panel', panel_el.clone());
+            var panel_el = $(el),
+                panel_id = panel_el.attr('data-panel');
+
+            // show every panel over initialy created mask
+            panel_el.css({
+                'position': 'relative',
+                'z-index': '450'
+            });
 
             // add it to the list of panels
-            $.deco.panels[panel_el.attr('data-panel')] = panel_el;
+            $.deco.panels[panel_id] = panel_el.decoPanel();
 
         });
 
-        // 
-        window.parent.$.mask.load({
-            zIndex: 499,  // right below toolbar z-index
-            opacity: 0.6,
-            color: '#FFF',
-            closeOnEsc: false,
-            closeOnClick: false
-        });
-
-        // 
-        $.deco.layout.find("[data-panel]").each(function () {
-
-            var panel_el = $(this),
-                panel_id = panel_el.attr("data-panel");
-
-            // we only process panels that are shown on page
-            if ($.deco.panels[panel_id] === undefined) {
-                return true;  // continue
-            }
-
-            // initialize panel
-            var panel = panel_el.deco_panel();
-
-            // 
-            //$.deco.panels[panel_id].html(panel.el.html());
-
-            // expose panel
-            $.deco.panels[panel_id].css('position', 'relative')
-                                   .css('z-index', '600');
-
-            // Initialize panel
-            $.deco.panels[panel_id].deco_panel();
-
-        });
-
-        $.mask.close();
     });
 
-}(jQuery));
+}( window.parent ? window.parent : window,
+   window.parent ? window.parent.jQuery : window.jQuery,
+   window.parent ? window.parent.document : window.document ));
 
 
 (function ($) {
