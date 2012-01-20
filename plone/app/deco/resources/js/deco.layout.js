@@ -190,10 +190,6 @@
                     left: e.pageX - (new_tile.el.outerWidth() / 2)
                 });
                 
-                // TODO: we should create new tile under mouse
-                //dd.pageY = e.pageY - ($(this).outerHeight() / 2)
-                //dd.pageX = e.pageX - ($(this).outerWidth() / 2)
-
                 // if there is no tiles in column remove column
                 if (column_el.find('[data-tile]').length === 0) {
                     column_el.remove();
