@@ -34,13 +34,13 @@
 (function ( window, $, document ) {
     "use strict";
 
-    // # Namespaces
+    // # Namespaces {{{
     //
     // Ensure that used namespaces are there
     $.deco = $.deco || {};
+    // }}}
 
-
-    // Options
+    // # Options {{{
     $.deco.options = $.deco.options || {};
     $.extend($.deco.options, {
         grid_columns: 100,
@@ -48,8 +48,9 @@
         tile_klass: 'deco-tile',
         tile_attr: 'data-tile'
     });
+    // }}}
 
-    // # Grid
+    // # Grid {{{
     $.deco.gridRow = function(el) {
         el.css({
             display: 'block',
@@ -84,9 +85,9 @@
 
         return difference;
     };
+    // }}}
 
-
-    // # Tile
+    // # Tile {{{
     //
     // ## Tile construstor
     var Tile = function(el, options) {
@@ -235,9 +236,10 @@
 
 
     };
+    // }}}
 
 
-    // # PanelCol
+    // # PanelCol {{{
     //
     // ## PanelCol construstor
     var PanelColumn = function(el) {
@@ -266,9 +268,9 @@
         }
         return column
     };
+    // }}}
 
-
-    // # PanelRow
+    // # PanelRow {{{
     //
     // ## PanelRow construstor
     var PanelRow = function(el) {
@@ -301,9 +303,9 @@
         }
         return row
     };
+    // }}}
 
-
-    // # Panel
+    // # Panel {{{
     //
     // ## Panel construstor
     var Panel = function(el) {
@@ -446,9 +448,9 @@
 
         return panel
     };
+    // }}}
 
-
-    // # Layout initialization
+    // # Layout initialization {{{
     //
     //  - create mask and place it over page, but below toolbar.
     //  - find panels in top frame (clone them for later quick Canceling) this
@@ -476,6 +478,7 @@
         });
 
     });
+    // }}}
 
 }( window.parent ? window.parent : window,
    window.parent ? window.parent.jQuery : window.jQuery,
