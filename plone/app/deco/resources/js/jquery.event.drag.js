@@ -317,6 +317,7 @@ drag = $special.drag = {
 		obj.drag = ia.drag;
 		obj.proxy = ia.proxy || ia.drag;
 		// starting mouse position
+        console.log(dd.pageX + ', ' + dd.pageY);
 		obj.startX = dd.pageX;
 		obj.startY = dd.pageY;
 		// current distance dragged

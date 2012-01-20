@@ -36,6 +36,12 @@
     // # Namespace
     $.deco = $.deco || {};
 
+    // # Options
+    $.deco.options = $.deco.options || {};
+    $.extend($.deco.options, {
+        toolbar_id: 'plone-toolbar'
+    });
+
     // # Buttons
     $.deco.buttons = $.deco.buttons || [];
     $.each([
@@ -47,7 +53,8 @@
             title: "Save",
             exec: function (item) {
                 item.click(function (e) {
-                    alert("For now we don't do anything, this will be implemented last!");
+                    alert('For now we don\'t do anything, this will ' +
+                          'be implemented last!');
                     return false;
                 });
             }
@@ -85,6 +92,8 @@
                 });
             }
         },
+
+        // ## Properties button
         {
             category: "deco-leftactions",
             id: "toolbar-button-deco-properties",
@@ -95,13 +104,14 @@
                 });
             }
         }
+
     ], function (i, button) { $.deco.buttons.push(button); });
 
 
     // # Trigger buttons when deco is initialized
     $(document).bind('decoInitialized', function (e) {
 
-        var toolbar = $('iframe#plone-toolbar').toolbar(),
+        var toolbar = $('iframe#' + $.deco.options.toolbar_id).toolbar(),
             toolbar_document = toolbar.el.contents(),
             toolbar_left = $('.toolbar-left', toolbar_document);
 
@@ -117,15 +127,12 @@
                 exec: function(button) {
                     button.click(function(e) {
                         var mask = $.mask.getMask(),
-                            tile = $('<div/>')
-                                .html(tile_options['default'])
-                                .attr({ 'data-tile': './@@' + tile_options.name })
-                                .addClass('deco-helper')
-                                .decoTile({
-                                    style: {
-                                        background: '#F0E56E'
-                                    }
-                                });
+                            tile = $.deco.createTile(
+                                './@@' + tile_options.name,
+                                tile_options['default']
+                                );
+
+                        tile.content_el.css(tile.selected_style);
 
                         // put mask over deco panels(450) but under
                         // toolbar(500)
@@ -144,9 +151,7 @@
                                 'left': (($(window).width() -
                                             tile.el.outerWidth()) / 2) +
                                             $(window).scrollLeft() + 'px'
-                                })
-                            // and append it to body
-                            .appendTo($('body'));
+                                });
 
 
                         // TODO: this should be part of toolbar api. eg:
@@ -156,8 +161,6 @@
                         toolbar.el.removeClass('toolbar-dropdown-activated');
                         $('.activated', toolbar_document).removeClass('activated');
                         $('.toolbar-submenu', toolbar_document).hide();
-
-                        // clear placeholder and add new tile
 
                         return false;
                     });

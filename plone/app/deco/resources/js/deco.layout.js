@@ -40,8 +40,50 @@
     $.deco = $.deco || {};
 
 
-    // # Grid
+    // Options
+    $.deco.options = $.deco.options || {};
+    $.extend($.deco.options, {
+        grid_columns: 100,
+        helper_klass: 'deco-helper',
+        tile_klass: 'deco-tile',
+        tile_attr: 'data-tile'
+    });
 
+    // # Grid
+    $.deco.gridRow = function(el) {
+        el.css({
+            display: 'block',
+            float: 'left',
+            position: 'relative',
+            width: '100%'
+        });
+    };
+    $.deco.gridColumn = function(el, position, width) {
+        var grid_columns = $.deco.options.grid_columns,
+            cell_width = 100 / grid_columns,
+            cell_style = {
+                float: 'left',
+                left: '100%',
+                position: 'relative'
+            };
+
+        // position
+        cell_style['margin-left'] = '-' + ((grid_columns - position) * 100 / grid_columns) + '%';
+
+        // width
+        cell_style['width'] = width - (width % cell_width);
+        if ((width % cell_width) / cell_width >= 0.5) {
+            cell_style['width'] += cell_width;
+        }
+        var difference = cell_style['width'] - width
+        cell_style['width'] = Math.round(cell_style['width'] * 10000) / 10000;
+        cell_style['width'] += '%' 
+
+        // apply styles to element
+        el.css(cell_style);
+
+        return difference;
+    };
 
 
     // # Tile
@@ -49,83 +91,181 @@
     // ## Tile construstor
     var Tile = function(el, options) {
         options = options || {};
-        this.api = {};
         this.init(el, options);
-        return this.api;
+        return this;
     };
     // ## Tile prototype
     Tile.prototype = {
 
+        // default tile options
+        style: {
+            'cursor': 'move',
+            'background': 'transparent',
+            'z-index': '600',
+        },
+        selected_style: {
+            'background': '#F0E56E'
+        },
+        resize_style: {
+            'background': 'Red',
+            'z-index': '650',
+            'width': '10px',
+            'height': '10px',
+            'position': 'absolute',
+            'right': '0',
+            'bottom': '0',
+            'cursor': 'nwse-resize'
+        },
+
+        // initialization function
         init: function(el, options) {
             var self = this;
-            self.api.style = $.extend({
-                'cursor': 'move',
-                'border': 'solid 2px transparent',
-                'background': 'transparent',
-                'z-index': '600',
-                'position': 'absolute'
-            }, options.style || {});
-            self.api.hover_style = $.extend({
-                'border': 'dashed 2px #3469d0',
-                'background': '#F0E56E'
-            }, options.hover_style || {});
 
-            self.api.el = el
-                .css(self.api.style)
-                .hover(
-                    // execute when the mouse pointer enters the element
-                    function(e) { $(this).css(self.api.hover_style); },
-                    // execute when the mouse pointer leaves the element
-                    function(e) { $(this).css(self.api.style); })
-                .drag(function(e, dd) {
-                    $(this).css({
-                        top: dd.offsetY,
-                        left: dd.offsetX
-                    }, { which: 0 });  // this means any button will drag
-            }, {
-                which: 0,
-                relative: true,
-                document: window.parent.document
+            // apply default styles
+            self.el = el;
+            self.content_el = $('[' + $.deco.options.tile_attr + ']', el);
+
+            // merge options - relative position is always enforced
+            $.extend(self.style, options.style || {}, {position: 'relative'});
+            $.extend(self.selected_style, options.selected_style || {});
+
+
+            self.resize_helper = null 
+            if (self.el.hasClass($.deco.options.helper_klass)) {
+                self.el.css({position: 'absolute'});
+            } else {
+                self.el.css({position: 'relative'});
+                self.resize_helper = self.createResizeHelper();
+            }
+
+            // apply styles to element
+            self.content_el.css(this.style);
+
+            // hovering element
+            self.el.hover(
+                // execute when the mouse pointer enters the element
+                function(e) { self.content_el.css(self.selected_style); },
+                // execute when the mouse pointer leaves the element
+                function(e) { self.content_el.css(self.style);}
+            );
+
+            // dragging of element
+            self.el
+                .drag('init', self.drag_init)
+                .drag('start', self.drag_start)
+                .drag(self.drag)
+                .drag('end', self.drag_end);
+        },
+
+        // resizing tile helper
+        createResizeHelper: function() {
+            return $('<div/>')
+                .css(this.resize_style)
+                .addClass($.deco.options.helper_klass)
+                .appendTo(this.el)
+                .drop(this.resize);
+        },
+
+        // tile resizing
+        resize: function(e, dd) {
+        },
+
+        // tile dragging
+        drag_init: function(e, dd) {
+            if (!$(this).hasClass($.deco.options.helper_klass)) {
+
+                var tile = $(this).decoTile(),
+                    new_tile = $.deco.createTile(
+                        tile.content_el.attr($.deco.options.tile_attr),
+                        tile.content_el.html()),
+                    column_el = $(this).parent(),
+                    row_el = column_el.parent(),
+                    panel = row_el.parent().parent().decoPanel();
+
+                $(this).remove();
+
+                new_tile.content_el.css(new_tile.selected_style);
+                new_tile.el.css({
+                    top: e.pageY - (new_tile.el.outerHeight() / 2),
+                    left: e.pageX - (new_tile.el.outerWidth() / 2)
+                });
+                
+                // TODO: we should create new tile under mouse
+                //dd.pageY = e.pageY - ($(this).outerHeight() / 2)
+                //dd.pageX = e.pageX - ($(this).outerWidth() / 2)
+
+                // if there is no tiles in column remove column
+                if (column_el.find('[data-tile]').length === 0) {
+                    column_el.remove();
+                }
+                // if there is no tiles in row then remove row
+                if (row_el.find('[data-tile]').length === 0) {
+                    row_el.remove();
+                }
+                panel.createHelpers();
+
+                return new_tile.el
+            }
+        },
+        drag_start: function(e, dd) {},
+        drag: function(e, dd) {
+            $(dd.proxy).css({
+                top: dd.offsetY,
+                left: dd.offsetX
             });
-
-        }
-
+        },
+        drag_end: function(e, dd) {}
     };
     // ## Tile jQuery Integration
     $.fn.decoTile = function (options) {
-        var el = $(this),
-            tile = el.data('deco-tile');
+        var el = $(this), tile = el.data('deco-tile');
         if (tile === undefined) {
             tile = new Tile(el, options);
             el.data('deco-tile', tile);
         }
         return tile
     };
+    // ## Create Tile utility
+    $.deco.createTile = function (url, content, options) {
+        var el = $('<div/>')  // wrapping tile with additional div
+            .addClass($.deco.options.tile_klass)  // tile class
+            .addClass($.deco.options.helper_klass)  // helper class
+            .append($('<div/>')  // actual tile
+                .attr($.deco.options.tile_attr, url)
+                .html(content))
+            // initially we always create it at the end of body
+            .appendTo($('body'));
+        return el.decoTile(options || {});
+
+
+    };
 
 
     // # PanelCol
     //
     // ## PanelCol construstor
-    var PanelCol = function(el) {
-        this.api = {};
+    var PanelColumn = function(el) {
         this.init(el);
-        return this.api;
+        return this;
     };
     // ## PanelCol prototype
-    PanelCol.prototype = {
+    PanelColumn.prototype = {
         init: function(el) {
-            var api = this.api = {
-                el: el,
-                tiles: []
-            };
+            var self = this;
+            self.el = el;
+            self.tiles = [];
+
+            self.el.find('> div').each(function() {
+                self.tiles.push($(this).decoTile());
+            });
         }
     }
     // ## PanelCol jQuery Integration
-    $.fn.decoPanelCol = function () {
+    $.fn.decoPanelColumn = function () {
         var el = $(this),
             column = el.data('deco-panel-column');
         if (column === undefined) {
-            column = new PanelCol(el, column);
+            column = new PanelColumn(el, column);
             el.data('deco-panel-column', column);
         }
         return column
@@ -136,25 +276,24 @@
     //
     // ## PanelRow construstor
     var PanelRow = function(el) {
-        this.api = {};
         this.init(el);
-        return this.api;
+        return this;
     };
     // ## PanelRow prototype
     PanelRow.prototype = {
-
         init: function(el) {
-            var api = this.api = {
-                addColumn: this.addColumn,
-                el: el,
-                columns: []
-            };
+            var self = this;
+            self.el = el;
+            self.columns = [];
+
+            self.el.find('> div').each(function() {
+                self.columns.push($(this).decoPanelColumn());
+            });
 
         },
         addColumn: function() {
             console.log('adding col!');
         }
-
     };
     // ## PanelRow jQuery Integration
     $.fn.decoPanelRow = function () {
@@ -172,94 +311,106 @@
     //
     // ## Panel construstor
     var Panel = function(el) {
-        this.api = {};
         this.init(el);
-        return this.api;
+        return this;
     };
     // ## Panel prototype
     Panel.prototype = {
         // ### Panel initialization
         init: function(el) {
+
+            var self = this;
+
             // inner wrapper of rows, create it if its not there
             if (el.children().length !== 1) {
                 el.html('<div style="position: relative;"></div>');
             }
 
-            // public API of Panel
-            var api = this.api = {
-                addRow: this.addRow,
-                el: el,
-                el_original: el.clone(),
-                el_wrapper: el.find('> div'),
-                rows: []
-            };
+            // part of public API of Panel
+            self.el = el;
+            self.el_original = el.clone();
+            self.el_wrapper = el.find('> div');
+            self.rows = [];
 
             // initialize existing rows, this also Initializes everything else
             // that they hold (cols, tiles)
-            this.api.el_wrapper.find('> div').each(function () {
-                var row = new PanelRow($(this));
-                api.rows.push(row);
+            self.el_wrapper.find('> div').each(function () {
+                self.rows.push($(this).decoPanelRow());
             });
 
-            // 
-            this.applyHelpers();
+            //
+            self.createHelpers();
         },
         // ### Add row helpers to panel
         //
         // - place one helper at the top
         // - and other after every row
-        applyHelpers: function() {
+        createHelpers: function() {
 
-            // check if first element is helper
             var self = this,
-                helper = $('> div', self.api.el_wrapper).first();
-            if (!helper.hasClass('deco-helper')) {
-                self.api.el_wrapper.prepend(self.addHelperRow());
-            };
+                expect = 'helper',
+                el = $('> div', self.el_wrapper).first();
 
-            // check if after every row there is helper
-            $.each(self.api.rows, function(i, row) {
-                helper = row.el.next();
-                if ((helper.length === 0) || (!helper.hasClass('deco-helper'))) {
-                    row.el.after(self.addHelperRow());
+            while (el.length !== 0) {
+
+                // if we expect helper and its not helper
+                if (expect === 'helper') {
+                    if (!el.hasClass('deco-helper')) {
+                        el.before(self.addHelperRow());
+                    }
+                    expect = 'row';
+                } else {
+                    if (el.hasClass('deco-helper')) {
+                        el.remove();
+                    } else {
+                        expect = 'helper';
+                    }
                 }
-            });
+
+                el = el.next();
+            }
+
+            if (expect === 'helper') {
+                self.el_wrapper.append(self.addHelperRow());
+            }
 
         },
-
         addHelperRow: function() {
             var self = this,
                 el = $('<div/>')
-                .addClass('deco-helper')
-                .css({ 'background': '#DDDDDD' })
-                .append(
-                    $('<p/>')
-                        .html('Add tile to new row')
-                        .css({
-                            'font-size': '0.8em',
-                            'line-height': '2em',
-                            'text-align': 'center'
-                        })),
+                    .addClass('deco-helper')
+                    .css({ 'background': '#DDDDDD' })
+                    .append(
+                        $('<p/>')
+                            .html('Add tile to new row')
+                            .css({
+                                'font-size': '0.8em',
+                                'line-height': '2em',
+                                'text-align': 'center',
+                                'padding': '0',
+                                'margin': '0'
+                            })),
                 el_html = el.html(),
                 el_style = el.attr('style');
 
+            // create preview before drop happends
             el.drop("start", function(e, dd) {
-                $(this).html('');
-                $('<div/>')
-                    .attr('data-tile', $(dd.drag).attr('data-tile'))
-                    .html($(dd.drag).html())
-                    .css({background: '#F0E56E'})
-                    .appendTo($(this));
+
                 $(dd.drag).css('opacity', '0.4');
+                $(this).css({ 'background': '#F0E56E' })
+                    .html($(dd.drag).html());
                 dd.update();
             });
 
+            // 
             el.drop(function(e, el) {
                 self.addRow(
-                    $($(el.drop).html()).removeAttr('style'),
+                    ($(el.drag).clone())
+                        .removeAttr('style')
+                        .removeClass('deco-helper'),
                     $(el.drop));
                 $(el.drag).remove();
-                $(el.drop).html('');
+                self.createHelpers();
             });
 
             el.drop("end", function(e, dd) {
@@ -271,7 +422,6 @@
 
             return el;
         },
-
         addRow: function(tile_el, after_el) {
 
             var column_el = $('<div/>').append(tile_el),
@@ -280,13 +430,12 @@
             after_el.after(row_el);
 
             var row = row_el.decoPanelRow();
-            this.api.rows.push(row);
+            this.rows.push(row);
 
-            this.applyHelpers();
+            this.createHelpers();
         }
 
     };
-
     // ## Panel jQuery Integration
     $.fn.decoPanel = function () {
         var el = $(this),

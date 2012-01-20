@@ -81,7 +81,8 @@
                 $.deco.editform = $(editform[0]).filter('#form');
 
                 // options
-                $.deco.options = options[0];
+                $.deco.options = $.deco.options || {};
+                $.extend($.deco.options, options[0]);
 
                 // trigger event that deco is initialized
                 $(document).trigger('decoInitialized');
