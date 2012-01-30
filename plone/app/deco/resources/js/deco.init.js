@@ -161,7 +161,7 @@
 
         // TODO: now this looks ugly
         tile.el.data('deco-tile', tile);
-        tile.activate();
+        tile.update();
         tile.applyStyle('selected');
         tile.el.css({ 'z-index': '490' });
 
@@ -196,7 +196,6 @@
     // }}}
 
     // # Initialize {{{
-    $.deco.initialized = false;
     function initialize() {
 
         // drop is in "mouse" mode
@@ -267,9 +266,8 @@
             // T
             $('.toolbar', toolbar_document).addClass('toolbar-deco');
 
-            // initialize panels
-            $(document).decoPanels();
-            $.deco.initialized = true;
+            // trigger decoInitialized event
+            $(document).trigger('decoInitialized');
 
         });
     }
@@ -278,13 +276,15 @@
     // # Activate {{{
     function activate() {
 
-        // initialize deco if not already
-        if ($.deco.initialized === false) {
+        // initialize deco if its not already
+        if ($.deco.editform === undefined) {
             initialize();
         }
 
-        $.each($(document).decoPanels(), function(i, panel) {
-            panel.activate();
+        // on decoInitialized event we:
+        //  - initialize panels and activate them
+        $(document).bind('decoInitialized', function(e){
+            $('body').decoPanels();
         });
 
     }

@@ -33,7 +33,7 @@
 
 (function ( window, $, document ) {
     "use strict";
-    
+
     // # Namespaces {{{
     //
     // Ensure that used namespaces are there
@@ -62,6 +62,7 @@
             'width': '100%',
             'height': '10px'
             },
+        tile_resize_helper_klass: 'deco-resize-helper',
         tile_klass: 'deco-tile',
         tile_attr: 'data-tile'
     }, $.deco.options || {});
@@ -146,7 +147,7 @@
 
             return self;
         },
-        activate: function() {
+        update: function() {
             var self = this;
 
             // apply default styles to tile
@@ -163,7 +164,7 @@
                 // 1. create resize helper
                 $('<div/>')
                     .css(self.styles.resize)
-                    .addClass($.deco.options.helper_klass)
+                    .addClass($.deco.options.tile_resize_helper_klass)
                     .appendTo(self.el)
                     .drag(self.tileResize);
 
@@ -184,7 +185,9 @@
             }
 
         },
-        deactivate: function() {
+        // ### Clearing helpers
+        clear: function() {
+            // TODO: remove preview tiles
         },
         // ### Useful functions {{{
         getTileContent: function() {
@@ -203,9 +206,7 @@
             }
         },
         // }}}
-        // ### Apply different styles
-        //
-        // eg: default/normal, selected, etc...
+        // ### Apply different styles, eg: default/normal, selected, etc...
         applyStyle: function(style) {
             var self = this;
 
@@ -223,7 +224,7 @@
                 self.el.css({ position: 'absolute'});
                 // TODO: would be nice if this would be fixed, but then we have
                 // to change drag event
-            
+
             //  - inside grid: when droped and this are tiles that will be
             //    later on saved. we have to force relative position
             } else {
@@ -231,7 +232,6 @@
             }
 
         },
-
         // ### TODO: actions that happend when tile is dropped
         tileDrop: function(e, dd) {
             $('.' + $.deco.options.preview_klass,
@@ -239,11 +239,9 @@
                     .removeClass($.deco.options.preview_klass);
             $(dd.proxy).remove();
         },
-
         // ### TODO: tile resizing
         tileResize: function(e, dd) {
         },
-
         // ### starting to drag tile
         tileDragInit: function(e, dd) {
             var tile = $(this).data('deco-tile'),
@@ -274,11 +272,11 @@
                     tile_row.el.remove();
                 }
 
-                tile_panel.activate();
+                tile_panel.update();
 
                 // since we start dragging the tile selected style should
                 // always be "on"
-                new_tile.activate();
+                new_tile.update();
                 new_tile.applyStyle('selected');
 
                 // once tile is pulled out of grid center it under cursor
@@ -293,7 +291,6 @@
                 return new_tile.el;
             }
         },
-
         // ### calculate dragging direction
         tileDragDirection: function (e) {
             var width = parseFloat(this.el.width()),
@@ -335,7 +332,6 @@
                 }
             }
         },
-
         // ### tile dragging
         tileDrag: function(e, dd) {
 
@@ -384,12 +380,12 @@
                             .insertAfter(drop_el),
                         tile_column_el = $('<div/>')
                             .appendTo(tile_row_el);
-                
+
                     preview_tile.el.appendTo(tile_column_el);
 
                 // if dropping element is tile
                 } else {
-                    
+
                     var drag_direction = tile.tileDragDirection(e);
 
                     console.log(drag_direction);
@@ -398,7 +394,7 @@
                     // create column before placing it
                     if ((drag_direction === 'left') ||
                         (drag_direction === 'right')) {
-                        
+
                         var drop_column_el = drop_el.parent(),
                             preview_column_el = $('<div/>')
                                 .addClass($.deco.options.preview_klass)
@@ -421,13 +417,13 @@
                 }
 
                 //
-                preview_tile.getPanel().activate();
+                preview_tile.getPanel().update();
                 preview_tile.applyStyle('selected');
                 preview_tile.el.addClass($.deco.options.preview_klass);
             } else {
                 var panel_el = drop_el.parents('[' + $.deco.options.panel_attr + ']');
                 if (panel_el.size() !== 0) {
-                    panel_el.data('deco-panel').activate();
+                    panel_el.data('deco-panel').update();
                 }
             }
             dd.update();
@@ -442,6 +438,7 @@
 
             if (tile === undefined) {
                 tile = new Tile(tile_el);
+                tile.update();
                 tile_el.data('deco-tile', tile);
             }
 
@@ -475,20 +472,19 @@
             self.tiles = el.decoTiles();
             return this;
         },
-        // ### Activate editing
-        activate: function() {
+        // ### Update
+        update: function() {
             var self = this;
-            self.tiles = self.el.decoTiles();
-            $.each(self.tiles, function(i, tile) {
-               tile.activate();
-            });
 
+            // update list of tiles
+            self.tiles = self.el.decoTiles();
+
+            // update tiles
+            $.each(self.tiles, function(i, tile) { tile.update(); });
         },
-        // ### Deactivate editing (eg. remove helpers)
-        deactivate: function() {
-            $.each(this.tiles, function(i, tile) {
-               tile.deactivate();
-            });
+        // ### Clear helpers
+        clear: function() {
+            $.each(this.tiles, function(i, tile) { tile.clear(); });
         }
     };
     // ## Column jQuery Integration
@@ -522,24 +518,26 @@
             self.columns = el.decoColumns();
             return this;
         },
-        // ### Activate editing
-        activate: function() {
+        // ### Update
+        update: function() {
             var self = this;
+
+            // update list of columns
             self.columns = self.el.decoColumns();
+
+            // recalculate grid cell position and width
             self.recalculateGrid();
-            $.each(self.columns, function(i, column) {
-               column.activate();
-            });
+
+            // update columns
+            $.each(self.columns, function(i, column) { column.update(); });
         },
-        // ### Deactivate editing (eg. remove helpers)
-        deactivate: function() {
-            $.each(this.columns, function(i, column) {
-                column.deactivate();
-            });
+        // ### Clearing helper, nothing really to clear here, but will be
+        // higher in the chain
+        clear: function() {
+            $.each(this.columns, function(i, column) { column.clear(); });
         },
         // ### Grid cells position and width
         recalculateGrid: function() {
-
             var self = this,
                 columns = [],
                 columns_width = 0,
@@ -591,6 +589,7 @@
 
                 if (row === undefined) {
                     row = new Row(row_el);
+                    row.update();
                     row_el.data('deco-row', row);
                 }
 
@@ -625,8 +624,8 @@
 
             return this;
         },
-        // ### Activate editing
-        activate: function() {
+        // ### Update
+        update: function() {
 
             function create_helper_row() {
                 return $('<div/>')
@@ -643,16 +642,20 @@
                         var tile_el = $('[data-tile]', dd.proxy),
                             tile = $.deco.createTile(
                                 tile_el.attr($.deco.options.tile_attr),
-                                tile_el.html()),
-                            tile_column_el = $('<div/>').append(tile.el),
-                            tile_row_el = $('<div/>').append(tile_column_el)
+                                tile_el.html());
+
+                        // wrap tile into column, column into row and place it
+                        // after element we dropped it onto
+                        $('<div/>')
+                                .append($('<div/>').append(tile.el))
                                 .insertAfter($(dd.drop));
 
                         // remove item we've been dragging
                         $(dd.proxy).remove();
 
-                        // recalculate and activate panel
-                        tile.getPanel().activate();
+                        // update panel and its children
+                        // this will add/remove row helpers
+                        tile.getPanel().update();
                     });
             }
 
@@ -661,8 +664,11 @@
                 el_wrapper = self.el.children().first(),
                 el = $('> div', el_wrapper).first();
 
-            // Rows (instances) of this panel
+            // update list of rows
             self.rows = self.el.children().first().decoRows();
+
+            // apply custom css (move about mask, ...)
+            self.el.css($.deco.options.panel_css);
 
             // add row helpers to panel, place one helper at the top and other
             // after every row
@@ -688,19 +694,23 @@
                 el_wrapper.append(create_helper_row());
             }
 
-            // activate panel rows
-            $.each(this.rows, function(i, row) { row.activate(); });
+            // update rows
+            $.each(this.rows, function(i, row) { row.update(); });
         },
-        // ### Deactivate editing (eg. remove helpers)
-        deactivate: function() {
+        // ### Clear helpers (Used by Save button)
+        clear: function() {
+            var self = this;
 
             // remove row helpers
-            this.el.children().first().find(
+            self.el.children().first().find(
                     '> .' + $.deco.option.row_helper_klass,
                 function(i, el) { $(el).remove(); });
 
-            // deactivate rows
-            $.each(this.rows, function(i, row) { row.deactivate(); });
+            // restore style from original
+            self.el.attr('style', self.el_original.attr('style'));
+
+            // clear rows
+            $.each(self.rows, function(i, row) { row.clear(); });
 
         }
     };
@@ -715,8 +725,8 @@
 
                 if (panel === undefined) {
                     panel = new Panel(panel_el);
+                    panel.update();
                     panel_el.data('deco-panel', panel);
-                    panel_el.css($.deco.options.panel_css);
                 }
 
                 panels.push(panel);
