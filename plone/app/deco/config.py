@@ -109,8 +109,8 @@ class DecoConfig(object):
                         context=request)
 
             tile_default = ''
+            tile_url = urljoin(baseURL, '@@' + tile.name)
             try:
-                tile_url = urljoin(baseURL, '@@' + tile.name)
                 tile_el = utils.resolve(tile_url).find('body')
                 tile_default = (tile_el.text or '') + \
                     ''.join([lxml.html.tostring(child) for child in tile_el])
@@ -124,6 +124,7 @@ class DecoConfig(object):
                 'category': tile.category,
                 'weight': tile.weight,
                 'default': tile_default,
+                'url': tile_url,
                 })
 
         # TODO: add field tiles
