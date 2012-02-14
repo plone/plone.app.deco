@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Demo</title>
+
+    <script src="lib/jquery-1.6.4.js"></script>
+    <script src="lib/jquerytools.expose-1.2.6.js"></script>
+    <script src="lib/jquery.event.drag-2.1.0.js"></script>
+    <script src="lib/jquery.event.drop-2.1.0.js"></script>
+
+    <script src="src/deco.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            var base_url = document.location.href
+                .split('#')[0].split('?')[0].replace(/\/$/, '');
+
+            // Tiles
+            $('#new-tile-1').decoNewTileButton(base_url + '/@@tile1', '<h2>Tile 1<\/h2>');
+            $('#new-tile-2').decoNewTileButton(base_url + '/@@tile2', '<h3>Tile 2<\/h3>');
+
+            // Activate/Deactivate panels
+            $('#panel-activate').click(function () {
+                $('[data-panel="3-column-panel"]').decoPanel().activate();
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+
+    <div style="margin: 1em auto; width: 80%">
+        <header>
+            <h1>Deco editor - demo</h1>
+            <ul style="list-style: none; margin: 2em 1em; padding: 0; float: right;">
+                <li style="display: inline; margin: 0 0.3em;">
+                    <h3 style="display: inline;">Add tile: </h3>
+                </li>
+                <li style="display: inline; margin: 0 0.3em;">
+                    <a href="#" id="new-tile-1">Tile 1</a> 
+                </li>
+                <li style="display: inline; margin: 0 0.3em;">
+                    <a href="#" id="new-tile-2">Tile 2</a>
+                </li>
+            </ul>
+        </header>
+        <section>
+            <ul style="list-style: none; margin: 2em 1em; padding: 0;">
+                <li style="display: inline; margin: 0 0.3em;"><h2 style="display: inline;">3 column panel</h2></li>
+                <li style="display: inline; margin: 0 0 0 0.3em;">(<a href="#" id="panel-activate">Activate</a> - </li>
+                <li style="display: inline; margin: 0 0.3em 0 0;"><a href="#" id="panel-deactivate">Deactivate</a>)</li>
+            </ul>
+            <div style="border: 1px solid" data-panel="3-column-panel">
+                <div style="position:relative;">
+                    <div style="display: block; float: left; position: relative; width: 100%;">
+                        <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 30%;"></div>
+                        <div style="float: left; left: 100%; position: relative; margin-left: -70%; width: 40%;"></div>
+                        <div style="float: left; left: 100%; position: relative; margin-left: -30%; width: 30%;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <div class="cell" style="">
+        </div>
+    </div>
+
+</body>
+</html>
