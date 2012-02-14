@@ -106,10 +106,12 @@
                 self.el.css({ cursor: 'move' });
             }
 
-            // bind to draging events, but not if this is preview tile
-            if (!self.el.hasClass(tile_preview_klass)) {
-                self.draggable();
+            // if in grid tile it droppable
+            if (self.getPanel() !== undefined) {
+                self.droppable();
             }
+
+            self.draggable();
 
             // after activating it mark it as activated
             self.activated = true;
@@ -132,23 +134,53 @@
             self.activated = false;
         },
         draggable: function() {
-            var self = this;
+            var self = this,
+                distance = self.getPanel() ? 50 : 0;
 
             // dragging
             self.el.drag(function(e, dd) {
-
                 // position proxy element (element we are dragging)
                 $(dd.proxy).css($.extend({}, $.deco.options.tile_dragging_css, {
                     top: dd.offsetY,
                     left: dd.offsetX
                 }));
+            }, { distance: distance });
 
-                //console.log('drag: default');
-            });
+            // when dragging ends we make sure that opacity is 1
             self.el.drag('end', function(e, dd) {
                 $(dd.proxy).css({opacity: 1});
             });
 
+        },
+        droppable: function() {
+            var self = this;
+
+            self.el.drag('init', function(e, dd) {
+                var tile_data_attr = $.deco.options.tile_data_attr,
+                    el_drag = $(dd.drag),
+                    el_proxy = $('<div/>')
+                        .attr(tile_data_attr, el_drag.attr(tile_data_attr))
+                        .html(el_drag.html())
+                        .appendTo($('body')),
+                    column = el_drag.parent().decoColumn();
+                
+                el_proxy.decoTile();
+
+                el_proxy.css({
+                    top: e.pageY - (el_proxy.outerHeight() / 2),
+                    left: e.pageX - (el_proxy.outerWidth() / 2)
+                });
+
+                el_drag.remove();
+
+                column.tiles = column.getTiles();
+                if (column.tiles.size() === 0) {
+                    column.createDroppableElement()
+                        .appendTo(column.el);
+                }
+
+                return el_proxy;
+            });
         },
         getPanel: function() {
             var self = this;
