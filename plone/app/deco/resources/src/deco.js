@@ -210,6 +210,22 @@
                 return el_proxy;
             });
 
+            self.el.drop(function(e, dd) {
+                var el = $(this),
+                    column_drop_klass = $.deco.options.column_drop_klass,
+                    tile_preview_klass = $.deco.options.tile_preview_klass,
+                    el_preview = $('.' + tile_preview_klass, el.parent());
+
+                if (el_preview.size() === 1) {
+                    el_preview.removeClass(tile_preview_klass);
+                    var column = el_preview.parent().decoColumn();
+                    column.tiles = column.getTiles();
+                }
+
+                $(dd.drag).remove();
+                $('.' + column_drop_klass, el.parent()).remove();
+            });
+
             self.el.drop('end', function(e, dd) {
                 $('.' + $.deco.options.tile_preview_klass,
                     $(this).parent()).remove();
@@ -315,8 +331,7 @@
                 }
 
                 $(dd.drag).remove();
-                $('.' + column_drop_klass, el.parent()).remove();
-                
+                $('.' + column_drop_klass, el.parent()).remove();  
             });
 
             return el;
