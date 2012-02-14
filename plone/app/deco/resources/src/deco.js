@@ -144,6 +144,32 @@
                     top: dd.offsetY,
                     left: dd.offsetX
                 }));
+
+
+                var el_drop = $(dd.drop),
+                    tile_preview_klass = $.deco.options.tile_preview_klass;
+                if (el_drop.size() === 1) {
+                    el_drop = $(el_drop[0]);
+                    if (el_drop.parent().find('.' + tile_preview_klass).size() === 0) {
+                        var tile_data_attr = $.deco.options.tile_data_attr,
+                            el_proxy = $(dd.proxy),
+                            el_preview = $('<div/>')
+                                .addClass(tile_preview_klass)
+                                .attr(tile_data_attr, el_proxy.attr(tile_data_attr))
+                                .html(el_proxy.html());
+
+                        // FIXME: preview style
+                        el_preview.css({background: '#F0E56E'});
+
+                        // TODO: add timeout before creating preview
+                        if (parseFloat(e.pageY - el_drop.offset().top -
+                                (parseFloat(el_drop.height()) / 2)) > 0) {
+                            el_drop.after(el_preview);
+                        } else {
+                            el_drop.before(el_preview);
+                        } 
+                    }
+                }
             }, { distance: distance });
 
             // when dragging ends we make sure that opacity is 1
@@ -157,8 +183,10 @@
 
             self.el.drag('init', function(e, dd) {
                 var tile_data_attr = $.deco.options.tile_data_attr,
+                    tile_preview_klass = $.deco.options.tile_preview_klass,
                     el_drag = $(dd.drag),
                     el_proxy = $('<div/>')
+                        .addClass(tile_preview_klass)
                         .attr(tile_data_attr, el_drag.attr(tile_data_attr))
                         .html(el_drag.html())
                         .appendTo($('body')),
@@ -180,6 +208,11 @@
                 }
 
                 return el_proxy;
+            });
+
+            self.el.drop('end', function(e, dd) {
+                $('.' + $.deco.options.tile_preview_klass,
+                    $(this).parent()).remove();
             });
         },
         getPanel: function() {
@@ -256,11 +289,10 @@
                     tile_preview_klass = $.deco.options.tile_preview_klass;
 
                 el.hide();
-                $('<div/>')
+                el.parent().prepend($('<div/>')
                     .addClass(tile_preview_klass)
                     .attr(tile_data_attr, el_drag.attr(tile_data_attr))
-                    .html(el_drag.html())
-                    .prependTo(el.parent());
+                    .html(el_drag.html()));
             });
             el.drop('end', function(e, dd) {
                 var el = $(this),
