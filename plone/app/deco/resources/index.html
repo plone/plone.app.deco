@@ -18,12 +18,17 @@
                 .split('#')[0].split('?')[0].replace(/\/$/, '');
 
             // Tiles
-            $('#new-tile-1').decoNewTileButton(base_url + '/@@tile1', '<h2>Tile 1<\/h2>');
-            $('#new-tile-2').decoNewTileButton(base_url + '/@@tile2', '<h3>Tile 2<\/h3>');
+            $('#new-tile-1').decoNewTileButton(
+                    base_url + '/@@tile1', '<h2>Tile 1<\/h2>');
+            $('#new-tile-2').decoNewTileButton(
+                    base_url + '/@@tile2', '<h3>Tile 2<\/h3>');
 
             // Activate/Deactivate panels
-            $('#panel-activate').click(function () {
-                $('[data-panel="3-column-panel"]').decoPanel().activate();
+            $('#panel-activate').click(function() {
+                $.deco.panels('3-column-panel').activate();
+            });
+            $('#panel-deactivate').click(function() {
+                $.deco.panels('3-column-panel').deactivate();
             });
 
         });

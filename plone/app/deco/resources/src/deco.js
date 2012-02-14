@@ -39,6 +39,44 @@
     $.deco = $.deco || { version: '1.0' };
     // }}}
 
+    // # Options {{{
+    $.deco.options = $.extend(true, {
+        panel_data_attr: 'data-panel'
+    }, $.deco.options || {});
+    // }}}
+
+    // # Panels {{{
+    //
+    // get instances of panels from current document
+    $.deco.panels = function(panels, options) {
+
+        // merge options
+        options = $.extend($.deco.options, options);
+
+        // panel query 
+        var panel_query = '',
+            panel_data_attr = options.panel_data_attr;
+        if (typeof(panels) === 'string') {
+            panel_query = '[' + panel_data_attr + '="' + panels + '"]';
+        } else if (panels === undefined) {
+            panel_query = '[' + panel_data_attr + ']';
+        } else if ($(panels).size() !== 0) {
+            $(panels).each(function(i, panel) {
+                if (panel_query !== '') { panel_query += ','; }
+                panel_query += '[' + panel_data_attr + '="' + panel + '"]';
+            });
+        }
+
+        // get panels and instantiate them
+        panels = [];
+        $('body').find(panel_query).each(function(i, el) {
+            panels.push($(el).decoPanel(options));
+        });
+
+        // return array of panel instances
+        return $(panels);
+    };
+    // }}}
 
 }( window.parent ? window.parent : window,
    window.parent ? window.parent.jQuery : window.jQuery,
