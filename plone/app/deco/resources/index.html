@@ -25,7 +25,8 @@
 
             // Activate/Deactivate panels
             $('#panel-activate').click(function() {
-                $.deco.panels('3-column-panel').activate();
+                // this automativaly activates panels
+                $.deco.panels('3-column-panel');
             });
             $('#panel-deactivate').click(function() {
                 $.deco.panels('3-column-panel').deactivate();
