@@ -45,8 +45,11 @@
     $.deco.options = $.extend(true, {
         panel_data_attr: 'data-panel',
         panel_zindex: 450,
+        row_data_attr: 'data-row',
+        column_data_attr: 'data-column',
+        column_drop_klass: 'deco-column-drop',
         tile_data_attr: 'data-tile',
-        tile_preview_klass: 'tile-preview',
+        tile_preview_klass: 'deco-tile-preview',
         tile_dragging_css: {
             opacity: 0.5,
             background: '#F0E56E'
@@ -159,6 +162,243 @@
     };
     // }}}
 
+    // # Column {{{
+    $.deco._.Column= function(el, options) {
+        this.initialize(el, options);
+        return this;
+    };
+    $.deco._.Column.prototype = {
+        initialize: function(el, options) {
+            var self = this;
+
+            self.el = el;
+            self.options = $.extend({
+                do_not_activate: false
+            }, options);
+            self.activated = false;
+
+            if (!self.options.do_not_activate) {
+                self.activate();
+            }
+        },
+        activate: function() {
+            var self = this;
+
+            // activate only one time
+            if (self.activated === true) {
+                return;
+            }
+
+            self.tiles = self.getTiles();
+
+            if (self.tiles.size() === 0) {
+                self.createDroppableElement()
+                    .appendTo(self.el);
+            }
+
+            // after activating it mark it as activated
+            self.activated = true;
+        },
+        createDroppableElement: function() {
+            var self = this,
+                el = $('<div/>')
+                    .html('Drop tile here.')
+                    .addClass($.deco.options.column_drop_klass)
+                    .css({
+                        'background': 'transparent',
+                        'border': '1px dashed #888888',
+                        '-webkit-border-radius': '0.2em',
+                        '-moz-border-radius': '0.2em',
+                        '-o-border-radius': '0.2em',
+                        'border-radius': '0.2em',
+                        'color': '#555555',
+                        'margin': '0',
+                        'padding': '0.5em'
+                        });
+
+            // TODO: this need to be pluggable
+            el.drop('start', function(e, dd) {
+                var el = $(this),
+                    el_drag = $(dd.drag),
+                    tile_data_attr = $.deco.options.tile_data_attr,
+                    tile_preview_klass = $.deco.options.tile_preview_klass;
+
+                el.hide();
+                $('<div/>')
+                    .addClass(tile_preview_klass)
+                    .attr(tile_data_attr, el_drag.attr(tile_data_attr))
+                    .html(el_drag.html())
+                    .prependTo(el.parent());
+            });
+            el.drop('end', function(e, dd) {
+                var el = $(this),
+                    tile_preview_klass = $.deco.options.tile_preview_klass;
+
+                el.show();
+
+                $('.' + tile_preview_klass, el.parent()).remove();
+            });
+            el.drop(function(e, dd) {
+                var el = $(this),
+                    column_drop_klass = $.deco.options.column_drop_klass,
+                    tile_preview_klass = $.deco.options.tile_preview_klass,
+                    el_preview = $('.' + tile_preview_klass, el.parent());
+
+                if (el_preview.size() === 1) {
+                    el_preview.removeClass(tile_preview_klass);
+                    var column = el_preview.parent().decoColumn();
+                    column.tiles = column.getTiles();
+                }
+
+                $(dd.drag).remove();
+                $('.' + column_drop_klass, el.parent()).remove();
+                
+            });
+
+            return el;
+        },
+        deactivate: function() {
+            var self = this;
+
+            // don't do anything if not already activated
+            if (self.activated === false) {
+                return;
+            }
+
+            $('.' + $.deco.options.column_drop_klass, self.el).remove();
+
+            $.each(self.tiles, function(i, tile) { tile.deactivate(); });
+            self.tiles = [];
+
+            // after deactivating it mark it as deactivated
+            self.activated = false;
+        },
+        getTiles: function() {
+            var self = this,
+                tiles = [];
+
+            self.el.find('[' + $.deco.options.tile_data_attr + ']')
+                .each(function(i, el) { tiles.push($(el).decoTile()); });
+
+            return $(tiles);
+        }
+    };
+    // }}}
+
+    // # Row {{{
+    $.deco._.Row = function(el, options) {
+        this.initialize(el, options);
+        return this;
+    };
+    $.deco._.Row.prototype = {
+        initialize: function(el, options) {
+            var self = this;
+
+            self.el = el;
+            self.options = $.extend({
+                do_not_activate: false
+            }, options);
+            self.activated = false;
+
+            if (!self.options.do_not_activate) {
+                self.activate();
+            }
+        },
+        activate: function() {
+            var self = this;
+
+            // activate only one time
+            if (self.activated === true) {
+                return;
+            }
+
+            self.columns = [];
+            self.el.find('> div').each(function(i, el) {
+                self.columns.push($(el).decoColumn());
+            });
+
+            // after activating it mark it as activated
+            self.activated = true;
+        },
+        deactivate: function() {
+            var self = this;
+
+            // don't do anything if not already activated
+            if (self.activated === false) {
+                return;
+            }
+
+            $.each(self.columns, function(i, column) { column.deactivate(); });
+            self.columns = [];
+
+            // after deactivating it mark it as deactivated
+            self.activated = false;
+        }
+    };
+    // }}}
+
+    // # Panel {{{
+    $.deco._.Panel = function(el, options) {
+        this.initialize(el, options);
+        return this;
+    };
+    $.deco._.Panel.prototype = {
+        initialize: function(el, options) {
+            var self = this;
+
+            self.el = el;
+            self.options = $.extend({
+                do_not_activate: false
+            }, options);
+            self.activated = false;
+
+            // inner wrapper of rows, create it if its not there
+            if (self.el.children().size() === 0) {
+                self.el.html('<div style="position: relative;"></div>');
+            } else if (self.el.children().size() !== 1) {
+                alert('Content of panel is not correctly structred to be ' +
+                        'editable with deco editor.');
+            }
+
+            self.el_wrapper = self.el.children().first();
+
+            if (!self.options.do_not_activate) {
+                self.activate();
+            }
+        },
+        activate: function() {
+            var self = this;
+
+            // activate only one time
+            if (self.activated === true) {
+                return;
+            }
+
+            self.rows = [];
+            self.el_wrapper.find('> div').each(function(i, el) {
+                self.rows.push($(el).decoRow());
+            });
+
+            // after activating it mark it as activated
+            self.activated = true;
+        },
+        deactivate: function() {
+            var self = this;
+
+            // don't do anything if not already activated
+            if (self.activated === false) {
+                return;
+            }
+
+            $.each(self.rows, function(i, row) { row.deactivate(); });
+            self.rows = [];
+
+            // after deactivating it mark it as deactivated
+            self.activated = false;
+        }
+    };
+    // }}}
+
     // # jQuery Integration {{{
     //
     // bellow code creates jquery method for each model, that creates instance
@@ -246,7 +486,7 @@
     };
     // }}}
 
-    // # Panels {{{
+    // # Panels instances {{{
     //
     // get instances of panels from current document
     $.deco.panels = function(panels, options) {

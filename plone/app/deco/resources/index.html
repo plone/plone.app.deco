@@ -29,7 +29,9 @@
                 $.deco.panels('3-column-panel');
             });
             $('#panel-deactivate').click(function() {
-                $.deco.panels('3-column-panel').deactivate();
+                $.each($.deco.panels('3-column-panel'), function(i, panel) {
+                    panel.deactivate();
+                });
             });
 
         });
@@ -59,7 +61,7 @@
                 <li style="display: inline; margin: 0 0 0 0.3em;">(<a href="#" id="panel-activate">Activate</a> - </li>
                 <li style="display: inline; margin: 0 0.3em 0 0;"><a href="#" id="panel-deactivate">Deactivate</a>)</li>
             </ul>
-            <div style="border: 1px solid" data-panel="3-column-panel">
+            <div data-panel="3-column-panel">
                 <div style="position:relative;">
                     <div style="display: block; float: left; position: relative; width: 100%;">
                         <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 30%;"></div>
