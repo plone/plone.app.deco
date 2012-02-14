@@ -33,6 +33,13 @@
 (function ( window, $, document ) {
     "use strict";
 
+    // # Namespace {{{
+    //
+    // Ensure that deco namespace is there
+    $.deco = $.deco || { version: '1.0' };
+    // }}}
+
+
 }( window.parent ? window.parent : window,
    window.parent ? window.parent.jQuery : window.jQuery,
    window.parent ? window.parent.document : window.document ));
