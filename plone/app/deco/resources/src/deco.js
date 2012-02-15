@@ -47,9 +47,13 @@
         data_attr_row:          'data-row',
         data_attr_column:       'data-column',
         data_attr_tile:         'data-tile',
-        tile_klass_dragging:    'deco-tile-dragging',
-        tile_klass_preview:     'deco-tile-preview',
-        tile_klass_dropped:     'deco-tile-dropped'
+        klass_panel:            'data-panel',
+        klass_row:              'deco-row',
+        klass_column:           'deco-column',
+        klass_tile:             'deco-tile',
+        klass_tile_dragging:    'deco-tile-dragging',
+        klass_tile_preview:     'deco-tile-preview',
+        klass_tile_dropped:     'deco-tile-dropped'
     }, $.deco.options || {});
     // }}}
 
@@ -63,13 +67,13 @@
             var self = this,
                 data_attr = $.deco.options.data_attr_tile;
 
-            self.el = el;
+            self.el = el.addClass($.deco.options.klass_tile);
             self.state = state;
             self.options = options;
             self.activated = false;
 
             // set class on element
-            self.el.addClass($.deco.options['tile_klass_' + state]);
+            self.el.addClass($.deco.options['klass_tile_' + state]);
 
             // merge options 
             options = $.extend({
@@ -181,18 +185,20 @@
                     left: dd.offsetX
                 }));
 
-                function insert_preview(column) {
+                function insert_preview_tile(column) {
                     var drop_el, drop_method, drop_distance,
-                        tile_klass_preview = $.deco.options.tile_klass_preview;
-                    $.each(column.tiles, function(i, tile) {
+                        klass_tile_preview = $.deco.options.klass_tile_preview;
+                    $.each(column.getTiles(), function(i, tile) {
                         if (tile.state === 'dropped') {
                             var tile_top = tile.el.offset().top,
-                                tile_middle = tile_top + (tile.el.height() / 2),
-                                tile_distance = Math.abs(tile_middle - e.pageY);
+                                tile_height = tile.el.height(),
+                                tile_middle = tile_top + (tile_height / 2),
+                                tile_distance = Math.min(
+                                    Math.abs(tile_top - e.pageY),
+                                    Math.abs(tile_top + tile_height - e.pageY));
                             
-                            if (drop_distance === undefined) {
-                                drop_el = tile.el;
-                            } else if (tile_distance < drop_distance) {
+                            if ((drop_el === undefined) ||
+                                    (tile_distance < drop_distance)) {
                                 drop_el = tile.el;
                                 drop_distance = tile_distance;
                             }
@@ -204,7 +210,7 @@
                             }
                         }
                     });
-                    column.el.find('.' + tile_klass_preview).remove();
+                    column.el.find('.' + klass_tile_preview).remove();
                     drop_el[drop_method](
                         $('<div/>').decoTile(
                             $(dd.proxy).decoTile().options, 'preview').el); 
@@ -214,7 +220,7 @@
                 if (drop_el.size() !== 0) {
                     var column = drop_el.decoColumn();
                     if (column.tiles.size() !== 0) {
-                        insert_preview(column);
+                        insert_preview_tile(column);
                     }
                 }
 
@@ -239,7 +245,7 @@
     $.deco._.Column.prototype = {
         initialize: function(el) {
             var self = this;
-            self.el = el;
+            self.el = el.addClass($.deco.options.klass_column);
             self.activate();
         },
         activate: function() {
@@ -258,16 +264,16 @@
                 }
             });
             self.el.drop('end', function(e, dd) {
-                $(this).find('.' + $.deco.options.tile_klass_preview).remove();
+                $(this).find('.' + $.deco.options.klass_tile_preview).remove();
             });
             self.el.drop(function(e, dd) {
-                var tile_klass_preview = $.deco.options.tile_klass_preview,
+                var klass_tile_preview = $.deco.options.klass_tile_preview,
                     dragging = $(dd.proxy).decoTile(),
                     dropped = $('<div/>').decoTile(dragging.options,'dropped'),
                     column = $(this).decoColumn();
 
                 // insert tile after 
-                column.el.find('.' + tile_klass_preview).after(dropped.el);
+                column.el.find('.' + klass_tile_preview).after(dropped.el);
 
                 // update tiles count
                 column.tiles = column.getTiles();
@@ -315,7 +321,7 @@
     $.deco._.Row.prototype = {
         initialize: function(el) {
             var self = this;
-            self.el = el;
+            self.el = el.addClass($.deco.options.klass_row);
             self.activate();
         },
         activate: function() {
@@ -356,6 +362,7 @@
                         'editable with deco editor.');
             }
             self.el_wrapper = self.el.children().first();
+            self.el_wrapper.addClass($.deco.options.klass_panel);
 
             // activate when instanting tile; default: true
             if (self.options.activate) {
