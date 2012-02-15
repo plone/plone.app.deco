@@ -166,9 +166,8 @@
                 position: 'relative',
                 cursor: 'move'
             });
-            // TODO: should this be in Column
-            // self.droppable();
             self.draggable(20);
+            self.el.decoTileButton(self.options);
         },
         draggable: function(distance) {
             var self = this;
@@ -182,36 +181,44 @@
                     left: dd.offsetX
                 }));
 
-            }, { distance: distance });
+                function insert_preview(column) {
+                    var drop_el, drop_method, drop_distance,
+                        tile_klass_preview = $.deco.options.tile_klass_preview;
+                    $.each(column.tiles, function(i, tile) {
+                        if (tile.state === 'dropped') {
+                            var tile_top = tile.el.offset().top,
+                                tile_middle = tile_top + (tile.el.height() / 2),
+                                tile_distance = Math.abs(tile_middle - e.pageY);
+                            
+                            if (drop_distance === undefined) {
+                                drop_el = tile.el;
+                            } else if (tile_distance < drop_distance) {
+                                drop_el = tile.el;
+                                drop_distance = tile_distance;
+                            }
 
+                            if (tile_middle < e.pageY) {
+                                drop_method = 'after';
+                            } else {
+                                drop_method = 'before';
+                            }
+                        }
+                    });
+                    column.el.find('.' + tile_klass_preview).remove();
+                    drop_el[drop_method](
+                        $('<div/>').decoTile(
+                            $(dd.proxy).decoTile().options, 'preview').el); 
+                }
 
-                /*
-                var self = $(this).decoTile();
-                    el_drop = $(dd.drop),
-                    preview_klass = $.deco.options.tile_preview_klass;
-                if (el_drop.size() === 1) {
-                    el_drop = $(el_drop[0]);
-                    if (el_drop.parent().find('.' + tile_preview_klass).size() === 0) {
-                        var tile_data_attr = $.deco.options.tile_data_attr,
-                            el_proxy = $(dd.proxy),
-                            el_preview = $('<div/>')
-                                .addClass(tile_preview_klass)
-                                .attr(tile_data_attr, el_proxy.attr(tile_data_attr))
-                                .html(el_proxy.html());
-
-                        // FIXME: preview style
-                        el_preview.css({background: '#F0E56E'});
-
-                        // TODO: add timeout before creating preview
-                        if (parseFloat(e.pageY - el_drop.offset().top -
-                                (parseFloat(el_drop.height()) / 2)) > 0) {
-                            el_drop.after(el_preview);
-                        } else {
-                            el_drop.before(el_preview);
-                        } 
+                var drop_el = $(dd.drop);
+                if (drop_el.size() !== 0) {
+                    var column = drop_el.decoColumn();
+                    if (column.tiles.size() !== 0) {
+                        insert_preview(column);
                     }
                 }
-                */
+
+            }, { distance: distance });
 
             // when dragging ends we remove proxy/preview element
             self.el.drag('end', function(e, dd) {
@@ -220,65 +227,6 @@
                 // position
             });
 
-        },
-
-        droppable: function() {
-            alert('TODO');
-            var self = this;
-
-            self.el.drag('init', function(e, dd) {
-                var tile_data_attr = $.deco.options.tile_data_attr,
-                    tile_preview_klass = $.deco.options.tile_preview_klass,
-                    el_drag = $(dd.drag),
-                    el_proxy = $('<div/>')
-                        .addClass(tile_preview_klass)
-                        .attr(tile_data_attr, el_drag.attr(tile_data_attr))
-                        .html(el_drag.html())
-                        .appendTo($('body')),
-                    column = el_drag.parent().decoColumn();
-                
-                el_proxy.decoTile();
-
-                el_proxy.css({
-                    top: e.pageY - (el_proxy.outerHeight() / 2),
-                    left: e.pageX - (el_proxy.outerWidth() / 2)
-                });
-
-                el_drag.remove();
-
-                return el_proxy;
-            });
-
-            self.el.drop(function(e, dd) {
-                var el = $(this),
-                    column_drop_klass = $.deco.options.column_drop_klass,
-                    tile_preview_klass = $.deco.options.tile_preview_klass,
-                    el_preview = $('.' + tile_preview_klass, el.parent());
-
-                if (el_preview.size() === 1) {
-                    el_preview.removeClass(tile_preview_klass);
-                    var column = el_preview.parent().decoColumn();
-                    column.tiles = column.getTiles();
-                }
-
-                $(dd.drag).remove();
-                $('.' + column_drop_klass, el.parent()).remove();
-            });
-
-            self.el.drop('end', function(e, dd) {
-                $('.' + $.deco.options.tile_preview_klass,
-                    $(this).parent()).remove();
-            });
-        },
-        getPanel: function() {
-            // deprecated (i think)
-            var self = this;
-            if (self._panel === undefined) {
-                var data_attr = $.deco.options.panel_data_attr,
-                    el = self.el.parents('[' + data_attr +']');
-                self._panel = el.size() !== 0 ? el.data(data_attr) : undefined;
-            }
-            return self._panel;
         }
     };
     // }}}
@@ -301,21 +249,28 @@
 
             // each column is a droppable element
             self.el.drop('start', function(e, dd) {
-                var preview = $('<div/>').decoTile(
-                        $(dd.proxy).decoTile().options, 'preview'),
-                    drop_el = $(this),
-                    drop_method = 'append';
+                var column = $(this).decoColumn();
 
-                drop_el[drop_method](preview.el); 
+                if (column.tiles.size() === 0) {
+                    column.el.append(
+                        $('<div/>').decoTile(
+                            $(dd.proxy).decoTile().options,'preview').el); 
+                }
             });
             self.el.drop('end', function(e, dd) {
                 $(this).find('.' + $.deco.options.tile_klass_preview).remove();
             });
             self.el.drop(function(e, dd) {
-                var dropped = $('<div/>').decoTile(
-                        $(dd.proxy).decoTile().options, 'dropped');
-                $(this).find('.' + $.deco.options.tile_klass_preview)
-                    .after(dropped.el);
+                var tile_klass_preview = $.deco.options.tile_klass_preview,
+                    dragging = $(dd.proxy).decoTile(),
+                    dropped = $('<div/>').decoTile(dragging.options,'dropped'),
+                    column = $(this).decoColumn();
+
+                // insert tile after 
+                column.el.find('.' + tile_klass_preview).after(dropped.el);
+
+                // update tiles count
+                column.tiles = column.getTiles();
             });
             $.drop({ tolerance: function(e, proxy, target ) {
                 var drop = $.event.special.drop,
@@ -337,9 +292,16 @@
             self.tiles = [];
         },
         getTiles: function() {
-            var self = this, tiles = [];
-            self.el.find('[' + $.deco.options.data_attr_tile + ']')
-                .each(function(i, el) { tiles.push($(el).decoTile()); });
+            var self = this, tiles = [],
+                data_attr = $.deco.options.data_attr_tile;
+
+            self.el.find('[' + data_attr + ']').each(function(i, el) {
+                var tile = $(el).decoTile();
+                if (tile.state === 'dropped') {
+                    tiles.push(tile);
+                }
+            });
+
             return $(tiles);
         }
     };
@@ -463,20 +425,27 @@
 
         // play nice with mask and toolbar if they exists 
         var mask = $.deco.options.mask ? $.deco.options.mask : undefined,
-            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined;
+            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined,
+            data_attr = $.deco.options.data_attr_panel;
 
         // create new tile and position on click and drag start event
         $(this).drag('init', function(e, dd) {
 
-            // create new tile
-            var tile = $('<div/>')
-                .appendTo($('body'))
-                .decoTile(tile_options, 'dragging');
+            var tile = $('<div/>') // create new tile
+                    .appendTo($('body'))
+                    .decoTile(tile_options, 'dragging');
 
             tile.el.css({ // position tile under the mouse
                 top: e.pageY - (tile.el.outerHeight() / 2),
                 left: e.pageX - (tile.el.outerWidth() / 2)
             });
+
+            // if element we are trying to drag is already in grid
+            if ($(this).parents('[' + data_attr + ']').size() !== 0) {
+                var column = $(this).parent().decoColumn();
+                $(this).detach();
+                column.tiles = column.getTiles();
+            }
 
             // jquery tools expose/mask integration
             if (mask !== undefined) {
@@ -506,6 +475,7 @@
 
             return tile.el;
         });
+
     };
     // }}}
 
