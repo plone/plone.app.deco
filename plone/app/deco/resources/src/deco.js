@@ -142,7 +142,7 @@
                 self.custom_state_dragging();
             }
             self.el.css({
-                position: 'fixed',
+                position: 'absolute',
                 cursor: 'move'
             });
             self.draggable(0);
@@ -275,7 +275,7 @@
             $.drop({ tolerance: function(e, proxy, target ) {
                 var drop = $.event.special.drop,
                     data_attr = $.deco.options.data_attr_panel,
-                    panel_el = $(target.elem).parents('[' + data_attr + ']'),
+                    panel_el = $(target.elem).parents('[' + data_attr + '] > div'),
                     panel_target = drop.locate(panel_el);
                 if ((drop.contains(panel_target, [e.pageX, e.pageY]) === true) &&
                     (target.left < e.pageX) && (target.right > e.pageX)) {

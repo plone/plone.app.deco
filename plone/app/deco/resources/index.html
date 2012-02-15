@@ -58,7 +58,6 @@
             text-decoration: none;
         }
         .panel {
-            padding: 1%;
             min-height: 200px;
             background: #AAAAAA;
         }
@@ -81,6 +80,9 @@
             border-radius: 5px;
             opacity: 0.4;
         }
+        .deco-tile-dropped {
+            overflow: hidden;
+        }
     </style>
 
     <script type="text/javascript" charset="utf-8">
@@ -91,15 +93,16 @@
             // Tiles
             $('#tile1').decoTileButton({
                 url: base_url + '/@@tile1',
-                content: '<h2>Tile 1<\/h2>',
-                state_dragging: function() { this.el.html(''); },
+                content: '<h2>Very Important Text<\/h2>',
                 state_preview: function() { this.el.html(''); }
             });
             $('#tile2').decoTileButton({
                 url: base_url + '/@@tile2',
-                content: '<h3>Tile 2<\/h3>',
-                state_dragging: function() { this.el.html(''); },
-                state_preview: function() { this.el.html(''); }
+                content: '<img src="http://placekitten.com/300/200" \/>'
+            });
+            $('#tile3').decoTileButton({
+                url: base_url + '/@@tile3',
+                content: '<img src="http://placekitten.com/100/100" \/><img src="http://placekitten.com/150/100" \/>'
             });
 
             // activate panels
@@ -122,8 +125,9 @@
             <h1>Deco editor - demo</h1>
             <ul class="portal-tiles">
                 <li>Add tile:</li>
-                <li><a href="#" id="tile1">Tile 1</a></li>
-                <li><a href="#" id="tile2">Tile 2</a></li>
+                <li><a href="#" id="tile1">Text</a></li>
+                <li><a href="#" id="tile2">Image</a></li>
+                <li><a href="#" id="tile3">Small Image</a></li>
             </ul>
             <ul class="portal-panel-manage">
                 <li>3 column panel:</li>
@@ -132,7 +136,7 @@
         </header>
         <section>
             <div class="panel" data-panel="3-column-panel">
-                <div style="position:relative;">
+                <div style="min-height: 50px; background: #AAAAAA; display: block; float: left; position: relative; width: 100%;">
                     <div style="display: block; float: left; position: relative; width: 100%;">
                         <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 29%;"></div>
                         <div style="float: left; left: 100%; position: relative; margin-left: -70%; width: 40%;"></div>
