@@ -59,9 +59,27 @@
         }
         .panel {
             min-height: 200px;
-            background: #999999;
+            background: #AAAAAA;
         }
 
+        /* deco */
+
+        .deco-tile-dragging {
+            min-width: 20em;
+            min-height: 5em;
+            background: #1E90FF;
+            opacity: 0.4;
+            
+        }
+        .deco-tile-preview {
+            min-height: 5em;
+            border: 2px dotted #555555;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -o-border-radius: 5px;
+            border-radius: 5px;
+            opacity: 0.4;
+        }
     </style>
 
     <script type="text/javascript" charset="utf-8">
@@ -73,12 +91,14 @@
             $('#tile1').decoTileButton({
                 url: base_url + '/@@tile1',
                 content: '<h2>Tile 1<\/h2>',
-                preview: ''
+                state_dragging: function() { this.el.html(''); },
+                state_preview: function() { this.el.html(''); }
             });
             $('#tile2').decoTileButton({
                 url: base_url + '/@@tile2',
                 content: '<h3>Tile 2<\/h3>',
-                preview: ''
+                state_dragging: function() { this.el.html(''); },
+                state_preview: function() { this.el.html(''); }
             });
 
             // activate panels
@@ -87,7 +107,7 @@
             // "save" panel
             $('#panel-action-save').click(function() {
                 $.deco.panels('3-column-panel').deactivate();
-                // here would actual save happen
+                alert('Saved');
             });
 
         });

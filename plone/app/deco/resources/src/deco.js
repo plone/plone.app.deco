@@ -43,72 +43,73 @@
     //
     // default options
     $.deco.options = $.extend(true, {
-        zindex: 450,  // mask:400, panel:401, ...
-        panel_data_attr: 'data-panel',
-        row_data_attr: 'data-row',
-        column_data_attr: 'data-column',
-        tile_data_attr: 'data-tile',
-        tile_drop_klass: 'deco-tile-drop',
-        tile_drag_klass: 'deco-tile-drag',
-        tile_preview_klass: 'deco-tile-preview'
+        data_attr_panel:        'data-panel',
+        data_attr_row:          'data-row',
+        data_attr_column:       'data-column',
+        data_attr_tile:         'data-tile',
+        tile_klass_dragging:    'deco-tile-dragging',
+        tile_klass_preview:     'deco-tile-preview',
+        tile_klass_dropped:     'deco-tile-dropped'
     }, $.deco.options || {});
     // }}}
 
     // # Tile {{{
-    $.deco._.Tile = function(el, options) {
-        this.initialize(el, options);
+    $.deco._.Tile = function(el, options, state) {
+        this.initialize(el, options, state);
         return this;
     };
     $.deco._.Tile.prototype = {
-        initialize: function(el, options) {
-            var self = this;
+        initialize: function(el, options, state) {
+            var self = this,
+                data_attr = $.deco.options.data_attr_tile;
 
             self.el = el;
-            self.options = $.extend({
-                do_not_activate: false
-            }, options);
+            self.state = state;
+            self.options = options;
             self.activated = false;
 
-            if (!self.options.do_not_activate) {
+            // set class on element
+            self.el.addClass($.deco.options['tile_klass_' + state]);
+
+            // merge options 
+            options = $.extend({
+                activate: true,
+                states: ['dragging', 'preview', 'dropped']
+            }, options);
+
+            // update data-tile attribute
+            if (options.url !== undefined) {
+                self.el.attr(data_attr, options.url);
+            }
+
+            // update tile content
+            if (options.content !== undefined) {
+                self.el.html(options.content);
+            }
+
+            // update state functions
+            $.each(options.states, function(i, name) {
+                name = 'state_' + name;
+                if (options[name] !== undefined) {
+                    self['custom_' + name] = options[name];
+                }
+            });
+
+            // activate when instanting tile; default: true
+            if (options.activate === true) {
                 self.activate();
             }
         },
         activate: function() {
-            var self = this,
-                tile_preview_klass = $.deco.options.tile_preview_klass;
+            var self = this;
 
             // activate only one time
             if (self.activated === true) {
                 return;
             }
 
-            // tile can exist in to states:
-            //
-            //  - outside grid: while dragging, means that we have to force
-            //    absolute position.
-            if (self.getPanel() === undefined) {
-                // FIXME: not sure if 'fixed' works 100% if not use absolute
-                self.el.css({ position: 'fixed' });
-
-            //  - inside grid: when droped and this are tiles that will be
-            //    later on saved. we have to force relative position
-            } else {
-                self.el.css({ position: 'relative' });
-            }
-
-            // move cursor is forced if this is not preview tile
-            if (self.el.hasClass(tile_preview_klass)) {
-                self.el.css({ cursor: 'auto' });
-            } else {
-                self.el.css({ cursor: 'move' });
-            }
-
-            // if in grid tile it droppable
-            if (self.getPanel() !== undefined) {
-                self.droppable();
-            }
-
-            self.draggable();
+            // call apropriate state
+            self['state_' + self.state]();
 
             // after activating it mark it as activated
             self.activated = true;
@@ -121,7 +122,7 @@
                 return;
             }
 
-            // unbind drag-n-drop event
+            // unbind drag-n-drop events
             $.each(['dropinit','dropstart','drop','dropend',
                     'draginit','dragstart','drag','dragend'],
                 function( i, type ) { self.el.unbind( type );
@@ -130,21 +131,64 @@
             // after deactivating it mark it as deactivated
             self.activated = false;
         },
-        draggable: function() {
-            var self = this,
-                distance = self.getPanel() ? 50 : 0;
+        destroy: function() {
+            var self = this;
+            self.deactivate();
+            self.el.remove();
+        },
+        state_dragging: function() {
+            var self = this;
+            if (self.custom_state_dragging !== undefined) {
+                self.custom_state_dragging();
+            }
+            self.el.css({
+                position: 'fixed',
+                cursor: 'move'
+            });
+            self.draggable(0);
+        },
+        state_preview: function() {
+            var self = this;
+            if (self.custom_state_preview !== undefined) {
+                self.custom_state_preview();
+            }
+            self.el.css({
+                position: 'relative',
+                cursor: 'auto'
+            });
+        },
+        state_dropped: function() {
+            var self = this;
+            if (self.custom_state_dropped !== undefined) {
+                self.custom_state_dropped();
+            }
+            self.el.css({
+                position: 'relative',
+                cursor: 'move'
+            });
+            // TODO: should this be in Column
+            // self.droppable();
+            self.draggable(20);
+        },
+        draggable: function(distance) {
+            var self = this;
 
             // dragging
             self.el.drag(function(e, dd) {
+
                 // position proxy element (element we are dragging)
                 $(dd.proxy).css($.extend({}, $.deco.options.tile_dragging_css, {
                     top: dd.offsetY,
                     left: dd.offsetX
                 }));
 
+            }, { distance: distance });
 
-                var el_drop = $(dd.drop),
-                    tile_preview_klass = $.deco.options.tile_preview_klass;
+
+                /*
+                var self = $(this).decoTile();
+                    el_drop = $(dd.drop),
+                    preview_klass = $.deco.options.tile_preview_klass;
                 if (el_drop.size() === 1) {
                     el_drop = $(el_drop[0]);
                     if (el_drop.parent().find('.' + tile_preview_klass).size() === 0) {
@@ -167,17 +211,19 @@
                         } 
                     }
                 }
+                */
 
-            }, { distance: distance });
-
-            // when dragging ends we make sure that opacity is 1
+            // when dragging ends we remove proxy/preview element
             self.el.drag('end', function(e, dd) {
-                $(dd.proxy).css({opacity: 1});
                 $(dd.proxy).remove();
+                // TODO: if not dropped then we should return tile on old
+                // position
             });
 
         },
+
         droppable: function() {
+            alert('TODO');
             var self = this;
 
             self.el.drag('init', function(e, dd) {
@@ -225,6 +271,7 @@
             });
         },
         getPanel: function() {
+            // deprecated (i think)
             var self = this;
             if (self._panel === undefined) {
                 var data_attr = $.deco.options.panel_data_attr,
@@ -237,113 +284,91 @@
     // }}}
 
     // # Column {{{
-    $.deco._.Column= function(el, options) {
-        this.initialize(el, options);
+    $.deco._.Column= function(el) {
+        this.initialize(el);
         return this;
     };
     $.deco._.Column.prototype = {
-        initialize: function(el, options) {
+        initialize: function(el) {
             var self = this;
-
             self.el = el;
-            self.options = $.extend({
-                do_not_activate: false
-            }, options);
-            self.activated = false;
-
-            if (!self.options.do_not_activate) {
-                self.activate();
-            }
+            self.activate();
         },
         activate: function() {
             var self = this;
 
-            // activate only one time
-            if (self.activated === true) {
-                return;
-            }
-
             self.tiles = self.getTiles();
 
-            // after activating it mark it as activated
-            self.activated = true;
+            // each column is a droppable element
+            self.el.drop('start', function(e, dd) {
+                var preview = $('<div/>').decoTile(
+                        $(dd.proxy).decoTile().options, 'preview'),
+                    drop_el = $(this),
+                    drop_method = 'append';
+
+                drop_el[drop_method](preview.el); 
+            });
+            self.el.drop('end', function(e, dd) {
+                $(this).find('.' + $.deco.options.tile_klass_preview).remove();
+            });
+            self.el.drop(function(e, dd) {
+                var dropped = $('<div/>').decoTile(
+                        $(dd.proxy).decoTile().options, 'dropped');
+                $(this).find('.' + $.deco.options.tile_klass_preview)
+                    .after(dropped.el);
+            });
+            $.drop({ tolerance: function(e, proxy, target ) {
+                var drop = $.event.special.drop,
+                    data_attr = $.deco.options.data_attr_panel,
+                    panel_el = $(target.elem).parents('[' + data_attr + ']'),
+                    panel_target = drop.locate(panel_el);
+                if ((drop.contains(panel_target, [e.pageX, e.pageY]) === true) &&
+                    (target.left < e.pageX) && (target.right > e.pageX)) {
+                    return 1;
+                }
+                return 0;
+            }});
         },
         deactivate: function() {
             var self = this;
-
-            // don't do anything if not already activated
-            if (self.activated === false) {
-                return;
-            }
-
-            $('.' + $.deco.options.column_drop_klass, self.el).remove();
-
-            $.each(self.tiles, function(i, tile) { tile.deactivate(); });
+            $.each(self.tiles, function(i, tile) {
+                tile.deactivate();
+            });
             self.tiles = [];
-
-            // after deactivating it mark it as deactivated
-            self.activated = false;
         },
         getTiles: function() {
-            var self = this,
-                tiles = [];
-
-            self.el.find('[' + $.deco.options.tile_data_attr + ']')
+            var self = this, tiles = [];
+            self.el.find('[' + $.deco.options.data_attr_tile + ']')
                 .each(function(i, el) { tiles.push($(el).decoTile()); });
-
             return $(tiles);
         }
     };
     // }}}
 
     // # Row {{{
-    $.deco._.Row = function(el, options) {
-        this.initialize(el, options);
+    $.deco._.Row = function(el) {
+        this.initialize(el);
         return this;
     };
     $.deco._.Row.prototype = {
-        initialize: function(el, options) {
+        initialize: function(el) {
             var self = this;
-
             self.el = el;
-            self.options = $.extend({
-                do_not_activate: false
-            }, options);
-            self.activated = false;
-
-            if (!self.options.do_not_activate) {
-                self.activate();
-            }
+            self.activate();
         },
         activate: function() {
             var self = this;
-
-            // activate only one time
-            if (self.activated === true) {
-                return;
-            }
-
             self.columns = [];
             self.el.find('> div').each(function(i, el) {
                 self.columns.push($(el).decoColumn());
             });
-
-            // after activating it mark it as activated
-            self.activated = true;
         },
         deactivate: function() {
             var self = this;
-
-            // don't do anything if not already activated
-            if (self.activated === false) {
-                return;
-            }
-
-            $.each(self.columns, function(i, column) { column.deactivate(); });
+            $.each(self.columns, function(i, column) {
+                column.deactivate();
+            });
             self.columns = [];
-
-            // after deactivating it mark it as deactivated
-            self.activated = false;
         }
     };
     // }}}
@@ -358,9 +383,7 @@
             var self = this;
 
             self.el = el;
-            self.options = $.extend({
-                do_not_activate: false
-            }, options);
+            self.options = $.extend({ activate: true }, options);
             self.activated = false;
 
             // inner wrapper of rows, create it if its not there
@@ -370,10 +393,10 @@
                 alert('Content of panel is not correctly structred to be ' +
                         'editable with deco editor.');
             }
-
             self.el_wrapper = self.el.children().first();
 
-            if (!self.options.do_not_activate) {
+            // activate when instanting tile; default: true
+            if (self.options.activate) {
                 self.activate();
             }
         },
@@ -417,13 +440,13 @@
     //  $.deco._.Panel -> $.fn.decoPanel
     //
     $.each($.deco._, function(name, Func) {
-        $.fn['deco' + name] = function(options) {
+        $.fn['deco' + name] = function(options, state) {
             var el = $(this),
-                data_attr = $.deco.options[name.toLowerCase() + '_data_attr'],
+                data_attr = $.deco.options['data_attr_' + name.toLowerCase()],
                 data = el.data(data_attr);
 
             if (data === undefined) {
-                data = new Func(el, options);
+                data = new Func(el, options, state);
                 el.data(data_attr, data);
             }
 
@@ -440,40 +463,45 @@
 
         // play nice with mask and toolbar if they exists 
         var mask = $.deco.options.mask ? $.deco.options.mask : undefined,
-            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined,
-            zindex = $.deco.options.zindex;
+            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined;
 
         // create new tile and position on click and drag start event
         $(this).drag('init', function(e, dd) {
+
+            // create new tile
             var tile = $('<div/>')
                 .appendTo($('body'))
-                .decoTile(tile_options);
+                .decoTile(tile_options, 'dragging');
 
-            // initially put tile above deco panel(400) and mask(452)
-            tile.el.css('z-index', zindex + 2);
-
-            // when start dragging put mask back behind deco panels(450)
-            tile.el.drag('start', function(e, el) {
-                if (mask !== undefined) {
-                    mask.css('z-index', zindex);
-                }
-            });
-
-            // position tile under the mouse
-            tile.el.css({
+            tile.el.css({ // position tile under the mouse
                 top: e.pageY - (tile.el.outerHeight() / 2),
                 left: e.pageX - (tile.el.outerWidth() / 2)
             });
 
-            // jquery tools expose/mask integration: initially put mask over
-            // deco panels(401) but under toolbar(500)
+            // jquery tools expose/mask integration
             if (mask !== undefined) {
-                mask.css('z-index', zindex + 1);
+
+                // TODO: zindex is still weirdly passed here
+
+                // initially put mask over deco panels(401) but under
+                // toolbar(500)
+                mask.css('z-index', $.deco.mask_zindex + 2);
+
+                // initially put tile above deco panel(400) and mask(452)
+                tile.el.css('z-index', $.deco.mask_zindex + 3);
+
+                // when start dragging put mask back behind deco panels(450)
+                tile.el.drag('start', function(e, el) {
+                    mask.css('z-index', $.deco.mask_zindex + 1);
+                });
+
             }
 
             // toolbar integration: shrink toolbar when new tile is created
             if (toolbar !== undefined) {
+
                 toolbar.shrink();
+
             }
 
             return tile.el;
@@ -485,39 +513,36 @@
     //
     // get instances of panels from current document
     $.deco.panels = function(panels) {
-        var panel_query = '',
-            panel_data_attr = $.deco.options.panel_data_attr;
 
         // calculate panel query from panels variable
+        var query = '', data_attr = $.deco.options.data_attr_panel;
         if (typeof(panels) === 'string') {
             if (panels === '*') {
-                panel_query = '[' + panel_data_attr + ']';
+                query = '[' + data_attr + ']';
             } else {
-                panel_query = '[' + panel_data_attr + '="' + panels + '"]';
+                query = '[' + data_attr + '="' + panels + '"]';
             }
         } else if (panels === undefined) {
-            panel_query = '[' + panel_data_attr + ']';
+            query = '[' + data_attr + ']';
         } else if ($(panels).size() !== 0) {
             $(panels).each(function(i, panel) {
-                if (panel_query !== '') { panel_query += ','; }
-                panel_query += '[' + panel_data_attr + '="' + panel + '"]';
+                if (query !== '') { query += ','; }
+                query += '[' + data_attr + '="' + panel + '"]';
             });
         }
 
         // get panels and instantiate them
         panels = [];
-        $('body').find(panel_query).each(function(i, el) {
+        $('body').find(query).each(function(i, el) {
             panels.push($(el).decoPanel({ activate: false }));
         });
 
         // return array of panel instances
         return {
             activate: function() {
-                $.each(panels, function(i, panel) { panel.activate(); });
-            },
+                $.each(panels, function(i, panel) { panel.activate(); }); },
             deactivate: function() {
-                $.each(panels, function(i, panel) { panel.deactivate(); });
-            }
+                $.each(panels, function(i, panel) { panel.deactivate(); }); }
         };
     };
     // }}}
