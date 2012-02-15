@@ -43,17 +43,14 @@
     //
     // default options
     $.deco.options = $.extend(true, {
+        zindex: 450,  // mask:400, panel:401, ...
         panel_data_attr: 'data-panel',
-        panel_zindex: 450,
         row_data_attr: 'data-row',
         column_data_attr: 'data-column',
-        column_drop_klass: 'deco-column-drop',
         tile_data_attr: 'data-tile',
-        tile_preview_klass: 'deco-tile-preview',
-        tile_dragging_css: {
-            opacity: 0.5,
-            background: '#F0E56E'
-            }
+        tile_drop_klass: 'deco-tile-drop',
+        tile_drag_klass: 'deco-tile-drag',
+        tile_preview_klass: 'deco-tile-preview'
     }, $.deco.options || {});
     // }}}
 
@@ -170,11 +167,13 @@
                         } 
                     }
                 }
+
             }, { distance: distance });
 
             // when dragging ends we make sure that opacity is 1
             self.el.drag('end', function(e, dd) {
                 $(dd.proxy).css({opacity: 1});
+                $(dd.proxy).remove();
             });
 
         },
@@ -200,12 +199,6 @@
                 });
 
                 el_drag.remove();
-
-                column.tiles = column.getTiles();
-                if (column.tiles.size() === 0) {
-                    column.createDroppableElement()
-                        .appendTo(column.el);
-                }
 
                 return el_proxy;
             });
@@ -272,69 +265,8 @@
 
             self.tiles = self.getTiles();
 
-            if (self.tiles.size() === 0) {
-                self.createDroppableElement()
-                    .appendTo(self.el);
-            }
-
             // after activating it mark it as activated
             self.activated = true;
-        },
-        createDroppableElement: function() {
-            var self = this,
-                el = $('<div/>')
-                    .html('Drop tile here.')
-                    .addClass($.deco.options.column_drop_klass)
-                    .css({
-                        'background': 'transparent',
-                        'border': '1px dashed #888888',
-                        '-webkit-border-radius': '0.2em',
-                        '-moz-border-radius': '0.2em',
-                        '-o-border-radius': '0.2em',
-                        'border-radius': '0.2em',
-                        'color': '#555555',
-                        'margin': '0',
-                        'padding': '0.5em'
-                        });
-
-            // TODO: this need to be pluggable
-            el.drop('start', function(e, dd) {
-                var el = $(this),
-                    el_drag = $(dd.drag),
-                    tile_data_attr = $.deco.options.tile_data_attr,
-                    tile_preview_klass = $.deco.options.tile_preview_klass;
-
-                el.hide();
-                el.parent().prepend($('<div/>')
-                    .addClass(tile_preview_klass)
-                    .attr(tile_data_attr, el_drag.attr(tile_data_attr))
-                    .html(el_drag.html()));
-            });
-            el.drop('end', function(e, dd) {
-                var el = $(this),
-                    tile_preview_klass = $.deco.options.tile_preview_klass;
-
-                el.show();
-
-                $('.' + tile_preview_klass, el.parent()).remove();
-            });
-            el.drop(function(e, dd) {
-                var el = $(this),
-                    column_drop_klass = $.deco.options.column_drop_klass,
-                    tile_preview_klass = $.deco.options.tile_preview_klass,
-                    el_preview = $('.' + tile_preview_klass, el.parent());
-
-                if (el_preview.size() === 1) {
-                    el_preview.removeClass(tile_preview_klass);
-                    var column = el_preview.parent().decoColumn();
-                    column.tiles = column.getTiles();
-                }
-
-                $(dd.drag).remove();
-                $('.' + column_drop_klass, el.parent()).remove();  
-            });
-
-            return el;
         },
         deactivate: function() {
             var self = this;
@@ -500,34 +432,30 @@
     });
     // }}}
 
-    // # Create New Tile Button {{{
+    // # Helper for tile button {{{
     //
     // helper jquery function which turns element into button which adds new
     // tile when is press or being dragged from.
-    $.fn.decoNewTileButton = function(tile_url, tile_content) {
+    $.fn.decoTileButton = function(tile_options) {
 
         // play nice with mask and toolbar if they exists 
-        var mask = $.deco.mask ? $.deco.mask : undefined,
-            toolbar = $.deco.toolbar ? $.deco.toolbar : undefined,
-            tile_dragging_css = $.deco.options.tile_dragging_css;
+        var mask = $.deco.options.mask ? $.deco.options.mask : undefined,
+            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined,
+            zindex = $.deco.options.zindex;
 
-
-        function new_tile(e) {
-
+        // create new tile and position on click and drag start event
+        $(this).drag('init', function(e, dd) {
             var tile = $('<div/>')
                 .appendTo($('body'))
-                .attr($.deco.options.tile_data_attr, tile_url)
-                .css($.extend({}, tile_dragging_css, {opacity: 1}))
-                .html(tile_content)
-                .decoTile();
+                .decoTile(tile_options);
 
-            // initially put tile above deco panel(450) and mask(451)
-            tile.el.css('z-index', $.deco.options.panel_zindex + 2);
+            // initially put tile above deco panel(400) and mask(452)
+            tile.el.css('z-index', zindex + 2);
 
             // when start dragging put mask back behind deco panels(450)
             tile.el.drag('start', function(e, el) {
                 if (mask !== undefined) {
-                    mask.css('z-index', $.deco.options.mask_zindex);
+                    mask.css('z-index', zindex);
                 }
             });
 
@@ -538,9 +466,9 @@
             });
 
             // jquery tools expose/mask integration: initially put mask over
-            // deco panels(450) but under toolbar(500)
+            // deco panels(401) but under toolbar(500)
             if (mask !== undefined) {
-                mask.css('z-index', $.deco.options.panel_zindex + 1);
+                mask.css('z-index', zindex + 1);
             }
 
             // toolbar integration: shrink toolbar when new tile is created
@@ -548,36 +476,25 @@
                 toolbar.shrink();
             }
 
-            return tile;
-        }
-
-        // create new tile and position on click and drag start event
-        $(this)
-            // TODO: when clicked it is not centered in center of window but 
-            .click(function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                new_tile(e);
-                })
-            .drag('init', function(e, dd) {
-                return new_tile(e).el;
-                });
+            return tile.el;
+        });
     };
     // }}}
 
     // # Panels instances {{{
     //
     // get instances of panels from current document
-    $.deco.panels = function(panels, options) {
-
-        // merge options
-        options = $.extend($.deco.options, options);
-
-        // panel query 
+    $.deco.panels = function(panels) {
         var panel_query = '',
-            panel_data_attr = options.panel_data_attr;
+            panel_data_attr = $.deco.options.panel_data_attr;
+
+        // calculate panel query from panels variable
         if (typeof(panels) === 'string') {
-            panel_query = '[' + panel_data_attr + '="' + panels + '"]';
+            if (panels === '*') {
+                panel_query = '[' + panel_data_attr + ']';
+            } else {
+                panel_query = '[' + panel_data_attr + '="' + panels + '"]';
+            }
         } else if (panels === undefined) {
             panel_query = '[' + panel_data_attr + ']';
         } else if ($(panels).size() !== 0) {
@@ -590,11 +507,18 @@
         // get panels and instantiate them
         panels = [];
         $('body').find(panel_query).each(function(i, el) {
-            panels.push($(el).decoPanel(options));
+            panels.push($(el).decoPanel({ activate: false }));
         });
 
         // return array of panel instances
-        return $(panels);
+        return {
+            activate: function() {
+                $.each(panels, function(i, panel) { panel.activate(); });
+            },
+            deactivate: function() {
+                $.each(panels, function(i, panel) { panel.deactivate(); });
+            }
+        };
     };
     // }}}
 

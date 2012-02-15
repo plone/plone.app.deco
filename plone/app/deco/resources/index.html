@@ -12,26 +12,82 @@
 
     <script src="src/deco.js"></script>
 
+    <style>
+        body {
+            color: #bfff42;
+            background: #333333;
+            font-size: 14px;
+            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        }
+        a,
+        a:active,
+        a:visited {
+            color: #FF4566;
+        }
+        header, section {
+            clear: both;
+        }
+        .portal-wrapper {
+            margin: 1em auto;
+            width: 80%
+        }
+        .portal-tiles,
+        .portal-panel-manage {
+            list-style: none;
+            margin: 1em 0;
+            padding: 0;
+            font-size: 1.4em;
+        }
+        .portal-tiles {
+            float: right;
+        }
+        .portal-panel-manage {
+            float: left;
+        }
+        .portal-tiles li,
+        .portal-panel-manage li {
+            display: inline;
+            margin: 0 0.3em;
+        }
+        .portal-tiles li:first-child,
+        .portal-panel-manage li:first-child {
+            font-weight: bold;
+        }
+        .portal-tiles li a,
+        .portal-panel-manage li a {
+            text-decoration: none;
+        }
+        .panel {
+            min-height: 200px;
+            background: #999999;
+        }
+
+    </style>
+
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             var base_url = document.location.href
                 .split('#')[0].split('?')[0].replace(/\/$/, '');
 
             // Tiles
-            $('#new-tile-1').decoNewTileButton(
-                    base_url + '/@@tile1', '<h2>Tile 1<\/h2>');
-            $('#new-tile-2').decoNewTileButton(
-                    base_url + '/@@tile2', '<h3>Tile 2<\/h3>');
-
-            // Activate/Deactivate panels
-            $('#panel-activate').click(function() {
-                // this automativaly activates panels
-                $.deco.panels('3-column-panel');
+            $('#tile1').decoTileButton({
+                url: base_url + '/@@tile1',
+                content: '<h2>Tile 1<\/h2>',
+                preview: ''
             });
-            $('#panel-deactivate').click(function() {
-                $.each($.deco.panels('3-column-panel'), function(i, panel) {
-                    panel.deactivate();
-                });
+            $('#tile2').decoTileButton({
+                url: base_url + '/@@tile2',
+                content: '<h3>Tile 2<\/h3>',
+                preview: ''
+            });
+
+            // activate panels
+            $.deco.panels('3-column-panel').activate();
+
+            // "save" panel
+            $('#panel-action-save').click(function() {
+                $.deco.panels('3-column-panel').deactivate();
+                // here would actual save happen
             });
 
         });
@@ -40,33 +96,26 @@
 </head>
 <body>
 
-    <div style="margin: 1em auto; width: 80%">
+    <div class="portal-wrapper">
         <header>
             <h1>Deco editor - demo</h1>
-            <ul style="list-style: none; margin: 2em 1em; padding: 0; float: right;">
-                <li style="display: inline; margin: 0 0.3em;">
-                    <h3 style="display: inline;">Add tile: </h3>
-                </li>
-                <li style="display: inline; margin: 0 0.3em;">
-                    <a href="#" id="new-tile-1">Tile 1</a> 
-                </li>
-                <li style="display: inline; margin: 0 0.3em;">
-                    <a href="#" id="new-tile-2">Tile 2</a>
-                </li>
+            <ul class="portal-tiles">
+                <li>Add tile:</li>
+                <li><a href="#" id="tile1">Tile 1</a></li>
+                <li><a href="#" id="tile2">Tile 2</a></li>
+            </ul>
+            <ul class="portal-panel-manage">
+                <li>3 column panel:</li>
+                <li><a href="#" id="panel-action-save">Save</a></li>
             </ul>
         </header>
         <section>
-            <ul style="list-style: none; margin: 2em 1em; padding: 0;">
-                <li style="display: inline; margin: 0 0.3em;"><h2 style="display: inline;">3 column panel</h2></li>
-                <li style="display: inline; margin: 0 0 0 0.3em;">(<a href="#" id="panel-activate">Activate</a> - </li>
-                <li style="display: inline; margin: 0 0.3em 0 0;"><a href="#" id="panel-deactivate">Deactivate</a>)</li>
-            </ul>
-            <div data-panel="3-column-panel">
+            <div class="panel" data-panel="3-column-panel">
                 <div style="position:relative;">
                     <div style="display: block; float: left; position: relative; width: 100%;">
-                        <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 30%;"></div>
+                        <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 29%;"></div>
                         <div style="float: left; left: 100%; position: relative; margin-left: -70%; width: 40%;"></div>
-                        <div style="float: left; left: 100%; position: relative; margin-left: -30%; width: 30%;"></div>
+                        <div style="float: left; left: 100%; position: relative; margin-left: -29%; width: 29%;"></div>
                     </div>
                 </div>
             </div>
