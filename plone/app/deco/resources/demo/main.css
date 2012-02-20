@@ -50,19 +50,17 @@ p {
 /*-------- Toolbar --------*/
 
 #toolbar-wrapper {
-  width: 100%;
   position: relative;
   float: left;
   width: 100%;
-
+  height: 30px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  background: #00A0DA;
 }
 #toolbar {
   margin: 0 auto;
   width: 980px;
-  height: 30px;
-  background: #00A0DA;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
   -webkit-border-radius: 0 0 1px 1px;
   -moz-border-radius: 0 0 1px 1px;
   -o-border-radius: 0 0 1px 1px;
