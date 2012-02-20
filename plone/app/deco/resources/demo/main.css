@@ -1,0 +1,271 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #444;
+}
+
+h1, h2, h3, h4 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 3.1em;
+  line-height: 55px;
+  margin: -10px 0px 18px -4px;
+  font-weight: 300;
+}
+
+h2 {
+  font-size: 1.375em;
+  margin-left: 2px;
+  margin-bottom: 14px;
+}
+
+h3 {
+  margin-top: 4px;
+}
+
+h3 em {
+  color: #00A0DA;
+  font-weight: 400;
+}
+
+h3 + p {
+  margin-top: 24px;
+}
+
+h4 {
+  font-weight: 400;
+  margin-bottom: 20px;
+  margin-top: 24px;
+}
+
+p {
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+
+/*-------- Toolbar --------*/
+
+#toolbar-wrapper {
+  width: 100%;
+  position: relative;
+  float: left;
+  width: 100%;
+
+}
+#toolbar {
+  margin: 0 auto;
+  width: 980px;
+  height: 30px;
+  background: #00A0DA;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+}
+#toolbar,
+#toolbar a {
+  color: #FFFFFF;
+  text-decoration: none;
+  line-height: 25px;
+}
+
+#toolbar span {
+  margin-left: 1em;
+  margin-right: 1.5em;
+  float: left;
+  margin-top: 1px;
+}
+#toolbar li {
+  float: left;
+  margin-top: 2px;
+  margin-right: 1em;
+  font-size: 13px;
+}
+#toolbar li a {
+  padding: 2px 4px;
+}
+#toolbar li a:hover {
+  color: #00A0DA;
+  background: #FFFFFF;
+  cursor: move;
+  border-radius: 1px;
+}
+
+/*-------- Header --------*/
+
+header {
+  height: 150px;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+header #logo {
+  position: absolute;
+  top: 30px;
+  text-decoration: none;
+  display: block;
+}
+header #logo img {
+    height: 60px;
+}
+
+header #links {
+  font-family: Arial, sans-serif;
+  font-size: 0.6875em;
+  position: absolute;
+  right: 0px;
+  top: 85px;
+}
+
+header #links ul li {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+header #links ul li a {
+  color: #222;
+  text-decoration: none;
+}
+
+header #links ul li a:hover {
+  color: #00A0DA;
+}
+
+header nav {
+  border-top: solid 2px #00A0DA;
+  border-bottom: dotted 1px #888;
+  padding: 11px 0px 12px 0px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.875em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+header nav ul li {
+  display: inline-block;
+}
+
+header nav ul li a {
+  color: #000;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+header nav ul li a:hover {
+  color: #00A0DA;
+}
+
+/*-------- Page layout --------*/
+
+#wrapper {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.panel {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin: 1em 0;
+}
+
+
+ul.listing {
+  margin-bottom: 24px;
+  border-top: dotted 1px #888;
+}
+
+ul.listing li a {
+  display:block;
+  padding: 10px 0px;
+  line-height: 20px;
+  font-size: 13px;
+  color: #222;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+  border-bottom: solid 1px #DDD;
+}
+
+ul.listing li a h5 {
+  width: 240px;
+  float: left;
+}
+
+ul.listing li a:hover h5 {
+  color: #00A0DA;
+}
+
+ul.listing li a span.date {
+  color: #00A0DA;
+  float: right;
+}
+
+img.user-image {
+  margin-bottom: 20px;
+}
+
+img.user-image + .caption {
+  margin-top: -23px;
+}
+
+.caption {
+  color: #FFF;
+  background: #00A0DA;
+  padding: 20px 17px 4px 17px;
+}
+
+.caption h2 {
+  color: #FFF;
+}
+
+.caption h2 + p {
+  margin-top: 0px;
+}
+
+.caption + h2 {
+  margin-top: 30px;
+}
+
+h2 + p {
+  margin-top: 24px;
+}
+
+footer {
+  padding-top: 20px;
+  text-align: center;
+  margin-top: 40px;
+  border-top: solid 2px #00A0DA;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+/* -------- Dran'n'Drop -------- */
+
+
+.deco-tile {
+}
+.deco-tile-dragging {
+  min-width: 20em;
+  min-height: 5em;
+  background: #00A0DA;
+  opacity: 0.4;
+    
+}
+.deco-tile-preview {
+  min-height: 5em;
+  border: 2px dotted #555555;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  opacity: 0.4;
+}
+.deco-tile-dropped {
+    overflow: hidden;
+}

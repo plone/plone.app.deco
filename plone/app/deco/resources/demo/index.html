@@ -1,18 +1,23 @@
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <meta charset="utf-8" />
 
     <title>Demo</title>
 
-    <script src="lib/jquery-1.6.4.js"></script>
-    <script src="lib/jquerytools.expose-1.2.6.js"></script>
-    <script src="lib/jquery.event.drag-2.1.0.js"></script>
-    <script src="lib/jquery.event.drop-2.1.0.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="main.css" />
 
-    <script src="src/deco.js"></script>
+    <script src="../lib/jquery-1.6.4.js"></script>
+    <script src="../lib/jquerytools.expose-1.2.6.js"></script>
+    <script src="../lib/jquery.event.drag-2.1.0.js"></script>
+    <script src="../lib/jquery.event.drop-2.1.0.js"></script>
 
-    <style>
+    <script src="../src/deco.js"></script>
+
+    <!--style>
         body {
             color: #bfff42;
             background: #333333;
@@ -64,26 +69,7 @@
 
         /* deco */
 
-        .deco-tile-dragging {
-            min-width: 20em;
-            min-height: 5em;
-            background: #1E90FF;
-            opacity: 0.4;
-            
-        }
-        .deco-tile-preview {
-            min-height: 5em;
-            border: 2px dotted #555555;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            -o-border-radius: 5px;
-            border-radius: 5px;
-            opacity: 0.4;
-        }
-        .deco-tile-dropped {
-            overflow: hidden;
-        }
-    </style>
+    </style-->
 
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
@@ -120,33 +106,44 @@
 </head>
 <body>
 
-    <div class="portal-wrapper">
-        <header>
-            <h1>Deco editor - demo</h1>
-            <ul class="portal-tiles">
-                <li>Add tile:</li>
+    <div id="toolbar-wrapper">
+        <div id="toolbar">
+            <span>Tiles: </span>
+            <ul>
                 <li><a href="#" id="tile1">Text</a></li>
                 <li><a href="#" id="tile2">Image</a></li>
                 <li><a href="#" id="tile3">Small Image</a></li>
             </ul>
-            <ul class="portal-panel-manage">
-                <li>3 column panel:</li>
-                <li><a href="#" id="panel-action-save">Save</a></li>
-            </ul>
+        </div>
+    </div>
+    <div id="wrapper">
+        <header>
+            <a href="#" id="logo">
+                <img src="logo.png" alt="Plone Logo" />
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Members</a></li>
+                </ul>
+            </nav>
         </header>
-        <section>
-            <div class="panel" data-panel="3-column-panel">
-                <div style="min-height: 50px; background: #AAAAAA; display: block; float: left; position: relative; width: 100%;">
-                    <div style="display: block; float: left; position: relative; width: 100%;">
-                        <div style="float: left; left: 100%; position: relative; margin-left: -100%; width: 29%;"></div>
-                        <div style="float: left; left: 100%; position: relative; margin-left: -70%; width: 40%;"></div>
-                        <div style="float: left; left: 100%; position: relative; margin-left: -29%; width: 29%;"></div>
-                    </div>
+        <div class="panel" data-panel="3-column-panel">
+            <div style="min-height: 50px; display: block; float: left; position: relative; width: 100%;">
+                <div style="display: block; float: left; position: relative; width: 100%;">
+                    <div style="float: left; left: 100%; position: relative; margin-left: -100.00000%; width: 33.333333%;"></div>
+                    <div style="float: left; left: 100%; position: relative; margin-left: -66.666666%; width: 33.333333%;"></div>
+                    <div style="float: left; left: 100%; position: relative; margin-left: -33.333333%; width: 33.333333%;"></div>
                 </div>
             </div>
-        </section>
-            <div class="cell" style="">
         </div>
+        <footer>
+            <p>
+                &copy; 2011 No rights needed.<br/>
+            </p>
+        </footer>
     </div>
 
 </body>
