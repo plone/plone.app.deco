@@ -17,60 +17,6 @@
 
     <script src="../src/deco.js"></script>
 
-    <!--style>
-        body {
-            color: #bfff42;
-            background: #333333;
-            font-size: 14px;
-            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-        }
-        a,
-        a:active,
-        a:visited {
-            color: #FF4566;
-        }
-        header, section {
-            clear: both;
-        }
-        .portal-wrapper {
-            margin: 1em auto;
-            width: 80%
-        }
-        .portal-tiles,
-        .portal-panel-manage {
-            list-style: none;
-            margin: 1em 0;
-            padding: 0;
-            font-size: 1.4em;
-        }
-        .portal-tiles {
-            float: right;
-        }
-        .portal-panel-manage {
-            float: left;
-        }
-        .portal-tiles li,
-        .portal-panel-manage li {
-            display: inline;
-            margin: 0 0.3em;
-        }
-        .portal-tiles li:first-child,
-        .portal-panel-manage li:first-child {
-            font-weight: bold;
-        }
-        .portal-tiles li a,
-        .portal-panel-manage li a {
-            text-decoration: none;
-        }
-        .panel {
-            min-height: 200px;
-            background: #AAAAAA;
-        }
-
-        /* deco */
-
-    </style-->
-
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             var base_url = document.location.href
@@ -79,16 +25,32 @@
             // Tiles
             $('#tile1').decoTileButton({
                 url: base_url + '/@@tile1',
-                content: '<h2>Very Important Text<\/h2>',
+                content: '<h2>Title<\/h2>',
                 state_preview: function() { this.el.html(''); }
             });
             $('#tile2').decoTileButton({
                 url: base_url + '/@@tile2',
-                content: '<img src="http://placekitten.com/300/200" \/>'
+                content: '<p>Lorem ipsum dolor sit amet, consectetur ' +
+                    'adipiscing elit. Curabitur hendrerit congue purus, in ' +
+                    'dictum est eleifend laoreet. Cras sed nisi quis nisi ' +
+                    'ullamcorper vestibulum. In mi ligula, ullamcorper ' +
+                    'fringilla adipiscing at, fringilla in nisi. Nullam ' +
+                    'faucibus tempus viverra. Proin suscipit interdum odio, ' +
+                    'ut placerat leo elementum ac. Vestibulum mauris felis, ' +
+                    'elementum at vulputate vel, fringilla ut nisi. Proin ' +
+                    'fringilla venenatis felis vitae sagittis. Proin tempor ' +
+                    'lacinia ligula, vitae molestie odio gravida ut. <\/p>',
+                state_preview: function() { this.el.html(''); }
             });
             $('#tile3').decoTileButton({
                 url: base_url + '/@@tile3',
-                content: '<img src="http://placekitten.com/100/100" \/><img src="http://placekitten.com/150/100" \/>'
+                content: '<img src="http://placekitten.com/300/200" \/>',
+                state_preview: function() { this.el.html(''); }
+            });
+            $('#tile4').decoTileButton({
+                url: base_url + '/@@tile4',
+                content: '<img src="http://placekitten.com/100/100" \/>',
+                state_preview: function() { this.el.html(''); }
             });
 
             // activate panels
@@ -110,9 +72,10 @@
         <div id="toolbar">
             <span>Tiles: </span>
             <ul>
-                <li><a href="#" id="tile1">Text</a></li>
-                <li><a href="#" id="tile2">Image</a></li>
-                <li><a href="#" id="tile3">Small Image</a></li>
+                <li><a href="#" id="tile1">Title</a></li>
+                <li><a href="#" id="tile2">Text</a></li>
+                <li><a href="#" id="tile3">Image</a></li>
+                <li><a href="#" id="tile4">Small Image</a></li>
             </ul>
         </div>
     </div>

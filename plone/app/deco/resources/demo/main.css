@@ -63,6 +63,10 @@ p {
   background: #00A0DA;
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
+  -webkit-border-radius: 0 0 1px 1px;
+  -moz-border-radius: 0 0 1px 1px;
+  -o-border-radius: 0 0 1px 1px;
+  border-radius: 0 0 1px 1px;
 }
 #toolbar,
 #toolbar a {
@@ -90,6 +94,9 @@ p {
   color: #00A0DA;
   background: #FFFFFF;
   cursor: move;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
   border-radius: 1px;
 }
 
@@ -238,7 +245,6 @@ h2 + p {
 footer {
   padding-top: 20px;
   text-align: center;
-  margin-top: 40px;
   border-top: solid 2px #00A0DA;
   position: relative;
   float: left;
@@ -249,7 +255,9 @@ footer {
 
 
 .deco-tile {
+    margin: 0 0.2em;
 }
+
 .deco-tile-dragging {
   min-width: 20em;
   min-height: 5em;
@@ -257,9 +265,15 @@ footer {
   opacity: 0.4;
     
 }
+.deco-tile-dragging > * {
+    display: none;
+}
 .deco-tile-preview {
-  min-height: 5em;
+  min-height: 3em;
   border: 2px dotted #555555;
+}
+.deco-tile-dragging,
+.deco-tile-preview {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -o-border-radius: 5px;
