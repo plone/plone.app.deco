@@ -1,24 +1,20 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
-    <javascript cacheable="False" compression="none" cookable="False"
+    <javascript cacheable="False" compression="safe" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/jquery.event.drag.js" />
+        id="++resource++plone.app.deco/lib/jquery.event.drag-2.1.0.js" />
 
-    <javascript cacheable="False" compression="none" cookable="False"
+    <javascript cacheable="False" compression="safe" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/jquery.event.drop.js" />
+        id="++resource++plone.app.deco/lib/jquery.event.drop-2.1.0.js" />
 
-    <javascript cacheable="False" compression="none" cookable="False"
+    <javascript cacheable="False" compression="safe" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.init.js" />
+        id="++resource++plone.app.deco/src/deco.js" />
 
-    <javascript cacheable="False" compression="none" cookable="False"
+    <javascript cacheable="False" compression="safe" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.toolbar.js" />
-
-    <javascript cacheable="False" compression="none" cookable="False"
-        enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/js/deco.layout.js" />
+        id="++resource++plone.app.deco/src/deco.plone.js" />
 
 </object>
