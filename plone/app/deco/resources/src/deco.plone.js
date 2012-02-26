@@ -196,7 +196,7 @@
     // }}}
 
     // # Initialize {{{
-    $.deco.initialize = function() {
+    var initialize = function() {
 
         $.when(
             $.get($.deco.options.editform_url),
@@ -264,10 +264,10 @@
     // }}}
 
     // # Activate {{{
-    $.deco.activate = function() {
+    var activate = function() {
         // initialize deco if its not already
         if ($.deco.editform === undefined) {
-            $.deco.initialize();
+            initialize();
         }
 
         // on decoInitialized event we:
@@ -278,14 +278,23 @@
     };
     // }}}
 
-    // # Trigger deco when Edit button is pressed {{{
-    $('body.portaltype-page #toolbar-button-edit',
-        $($.deco.options.toolbar_id).contents())
+    // Initialize deco panels {{{
+    $('[data-panel]').each(function(i, panel) {
+        panel.decoPanel(options);
+    });
+    // }}}
+
+    // TODO: this should be moved into exec of edit button
+    $(document).bind('toolbar_loaded', function() {
+        $('#toolbar-button-edit', $('#plone-toolbar').contents())
             .click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                $.deco.activate();
+                $('[data-panel]').each(function(i, panel) {
+                    panel.decoPanel().activate();
+                });
             });
+    });
     // }}}
 
 }( window.parent ? window.parent : window,
