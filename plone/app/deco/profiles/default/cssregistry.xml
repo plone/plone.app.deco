@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <object name="portal_css">
 
-    <stylesheet title="" applyPrefix="true" media="screen" rel="stylesheet"
-        rendering="import" cacheable="True" compression="safe" cookable="True"
-        enabled="1" expression="" bundle="deco"
-        id="++resource++plone.app.deco/css/deco.toolbar.css" />
 
 </object>
