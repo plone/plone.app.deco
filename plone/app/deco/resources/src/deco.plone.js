@@ -207,9 +207,9 @@
         },
         activate: function() {
             var self = this,
-                tmp = new $.toolbar.Groups(self.buttons, self.toolbar.options);
+                buttons = new $.toolbar.Groups(self.buttons, self.toolbar.options);
             self.el.html('');
-            self.el.append(tmp.render());
+            self.el.append(buttons.render());
 
             $('body', self.toolbar.document).addClass('toolbar-deco');
             // add min-width to panels wrappers
@@ -240,10 +240,25 @@
         },
         deactivate: function() {
             var self = this;
+
             self.el.html('');
-            $('[' + self.options.panel_data_attr + ']').each(
-                function(i, panel) { $(panel).decoPanel().deactivate(); });
+
             $('body', self.toolbar.document).removeClass('toolbar-deco');
+
+            $('[' + self.options.panel_data_attr + ']').each(function(i, panel) {
+                panel = $(panel).decoPanel();
+
+                // close expose / hide mask
+                $.mask.close();
+
+                panel.el_wrapper.css({
+                    'background': 'transparent',
+                    'min-height': '0'
+                });
+
+                // deactivate
+                panel.deactivate();
+            });
             //self.toolbar.shrink();
         }
     };

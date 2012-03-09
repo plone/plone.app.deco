@@ -295,7 +295,6 @@
                     panel_el = $(target.elem).parents('[' + data_attr + '] > div'),
                     panel_target = drop.locate(panel_el);
                 
-                console.log(drop.contains(panel_target, [e.pageX, e.pageY]));
                 if ((drop.contains(panel_target, [e.pageX, e.pageY]) === true) &&
                     (target.left < e.pageX) && (target.right > e.pageX)) {
                     return 1;
