@@ -178,11 +178,25 @@
                                     'min-width': '20em',
                                     'min-height': '5em',
                                     'background': '#00A0DA',
+                                    '-webkit-border-radius': '5px',
+                                    '-moz-border-radius': '5px',
+                                    '-o-border-radius': '5px',
+                                    'border-radius': '5px',
                                     'opacity': '0.4'
                                 });
                             },
-                            state_preview: function() { this.el.html(''); }
-                            }, self.toolbar);
+                            state_preview: function() { 
+                                this.el.html('').css({
+                                    'min-height': '3em',
+                                    'border': '2px dotted #555555',
+                                    '-webkit-border-radius': '5px',
+                                    '-moz-border-radius': '5px',
+                                    '-o-border-radius': '5px',
+                                    'border-radius': '5px',
+                                    'opacity': '0.4'
+                                });
+                            }
+                        }, self.toolbar);
                     };
                 });
                 self.buttons[$.inArray('toolbar-button-deco-add-tile',
@@ -201,11 +215,11 @@
             // add min-width to panels wrappers
 
             $('[' + self.options.panel_data_attr + ']').each(function(i, panel) {
-                panel = $(panel);
+                panel = $(panel).decoPanel();
 
                 // expose each panel
                 // TODO: expose option should be hardcoded
-                panel.expose({
+                panel.el.expose({
                     closeOnClick: false,
                     closeOnEsc: false,
                     zIndex: 400,
@@ -213,13 +227,13 @@
                     color: '#333'
                 });
 
-                panel.css({
+                panel.el_wrapper.css({
                     'background': '#FFFFFF',
                     'min-height': '50px'
                 });
 
                 // activate each panel
-                panel.decoPanel().activate();
+                panel.activate();
             });
 
             //self.toolbar.stretch();
