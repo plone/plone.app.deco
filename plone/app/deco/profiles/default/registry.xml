@@ -20,7 +20,7 @@
             <title>Tile Categories</title>
             <value_type type="plone.registry.field.TextLine" />
         </field>
-        <value></value>
+        <value purge="false"></value>
     </record>
 
 </registry>
