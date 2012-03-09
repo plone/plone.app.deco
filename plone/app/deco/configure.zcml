@@ -7,14 +7,8 @@
     <include package="plone.app.blocks" />
     <include package="plone.app.registry" />
     <include package="plone.app.tiles" />
-    <include package="plone.app.texttile" />
     <include package="plone.app.toolbar" />
     <include package="plone.app.layoutpage" />
-
-    <!-- for now we comment this 2 tiles out
-    <include package="plone.app.contentlistingtile" />
-    <include package="plone.app.imagetile" />
-    -->
 
     <permission
         id="plone.ModifyPageLayout"
