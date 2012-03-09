@@ -14,68 +14,13 @@
         </value>
     </record>
 
-    <!-- Omitted fields -->
-    <record name="plone.app.deco.default_omitted_fields">
-        <field type="plone.registry.field.List">
-            <title>Default omitted fields</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.subjects</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.language</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.effective</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.expires</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.creators</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.contributors</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.rights</element>
-            <element>plone.app.dexterity.behaviors.metadata.ICategorization.subjects</element>
-            <element>plone.app.dexterity.behaviors.metadata.ICategorization.language</element>
-            <element>plone.app.dexterity.behaviors.metadata.IPublication.effective</element>
-            <element>plone.app.dexterity.behaviors.metadata.IPublication.expires</element>
-            <element>plone.app.dexterity.behaviors.metadata.IOwnership.creators</element>
-            <element>plone.app.dexterity.behaviors.metadata.IOwnership.contributors</element>
-            <element>plone.app.dexterity.behaviors.metadata.IOwnership.rights</element>
-
-            <!-- SHOULD BE REMOVED WHEN WE GET RID OF THE METADATA APP TILES -->
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.title</element>
-            <element>plone.app.dexterity.behaviors.metadata.IDublinCore.description</element>
-        </value>
-    </record>
-
-    <!-- Tile categories -->
-    <record name="plone.app.deco.tiles_categories">
-        <field type="plone.registry.field.List">
-            <title>Tile Categories</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value>
-            <element>structure</element>
-            <element>media</element>
-            <element>fields</element>
-            <element>other</element>
-        </value>
-    </record>
-
     <!-- Tiles -->
     <record name="plone.app.deco.tiles">
         <field type="plone.registry.field.List">
             <title>Tile Categories</title>
             <value_type type="plone.registry.field.TextLine" />
         </field>
-        <value>
-            <element>plone.app.deco.tile_text</element>
-            <element>plone.app.deco.tile_title</element>
-            <element>plone.app.deco.tile_description</element>
-        </value>
+        <value></value>
     </record>
-
-    <!-- Text Tile -->
-    <records prefix="plone.app.deco.tile_text"
-             interface="plone.app.deco.interfaces.ITile">
-        <value key="name">text</value>
-        <value key="label">Text</value>
-        <value key="category">structure</value>
-        <value key="weight">10</value>
-    </records>
 
 </registry>

@@ -62,18 +62,14 @@ class ITile(Interface):
             title=_(u"Label"),
             required=True,
             )
-    category = schema.TextLine(
-            title=_(u"Category"),
+    group = schema.TextLine(
+            title=_(u"Group"),
             required=True,
-            default=u'other',
+            default=u'default',
             )
     icon = schema.TextLine(
             title=_(u"Label"),
             default=u'++resource++plone.app.deco/default_tile_icon.png',
-            )
-    weight = schema.Int(
-            title=_(u"Weight"),
-            default=100,
             )
 
 
