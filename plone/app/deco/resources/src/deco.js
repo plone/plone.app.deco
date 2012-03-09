@@ -81,7 +81,7 @@
             // merge options 
             options = $.extend({
                 activate: true,
-                states: ['dragging', 'preview', 'dropped']
+                states: ['dragging', 'preview', 'dropped', 'editing']
             }, options);
 
             // update data-tile attribute
@@ -146,7 +146,7 @@
         state_dragging: function() {
             var self = this;
             if (self.custom_state_dragging !== undefined) {
-                self.custom_state_dragging();
+                self.custom_state_dragging.call(self);
             }
             self.el.css({
                 position: 'absolute',
@@ -157,7 +157,7 @@
         state_preview: function() {
             var self = this;
             if (self.custom_state_preview !== undefined) {
-                self.custom_state_preview();
+                self.custom_state_preview.call(self);
             }
             self.el.css({
                 position: 'relative',
@@ -165,18 +165,40 @@
             });
         },
         state_dropped: function() {
-            var self = this;
+            var self = this, clicks = 0, timer;
             if (self.custom_state_dropped !== undefined) {
-                self.custom_state_dropped();
+                self.custom_state_dropped.call(self);
             }
-            self.el.css({
-                position: 'relative',
-                cursor: 'move'
-            });
-            self.draggable(20);
-            self.el.decoTileButton(self.options);
+            // on draginit we timeout to wait if its doubleclick
+            self.el
+                .css({ position: 'relative', cursor: 'move' })
+                .drag('init', function(e, dd) {
+                    clicks += 1;  //count clicks
+                    if (clicks === 1) {
+                        timer = setTimeout(function() {
+                            $(self.el).unbind('draginit');
+                            self.draggable();
+                            self.el.decoTileButton(self.options);
+                            $(self.el).trigger('draginit', [dd, e]);
+                            clicks = 0; //after action performed, reset counter
+                        }, 250);
+                    } else {
+                        clearTimeout(timer);    //prevent single-click action
+                        var tile = $('<div/>') // create new tile
+                                .appendTo($('body'))
+                                .decoTile(self.options, 'editing');
+                        clicks = 0; //after action performed, reset counter
+                    }
+                    return false;
+                });
         },
-        draggable: function(distance) {
+        state_editing: function() {
+            var self = this;
+            if (self.custom_state_editing !== undefined) {
+                self.custom_state_editing.call(self);
+            }
+        },
+        draggable: function() {
             var self = this;
 
             // dragging
@@ -227,7 +249,7 @@
                     }
                 }
 
-            }, { distance: distance });
+            });
 
             // when dragging ends we remove proxy/preview element
             self.el.drag('end', function(e, dd) {
@@ -451,12 +473,13 @@
         var data_attr = $.deco.options.data_attr_panel;
 
         // create new tile and position on click and drag start event
-        $(this).drag('init', function(e, dd) {
+        $(this).drag('init', function(e, dd, e2) {
 
             var tile = $('<div/>') // create new tile
                     .appendTo($('body'))
                     .decoTile(tile_options, 'dragging');
 
+            e = e2 || e;
             tile.el.css({ // position tile under the mouse
                 top: e.pageY - (tile.el.outerHeight() / 2),
                 left: e.pageX - (tile.el.outerWidth() / 2)

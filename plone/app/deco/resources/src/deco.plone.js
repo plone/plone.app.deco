@@ -173,6 +173,7 @@
                         button.el.decoTileButton({
                             url: tile.url,
                             content: 'Default text', //tile.default_content,
+                            toolbar: self.toolbar,
                             state_dragging: function() {
                                 this.el.css({
                                     'min-width': '20em',
@@ -195,6 +196,11 @@
                                     'border-radius': '5px',
                                     'opacity': '0.4'
                                 });
+                            },
+                            state_editing: function() {
+                                alert('EDITING');
+                                // load edit form
+                                // show in overlay
                             }
                         }, self.toolbar);
                     };
