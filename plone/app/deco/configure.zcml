@@ -31,9 +31,6 @@
         title="Plone: Change Deco Layout"
         />
 
-    <!-- title and description tile -->
-    <include package=".tiles" />
-
     <adapter factory=".config.DecoConfig" />
 
     <browser:resourceDirectory
