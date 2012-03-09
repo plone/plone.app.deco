@@ -168,6 +168,23 @@
                     });
 
                 // add tiles to the list
+                $.each(options.tiles, function(i, tile) {
+                    options.tiles[i].exec = function(button) {
+                        button.el.decoTileButton({
+                            url: tile.url,
+                            content: 'Default text', //tile.default_content,
+                            state_dragging: function() {
+                                this.el.css({
+                                    'min-width': '20em',
+                                    'min-height': '5em',
+                                    'background': '#00A0DA',
+                                    'opacity': '0.4'
+                                });
+                            },
+                            state_preview: function() { this.el.html(''); }
+                            }, self.toolbar);
+                    };
+                });
                 self.buttons[$.inArray('toolbar-button-deco-add-tile',
                     self.options.buttons_order)].buttons = options.tiles;
 
@@ -179,10 +196,33 @@
                 tmp = new $.toolbar.Groups(self.buttons, self.toolbar.options);
             self.el.html('');
             self.el.append(tmp.render());
-            $('[' + self.options.panel_data_attr + ']').each(
-                function(i, panel) { $(panel).decoPanel().activate(); });
+
             $('body', self.toolbar.document).addClass('toolbar-deco');
-            self.toolbar.stretch();
+            // add min-width to panels wrappers
+
+            $('[' + self.options.panel_data_attr + ']').each(function(i, panel) {
+                panel = $(panel);
+
+                // expose each panel
+                // TODO: expose option should be hardcoded
+                panel.expose({
+                    closeOnClick: false,
+                    closeOnEsc: false,
+                    zIndex: 400,
+                    opacity: '0.6',
+                    color: '#333'
+                });
+
+                panel.css({
+                    'background': '#FFFFFF',
+                    'min-height': '50px'
+                });
+
+                // activate each panel
+                panel.decoPanel().activate();
+            });
+
+            //self.toolbar.stretch();
         },
         deactivate: function() {
             var self = this;
@@ -190,7 +230,7 @@
             $('[' + self.options.panel_data_attr + ']').each(
                 function(i, panel) { $(panel).decoPanel().deactivate(); });
             $('body', self.toolbar.document).removeClass('toolbar-deco');
-            self.toolbar.shrink();
+            //self.toolbar.shrink();
         }
     };
     // }}}

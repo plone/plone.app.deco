@@ -138,9 +138,8 @@ class DecoConfig(object):
                 'id': tile_id,
                 'group': tile.group,
                 'icon': tile.icon,
-
                 'name': tile.name,
-                'default': tile_default,
+                'default_content': tile_default,
                 })
 
         return tiles

@@ -43,7 +43,6 @@
     //
     // default options
     $.deco.options = $.extend(true, {
-        mask_zindex:            '400',
         data_attr_panel:        'data-panel',
         data_attr_row:          'data-row',
         data_attr_column:       'data-column',
@@ -440,12 +439,10 @@
     //
     // helper jquery function which turns element into button which adds new
     // tile when is press or being dragged from.
-    $.fn.decoTileButton = function(tile_options) {
+    $.fn.decoTileButton = function(tile_options, toolbar) {
 
         // play nice with mask and toolbar if they exists 
-        var mask = $.mask ? $.mask.getMask() : undefined,
-            toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined,
-            data_attr = $.deco.options.data_attr_panel;
+        var data_attr = $.deco.options.data_attr_panel;
 
         // create new tile and position on click and drag start event
         $(this).drag('init', function(e, dd) {
@@ -466,30 +463,14 @@
                 column.tiles = column.getTiles();
             }
 
-            // jquery tools expose/mask integration
-            if (mask !== undefined) {
-
-                // TODO: zindex is still weirdly passed here
-
-                // initially put mask over deco panels(401) but under
-                // toolbar(500)
-                mask.css('z-index', $.deco.options.mask_zindex + 2);
-
-                // initially put tile above deco panel(400) and mask(452)
-                tile.el.css('z-index', $.deco.options.mask_zindex + 3);
-
-                // when start dragging put mask back behind deco panels(450)
-                tile.el.drag('start', function(e, el) {
-                    mask.css('z-index', $.deco.options.mask_zindex + 1);
-                });
-
-            }
-
             // toolbar integration: shrink toolbar when new tile is created
             if (toolbar !== undefined) {
-
                 toolbar.shrink();
+            }
 
+            // jquerytools expose / mask integration
+            if ($.mask !== undefined && $.mask.getMask() !== undefined) {
+                tile.el.css('z-index', $.mask.getConf().zIndex + 2);
             }
 
             return tile.el;
