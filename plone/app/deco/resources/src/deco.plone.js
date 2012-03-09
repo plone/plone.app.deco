@@ -1,4 +1,4 @@
-;//
+//
 // This plugin is used to initialize deco.
 //
 // @author Rob Gietema, Rok Garbas
@@ -35,11 +35,12 @@
     "use strict";
 
     // # Namespace {{{
-    $.deco = $.deco || {};
+    $.plone = $.plone || {};
+    $.plone.deco = $.plone.deco || {};
     // }}}
 
-    // # Options {{{
-
+    // # Base URL {{{
+    //
     // TODO: below url represents content url and should be set somewhere
     // by plone. eg. $.plone.app.content_url
     // for now we have to do magic below to get clean url
@@ -56,244 +57,177 @@
     if (match) {
         content_type = '?type=' + match[2];
     }
-
-    // merge options
-    $.deco.options = $.extend({
-        initialized: false,
-        base_url: base_url,
-        editform_url: base_url + '/edit',
-        options_url: base_url + '/@@deco-config' + content_type,
-        toolbar_id: 'iframe#plone-toolbar',
-        toolbar_category_to_replace: '.toolbar-left',
-        mask: {
-            opacity: 0.6,
-            color: '#FFF'
-        }
-    }, $.deco.options || {});
     // }}}
 
-    // # Buttons {{{
-    $.deco.buttons = $.deco.buttons || [];
-    $.each([
-
-        // ## Save button
-        {
-            category: "deco-leftactions",
-            id: "toolbar-button-deco-save",
-            title: "Save",
-            exec: function (item) {
-                item.click(function (e) {
-                    alert('For now we don\'t do anything, this will ' +
-                          'be implemented last!');
-                    return false;
-                });
-            }
-        },
-
-        // ## Cancel button
-        {
-            category: "deco-leftactions",
-            id: "toolbar-button-deco-cancel",
-            title: "Cancel",
-            exec: function (item) {
-
-                var toolbar = $($.deco.options.toolbar_id).toolbar(),
-                    toolbar_document = toolbar.el.contents();
-
-                item.click(function (e) {
-
-                    // hide custom deco toolbar
-                    $('.toolbar', toolbar_document).removeClass('toolbar-deco');
-
-                    // bring original panels back
-                    $.each($(document).decoPanels(), function(i, panel) {
-                        panel.el.replaceWith(panel.el_original);
+    // # Options {{{
+    $.plone.deco.options = $.extend(true, {
+        toolbar_id:         '#plone-toolbar',
+        toolbar_deco_klass: 'toolbar-left-deco',
+        toolbar_form_klass: 'plone-toolbar-form',
+        panel_data_attr:    'data-panel',
+        url_options:        base_url + '/@@deco-config' + content_type,
+        url_form:           base_url + '/edit',
+        url_form_filter:    '#visual-portal-wrapper',
+        buttons_order:      [
+                            'toolbar-button-deco-save',
+                            'toolbar-button-deco-cancel',
+                            'toolbar-button-deco-properties',
+                            'toolbar-button-deco-add-tile'
+                            ], 
+        buttons:            {
+            // ## Save button
+            'toolbar-button-deco-save': {
+                group: "leftactions",
+                id: "toolbar-button-deco-save",
+                title: "Save",
+                exec: function(button) {
+                    button.el.click(function (e) {
+                        alert("TODO");
+                        return false;
                     });
-
-                    // hide mask
-                    $.mask.close();
-
-                    // remove deco helpers
-                    $('.deco-helper').remove();
-
-                    return false;
-                });
-            }
-        },
-
-        // ## Properties button
-        {
-            category: "deco-leftactions",
-            id: "toolbar-button-deco-properties",
-            title: "Properties",
-            exec: function (item) {
-                var toolbar = $($.deco.options.toolbar_id).toolbar(),
-                    overlay = item.overlay({
-                        target: $.deco.editform,
-                        onBeforeLoad: function() {
-                            toolbar.el.height($(document).height());
-                        },
-                        onClose: function() {
-                            toolbar.el.height(toolbar.options.initial_height);
-                        }
-                    });
-
-                item.click(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    overlay.load();
-                });
-            }
-        }
-
-    ], function (i, button) { $.deco.buttons.push(button); });
-    // }}}
-
-    // # Add Tile {{{
-    $.deco.add_tile = function(button, tile_options) {
-        var mask = $.mask.getMask(),
-            toolbar = $($.deco.options.toolbar_id).toolbar(),
-            toolbar_document = toolbar.el.contents(),
-            tile = $.deco.createTile(
-                tile_options.url,
-                tile_options['default']
-                );
-
-        // TODO: now this looks ugly
-        tile.el.data('deco-tile', tile);
-        tile.update();
-        tile.applyStyle('selected');
-        tile.el.css({ 'z-index': '490' });
-
-        // put mask over deco panels(450) but under
-        // toolbar(500)
-        mask.css('z-index', '480');
-        tile.el
-            // when start dragging put mask back behind deco
-            // panels(450)
-            .drag('start', function(e, el) {
-                mask.css('z-index', '400');
-                tile.el.css({ 'z-index': '470' });
-                })
-            // place tile into center
-            .css({
-                'top': (($(window).height() -
-                        tile.el.outerHeight()) / 2) +
-                        $(window).scrollTop() + 'px',
-                'left': (($(window).width() -
-                        tile.el.outerWidth()) / 2) +
-                        $(window).scrollLeft() + 'px'
-                });
-
-         // TODO: this should be part of toolbar api. eg:
-         //  - $.plone.toolbar.shrink()
-         //  - $.plone.toolbar.stretch()
-         toolbar.el.height(toolbar.options.initial_height);
-         toolbar.el.removeClass('toolbar-dropdown-activated');
-         $('.activated', toolbar_document).removeClass('activated');
-         $('.toolbar-submenu', toolbar_document).hide();
-    };
-    // }}}
-
-    // # Initialize {{{
-    var initialize = function() {
-
-        $.when(
-            $.get($.deco.options.editform_url),
-            $.get($.deco.options.options_url)
-        ).done(function(editform, options) {
-
-            var toolbar = $($.deco.options.toolbar_id).toolbar(),
-                toolbar_document = toolbar.el.contents(),
-                toolbar_left = $($.deco.options.toolbar_category_to_replace,
-                        toolbar_document);
-
-            // we load edit form upfront to make deco editing more snappy
-            $.deco.editform = $('#form', $(editform[0])
-                    .filter('#visual-portal-wrapper'))
-                .hide().appendTo($('body', toolbar_document));
-
-            // options
-            $.deco.options = $.deco.options || {};
-            $.extend($.deco.options, options[0]);
-
-            // Tiles List
-            var tiles = [];
-            $.each($.deco.options.tiles, function(i, tile_options) {
-                tiles.push({
-                    category: "tile-category-" + tile_options.category,
-                    id: "tile-" + tile_options.name,
-                    title: tile_options.label,
-                    icon: tile_options.icon,
-                    exec: function(button) {
-                        button.click(function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            $.deco.add_tile(button, tile_options);
-                        });
-                    }
-                });
-            });
-
-            // "Add tile..." button
-            $.deco.buttons.push({
-                category: "deco-rightactions",
-                id: "toolbar-button-deco-add-tile",
-                title: "Add tile ...",
-                buttons: tiles
-            });
-
-            var buttons = toolbar.create_buttons($.deco.buttons, toolbar.options);
-
-            $.each(buttons.categories, function (category, items) {
-                var el = $('.toolbar-category-' + category, toolbar_left);
-                if (el.length === 0) {
-                    toolbar_left.append(
-                        buttons.render_category(items, category));
                 }
+            },
+            // ## Cancel button
+            'toolbar-button-deco-cancel': {
+                group: "leftactions",
+                id: "toolbar-button-deco-cancel",
+                title: "Cancel",
+                exec: function(button) {
+                    var toolbar_deco = $("#plone-toolbar").ploneDecoToolbar();
+                    button.el.click(function (e) {
+                       toolbar_deco.deactivate();
+                       return false;
+                    });
+                }
+            },
+            // ## Properties button
+            'toolbar-button-deco-properties': {
+                group: "leftactions",
+                id: "toolbar-button-deco-properties",
+                title: "Properties",
+                exec: function(button) {
+                    var toolbar_deco = $("#plone-toolbar").ploneDecoToolbar();
+                    button.el.click(function (e) {
+                       toolbar_deco.activate_form();
+                       return false;
+                    });
+                }
+            },
+            // ## Add Tile ... button
+            'toolbar-button-deco-add-tile': {
+                group: 'rightactions',
+                id: 'toolbar-button-deco-add-tile',
+                title: '<span>Add tile...</span><span> &#9660;</span>',
+                buttons: []
+            }
+        }
+    }, $.plone.deco.options || {});
+    // }}}
+
+    // # Deco Toolbar {{{
+    $.plone.deco.Toolbar = function(t) { this.init(t); return this; };
+    $.plone.deco.Toolbar.prototype = {
+        init: function(toolbar) {
+            var self = this;
+            self.buttons = [];
+            self.toolbar = toolbar;
+            self.options = $.plone.deco.options;
+            self.el = $('<div/>')
+                    .addClass(self.options.toolbar_deco_klass)
+                    .insertAfter($('.toolbar-left', toolbar.document));
+            self.el_form = $('<div/>')
+                    .addClass(self.options.toolbar_form_klass)
+                    .appendTo($('body', toolbar.document))
+                    .hide();
+
+            // load edit form and tiles options a
+            $.when(
+                $.get(self.options.url_form),
+                $.get(self.options.url_options)
+            ).done(function(_form, _options) {
+                var options = $.extend(true, {}, _options[0]),
+                    buttons = $.extend(true, {}, self.options.buttons,
+                        options.buttons);
+
+                // TODO: merge css/js with head toolbar frame
+                self.el_form.append($('#form', $(_form[0])
+                        .filter(self.options.url_form_filter)));
+
+                // create ordered list of buttons
+                $.each($.extend({}, self.options.buttons_order,
+                        options.buttons_order), function(i, id) {
+                    self.buttons.push(buttons[id]);
+                });
+
+                // initialize panels
+                $('[' + self.options.panel_data_attr + ']').each(
+                    function(i, panel) {
+                        $(panel).decoPanel(
+                            options.panels[$(this).attr(
+                                self.options.panel_data_attr)]);
+                    });
+
+                // add tiles to the list
+                self.buttons[$.inArray('toolbar-button-deco-add-tile',
+                    self.options.buttons_order)].buttons = options.tiles;
+
+                self.el.trigger('toolbar_deco_loaded');
             });
-
-            // T
-            $('.toolbar', toolbar_document).addClass('toolbar-deco');
-
-            // trigger decoInitialized event
-            $(document).trigger('decoInitialized');
-
-        });
+        },
+        activate: function() {
+            var self = this,
+                tmp = new $.toolbar.Groups(self.buttons, self.toolbar.options);
+            self.el.html('');
+            self.el.append(tmp.render());
+            $('[' + self.options.panel_data_attr + ']').each(
+                function(i, panel) { $(panel).decoPanel().activate(); });
+            $('body', self.toolbar.document).addClass('toolbar-deco');
+            self.toolbar.stretch();
+        },
+        deactivate: function() {
+            var self = this;
+            self.el.html('');
+            $('[' + self.options.panel_data_attr + ']').each(
+                function(i, panel) { $(panel).decoPanel().deactivate(); });
+            $('body', self.toolbar.document).removeClass('toolbar-deco');
+            self.toolbar.shrink();
+        }
     };
     // }}}
 
-    // # Activate {{{
-    var activate = function() {
-        // initialize deco if its not already
-        if ($.deco.editform === undefined) {
-            initialize();
+    // jQuery integration {{{
+    $.fn.ploneDecoToolbar = function() {
+        var el = $(this),
+            toolbar = $($.plone.deco.options.toolbar_id).toolbar(),
+            toolbar_deco = toolbar.el.data('toolbar-deco');
+
+        if (toolbar_deco === undefined) {
+            toolbar_deco = new $.plone.deco.Toolbar(toolbar);
+            toolbar.el.data('toolbar-deco', toolbar_deco);
         }
 
-        // on decoInitialized event we:
-        //  - initialize panels and activate them
-        $(document).bind('decoInitialized', function(e){
-            $('body').decoPanels();
-        });
+        return toolbar_deco;
     };
     // }}}
 
-    // Initialize deco panels {{{
-    $('[data-panel]').each(function(i, panel) {
-        panel.decoPanel(options);
-    });
-    // }}}
-
+    // Trigger deco toolbar {{{
     // TODO: this should be moved into exec of edit button
-    $(document).bind('toolbar_loaded', function() {
-        $('#toolbar-button-edit', $('#plone-toolbar').contents())
-            .click(function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                $('[data-panel]').each(function(i, panel) {
-                    panel.decoPanel().activate();
+    var toolbar = $($.plone.deco.options.toolbar_id).toolbar(),
+        toolbar_deco_loaded = false;
+    $(toolbar.el).bind('toolbar_loaded', function() {
+        $('#toolbar-button-edit', toolbar.document).click(function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var toolbar_deco = $(this).ploneDecoToolbar();
+            if (toolbar_deco_loaded === true) {
+                toolbar_deco.activate();
+            } else {
+                toolbar_deco.el.bind('toolbar_deco_loaded', function() {
+                    toolbar_deco.activate();
+                    toolbar_deco_loaded = true;
                 });
-            });
+            }
+        });
     });
     // }}}
 

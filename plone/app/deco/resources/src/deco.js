@@ -43,11 +43,12 @@
     //
     // default options
     $.deco.options = $.extend(true, {
+        mask_zindex:            '400',
         data_attr_panel:        'data-panel',
         data_attr_row:          'data-row',
         data_attr_column:       'data-column',
         data_attr_tile:         'data-tile',
-        klass_panel:            'data-panel',
+        klass_panel:            'deco-panel',
         klass_row:              'deco-row',
         klass_column:           'deco-column',
         klass_tile:             'deco-tile',
@@ -55,6 +56,9 @@
         klass_tile_preview:     'deco-tile-preview',
         klass_tile_dropped:     'deco-tile-dropped'
     }, $.deco.options || {});
+    // tiles_options
+    $.deco.tiles_options = {};
+    $.deco.tiles_instances = {};
     // }}}
 
     // # Tile {{{
@@ -68,7 +72,7 @@
                 data_attr = $.deco.options.data_attr_tile;
 
             self.el = el.addClass($.deco.options.klass_tile);
-            self.state = state;
+            self.state = state || 'dropped';
             self.options = options;
             self.activated = false;
 
@@ -233,6 +237,14 @@
                 // position
             });
 
+        },
+        getType: function() {
+            // eg. extract "texttile" from "URL/@@texttile/1/?value="test"
+            var type = this.el.attr($.deco.options.data_attr_tile);
+            type = type.split('?')[0];  // strip away url params
+            type = type.split('@@')[type.split('@@').length]; // strip away url
+            type = type.split('/'); // strip away path after type name
+            return type;
         }
     };
     // }}}
@@ -351,7 +363,7 @@
             var self = this;
 
             self.el = el;
-            self.options = $.extend({ activate: true }, options);
+            self.options = $.extend({ activate: false }, options);
             self.activated = false;
 
             // inner wrapper of rows, create it if its not there
@@ -431,7 +443,7 @@
     $.fn.decoTileButton = function(tile_options) {
 
         // play nice with mask and toolbar if they exists 
-        var mask = $.deco.options.mask ? $.deco.options.mask : undefined,
+        var mask = $.mask ? $.mask.getMask() : undefined,
             toolbar = $.deco.options.toolbar ? $.deco.options.toolbar : undefined,
             data_attr = $.deco.options.data_attr_panel;
 
@@ -461,14 +473,14 @@
 
                 // initially put mask over deco panels(401) but under
                 // toolbar(500)
-                mask.css('z-index', $.deco.mask_zindex + 2);
+                mask.css('z-index', $.deco.options.mask_zindex + 2);
 
                 // initially put tile above deco panel(400) and mask(452)
-                tile.el.css('z-index', $.deco.mask_zindex + 3);
+                tile.el.css('z-index', $.deco.options.mask_zindex + 3);
 
                 // when start dragging put mask back behind deco panels(450)
                 tile.el.drag('start', function(e, el) {
-                    mask.css('z-index', $.deco.mask_zindex + 1);
+                    mask.css('z-index', $.deco.options.mask_zindex + 1);
                 });
 
             }
@@ -483,44 +495,6 @@
             return tile.el;
         });
 
-    };
-    // }}}
-
-    // # Panels instances {{{
-    //
-    // get instances of panels from current document
-    $.deco.panels = function(panels) {
-
-        // calculate panel query from panels variable
-        var query = '', data_attr = $.deco.options.data_attr_panel;
-        if (typeof(panels) === 'string') {
-            if (panels === '*') {
-                query = '[' + data_attr + ']';
-            } else {
-                query = '[' + data_attr + '="' + panels + '"]';
-            }
-        } else if (panels === undefined) {
-            query = '[' + data_attr + ']';
-        } else if ($(panels).size() !== 0) {
-            $(panels).each(function(i, panel) {
-                if (query !== '') { query += ','; }
-                query += '[' + data_attr + '="' + panel + '"]';
-            });
-        }
-
-        // get panels and instantiate them
-        panels = [];
-        $('body').find(query).each(function(i, el) {
-            panels.push($(el).decoPanel({ activate: false }));
-        });
-
-        // return array of panel instances
-        return {
-            activate: function() {
-                $.each(panels, function(i, panel) { panel.activate(); }); },
-            deactivate: function() {
-                $.each(panels, function(i, panel) { panel.deactivate(); }); }
-        };
     };
     // }}}
 

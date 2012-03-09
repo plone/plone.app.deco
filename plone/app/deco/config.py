@@ -67,10 +67,23 @@ class DecoConfig(object):
         self.registry = registry
 
     def __call__(self, request):
-        config = {}
+        return {
+            'panels': self.panels(request),
+            'tiles_options': self.tiles_options(request),
+            'buttons_order': [],
+            'buttons': {},
+            'tiles': self.tiles(request),
+                }
 
-        # tiles categories
-        config['tiles_categories'] = []
+    def panels(self, request):
+        panels = {}
+        panels['content'] = {
+            '': ''
+            }
+        return panels
+
+    def tiles_options(self, request):
+        categories = []
         for category in self.registry.get(
                 self.prefix + '.tiles_categories', []):
 
@@ -86,14 +99,16 @@ class DecoConfig(object):
                         context=request,
                         )
 
-            config['tiles_categories'].append({
+            categories.append({
                 'name': category,
                 'label': category_label,
                 })
 
-        # tiles
+        return categories
+
+    def tiles(self, request):
+        tiles = []
         baseURL = request.getURL()
-        config['tiles'] = []
         for tile_id in self.registry[self.prefix + '.tiles']:
             tile = self.registry.forInterface(ITile, prefix=tile_id)
 
@@ -117,16 +132,18 @@ class DecoConfig(object):
             except:
                 pass
 
-            config['tiles'].append({
-                'name': tile.name,
-                'label': tile_label,
+            tiles.append({
+                'title': tile_label,
+                'url': tile_url,
+                'id': tile_id,
+                'group': tile.category,
                 'icon': tile.icon,
-                'category': tile.category,
+
+                'name': tile.name,
                 'weight': tile.weight,
                 'default': tile_default,
-                'url': tile_url,
                 })
 
         # TODO: add field tiles
 
-        return config
+        return tiles
