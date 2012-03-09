@@ -136,14 +136,11 @@ class DecoConfig(object):
                 'title': tile_label,
                 'url': tile_url,
                 'id': tile_id,
-                'group': tile.category,
+                'group': tile.group,
                 'icon': tile.icon,
 
                 'name': tile.name,
-                'weight': tile.weight,
                 'default': tile_default,
                 })
-
-        # TODO: add field tiles
 
         return tiles
