@@ -222,7 +222,7 @@
                 var drop_el = $(dd.drop);
                 if (drop_el.size() !== 0) {
                     var column = drop_el.decoColumn();
-                    if (column.tiles.size() !== 0) {
+                    if (column.getTiles().size() !== 0) {
                         insert_preview_tile(column);
                     }
                 }
@@ -268,7 +268,7 @@
             self.el.drop('start', function(e, dd) {
                 var column = $(this).decoColumn();
 
-                if (column.tiles.size() === 0) {
+                if (column.getTiles().size() === 0) {
                     column.el.append(
                         $('<div/>').decoTile(
                             $(dd.proxy).decoTile().options,'preview').el); 
@@ -310,7 +310,7 @@
             self.tiles = [];
         },
         getTiles: function() {
-            var self = this, tiles = [],
+            var self = this, tiles = $([]),
                 data_attr = $.deco.options.data_attr_tile;
 
             self.el.find('[' + data_attr + ']').each(function(i, el) {
