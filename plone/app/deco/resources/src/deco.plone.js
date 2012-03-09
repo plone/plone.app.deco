@@ -219,18 +219,19 @@
 
                 // expose each panel
                 // TODO: expose option should be hardcoded
-                panel.el.expose({
-                    closeOnClick: false,
-                    closeOnEsc: false,
-                    zIndex: 400,
-                    opacity: '0.6',
-                    color: '#333'
-                });
 
-                panel.el_wrapper.css({
-                    'background': '#FFFFFF',
-                    'min-height': '50px'
-                });
+                panel.el_wrapper
+                    .css({
+                        'background': '#FFFFFF',
+                        'min-height': '50px'
+                        })
+                    .expose({
+                        closeOnClick: false,
+                        closeOnEsc: false,
+                        zIndex: 400,
+                        opacity: '0.6',
+                        color: '#333'
+                        });
 
                 // activate each panel
                 panel.activate();
@@ -253,6 +254,7 @@
 
                 panel.el_wrapper.css({
                     'background': 'transparent',
+                    'z-index': 'auto',
                     'min-height': '0'
                 });
 

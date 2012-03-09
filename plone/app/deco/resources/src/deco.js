@@ -368,7 +368,12 @@
 
             // inner wrapper of rows, create it if its not there
             if (self.el.children().size() === 0) {
-                self.el.html('<div style="position: relative;"></div>');
+                self.el.append($('<div/>')
+                    .css({
+                        'position': 'relative',
+                        'float': 'left',
+                        'width': '100%'
+                    }));
             } else if (self.el.children().size() !== 1) {
                 alert('Content of panel is not correctly structred to be ' +
                         'editable with deco editor.');
