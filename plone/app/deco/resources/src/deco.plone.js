@@ -292,19 +292,23 @@
     var toolbar = $($.plone.deco.options.toolbar_id).toolbar(),
         toolbar_deco_loaded = false;
     $(toolbar.el).bind('toolbar_loaded', function() {
-        $('#toolbar-button-edit', toolbar.document).click(function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var toolbar_deco = $(this).ploneDecoToolbar();
-            if (toolbar_deco_loaded === true) {
-                toolbar_deco.activate();
-            } else {
-                toolbar_deco.el.bind('toolbar_deco_loaded', function() {
-                    toolbar_deco.activate();
-                    toolbar_deco_loaded = true;
-                });
-            }
-        });
+        $('#toolbar-button-edit', toolbar.document).bind('click',
+            {document: document},
+            function(e) {
+                if ($('body.deco-on', e.data.document).size() > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var toolbar_deco = $(this).ploneDecoToolbar();
+                    if (toolbar_deco_loaded === true) {
+                        toolbar_deco.activate();
+                    } else {
+                        toolbar_deco.el.bind('toolbar_deco_loaded', function() {
+                            toolbar_deco.activate();
+                            toolbar_deco_loaded = true;
+                        });
+                    }
+                }
+            });
     });
     // }}}
 
