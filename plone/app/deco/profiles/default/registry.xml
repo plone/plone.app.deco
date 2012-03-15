@@ -9,6 +9,7 @@
                 <element>jquerytools</element>
                 <element>tinymce</element>
                 <element>toolbar</element>
+                <element>bootstrap</element>
                 <element>deco</element>
             </element>
         </value>
