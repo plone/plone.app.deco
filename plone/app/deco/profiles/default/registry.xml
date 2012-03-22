@@ -15,13 +15,4 @@
         </value>
     </record>
 
-    <!-- Tiles -->
-    <record name="plone.app.deco.tiles">
-        <field type="plone.registry.field.List">
-            <title>Tile Categories</title>
-            <value_type type="plone.registry.field.TextLine" />
-        </field>
-        <value purge="false"></value>
-    </record>
-
 </registry>

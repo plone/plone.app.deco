@@ -1,0 +1,4 @@
+<layers>
+    <layer name="plone.app.deco"
+        interface="plone.app.deco.interfaces.IDecoLayer" />
+</layers>

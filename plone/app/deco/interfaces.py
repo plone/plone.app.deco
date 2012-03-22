@@ -1,8 +1,5 @@
+from zope import schema
 from zope.interface import Interface
-From zope.i18nmessageid import MessageFactory
-
-_ = MessageFactory(u"plone")
-
 from plone.app.deco import PloneMessageFactory as _
 
 

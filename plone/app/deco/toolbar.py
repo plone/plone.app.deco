@@ -1,5 +1,6 @@
 from zope.component import getUtility
 from zope.security import checkPermission
+from plone.registry.interfaces import IRegistry
 from plone.tiles.interfaces import ITileType
 from plone.tiles import Tile
 from plone.app.blocks import utils
@@ -12,6 +13,7 @@ class DecoToolbarTile(Tile):
         super(DecoToolbarTile, self).__init__(context, request)
         self.context = aq_inner(self.context)
         self.context_url = self.context.absolute_url()
+        self.registry = getUtility(IRegistry)
 
     def tiles(self):
         tiles = []
