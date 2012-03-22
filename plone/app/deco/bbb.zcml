@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+    <browser:viewlet
+        name="plone.deco_toolbar"
+        for="*"
+        manager="plone.app.layout.viewlets.interfaces.IPortalTop"
+        class=".bbb.DecoToolbarViewlet"
+        permission="plone.ChangeLayout"
+        layer=".interfaces.IDecoLayer"
+        />
+
+</configure>
+

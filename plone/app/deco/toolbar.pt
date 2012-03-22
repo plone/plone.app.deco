@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+
+</head>
+<body>
+
+  <div class="deco-tiles navbar">
+    <ul class="nav nav-pills">
+      <li tal:repeat="item view/tiles">
+        <a href="#"
+           tal:attributes="href string:${view/context_url}/@@${item/name}">
+          <span class="" tal:attributes="class string:icon-tiletype-${item/name}"></span>
+          <span tal:content="item/title">Title</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</body>
+</html>
+

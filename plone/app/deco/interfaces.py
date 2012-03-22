@@ -1,10 +1,12 @@
 from zope.interface import Interface
-from zope import schema
+From zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory(u"plone")
 
 from plone.app.deco import PloneMessageFactory as _
 
 
-class IDecoConfig(Interface):
+class IDecoLayer(Interface):
     """Marker interface for the registry adapter"""
 
 

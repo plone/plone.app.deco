@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
@@ -10,35 +11,37 @@
     <include package="plone.app.toolbar" />
     <include package="plone.app.layoutpage" />
 
+    <!-- Permissions -->
     <permission
         id="plone.ModifyPageLayout"
-        title="Plone: Modify Page Layout"
-        />
-
+        title="Plone: Modify Page Layout" />
     <permission
         id="plone.ManageDeco"
-        title="Plone: Manage Deco"
-        />
-
+        title="Plone: Manage Deco" />
     <permission
         id="plone.ChangeLayout"
-        title="Plone: Change Deco Layout"
-        />
+        title="Plone: Change Deco Layout" />
 
-    <adapter factory=".config.DecoConfig" />
+    <!-- BBB: Used to override/disable parts of Plone 4.x that
+         should not be in place when using plone.app.toolbar -->
+    <include file="bbb.zcml" />
 
+    <!-- Static resources -->
     <browser:resourceDirectory
         name="plone.app.deco"
-        directory="resources"
-        />
+        directory="resources" />
 
-    <browser:page
+    <!-- Deco Toolbar Tile -->
+    <plone:tile
+        name="plone.deco_toolbar"
+        title="Plone deco toolbar"
+        class=".toolbar.DecoToolbarTile"
+        template="toolbar.pt"
         for="*"
-        name="deco-config"
-        class=".config.DecoConfigView"
-        permission="cmf.ModifyPortalContent"
-        />
+        add_permission="plone.AddToolbar"
+        permission="plone.ViewToolbar" />
 
+    <!-- GS profile -->
     <genericsetup:registerProfile
         name="default"
         title="Deco"

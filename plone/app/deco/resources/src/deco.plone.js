@@ -36,7 +36,6 @@
 
     // # Namespace {{{
     $.plone = $.plone || {};
-    $.plone.deco = $.plone.deco || {};
     // }}}
 
     // # Base URL {{{
@@ -60,8 +59,11 @@
     // }}}
 
     // # Options {{{
-    $.plone.deco.options = $.extend(true, {
-        toolbar_id:         '#plone-toolbar',
+    $.plone.globals = $.extend(true, {
+        toolbar_iframe_id: 'plone-toolbar',
+    }, $.plone.globals || {});
+
+    $.plone.tmp = $.extend(true, {
         toolbar_deco_klass: 'toolbar-left-deco',
         toolbar_form_klass: 'plone-toolbar-form',
         panel_data_attr:    'data-panel',
@@ -121,12 +123,12 @@
                 buttons: []
             }
         }
-    }, $.plone.deco.options || {});
+    }, $.plone.tmp || {});
     // }}}
 
     // # Deco Toolbar {{{
-    $.plone.deco.Toolbar = function(t) { this.init(t); return this; };
-    $.plone.deco.Toolbar.prototype = {
+    $.plone.DecoToolbar = function(t) { this.init(t); return this; };
+    $.plone.DecoToolbar.prototype = {
         init: function(toolbar) {
             var self = this;
             self.buttons = [];
@@ -275,36 +277,34 @@
     // jQuery integration {{{
     $.fn.ploneDecoToolbar = function() {
         var el = $(this),
-            toolbar = $($.plone.deco.options.toolbar_id).toolbar(),
-            toolbar_deco = toolbar.el.data('toolbar-deco');
+            iframe = $($.plone.globals.toolbar_iframe_id).iframize(),
+            deco_toolbar = toolbar.el.data('deco-toolbar');
 
-        if (toolbar_deco === undefined) {
-            toolbar_deco = new $.plone.deco.Toolbar(toolbar);
-            toolbar.el.data('toolbar-deco', toolbar_deco);
+        if (deco_toolbar === undefined) {
+            deco_toolbar = new $.plone.DecoToolbar(toolbar);
+            iframe.el_iframe.data('deco-toolbar', deco_toolbar);
         }
 
         return toolbar_deco;
     };
     // }}}
 
-    // Trigger deco toolbar {{{
-    // TODO: this should be moved into exec of edit button
-    var toolbar = $($.plone.deco.options.toolbar_id).toolbar(),
-        toolbar_deco_loaded = false;
-    $(toolbar.el).bind('toolbar_loaded', function() {
-        $('#toolbar-button-edit', toolbar.document).bind('click',
-            {document: document},
-            function(e) {
-                if ($('body.deco-on', e.data.document).size() > 0) {
+    // Trigger deco {{{
+    var iframe = $('#' + $.plone.globals.toolbar_iframe_id).iframize(),
+        deco_toolbar_loaded = false;
+    $(iframe.el).bind('iframe_loaded', function() {
+        // TODO: this button should be configurable
+        $('#plone-action-edit > a', iframe.document).bind('click', function(e) {
+                if ($('body.deco-on').size() > 0) {
                     e.preventDefault();
                     e.stopPropagation();
-                    var toolbar_deco = $(this).ploneDecoToolbar();
-                    if (toolbar_deco_loaded === true) {
-                        toolbar_deco.activate();
+                    var deco_toolbar = $(this).ploneDecoToolbar();
+                    if (deco_toolbar_loaded === true) {
+                        deco_toolbar.activate();
                     } else {
-                        toolbar_deco.el.bind('toolbar_deco_loaded', function() {
-                            toolbar_deco.activate();
-                            toolbar_deco_loaded = true;
+                        deco_toolbar.el.bind('deco_toolbar_loaded', function() {
+                            deco_toolbar.activate();
+                            deco_toolbar_loaded = true;
                         });
                     }
                 }
@@ -312,6 +312,8 @@
     });
     // }}}
 
+// this parent magic bellow makes sure that we even if include script in iframe
+// we would still use it as it would be in top frame
 }( window.parent ? window.parent : window,
    window.parent ? window.parent.jQuery : window.jQuery,
    window.parent ? window.parent.document : window.document ));
