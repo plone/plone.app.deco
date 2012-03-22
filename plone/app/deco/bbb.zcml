@@ -13,5 +13,14 @@
         layer=".interfaces.IDecoLayer"
         />
 
+    <genericsetup:registerProfile
+        name="bbb"
+        title="Deco - Compatibility with Plone 4"
+        description="Performs backwards compatibility migrations"
+        directory="profiles/bbb"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
 </configure>
 

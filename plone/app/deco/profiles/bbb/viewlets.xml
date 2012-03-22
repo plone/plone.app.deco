@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object>
+    <order manager="plone.portaltop" skinname="*">
+        <viewlet name="plone.deco_toolbar" insert-before="*" />
+    </order>
+    <order manager="plone.portaltop" skinname="toolbar">
+        <viewlet name="plone.deco_toolbar" remove="True" />
+    </order>
+</object>
