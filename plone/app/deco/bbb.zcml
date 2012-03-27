@@ -9,7 +9,7 @@
         for="*"
         manager="plone.app.layout.viewlets.interfaces.IPortalTop"
         class=".bbb.DecoToolbarViewlet"
-        permission="plone.ChangeLayout"
+        permission="plone.ModifyDecoLayout"
         layer=".interfaces.IDecoLayer"
         />
 

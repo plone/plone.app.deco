@@ -7,9 +7,9 @@
             <element key="toolbar">
                 <element>jquery</element>
                 <element>jquerytools</element>
+                <element>bootstrap</element>
                 <element>tinymce</element>
                 <element>toolbar</element>
-                <element>bootstrap</element>
                 <element>deco</element>
             </element>
         </value>

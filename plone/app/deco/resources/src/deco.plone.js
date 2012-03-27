@@ -1,5 +1,7 @@
 //
-// This plugin is used to initialize deco.
+// This script is used to create toolbar for deco, where all available tiles
+// are listed. It depends on iframize.js and deco.js.
+//
 //
 // @author Rob Gietema, Rok Garbas
 // @version 0.1
@@ -31,7 +33,7 @@
 /*global $:false, jQuery:false */
 
 
-(function ( window, $, document ) {
+(function ($) {
     "use strict";
 
     // # Namespace {{{
@@ -50,7 +52,7 @@
     // we get appropriate configuration options
     //
     // TODO: not sure if this is needed since we use deco editor after
-    // contet is created
+    // content is created
     var content_type = '';
     var match = base_url.match(/^([\w#:.?=%@!\-\/]+)\/\+\+add\+\+([\w#!:.?+=&%@!\-\/]+)$/);
     if (match) {
@@ -129,123 +131,75 @@
     // # Deco Toolbar {{{
     $.plone.DecoToolbar = function(t) { this.init(t); return this; };
     $.plone.DecoToolbar.prototype = {
-        init: function(toolbar) {
+        init: function(iframe) {
             var self = this;
-            self.buttons = [];
-            self.toolbar = toolbar;
-            self.options = $.plone.deco.options;
-            self.el = $('<div/>')
-                    .addClass(self.options.toolbar_deco_klass)
-                    .insertAfter($('.toolbar-left', toolbar.document));
-            self.el_form = $('<div/>')
-                    .addClass(self.options.toolbar_form_klass)
-                    .appendTo($('body', toolbar.document))
-                    .hide();
+            self.el = iframe.el;
+            self.iframe = iframe;
 
-            // load edit form and tiles options a
-            $.when(
-                $.get(self.options.url_form),
-                $.get(self.options.url_options)
-            ).done(function(_form, _options) {
-                var options = $.extend(true, {}, _options[0]),
-                    buttons = $.extend(true, {}, self.options.buttons,
-                        options.buttons);
+            // initialize panels
+            $('[data-panel]', window.parent.document).each(function(i, panel) {
+                $(panel).decoPanel();
+            });
 
-                // TODO: merge css/js with head toolbar frame
-                self.el_form.append($('#form', $(_form[0])
-                        .filter(self.options.url_form_filter)));
-
-                // create ordered list of buttons
-                $.each($.extend({}, self.options.buttons_order,
-                        options.buttons_order), function(i, id) {
-                    self.buttons.push(buttons[id]);
-                });
-
-                // initialize panels
-                $('[' + self.options.panel_data_attr + ']').each(
-                    function(i, panel) {
-                        $(panel).decoPanel(
-                            options.panels[$(this).attr(
-                                self.options.panel_data_attr)]);
-                    });
-
-                // add tiles to the list
-                $.each(options.tiles, function(i, tile) {
-                    options.tiles[i].exec = function(button) {
-                        button.el.decoTileButton({
-                            url: tile.url,
-                            content: 'Default text', //tile.default_content,
-                            toolbar: self.toolbar,
-                            state_dragging: function() {
-                                this.el.css({
-                                    'min-width': '20em',
-                                    'min-height': '5em',
-                                    'background': '#00A0DA',
-                                    '-webkit-border-radius': '5px',
-                                    '-moz-border-radius': '5px',
-                                    '-o-border-radius': '5px',
-                                    'border-radius': '5px',
-                                    'opacity': '0.4'
-                                });
-                            },
-                            state_preview: function() { 
-                                this.el.html('').css({
-                                    'min-height': '3em',
-                                    'border': '2px dotted #555555',
-                                    '-webkit-border-radius': '5px',
-                                    '-moz-border-radius': '5px',
-                                    '-o-border-radius': '5px',
-                                    'border-radius': '5px',
-                                    'opacity': '0.4'
-                                });
-                            },
-                            state_editing: function() {
-                                alert('EDITING');
-                                // load edit form
-                                // show in overlay
-                            }
-                        }, self.toolbar);
-                    };
-                });
-                self.buttons[$.inArray('toolbar-button-deco-add-tile',
-                    self.options.buttons_order)].buttons = options.tiles;
-
-                self.el.trigger('toolbar_deco_loaded');
+            // initialize buttons
+            $('.nav > li > a', self.iframe.el).each(function() {
+                $(this).decoNewTileButton({
+                    url: $(this).attr('href'),
+                    state_dragging: function() {
+                        this.el.css({
+                            opacity: '0.6',
+                            background: 'Yellow',
+                            width: '8em',
+                            height: '4em'
+                            });
+                        },
+                    state_preview: function() {
+                        this.el.css({
+                            width: '100%',
+                            opacity: '0.6',
+                            background: 'Yellow',
+                            height: '4em'
+                            });
+                        },
+                    state_dropped: function() {
+                        this.el.css({
+                            border: '1px solid red',
+                            width: '100%',
+                            opacity: '1',
+                            background: 'Yellow',
+                            height: '4em'
+                            });
+                        }
+                    }, iframe);
             });
         },
         activate: function() {
-            var self = this,
-                buttons = new $.toolbar.Groups(self.buttons, self.toolbar.options);
-            self.el.html('');
-            self.el.append(buttons.render());
+            var self = this;
 
-            $('body', self.toolbar.document).addClass('toolbar-deco');
-            // add min-width to panels wrappers
-
-            $('[' + self.options.panel_data_attr + ']').each(function(i, panel) {
+            // activate panels
+            $('[data-panel]', window.parent.document).each(function(i, panel) {
                 panel = $(panel).decoPanel();
-
+                panel.activate();
                 // expose each panel
                 // TODO: expose option should be hardcoded
-
-                panel.el_wrapper
-                    .css({
-                        'background': '#FFFFFF',
-                        'min-height': '50px'
-                        })
-                    .expose({
-                        closeOnClick: false,
-                        closeOnEsc: false,
-                        zIndex: 400,
-                        opacity: '0.6',
-                        color: '#333'
-                        });
-
-                // activate each panel
-                panel.activate();
+                panel.el_wrapper.css({
+                    'background': '#FFFFFF',
+                    'min-height': '50px',
+                    'z-index': 410
+                    });
             });
 
-            //self.toolbar.stretch();
+            // expose deco toolbar
+            self.el.expose({
+                closeOnClick: false,
+                closeOnEsc: false,
+                zIndex: '400',
+                opacity: '0.6',
+                color: '#333'
+                });
+
+            // stretch iframe
+            self.iframe.stretch();
         },
         deactivate: function() {
             var self = this;
@@ -274,46 +228,21 @@
     };
     // }}}
 
-    // jQuery integration {{{
+    // # jQuery integration {{{
     $.fn.ploneDecoToolbar = function() {
         var el = $(this),
-            iframe = $($.plone.globals.toolbar_iframe_id).iframize(),
-            deco_toolbar = toolbar.el.data('deco-toolbar');
+            iframe = window.parent.$('#' + $.plone.globals.toolbar_iframe_id).iframize('deco-toolbar'),
+            deco_toolbar = iframe.el.data('deco-toolbar');
 
         if (deco_toolbar === undefined) {
-            deco_toolbar = new $.plone.DecoToolbar(toolbar);
+            deco_toolbar = new $.plone.DecoToolbar(iframe);
             iframe.el_iframe.data('deco-toolbar', deco_toolbar);
         }
 
-        return toolbar_deco;
+        deco_toolbar.activate();
+
+        return deco_toolbar;
     };
     // }}}
 
-    // Trigger deco {{{
-    var iframe = $('#' + $.plone.globals.toolbar_iframe_id).iframize(),
-        deco_toolbar_loaded = false;
-    $(iframe.el).bind('iframe_loaded', function() {
-        // TODO: this button should be configurable
-        $('#plone-action-edit > a', iframe.document).bind('click', function(e) {
-                if ($('body.deco-on').size() > 0) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var deco_toolbar = $(this).ploneDecoToolbar();
-                    if (deco_toolbar_loaded === true) {
-                        deco_toolbar.activate();
-                    } else {
-                        deco_toolbar.el.bind('deco_toolbar_loaded', function() {
-                            deco_toolbar.activate();
-                            deco_toolbar_loaded = true;
-                        });
-                    }
-                }
-            });
-    });
-    // }}}
-
-// this parent magic bellow makes sure that we even if include script in iframe
-// we would still use it as it would be in top frame
-}( window.parent ? window.parent : window,
-   window.parent ? window.parent.jQuery : window.jQuery,
-   window.parent ? window.parent.document : window.document ));
+}(jQuery));

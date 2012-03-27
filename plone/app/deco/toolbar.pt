@@ -1,22 +1,38 @@
 <!doctype html>
+<html lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <html>
 <head>
 
 </head>
 <body>
 
-  <div class="deco-tiles navbar">
+  <div class="deco-tiles">
+
     <ul class="nav nav-pills">
       <li tal:repeat="item view/tiles">
-        <a href="#"
-           tal:attributes="href string:${view/context_url}/@@${item/name}">
-          <span class="" tal:attributes="class string:icon-tiletype-${item/name}"></span>
-          <span tal:content="item/title">Title</span>
-        </a>
+
+        <div tal:attributes="data-tile item/url">
+
+          <a href="#" class="tile-add-button"
+              tal:attributes="href string:${view/context_url}/@@${item/name}">
+            <i tal:attributes="class python:'icon-tiletype-' + item['name'].replace('.', '-')"></i>
+            <span tal:content="item/title">Title</span>
+          </a>
+
+          <a class="btn tile-edit-button" style="display:none">
+            <span i18:translate="">Edit</span>
+          </a>
+
+          <div class="tile-editform" tal:content="structure item/form" />
+
+        </div>
+
       </li>
     </ul>
+
   </div>
 
 </body>
 </html>
-

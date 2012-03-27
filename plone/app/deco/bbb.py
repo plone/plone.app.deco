@@ -1,6 +1,7 @@
 from lxml import html
 from zope.component import getMultiAdapter
 from zope.viewlet.viewlet import ViewletBase
+from plone.app.blocks.layoutbehavior import ILayoutAware
 
 
 class DecoToolbarViewlet(ViewletBase):
@@ -14,8 +15,11 @@ class DecoToolbarViewlet(ViewletBase):
         for el in tree.body.getchildren():
             tile_body += html.tostring(el)
 
-        return u'<div style="display:none;" ' + \
-                    u'data-iframe="true" ' + \
+        if ILayoutAware.providedBy(self.context):
+            return u'<div style="display:none;" ' + \
+                    u'data-iframe="deco-toolbar" ' + \
                     u'data-iframe-target="#plone-toolbar" ' + \
                     u'>%s</div>' % (tile_body)
+        else:
+            return u''
 

@@ -1,4 +1,3 @@
-//
 // This plugin is used to create and edit deco layout.
 //
 // @author Rob Gietema, Rok Garbas
@@ -30,7 +29,7 @@
   regexp:true, undef:true, strict:true, trailing:true, browser:true */
 /*global $:false, jQuery:false, alert:false */
 
-(function ( window, $, document ) {
+(function ($) {
     "use strict";
 
     // # Namespace {{{
@@ -78,10 +77,10 @@
             // set class on element
             self.el.addClass($.deco.options['klass_tile_' + state]);
 
-            // merge options 
+            // merge options
             options = $.extend({
                 activate: true,
-                states: ['dragging', 'preview', 'dropped', 'editing']
+                states: ['dragging', 'preview', 'dropped']
             }, options);
 
             // update data-tile attribute
@@ -173,30 +172,13 @@
             self.el
                 .css({ position: 'relative', cursor: 'move' })
                 .drag('init', function(e, dd) {
-                    clicks += 1;  //count clicks
-                    if (clicks === 1) {
-                        timer = setTimeout(function() {
-                            $(self.el).unbind('draginit');
-                            self.draggable();
-                            self.el.decoTileButton(self.options);
-                            $(self.el).trigger('draginit', [dd, e]);
-                            clicks = 0; //after action performed, reset counter
-                        }, 250);
-                    } else {
-                        clearTimeout(timer);    //prevent single-click action
-                        var tile = $('<div/>') // create new tile
-                                .appendTo($('body'))
-                                .decoTile(self.options, 'editing');
-                        clicks = 0; //after action performed, reset counter
-                    }
+                    self.draggable();
+                    self.el.decoTileButton(self.options);
+                    return false;
+                }).bind('click', function(e) {
+                    e.stopImmediatePropagation()
                     return false;
                 });
-        },
-        state_editing: function() {
-            var self = this;
-            if (self.custom_state_editing !== undefined) {
-                self.custom_state_editing.call(self);
-            }
         },
         draggable: function() {
             var self = this;
@@ -221,7 +203,7 @@
                                 tile_distance = Math.min(
                                     Math.abs(tile_top - e.pageY),
                                     Math.abs(tile_top + tile_height - e.pageY));
-                            
+
                             if ((drop_el === undefined) ||
                                     (tile_distance < drop_distance)) {
                                 drop_el = tile.el;
@@ -238,7 +220,7 @@
                     column.el.find('.' + klass_tile_preview).remove();
                     drop_el[drop_method](
                         $('<div/>').decoTile(
-                            $(dd.proxy).decoTile().options, 'preview').el); 
+                            $(dd.proxy).decoTile().options, 'preview').el);
                 }
 
                 var drop_el = $(dd.drop);
@@ -293,7 +275,7 @@
                 if (column.getTiles().size() === 0) {
                     column.el.append(
                         $('<div/>').decoTile(
-                            $(dd.proxy).decoTile().options,'preview').el); 
+                            $(dd.proxy).decoTile().options,'preview').el);
                 }
             });
             self.el.drop('end', function(e, dd) {
@@ -305,7 +287,7 @@
                     dropped = $('<div/>').decoTile(dragging.options,'dropped'),
                     column = $(this).decoColumn();
 
-                // insert tile after 
+                // insert tile after
                 column.el.find('.' + klass_tile_preview).after(dropped.el);
 
                 // update tiles count
@@ -316,7 +298,7 @@
                     data_attr = $.deco.options.data_attr_panel,
                     panel_el = $(target.elem).parents('[' + data_attr + '] > div'),
                     panel_target = drop.locate(panel_el);
-                
+
                 if ((drop.contains(panel_target, [e.pageX, e.pageY]) === true) &&
                     (target.left < e.pageX) && (target.right > e.pageX)) {
                     return 1;
@@ -467,47 +449,74 @@
     //
     // helper jquery function which turns element into button which adds new
     // tile when is press or being dragged from.
-    $.fn.decoTileButton = function(tile_options, toolbar) {
-
-        // play nice with mask and toolbar if they exists 
+    $.fn.decoNewTileButton = function(tile_options, iframe) {
         var data_attr = $.deco.options.data_attr_panel;
 
         // create new tile and position on click and drag start event
-        $(this).drag('init', function(e, dd, e2) {
-
-            var tile = $('<div/>') // create new tile
-                    .appendTo($('body'))
-                    .decoTile(tile_options, 'dragging');
-
-            e = e2 || e;
-            tile.el.css({ // position tile under the mouse
-                top: e.pageY - (tile.el.outerHeight() / 2),
-                left: e.pageX - (tile.el.outerWidth() / 2)
+        $(this)
+            .drag("start",function(){
+                var proxy = $('<div/>').append($(this).clone());
+                $('body', window.parent.document).append(proxy);
+                proxy.css({
+                    opacity: .75,
+                    position: 'absolute',
+                    'z-index': 450,
+                    border: '1px solid #89B',
+                    background: '#BCE',
+                    height: '58px',
+                    width: '58px'
+                    });
+                return proxy;
+            })
+            .drag(function( ev, dd ){
+                $( dd.proxy ).css({
+                    top: dd.offsetY,
+                    left: dd.offsetX
+                });
+            })
+            .drag("end",function( ev, dd ){
+                $( this ).animate({
+                    top: dd.offsetY,
+                    left: dd.offsetX
+                }, 420 );
+                $( dd.proxy ).remove();
             });
 
-            // if element we are trying to drag is already in grid
-            if ($(this).parents('[' + data_attr + ']').size() !== 0) {
-                var column = $(this).parent().decoColumn();
-                $(this).detach();
-                column.tiles = column.getTiles();
-            }
+        //    var tile = $('<div/>') // create new tile
+        //            .appendTo($('body'))
+        //            .decoTile(tile_options, 'dragging');
 
-            // toolbar integration: shrink toolbar when new tile is created
-            if (toolbar !== undefined) {
-                toolbar.shrink();
-            }
+        //    e = e2 || e;
+        //    tile.el.css({ // position tile under the mouse
+        //        top: e.pageY - (tile.el.outerHeight() / 2),
+        //        left: e.pageX - (tile.el.outerWidth() / 2)
+        //    });
 
-            // jquerytools expose / mask integration
-            if ($.mask !== undefined && $.mask.getMask() !== undefined) {
-                tile.el.css('z-index', $.mask.getConf().zIndex + 2);
-            }
+        //    // if element we are trying to drag is already in grid
+        //    if ($(this).parents('[' + data_attr + ']').size() !== 0) {
+        //        var column = $(this).parent().decoColumn();
+        //        $(this).detach();
+        //        column.tiles = column.getTiles();
+        //    }
 
-            return tile.el;
-        });
+        //    // toolbar integration: shrink toolbar when new tile is created
+        //    if (toolbar !== undefined) {
+        //        toolbar.shrink();
+        //    }
+
+        //    // jquerytools expose / mask integration
+        //    if ($.mask !== undefined && $.mask.getMask() !== undefined) {
+        //        tile.el.css('z-index', $.mask.getConf().zIndex + 2);
+        //    }
+
+        //    return tile.el;
+        //})
+        //.bind('click', function(e) {
+        //    e.stopImmediatePropagation()
+        //    return false;
+        //});
 
     };
     // }}}
 
-}( window.parent ? window.parent : window,
-   window.parent ? window.parent.jQuery : window.jQuery,
-   window.parent ? window.parent.document : window.document ));
+}(jQuery));

@@ -13,14 +13,17 @@
 
     <!-- Permissions -->
     <permission
-        id="plone.ModifyPageLayout"
-        title="Plone: Modify Page Layout" />
+        id="plone.ModifyDecoLayout"
+        title="Plone: Modify Deco Layout" />
+    <permission
+        id="plone.ChangeDecoLayout"
+        title="Plone: Change Deco Layout" />
+    <!--permission
+        id="plone.ModifyTiles"
+        title="Plone: Modify Tiles" /-->
     <permission
         id="plone.ManageDeco"
         title="Plone: Manage Deco" />
-    <permission
-        id="plone.ChangeLayout"
-        title="Plone: Change Deco Layout" />
 
     <!-- BBB: Used to override/disable parts of Plone 4.x that
          should not be in place when using plone.app.toolbar -->
@@ -35,11 +38,12 @@
     <plone:tile
         name="plone.deco_toolbar"
         title="Plone deco toolbar"
+        permission="plone.ViewToolbar"
+        add_permission="plone.AddToolbar"
         class=".toolbar.DecoToolbarTile"
         template="toolbar.pt"
         for="*"
-        add_permission="plone.AddToolbar"
-        permission="plone.ViewToolbar" />
+        />
 
     <!-- GS profile -->
     <genericsetup:registerProfile

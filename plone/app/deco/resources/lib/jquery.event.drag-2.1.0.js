@@ -7,7 +7,7 @@
 // Updated: 2010-09-15
 // REQUIRES: jquery 1.4.2+
 
-(function( window, $, document ) {
+(function( $ ) {
 
 // add the jquery instance method
 $.fn.drag = function( str, arg, opts ){
@@ -389,6 +389,4 @@ $event.handle = function( event ){
 // share the same special event configuration with related events...
 $special.draginit = $special.dragstart = $special.dragend = drag;
 
-}( window.parent ? window.parent : window,
-   window.parent ? window.parent.jQuery : window.jQuery,
-   window.parent ? window.parent.document : window.document ));
+}(jQuery));
