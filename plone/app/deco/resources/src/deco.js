@@ -355,12 +355,12 @@
             self.el = el;
             self.items();
             self.el_style = self.el.attr('style');
-            self.el.attr('style', self.el_style +
-                    ' position: relative; float: left; width: 100%;');
+            self.el.attr('style', self.el_style + ' position: relative; float: left; width: 100%;');
         },
         finalize: function() {
+            var self = this;
             self.el.attr(self.el_style);
-            $.each(this.items(), function(i, item) { item.finalize(); });
+            $.each(self.items(), function(i, item) { item.finalize(); });
         },
         items: function() {
             var self = this, items = [];
