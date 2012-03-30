@@ -59,240 +59,237 @@
     $.deco.tiles_instances = {};
     // }}}
 
-    // # Tile {{{
-    $.deco._.Tile = function(el, options, state) {
-        this.initialize(el, options, state);
-        return this;
+    // # Utils {{{
+    $.deco.create_proxy_tile = function() {
+        return $('<div/>').css({
+            'opacity': .75,
+            'z-index': 1000,
+            'position': 'absolute',
+            'border': '1px solid #89B',
+            'background': '#BCE',
+            'height': '58px',
+            'width': '258px'
+            });
     };
-    $.deco._.Tile.prototype = {
-        initialize: function(el, options, state) {
-            var self = this,
-                data_attr = $.deco.options.data_attr_tile;
-
-            self.el = el.addClass($.deco.options.klass_tile);
-            self.state = state || 'dropped';
-            self.options = options;
-            self.activated = false;
-
-            // set class on element
-            self.el.addClass($.deco.options['klass_tile_' + state]);
-
-            // merge options
-            options = $.extend({
-                activate: true,
-                states: ['dragging', 'preview', 'dropped']
-            }, options);
-
-            // update data-tile attribute
-            if (options.url !== undefined) {
-                self.el.attr(data_attr, options.url);
-            }
-
-            // update tile content
-            if (options.content !== undefined) {
-                self.el.html(options.content);
-            }
-
-            // update state functions
-            $.each(options.states, function(i, name) {
-                name = 'state_' + name;
-                if (options[name] !== undefined) {
-                    self['custom_' + name] = options[name];
-                }
-            });
-
-            // activate when instanting tile; default: true
-            if (options.activate === true) {
-                self.activate();
-            }
-        },
-        activate: function() {
-            var self = this;
-
-            // activate only one time
-            if (self.activated === true) {
-                return;
-            }
-
-            // call apropriate state
-            self['state_' + self.state]();
-
-            // after activating it mark it as activated
-            self.activated = true;
-        },
-        deactivate: function() {
-            var self = this;
-
-            // don't do anything if not already activated
-            if (self.activated === false) {
-                return;
-            }
-
-            // unbind drag-n-drop events
-            $.each(['dropinit','dropstart','drop','dropend',
-                    'draginit','dragstart','drag','dragend'],
-                function( i, type ) { self.el.unbind( type );
-            });
-
-            // after deactivating it mark it as deactivated
-            self.activated = false;
-        },
-        destroy: function() {
-            var self = this;
-            self.deactivate();
-            self.el.remove();
-        },
-        state_dragging: function() {
-            var self = this;
-            if (self.custom_state_dragging !== undefined) {
-                self.custom_state_dragging.call(self);
-            }
-            self.el.css({
-                position: 'absolute',
-                cursor: 'move'
-            });
-            self.draggable(0);
-        },
-        state_preview: function() {
-            var self = this;
-            if (self.custom_state_preview !== undefined) {
-                self.custom_state_preview.call(self);
-            }
-            self.el.css({
-                position: 'relative',
-                cursor: 'auto'
-            });
-        },
-        state_dropped: function() {
-            var self = this, clicks = 0, timer;
-            if (self.custom_state_dropped !== undefined) {
-                self.custom_state_dropped.call(self);
-            }
-            // on draginit we timeout to wait if its doubleclick
-            self.el
-                .css({ position: 'relative', cursor: 'move' })
-                .drag('init', function(e, dd) {
-                    self.draggable();
-                    self.el.decoTileButton(self.options);
-                    return false;
-                }).bind('click', function(e) {
-                    e.stopImmediatePropagation()
-                    return false;
+    $.deco.create_preview_tile = function() {
+        return $('<div/>').addClass('tile-preview')
+            .css({
+                'width': '100%',
+                'height': '50px',
+                'background': '#EEEEEE',
+                'border': '2px dotted #BBBBBB',
+                'border-radius': '3px'
                 });
-        },
-        draggable: function() {
+    };
+    $.deco.drop_tile = function(e, dd) {
+        var el = $($(dd.proxy).html()),
+            preview_tile = $('.tile-preview', window.parent.document),
+            new_tile_in_grid = $(dd.drag).attr('data-tiletype') !== undefined;
+
+        if (preview_tile.size() > 0) {
+            if (new_tile_in_grid) {
+                el.removeAttr('data-tiletype').removeAttr('style');
+                el.find('.btn-tile-add').remove();
+            }
+
+            preview_tile.after(el).remove();
+            var tile = el.decoTile();  // this initializes tile
+
+            if (new_tile_in_grid) {
+                tile.el_content.show();
+                tile.el_content.trigger('dblclick');
+            }
+        }
+    };
+    // }}}
+
+    // # Tile {{{
+    $.deco.Tile = function(e, p) { this.init(e, p); };
+    $.deco.Tile.prototype = {
+        init: function(el, parent) {
             var self = this;
 
-            // dragging
-            self.el.drag(function(e, dd) {
+            self.parent = parent
+            self.el  = el;
+            self.el_add_button = $('> .btn-tile-add', self.el);
+            self.el_edit_button = $('> .btn-tile-edit', self.el);
+            self.el_form = $('> .tile-form', self.el);
+            self.el_content = $('> .tile-content', self.el);
 
-                // position proxy element (element we are dragging)
-                $(dd.proxy).css($.extend({}, $.deco.options.tile_dragging_css, {
+            self.title = $('.tile-title', self.el).text();
+            self.description = $('.tile-description', self.el).text();
+
+            // TODO: dblclick on self.el_view
+            self.el_content.on('dblclick', function(e) {
+                $(this).parent('.tile-wrapper').addClass('tile-being-edited')
+                self.el.ploneOverlay(function(overlay) {
+                    var panel_z_indexes = {};
+                    $('[data-panel]', window.parent.document).each(function() {
+                        var el = $(this);
+                        if (el.css('z-index')) {
+                            panel_z_indexes[el.attr('data-panel')] = el.css('z-index');
+                        }
+                        el.css('z-index', 0);
+                    });
+                    $.plone.overlay_form_transform(overlay, $(self.el_form.html()));
+                    overlay._overlay.on('hidden', function() {
+                        $('[data-panel]', window.parent.document).each(function() {
+                            var el = $(this);
+                            el.css('z-index', panel_z_indexes[el.attr('data-panel')]);
+                        });
+                    });
+                    $("input[name='buttons.save']", overlay.footer).on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        $.each($(this).parents('form').serializeArray(), function(i, item) {
+                            if (item.name === 'text') {
+                                self.el_content.html(item.value);
+                            } else if (item.name === 'external_url') {
+                                self.el_content.html($('<img/>').attr('src', item.value));
+                            }
+                        });
+
+                        overlay.modal('hide');
+                    });
+                    overlay.mask = false;
+                    overlay.modal(overlay.options);
+
+                });
+            });
+
+            // make tile draggable
+            self.make_draggable();
+
+            // prevent clicking on add button
+            self.el_add_button.on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            self.el_add_button.css({
+                'cursor': 'move',
+            });
+            //
+            self.el.css({
+                'cursor': 'move',
+            });
+        },
+        make_draggable: function() {
+            var tile = this,
+                column = tile.parent;
+            tile.el.on('dragstart', function(e, dd) {
+                if ($(dd.drag).hasClass('tile-being-edited')) {
+                    return false;
+                }
+                var proxy = $.deco.create_proxy_tile();
+                    tile = $(dd.drag).clone();
+
+                proxy.append(tile.hide())
+                    .appendTo($('body', window.parent.document));
+
+                // delete original if not dragging from toolbar
+                if ($(dd.drag).attr('data-tiletype') === undefined) {
+                    $(dd.drag).remove();
+                    proxy.css({ // position tile under the mouse
+                        top: e.pageY - (proxy.outerHeight() / 2),
+                        left: e.pageX - (proxy.outerWidth() / 2)
+                    });
+                }
+
+                return proxy;
+            });
+            tile.el.on('drag', function(e, dd) {
+                if ($(dd.drag).hasClass('tile-being-edited')) {
+                    $(dd.proxy).remove();
+                    return false;
+                }
+                $(dd.proxy).css({
                     top: dd.offsetY,
                     left: dd.offsetX
-                }));
+                });
 
-                function insert_preview_tile(column) {
-                    var drop_el, drop_method, drop_distance,
-                        klass_tile_preview = $.deco.options.klass_tile_preview;
-                    $.each(column.getTiles(), function(i, tile) {
-                        if (tile.state === 'dropped') {
-                            var tile_top = tile.el.offset().top,
-                                tile_height = tile.el.height(),
-                                tile_middle = tile_top + (tile_height / 2),
-                                tile_distance = Math.min(
-                                    Math.abs(tile_top - e.pageY),
-                                    Math.abs(tile_top + tile_height - e.pageY));
+                // show preview
+                var drop = $(dd.drop);
+                if (drop.size() !== 0) {
+                    drop.each(function() {
+                        var column = $(this).decoColumn();
 
-                            if ((drop_el === undefined) ||
+                        // remove preview tile
+                        column.parent.parent.el.find('.tile-preview').remove();
+
+                        // just append it to column if there is no tiles in
+                        // column yet
+                        if (column.items().size() === 0) {
+                            column.el.append($.deco.create_preview_tile());
+
+                        // calculate position if there are tiles already
+                        // existing
+                        } else {
+                            var drop_el, drop_method, drop_distance,
+                                klass_tile_preview = $.deco.options.klass_tile_preview;
+
+                            $.each(column.items(), function(i, tile) {
+                                var tile_top = tile.el.offset().top,
+                                    tile_height = tile.el.height(),
+                                    tile_middle = tile_top + (tile_height / 2),
+                                    tile_distance = Math.min(
+                                        Math.abs(tile_top - e.pageY),
+                                        Math.abs(tile_top + tile_height - e.pageY));
+
+                                if ((drop_el === undefined) ||
                                     (tile_distance < drop_distance)) {
-                                drop_el = tile.el;
-                                drop_distance = tile_distance;
-                            }
+                                    drop_el = tile.el;
+                                    drop_distance = tile_distance;
+                                }
 
-                            if (tile_middle < e.pageY) {
-                                drop_method = 'after';
-                            } else {
-                                drop_method = 'before';
-                            }
+                                if (tile_middle < e.pageY) {
+                                    drop_method = 'after';
+                                } else {
+                                    drop_method = 'before';
+                                }
+                            });
+
+                            column.el.find('.' + klass_tile_preview).remove();
+                            drop_el[drop_method]($.deco.create_preview_tile());
                         }
+
                     });
-                    column.el.find('.' + klass_tile_preview).remove();
-                    drop_el[drop_method](
-                        $('<div/>').decoTile(
-                            $(dd.proxy).decoTile().options, 'preview').el);
                 }
-
-                var drop_el = $(dd.drop);
-                if (drop_el.size() !== 0) {
-                    var column = drop_el.decoColumn();
-                    if (column.getTiles().size() !== 0) {
-                        insert_preview_tile(column);
-                    }
-                }
-
             });
-
-            // when dragging ends we remove proxy/preview element
-            self.el.drag('end', function(e, dd) {
+            tile.el.on('dragend', function(e, dd) {
+                $(this).animate({top: dd.offsetY, left: dd.offset}, 420);
                 $(dd.proxy).remove();
-                // TODO: if not dropped then we should return tile on old
-                // position
-            });
 
+                if ($(dd.drop).size() == 0 &&
+                    $(window.parent.document, '.tile-preview').size() === 1) {
+                    $('.tile-preview', window.parent.document).remove();
+                    //$.deco.drop_tile(e, dd);
+                };
+            });
         },
-        getType: function() {
-            // eg. extract "texttile" from "URL/@@texttile/1/?value="test"
-            var type = this.el.attr($.deco.options.data_attr_tile);
-            type = type.split('?')[0];  // strip away url params
-            type = type.split('@@')[type.split('@@').length]; // strip away url
-            type = type.split('/'); // strip away path after type name
-            return type;
+        finalize: function() {
+            var self = this;
+            $.each(['draginit','dragstart','drag','dragend'],
+                function(i, type) { self.el.off(type);
+            });
+            self.el.removeAttr('style');
+            self.el_view.off('dblclick');
+            self.el_add_button.off('click');
         }
     };
     // }}}
 
     // # Column {{{
-    $.deco._.Column= function(el) {
-        this.initialize(el);
-        return this;
-    };
-    $.deco._.Column.prototype = {
-        initialize: function(el) {
-            var self = this;
-            self.el = el.addClass($.deco.options.klass_column);
-            self.activate();
-        },
-        activate: function() {
+    $.deco.Column= function(el, parent) { this.init(el, parent); };
+    $.deco.Column.prototype = {
+        init: function(el, parent) {
             var self = this;
 
-            self.tiles = self.getTiles();
+            self.el = el;
+            self.parent = parent;
 
-            // each column is a droppable element
-            self.el.drop('start', function(e, dd) {
-                var column = $(this).decoColumn();
-
-                if (column.getTiles().size() === 0) {
-                    column.el.append(
-                        $('<div/>').decoTile(
-                            $(dd.proxy).decoTile().options,'preview').el);
-                }
-            });
-            self.el.drop('end', function(e, dd) {
-                $(this).find('.' + $.deco.options.klass_tile_preview).remove();
-            });
-            self.el.drop(function(e, dd) {
-                var klass_tile_preview = $.deco.options.klass_tile_preview,
-                    dragging = $(dd.proxy).decoTile(),
-                    dropped = $('<div/>').decoTile(dragging.options,'dropped'),
-                    column = $(this).decoColumn();
-
-                // insert tile after
-                column.el.find('.' + klass_tile_preview).after(dropped.el);
-
-                // update tiles count
-                column.tiles = column.getTiles();
-            });
+            // drop tolerance
             $.drop({ tolerance: function(e, proxy, target ) {
                 var drop = $.event.special.drop,
                     data_attr = $.deco.options.data_attr_panel,
@@ -305,120 +302,72 @@
                 }
                 return 0;
             }});
+
+            // make column droppable for tiles
+            self.el.on('drop', $.deco.drop_tile);
         },
-        deactivate: function() {
+        finalize: function() {
             var self = this;
-            $.each(self.tiles, function(i, tile) {
-                tile.deactivate();
+
+            $.each(self.items(), function(i, item) { item.finalize(); });
+
+            // unbind drop events
+            $.each(['dropinit','dropstart','drop','dropend'],
+                function(i, type) { self.el.unbind( type );
             });
-            self.tiles = [];
         },
-        getTiles: function() {
-            var self = this, tiles = $([]),
-                data_attr = $.deco.options.data_attr_tile;
-
-            self.el.find('[' + data_attr + ']').each(function(i, el) {
-                var tile = $(el).decoTile();
-                if (tile.state === 'dropped') {
-                    tiles.push(tile);
-                }
+        items: function() {
+            var self = this, items = [];
+            self.el.find('> div:not(.tile-preview)').each(function(i, el) {
+                items.push($(el).decoTile(self));
             });
-
-            return $(tiles);
+            return $(items);
         }
     };
     // }}}
 
     // # Row {{{
-    $.deco._.Row = function(el) {
-        this.initialize(el);
-        return this;
-    };
-    $.deco._.Row.prototype = {
-        initialize: function(el) {
-            var self = this;
-            self.el = el.addClass($.deco.options.klass_row);
-            self.activate();
+    $.deco.Row = function(el, parent) { this.init(el, parent); };
+    $.deco.Row.prototype = {
+        init: function(el, parent) {
+            this.el = el;
+            this.parent = parent;
+            this.items();
         },
-        activate: function() {
-            var self = this;
-            self.columns = [];
+        finalize: function() {
+            $.each(this.items(), function(i, item) { item.finalize(); });
+        },
+        items: function() {
+            var self = this, items = [];
             self.el.find('> div').each(function(i, el) {
-                self.columns.push($(el).decoColumn());
+                items.push($(el).decoColumn(self));
             });
-        },
-        deactivate: function() {
-            var self = this;
-            $.each(self.columns, function(i, column) {
-                column.deactivate();
-            });
-            self.columns = [];
+            return items;
         }
     };
     // }}}
 
     // # Panel {{{
-    $.deco._.Panel = function(el, options) {
-        this.initialize(el, options);
-        return this;
-    };
-    $.deco._.Panel.prototype = {
-        initialize: function(el, options) {
+    $.deco.Panel = function(el) { this.init(el); };
+    $.deco.Panel.prototype = {
+        init: function(el, options) {
             var self = this;
-
             self.el = el;
-            self.options = $.extend({ activate: false }, options);
-            self.activated = false;
-
-            // inner wrapper of rows, create it if its not there
-            if (self.el.children().size() === 0) {
-                self.el.append($('<div/>')
-                    .css({
-                        'position': 'relative',
-                        'float': 'left',
-                        'width': '100%'
-                    }));
-            } else if (self.el.children().size() !== 1) {
-                alert('Content of panel is not correctly structred to be ' +
-                        'editable with deco editor.');
-            }
-            self.el_wrapper = self.el.children().first();
-            self.el_wrapper.addClass($.deco.options.klass_panel);
-
-            // activate when instanting tile; default: true
-            if (self.options.activate) {
-                self.activate();
-            }
+            self.items();
+            self.el_style = self.el.attr('style');
+            self.el.attr('style', self.el_style +
+                    ' position: relative; float: left; width: 100%;');
         },
-        activate: function() {
-            var self = this;
-
-            // activate only one time
-            if (self.activated === true) {
-                return;
-            }
-
-            self.rows = [];
-            self.el_wrapper.find('> div').each(function(i, el) {
-                self.rows.push($(el).decoRow());
+        finalize: function() {
+            self.el.attr(self.el_style);
+            $.each(this.items(), function(i, item) { item.finalize(); });
+        },
+        items: function() {
+            var self = this, items = [];
+            self.el.find('> div').each(function(i, el) {
+                items.push($(el).decoRow(self));
             });
-
-            // after activating it mark it as activated
-            self.activated = true;
-        },
-        deactivate: function() {
-            var self = this;
-
-            // don't do anything if not already activated
-            if (self.activated === false) {
-                return;
-            }
-
-            $.each(self.rows, function(i, row) { row.deactivate(); });
-            self.rows = [];
-
-            // after deactivating it mark it as deactivated
-            self.activated = false;
+            return items;
         }
     };
     // }}}
@@ -429,94 +378,20 @@
     // of it for selected dom eleement, eg.:
     //  $.deco._.Panel -> $.fn.decoPanel
     //
-    $.each($.deco._, function(name, Func) {
-        $.fn['deco' + name] = function(options, state) {
+    $.each(['Panel', 'Row', 'Column', 'Tile' ], function(i, name) {
+        $.fn['deco' + name] = function(parent) {
             var el = $(this),
                 data_attr = $.deco.options['data_attr_' + name.toLowerCase()],
                 data = el.data(data_attr);
 
             if (data === undefined) {
-                data = new Func(el, options, state);
+                data = new $.deco[name]($(el), parent);
                 el.data(data_attr, data);
             }
 
             return data;
         };
     });
-    // }}}
-
-    // # Helper for tile button {{{
-    //
-    // helper jquery function which turns element into button which adds new
-    // tile when is press or being dragged from.
-    $.fn.decoNewTileButton = function(tile_options, iframe) {
-        var data_attr = $.deco.options.data_attr_panel;
-
-        // create new tile and position on click and drag start event
-        $(this)
-            .drag("start",function(){
-                var proxy = $('<div/>').append($(this).clone());
-                $('body', window.parent.document).append(proxy);
-                proxy.css({
-                    opacity: .75,
-                    position: 'absolute',
-                    'z-index': 450,
-                    border: '1px solid #89B',
-                    background: '#BCE',
-                    height: '58px',
-                    width: '58px'
-                    });
-                return proxy;
-            })
-            .drag(function( ev, dd ){
-                $( dd.proxy ).css({
-                    top: dd.offsetY,
-                    left: dd.offsetX
-                });
-            })
-            .drag("end",function( ev, dd ){
-                $( this ).animate({
-                    top: dd.offsetY,
-                    left: dd.offsetX
-                }, 420 );
-                $( dd.proxy ).remove();
-            });
-
-        //    var tile = $('<div/>') // create new tile
-        //            .appendTo($('body'))
-        //            .decoTile(tile_options, 'dragging');
-
-        //    e = e2 || e;
-        //    tile.el.css({ // position tile under the mouse
-        //        top: e.pageY - (tile.el.outerHeight() / 2),
-        //        left: e.pageX - (tile.el.outerWidth() / 2)
-        //    });
-
-        //    // if element we are trying to drag is already in grid
-        //    if ($(this).parents('[' + data_attr + ']').size() !== 0) {
-        //        var column = $(this).parent().decoColumn();
-        //        $(this).detach();
-        //        column.tiles = column.getTiles();
-        //    }
-
-        //    // toolbar integration: shrink toolbar when new tile is created
-        //    if (toolbar !== undefined) {
-        //        toolbar.shrink();
-        //    }
-
-        //    // jquerytools expose / mask integration
-        //    if ($.mask !== undefined && $.mask.getMask() !== undefined) {
-        //        tile.el.css('z-index', $.mask.getConf().zIndex + 2);
-        //    }
-
-        //    return tile.el;
-        //})
-        //.bind('click', function(e) {
-        //    e.stopImmediatePropagation()
-        //    return false;
-        //});
-
-    };
     // }}}
 
 }(jQuery));

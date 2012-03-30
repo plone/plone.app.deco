@@ -1,5 +1,6 @@
 from Acquisition import aq_inner
 from zope.component import getUtility
+from zope.component import getMultiAdapter
 from zope.security import checkPermission
 from plone.app.blocks import utils
 from plone.tiles import Tile
@@ -8,13 +9,13 @@ from plone.tiles.interfaces import ITileType
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUIDGenerator
 from plone.app.deco import PloneMessageFactory as _
+from plone.app.tiles.interfaces import ITileAddView
 from plone.app.blocks.utils import bodyTileXPath
 from lxml.html import tostring
 from lxml.html import fromstring
 from lxml.etree import XPath
 
 
-bodyXPath = XPath('/html/body//*')
 
 class DecoToolbarTile(Tile):
 
@@ -27,6 +28,7 @@ class DecoToolbarTile(Tile):
 
     def tiles(self):
         tiles = []
+        bodyXPath = XPath("descendant-or-self::*[@id = 'portal-column-content']")
         for tile_name in self.registry['plone.app.tiles']:
             tiletype = getUtility(ITileType, tile_name)
 
@@ -34,15 +36,11 @@ class DecoToolbarTile(Tile):
             if not checkPermission(tiletype.add_permission, self.context):
                 continue
 
-            tile_id = self.get_uuid()
-            addform_view  = self.context.restrictedTraverse(str(
-                    '@@add-tile/%s/%s' % (tile_name, tile_id)))
-            addform = bodyXPath(fromstring(addform_view()))
+            form_view = getMultiAdapter((self.context, self.request, tiletype), ITileAddView)
+            form_view.tileId = self.get_uuid()
+            form_etree = bodyXPath(fromstring(form_view()))
 
-            form = ''
-            if addform:
-                for el in addform:
-                    form += tostring(el)
+            form = ''.join([tostring(i) for i in form_etree])
 
             tiles.append({
                 'name': tile_name,

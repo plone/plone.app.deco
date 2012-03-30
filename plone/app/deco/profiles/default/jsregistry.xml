@@ -15,6 +15,6 @@
 
     <javascript cacheable="False" compression="safe" cookable="False"
         enabled="True" inline="False" bundle="deco"
-        id="++resource++plone.app.deco/src/deco.plone.js" />
+        id="++resource++plone.app.deco/src/deco.toolbar.js" />
 
 </object>

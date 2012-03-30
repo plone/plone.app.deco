@@ -13,25 +13,31 @@
 <script type="text/javascript">
 (function($){
   $(document).ready(function() {
+
+    $('.drag-inner').dblclick(function(e) {
+      alert('YAAAY!');
+    });
+
     $('.drag', window.parent.document)
-    .drag("start",function(){
-      return $( this ).clone()
-      .css("opacity", .75 )
-      .appendTo( document.body );
+      .drag("start",function(){
+        return $( this ).clone()
+        .css("opacity", .75 )
+        .appendTo( document.body );
       })
-    .drag(function( ev, dd ){
-      $( dd.proxy ).css({
-top: dd.offsetY,
-left: dd.offsetX
-});
+      .drag(function( ev, dd ){
+        $( dd.proxy ).css({
+          top: dd.offsetY,
+          left: dd.offsetX
+        });
       })
-    .drag("end",function( ev, dd ){
-      $( this ).animate({
-top: dd.offsetY,
-left: dd.offsetX
-}, 420 );
-      $( dd.proxy ).remove();
+      .drag("end",function( ev, dd ){
+        $( this ).animate({
+          top: dd.offsetY,
+          left: dd.offsetX
+        }, 420 );
+        $( dd.proxy ).remove();
       });
+
     $('.drag')
       .drag("start",function(){
          return $( this ).clone()
@@ -56,9 +62,9 @@ left: dd.offsetX
 </script>
 
 <p>Drag the boxes around the page, a proxy element gets dragged.</p>
-<div class="drag" style="left:20px;"></div>
-<div class="drag" style="left:100px;"></div>
-<div class="drag" style="left:180px;"></div>
+<div class="drag" style="left:20px;"><div class='drag-inner'>TEST</div></div>
+<div class="drag" style="left:100px;"><div class='drag-inner'>TEST</div></div>
+<div class="drag" style="left:180px;"><div class='drag-inner'>TEST</div></div>
 
 <style type="text/css">
 .drag {

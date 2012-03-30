@@ -8,24 +8,31 @@
 </head>
 <body>
 
-  <div class="deco-tiles">
+  <div class="deco-tiletypes">
 
     <ul class="nav nav-pills">
-      <li tal:repeat="item view/tiles">
+      <li tal:repeat="tile view/tiles">
 
-        <div tal:attributes="data-tile item/url">
+        <div class="tile-wrapper" tal:attributes="data-tiletype tile/url">
 
-          <a href="#" class="tile-add-button"
-              tal:attributes="href string:${view/context_url}/@@${item/name}">
-            <i tal:attributes="class python:'icon-tiletype-' + item['name'].replace('.', '-')"></i>
-            <span tal:content="item/title">Title</span>
+          <div class="tile-title" style="display: none;" tal:content="tile/title"></div>
+          <div class="tile-description" style="display: none;" tal:content="tile/description"></div>
+
+          <a href="#" class="btn-tile-add" rel="tooltip"
+              tal:attributes="
+                title tile/description;
+                href string:${view/context_url}/@@${tile/name};">
+            <i tal:attributes="class python:'icon-tiletype-' + tile['name'].replace('.', '-')"></i>
+            <span tal:content="tile/title">Title</span>
           </a>
 
-          <a class="btn tile-edit-button" style="display:none">
+          <a class="btn-tile-edit btn" style="display:none">
             <span i18:translate="">Edit</span>
           </a>
 
-          <div class="tile-editform" tal:content="structure item/form" />
+          <div class="tile-form" style="display:none;" tal:content="structure tile/form" />
+
+          <div class="tile-content" style="display: none;"></div>
 
         </div>
 

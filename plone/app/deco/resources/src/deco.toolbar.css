@@ -1,0 +1,42 @@
+
+.deco-tiletypes {
+  padding: 1em;
+  background: #EEEEEE;
+  border-color: #D5D5D5;
+  border-radius: 0 0 0 0;
+  border-width: 0 0 1px;
+  box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+.deco-tiletypes > ul {
+  margin: 0;
+}
+
+.btn-tile-add {
+  padding: 0;
+}
+.btn-tile-add > span {
+  display: none; 
+}
+
+
+.icon-tiletype-plone-app-imagetile,
+.icon-tiletype-plone-app-texttile {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 2px;
+  border: 2px solid transparent;
+  background: url("++resource++plone.app.deco/tile-icons.png") no-repeat scroll 0 0 transparent;
+
+}
+.icon-tiletype-plone-app-imagetile:hover,
+.icon-tiletype-plone-app-texttile:hover {
+  border-color: #999999;
+}
+
+.icon-tiletype-plone-app-texttile {
+  background-position:  0 0;
+}
+.icon-tiletype-plone-app-imagetile {
+  background-position: -52px 0;
+}
