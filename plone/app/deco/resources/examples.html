@@ -20,9 +20,10 @@
 
     $('.drag', window.parent.document)
       .drag("start",function(){
-        return $( this ).clone()
-        .css("opacity", .75 )
-        .appendTo( document.body );
+        var proxy = $( this ).clone()
+          .css("opacity", .75 )
+          .appendTo( window.parent.document.body );
+        return proxy;
       })
       .drag(function( ev, dd ){
         $( dd.proxy ).css({

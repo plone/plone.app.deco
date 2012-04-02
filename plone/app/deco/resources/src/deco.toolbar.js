@@ -68,7 +68,7 @@
             'background': '#FFFFFF',
             'min-height': '50px',
             'position': 'relative',
-            'z-index': '600'
+            'z-index': '450'
         },
         deco_panels_deactivated: {
             'background': 'transparent',
@@ -86,8 +86,7 @@
             self.visible = false;
             self.el = iframe.el;
             self.iframe = iframe;
-            self.iframe_toolbar = window.parent.$('iframe[name=' + window.name + ']').iframize('toolbar'),
-
+            self.iframe_toolbar = window.parent.$('iframe[name=' + window.name + ']').iframize('toolbar');
 
             // initialize panels
             self.panels = $('[data-panel]', window.parent.document);
@@ -116,14 +115,14 @@
                 panel.el.css($.plone.defaults.deco_panels_activated);
             });
 
-            // lock iframe so we click on background wont shrink it
-            $('body').addClass('iframe-locked');
-
             // activate deco toolbar
             self.el.css($.plone.defaults.deco_toolbar_activated);
 
-            // stretch iframe
-            self.iframe_toolbar.stretch();
+            // stretch iframe for additional toolbar height
+            self.iframe.el_iframe.height(
+                self.iframe_toolbar.el_iframe.height() +
+                self.el.outerHeight(true));
+
             $.plone.mask.load();
         },
         deactivate: function() {
@@ -137,14 +136,13 @@
                 panel.el.css($.plone.defaults.deco_panels_deactivated);
             });
 
-            // lock iframe so we click on background wont shrink it
-            $('body').addClass('iframe-locked');
-
             // activate deco toolbar
             self.el.css($.plone.defaults.deco_toolbar_deactivated);
 
             // shrink iframe
-            self.iframe_toolbar.shrink();
+            self.iframe.el_iframe(
+                self.iframe_toolbar.el_iframe.height());
+
             $.plone.mask.close();
         }
     };
