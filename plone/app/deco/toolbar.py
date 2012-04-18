@@ -36,7 +36,15 @@ class DecoToolbarTile(Tile):
             if not checkPermission(tiletype.add_permission, self.context):
                 continue
 
-            form_view = getMultiAdapter((self.context, self.request, tiletype), ITileAddView)
+            try:
+                form_view = getMultiAdapter(
+                    (self.context, self.request, tiletype),
+                        ITileAddView, name=tile_name)
+            except:
+                form_view = getMultiAdapter(
+                    (self.context, self.request, tiletype),
+                        ITileAddView)
+
             form_view.tileId = self.get_uuid()
             form_etree = bodyXPath(fromstring(form_view()))
 

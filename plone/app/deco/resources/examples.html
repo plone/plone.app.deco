@@ -44,7 +44,7 @@
          return $( this ).clone()
             .css("opacity", .75 )
             .appendTo( window.parent.document.body );
-      })
+      },{ distance:10 })
       .drag(function( ev, dd ){
          $( dd.proxy ).css({
             top: dd.offsetY,
@@ -78,6 +78,14 @@
    cursor: move;
    z-Index: 200;
    }
+.drag-inner {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  }
 </style>
 
 </body>

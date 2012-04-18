@@ -13,7 +13,7 @@
     <ul class="nav nav-pills">
       <li tal:repeat="tile view/tiles">
 
-        <div class="tile-wrapper" tal:attributes="data-tiletype tile/url">
+        <div class="deco-tile" tal:attributes="data-tiletype tile/url">
 
           <div class="tile-title" style="display: none;" tal:content="tile/title"></div>
           <div class="tile-description" style="display: none;" tal:content="tile/description"></div>
@@ -30,9 +30,9 @@
             <span i18:translate="">Edit</span>
           </a>
 
-          <div class="tile-form" style="display:none;" tal:content="structure tile/form" />
+          <div class="deco-tile-form" style="display:none;" tal:content="structure tile/form" />
 
-          <div class="tile-content" style="display: none;"></div>
+          <div class="deco-tile-content" style="display: none;"></div>
 
         </div>
 

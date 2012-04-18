@@ -135,8 +135,8 @@
             self.el = el;
             self.el_add_button = $('> .btn-tile-add', self.el);
             self.el_edit_button = $('> .btn-tile-edit', self.el);
-            self.el_form = $('> .tile-form', self.el);
-            self.el_content = $('> .tile-content', self.el);
+            self.el_form = $('> .deco-tile-form', self.el);
+            self.el_content = $('> .deco-tile-content', self.el);
 
             self.title = $('.tile-title', self.el).text();
             self.description = $('.tile-description', self.el).text();
@@ -145,10 +145,11 @@
             self.el_content.on('dblclick', self.dblclick);
 
             // bind all drag events
-            self.el.on('draginit', self.draginit);
-            self.el.on('dragstart', self.dragstart);
-            self.el.on('drag', self.drag);
-            self.el.on('dragend', self.dragend);
+            self.el
+              .drag('init', self.draginit)
+              .drag('start', self.dragstart, { distance:10 })
+              .drag(self.drag)
+              .drag('end', self.dragend);
 
             // prevent clicking on add button
             self.el_add_button.on('click', function(e) {
@@ -168,7 +169,7 @@
         // }}}
         // dblclick {{{
         dblclick: function(e) {
-            var self = $(this).parents('.tile-wrapper').decoTile();
+            var self = $(this).parents('.deco-tile').decoTile();
 
             // mark tile as being
             self.el.addClass('tile-being-edited');
@@ -187,16 +188,23 @@
                 });
 
                 $("input[name='buttons.save']", overlay.footer).on('click', function(e) {
+                    var form = $(this).parents('form');
                     e.preventDefault();
                     e.stopPropagation();
 
-                    $.each($(this).parents('form').serializeArray(), function(i, item) {
-                        if (item.name === 'text') {
-                            self.el_content.html(item.value);
-                        } else if (item.name === 'external_url') {
-                            self.el_content.html($('<img/>').attr('src', item.value));
-                        }
-                    });
+                    // TODO: this bellow is only temporary until we find
+                    // a better place for it
+                    if ($('textarea[name="plone.app.texttile.text"]', form).size() !== 0) {
+                      self.el_content.html($('textarea[name="plone.app.texttile.text"]', form).val());
+                    } else if ($('input[name="plone.app.imagetile.external_url"]', form).size() !== 0) {
+                      self.el_content.html($('<img/>').attr('src',
+                          $('input[name="plone.app.imagetile.external_url"]', form).val()));
+                    } else if ($('textarea[name="turnkey.publicationstile.hidden"]', form).size() !== 0) {
+                      var publications = $('.publicationstile', overlay.body).clone();
+                      $('a', publications).remove();
+                      self.el_content.html(publications);
+                    }
+
 
                     overlay.modal('hide');
                     self.el.removeClass('tile-being-edited');

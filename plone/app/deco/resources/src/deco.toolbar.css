@@ -20,7 +20,8 @@
 
 
 .icon-tiletype-plone-app-imagetile,
-.icon-tiletype-plone-app-texttile {
+.icon-tiletype-plone-app-texttile,
+.icon-tiletype-turnkey-publicationstile {
   display: block;
   width: 52px;
   height: 52px;
@@ -30,7 +31,8 @@
 
 }
 .icon-tiletype-plone-app-imagetile:hover,
-.icon-tiletype-plone-app-texttile:hover {
+.icon-tiletype-plone-app-texttile:hover,
+.icon-tiletype-turnkey-publicationstile:hover {
   border-color: #999999;
 }
 
@@ -39,4 +41,7 @@
 }
 .icon-tiletype-plone-app-imagetile {
   background-position: -52px 0;
+}
+.icon-tiletype-turnkey-publicationstile {
+  background-position: -104px 0;    
 }
