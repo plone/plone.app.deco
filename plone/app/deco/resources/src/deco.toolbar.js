@@ -103,6 +103,39 @@
                     //self.deactivate();
                 }
             });
+
+            $('#deco-toolbar-save', self.el).on('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              var overlay = $('#plone-action-edit > a').ploneOverlay();
+              $("textarea[name='form.widgets.ILayoutAware.content']",
+                  overlay._overlay).val(
+                      '<!DOCTYPE html>' +
+                      '<html lang="en" data-layout="./@@page-site-layout">' +
+                      '<body>' +
+                      '<div data-panel="content">' +
+                      window.parent.$("[data-panel='content']").html() + 
+                      '</div>' +
+                      '</body>' +
+                      '</html>'
+                      );
+
+              $('form', overlay._overlay).first().on('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).ajaxSubmit({
+                  beforeSubmit: function(formData, jqForm, options) { 
+                    console.log('before');
+                  },
+                  success: function(responseText, statusText, xhr, $form) {
+                    console.log('closing');
+                  }
+                });
+              });
+              $("[name='form.buttons.save']", overlay._overlay).submit();
+
+            });
         },
         activate: function() {
             var self = this;
@@ -119,11 +152,7 @@
             self.el.css($.plone.defaults.deco_toolbar_activated);
 
             // stretch iframe for additional toolbar height
-            self.iframe.el_iframe.height(
-                self.iframe_toolbar.el_iframe.height() +
-                self.el.outerHeight(true));
-
-            $.plone.mask.load();
+            self.iframe_toolbar.position.height += self.el.outerHeight(true);
         },
         deactivate: function() {
             var self = this;
@@ -133,7 +162,7 @@
             self.panels.each(function(i, panel) {
                 panel = $(panel).decoPanel();
                 panel.finalize();
-                panel.el.css($.plone.defaults.deco_panels_deactivated);
+                panel.el.css($.plontruee.defaults.deco_panels_deactivated);
             });
 
             // activate deco toolbar
@@ -142,8 +171,6 @@
             // shrink iframe
             self.iframe.el_iframe(
                 self.iframe_toolbar.el_iframe.height());
-
-            $.plone.mask.close();
         }
     };
     // }}}

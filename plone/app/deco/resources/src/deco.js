@@ -179,15 +179,17 @@
 
                 $.plone.overlay_form_transform(overlay, $(self.el_form.html()));
 
-                overlay._overlay.on('show', function() {
+                overlay._overlay.off('show').on('show', function() {
                     overlay.iframe.stretch();
                 });
-                overlay._overlay.on('hidden', function() {
+                overlay._overlay.off('hidden').on('hidden', function(e) {
                     self.el.removeClass('tile-being-edited');
                     overlay.iframe.shrink();
                 });
 
-                $("input[name='buttons.save']", overlay.footer).on('click', function(e) {
+                $("input[name='buttons.save']", overlay.footer)
+                  .off('click')
+                  .on('click', function(e) {
                     var form = $(this).parents('form');
                     e.preventDefault();
                     e.stopPropagation();
@@ -211,7 +213,7 @@
                 });
                 overlay.mask = false;
                 overlay.modal(overlay.options);
-
+                overlay._overlay.ploneInit();
             });
         },
         // }}}

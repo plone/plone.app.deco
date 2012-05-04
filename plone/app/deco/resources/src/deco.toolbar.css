@@ -1,5 +1,5 @@
 
-.deco-tiletypes {
+.deco-toolbar {
   padding: 1em;
   background: #EEEEEE;
   border-color: #D5D5D5;
@@ -7,7 +7,7 @@
   border-width: 0 0 1px;
   box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
 }
-.deco-tiletypes > ul {
+.deco-toolbar > ul {
   margin: 0;
 }
 
@@ -18,6 +18,12 @@
   display: none; 
 }
 
+#deco-toolbar-save {
+  margin: 1em;
+}
+#deco-toolbar-save:hover {
+  background-color: #0055CC;
+}
 
 .icon-tiletype-plone-app-imagetile,
 .icon-tiletype-plone-app-texttile,

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <html>
 <head>
@@ -8,7 +9,14 @@
 </head>
 <body>
 
-  <div class="deco-tiletypes">
+  <div class="deco-toolbar">
+
+    <ul class="nav nav-pills pull-right">
+      <li class="pull-right">
+        <a class="btn btn-primary btn-large" href="#"
+           id="deco-toolbar-save">Save</a>
+      </li>
+    </ul>
 
     <ul class="nav nav-pills">
       <li tal:repeat="tile view/tiles">
