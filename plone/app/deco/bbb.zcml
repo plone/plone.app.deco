@@ -14,7 +14,7 @@
         />
 
     <genericsetup:registerProfile
-        name="bbb"
+        name="zbbb"
         title="Deco - Compatibility with Plone 4"
         description="Performs backwards compatibility migrations"
         directory="profiles/bbb"

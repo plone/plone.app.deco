@@ -5,6 +5,16 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
+<!-- GS profile -->
+    <genericsetup:registerProfile
+        name="default"
+        title="Deco"
+        description="The Deco visual layout editor"
+        directory="profiles/default"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
     <include package="plone.app.blocks" />
     <include package="plone.app.registry" />
     <include package="plone.app.tiles" />
@@ -43,16 +53,6 @@
         class=".toolbar.DecoToolbarTile"
         template="toolbar.pt"
         for="*"
-        />
-
-    <!-- GS profile -->
-    <genericsetup:registerProfile
-        name="default"
-        title="Deco"
-        description="The Deco visual layout editor"
-        directory="profiles/default"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
 </configure>
