@@ -2,6 +2,7 @@ from Acquisition import aq_inner
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.security import checkPermission
+from plone.memoize.instance import memoize
 from plone.app.blocks import utils
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileDataManager

@@ -4,7 +4,7 @@
     <stylesheet
         cacheable="False" compression="safe" cookable="True"
         enabled="True" bundle="toolbar"
-        id="++resource++plone.app.deco/src/deco.toolbar.css"
+        id="++resource++plone.app.deco/src/deco.css"
         />
 
 </object>

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-  <div class="deco-toolbar">
+  <div id="deco-toolbar" style="display:none;">
 
     <ul class="nav nav-pills pull-right">
       <li class="pull-right">
@@ -23,24 +23,20 @@
 
         <div class="deco-tile" tal:attributes="data-tiletype tile/url">
 
-          <div class="tile-title" style="display: none;" tal:content="tile/title"></div>
-          <div class="tile-description" style="display: none;" tal:content="tile/description"></div>
-
-          <a href="#" class="btn-tile-add" rel="tooltip"
-              tal:attributes="
-                title tile/description;
-                href string:${view/context_url}/@@${tile/name};">
+          <a href="#" class="deco-tile-addbutton" rel="tooltip"
+              tal:attributes="title tile/description;
+                  href string:${view/context_url}/@@${tile/name};">
             <i tal:attributes="class python:'icon-tiletype-' + tile['name'].replace('.', '-')"></i>
             <span tal:content="tile/title">Title</span>
           </a>
 
-          <a class="btn-tile-edit btn" style="display:none">
+          <a class="deco-tile-edit btn" style="display:none">
             <span i18:translate="">Edit</span>
           </a>
 
           <div class="deco-tile-form" style="display:none;" tal:content="structure tile/form" />
 
-          <div class="deco-tile-content" style="display: none;"></div>
+          <div class="deco-tile-view" style="display: none;"></div>
 
         </div>
 

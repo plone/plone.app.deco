@@ -17,9 +17,6 @@ class DecoToolbarViewlet(ViewletBase):
 
         if ILayoutAware.providedBy(self.context):
             return u'<div style="display:none;" ' + \
-                    u'data-iframe="deco-toolbar" ' + \
-                    u'data-iframe-target="#plone-toolbar" ' + \
-                    u'>%s</div>' % (tile_body)
+                    u'data-iframe="toolbar">%s</div>' % (tile_body)
         else:
             return u''
-

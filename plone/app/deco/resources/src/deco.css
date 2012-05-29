@@ -1,20 +1,26 @@
 
-.deco-toolbar {
+#deco-toolbar {
+  height: 62px;
   padding: 1em;
   background: #EEEEEE;
   border-color: #D5D5D5;
   border-radius: 0 0 0 0;
   border-width: 0 0 1px;
   box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
+
 }
-.deco-toolbar > ul {
+#deco-toolbar > ul {
   margin: 0;
 }
 
-.btn-tile-add {
+.deco-tile-title,
+.deco-tile-description {
+  display: none;
+}
+.deco-tile-addbutton {
   padding: 0;
 }
-.btn-tile-add > span {
+.deco-tile-addbutton > span {
   display: none; 
 }
 
@@ -26,8 +32,7 @@
 }
 
 .icon-tiletype-plone-app-imagetile,
-.icon-tiletype-plone-app-texttile,
-.icon-tiletype-turnkey-publicationstile {
+.icon-tiletype-plone-app-texttile {
   display: block;
   width: 52px;
   height: 52px;
@@ -37,8 +42,7 @@
 
 }
 .icon-tiletype-plone-app-imagetile:hover,
-.icon-tiletype-plone-app-texttile:hover,
-.icon-tiletype-turnkey-publicationstile:hover {
+.icon-tiletype-plone-app-texttile:hover {
   border-color: #999999;
 }
 
@@ -47,7 +51,4 @@
 }
 .icon-tiletype-plone-app-imagetile {
   background-position: -52px 0;
-}
-.icon-tiletype-turnkey-publicationstile {
-  background-position: -104px 0;    
 }
