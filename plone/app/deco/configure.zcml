@@ -5,7 +5,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
-<!-- GS profile -->
+    <!-- GS profile -->
     <genericsetup:registerProfile
         name="default"
         title="Deco"
@@ -50,7 +50,6 @@
         title="Plone deco toolbar"
         permission="plone.ViewToolbar"
         add_permission="plone.AddToolbar"
-        class=".toolbar.DecoToolbarTile"
         template="toolbar.pt"
         for="*"
         />

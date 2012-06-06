@@ -18,7 +18,11 @@
       </li>
     </ul>
 
-    <ul class="nav nav-pills">
+    <tal:tiletypes define="view python:context.restrictedTraverse('@@add-tile')">
+      <metal:block use-macro="context/@@add-tile/macros/tiletypes" />
+    </tal:tiletypes>
+
+    <!--ul class="nav nav-pills">
       <li tal:repeat="tile view/tiles">
 
         <div class="deco-tile" tal:attributes="data-tiletype tile/url">
@@ -41,7 +45,7 @@
         </div>
 
       </li>
-    </ul>
+    </ul-->
 
   </div>
 
