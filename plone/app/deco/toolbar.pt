@@ -22,31 +22,6 @@
       <metal:block use-macro="context/@@add-tile/macros/tiletypes" />
     </tal:tiletypes>
 
-    <!--ul class="nav nav-pills">
-      <li tal:repeat="tile view/tiles">
-
-        <div class="deco-tile" tal:attributes="data-tiletype tile/url">
-
-          <a href="#" class="deco-tile-addbutton" rel="tooltip"
-              tal:attributes="title tile/description;
-                  href string:${view/context_url}/@@${tile/name};">
-            <i tal:attributes="class python:'icon-tiletype-' + tile['name'].replace('.', '-')"></i>
-            <span tal:content="tile/title">Title</span>
-          </a>
-
-          <a class="deco-tile-edit btn" style="display:none">
-            <span i18:translate="">Edit</span>
-          </a>
-
-          <div class="deco-tile-form" style="display:none;" tal:content="structure tile/form" />
-
-          <div class="deco-tile-view" style="display: none;"></div>
-
-        </div>
-
-      </li>
-    </ul-->
-
   </div>
 
 </body>

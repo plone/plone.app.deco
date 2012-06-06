@@ -13,17 +13,6 @@
   margin: 0;
 }
 
-.deco-tile-title,
-.deco-tile-description {
-  display: none;
-}
-.deco-tile-addbutton {
-  padding: 0;
-}
-.deco-tile-addbutton > span {
-  display: none; 
-}
-
 #deco-toolbar-save {
   margin: 1em;
 }
@@ -31,24 +20,17 @@
   background-color: #0055CC;
 }
 
-.icon-tiletype-plone-app-imagetile,
-.icon-tiletype-plone-app-texttile {
-  display: block;
-  width: 52px;
-  height: 52px;
-  border-radius: 2px;
-  border: 2px solid transparent;
-  background: url("++resource++plone.app.deco/tile-icons.png") no-repeat scroll 0 0 transparent;
-
-}
-.icon-tiletype-plone-app-imagetile:hover,
-.icon-tiletype-plone-app-texttile:hover {
-  border-color: #999999;
+#deco-toolbar .field > label,
+#deco-toolbar .formControls {
+  display: none;    
 }
 
-.icon-tiletype-plone-app-texttile {
-  background-position:  0 0;
-}
-.icon-tiletype-plone-app-imagetile {
-  background-position: -52px 0;
+#deco-toolbar .tiletype {
+  border: 1px solid #CCCCCC;
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  cursor: -moz-grab;
+  height: 40px;
+  width: 40px;
+  margin: 0.5em;
 }
