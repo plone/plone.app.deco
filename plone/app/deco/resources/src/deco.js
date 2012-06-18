@@ -1,10 +1,10 @@
-//
+// TODO: write description
 // This script is used to create toolbar for deco, where all available tiles
-// are listed. It depends on iframize.js and deco.js.
+// are listed. It depends on TODO: list dependencies.
 //
 //
-// @author Rob Gietema, Rok Garbas
-// @version 0.1
+// @author Rok Garbas
+// @version 1.0
 // @licstart  The following is the entire license notice for the JavaScript
 //            code in this page.
 //
@@ -39,26 +39,10 @@
 // # Namespace
 $.deco = $.deco || {};
 
-// # Tiles (on_load, on_save
-$.deco.tiletypes = {};
-$.deco.tiletypes['plone.app.texttile'] = {
-  on_load: function(tile, overlay) {
-    $('textarea[name="plone.app.texttile.text"]', overlay.el).val(
-        tile.el_view.html());
-  },
-  on_save: function(tile, overlay) {
-    tile.el_view.html($('textarea[name="plone.app.texttile.text"]',
-        overlay.el).val());
-  }
-};
-$.deco.tiletypes['plone.app.imagetile'] = {
-};
-
-// drop tolerance
+// # Drop tolerance
 $.drop({
   tolerance: function(e, proxy, target ) {
     var drop = $.event.special.drop;
-
     if ((drop.contains(target, [e.pageX, e.pageY +
           $(window.parent.document).scrollTop()]) === true) &&
         (target.left < e.pageX) && (target.right > e.pageX)) {
@@ -67,133 +51,12 @@ $.drop({
     return 0;
   }
 });
-//}});
-// Helper functions {{{
-function create(name, prototype) {
-  var Base = {
-    init: function(el, el_parent) {
-      var self = this;
-      self.el = el;
-      self.activated = false;
-      self.el_parent = el_parent || el;
 
-      // initialize items
-      self.items(function(el) {
-        $(el)[$.camelCase('deco-' + self.items_name)]();
-      });
-
-      // TODO: save deco layout {{{
-      //$('#deco-toolbar-save', self.el).on('click', function(e) {
-      //  e.preventDefault();
-      //  e.stopPropagation();
-
-      //  var overlay = $('#plone-action-edit > a').ploneOverlay();
-      //  $("textarea[name='form.widgets.ILayoutAware.content']",
-      //    overlay._overlay).val(
-      //      '<!DOCTYPE html>' +
-      //      '<html lang="en" data-layout="./@@page-site-layout">' +
-      //      '<body>' +
-      //      '<div data-panel="content">' +
-      //        window.parent.$("[data-panel='content']").html() +
-      //      '</div>' +
-      //      '</body>' +
-      //      '</html>');
-
-      //  $('form', overlay._overlay).first().on('submit', function(e) {
-      //    e.preventDefault();
-      //    e.stopPropagation();
-      //    $(this).ajaxSubmit({
-      //      beforeSubmit: function(formData, jqForm, options) {
-      //        console.log('before');
-      //      },
-      //      success: function(responseText, statusText, xhr, $form) {
-      //        console.log('closing');
-      //      }
-      //    });
-      //  });
-      //  $("[name='form.buttons.save']", overlay._overlay).submit();
-      //});
-      // }}}
-    },
-    items: function(callback) {
-      $(this.items_selector, this.el_parent).each(
-          function(i, el) { callback(el); });
-    },
-    activate: function() {
-      var self = this;
-
-      if (self.activated) {
-        return;
-      }
-
-      // activate items
-      self.items(function(el) {
-        $(el)[$.camelCase('deco-' + self.items_name)]().activate();
-      });
-
-      self.activated = true;
-      $(document).trigger(name + '.activated', [ self ]);
-    },
-    deactivate: function() {
-      var self = this;
-
-      if (!self.activated) {
-        return;
-      }
-
-      // activate items
-      self.items(function(el) {
-        $(el)[$.camelCase('deco-' + self.items_name)]().deactivate();
-      });
-
-      self.activated = false;
-      $(document).trigger(name + '.deactivated', [ self ]);
-    }
-  };
-  var Func = function(el, el_parent) { this.init(el, el_parent); };
-  Func.prototype = $.extend({}, Base, prototype || {});
-  Func.prototype._base = Base;
-
-  // # jQuery integration
-  $.fn[$.camelCase(name)] = function() {
-    var el = $(this),
-        data = el.data(name);
-    if (data === undefined) {
-      data = new Func(el);
-      el.data(name, data);
-    }
-    return data;
-  };
-  return Func;
-}
-// TODO: add description
-$.deco.create_proxy_tile = function() {
-  return $('<div/>').css({
-    'opacity': 0.75,
-    'z-index': 1000,
-    'position': 'absolute',
-    'border': '1px solid #89B',
-    'background': '#BCE',
-    'height': '58px',
-    'width': '258px'
-    });
-};
-// TODO: add description
-$.deco.create_preview_tile = function() {
-  return $('<div/>').addClass('tile-preview').css({
-    'cursor': 'move',
-    'width': '100%',
-    'height': '50px',
-    'background': '#BCE',
-    'border': '1px solid #89B',
-    'border-radius': '3px'
-    });
-};
-// TODO: add description
-$.deco.drop_tile = function(e, dd) {
+// # Drop Tile Helper
+$.deco.dropTile = function(e, dd) {
   var tile_el = $(dd.drag),
       preview_tile = $('.tile-preview', window.parent.document),
-      dragging_from_toolbar = $(dd.drag).attr('data-tiletype') !== undefined;
+      dragging_from_toolbar = $(dd.drag).attr('data-tile') === undefined;
 
   // only drop tile if there is preview tile somewhere
   if (preview_tile.size() > 0) {
@@ -202,9 +65,10 @@ $.deco.drop_tile = function(e, dd) {
     // a tile button and remove all button specific data.
     if (dragging_from_toolbar) {
       tile_el = tile_el.clone();
-      tile_el.attr('data-tile', tile_el.attr('data-tiletype'));
-      tile_el.removeAttr('data-tiletype').removeAttr('style');
-      tile_el.find('.deco-tile-addbutton').remove();
+      tile_el.attr('class', 'deco-tile');
+      tile_el.attr('data-tile', '');
+      tile_el.html('');
+      tile_el.append($('<div/>').addClass('deco-tile-content'));
     } else {
       tile_el.show();
     }
@@ -215,120 +79,229 @@ $.deco.drop_tile = function(e, dd) {
 
     // this initializes tile again if not yet initialized
     var tile = tile_el.decoTile();
-    tile.activate();
+    tile.show();
 
     // if we moved tile from toolbar we have to show its content part
     // which was hidden while being in toolbar
     if (dragging_from_toolbar) {
-      tile.el_view.show();
-      tile.el_button.trigger('click');
+      tile._editButton.trigger('click');
     }
   }
 };
-// }}}
+
+// # Helper methods
+$.deco.getTiles = function(el, callback) {
+  $('.deco-tile', el).each(function() {
+    callback($(this).decoTile());
+  });
+};
+$.deco.getColumns = function(el, callback) {
+  $('.deco-column', el).each(function() {
+    callback($(this).decoColumn());
+  });
+};
+$.deco.getRows = function(el, callback) {
+  $('.deco-row', el).each(function() {
+    callback($(this).decoRow());
+  });
+};
+$.deco.getPanels = function(el, callback) {
+  $('[data-panel]', el).each(function() {
+    callback($(this).decoPanel());
+  });
+};
+$.deco.getTileTypes = function(el, callback) {
+  $('[data-tiletype]', el).each(function() {
+    callback($(this).decoTile());
+  });
+};
+
+// Default TileType
+$.deco.TileType = function(tile) {
+  var self = this;
+  self.tile = tile;
+  self.name = tile.el.attr('data-tiletype');
+};
+$.deco.TileType.prototype = {
+  createAddTileUrl: function() {
+    return this.tile.el.attr('data-tile') || '@@add-tile/' + this.name;
+  },
+  createEditButton: function() {
+    var button = $('<a/>').html('Edit');
+    button.css("cssText", "color: #333333 !important;");
+    button.css({
+      'cursor': 'pointer',
+      'z-index': '700',
+      'position': 'absolute',
+      'top': '0.3em',
+      'right': '0.5em',
+
+      'text-align': 'center',
+      'text-shadow': '0 1px 1px rgba(255, 255, 255, 0.75)',
+      'font-size': '13px',
+      'vertical-align': 'middle',
+
+      'background-color': '#f5f5f5',
+      'background-image': 'linear-gradient(top, #ffffff, #e6e6e6)',
+      'background-repeat': 'repeat-x',
+      '-webkit-box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
+      '-moz-box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
+      'box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
+
+      'line-height': '18px',
+      'margin-bottom': '0',
+      'padding': '4px 10px 4px',
+      'border': '1px solid #cccccc',
+      'border-color': '#e6e6e6 #e6e6e6 #bfbfbf',
+      'border-bottom-color': '#b3b3b3',
+      '-webkit-border-radius': '4px',
+      '-moz-border-radius': '4px',
+      'border-radius': '4px'
+    });
+    return button;
+  },
+  createProxy: function() {
+    return $('<div/>').css({
+      'opacity': 0.75,
+      'z-index': 1000,
+      'position': 'absolute',
+      'border': '1px solid #89B',
+      'background': '#BCE',
+      'height': '58px',
+      'width': '258px'
+      });
+  },
+  createPreview: function() {
+    return $('<div/>').css({
+      'cursor': 'move',
+      'width': '100%',
+      'height': '50px',
+      'background': '#BCE',
+      'border': '1px solid #89B',
+      'border-radius': '3px'
+      });
+  }
+};
+
 
 // # Tile
-$.deco.DecoTile = create('deco-tile', {
-  init: function(el, el_parent) {
+$.deco.Tile = function(el) {
+  var self = this,
+      TileType = $.deco.tiletype[el.attr('data-tiletype')] || $.deco.TileType;
+
+  self.el = el;
+  self.tiletype = new TileType(self);
+
+  // ## initialize tile's editform with ploneOverlay
+  self.overlay = new $.plone.overlay.Overlay({
+    url: el.attr('data-tile') || self.tiletype.createAddTileUrl(),
+    form: 'form#edit_tile,form#add_tile',
+    save: function(response) {
+      self.overlay.hide();
+    }
+  });
+
+};
+$.deco.Tile.prototype = {
+  show: function() {
     var self = this;
 
-    self.el_view= $('> .deco-tile-view', el);
-    self.el_form = $('> .deco-tile-form', el);
-    self.el_button = $('> .deco-tile-edit', el);
+    // ## trigger deco.tile.show event
+    $(document).trigger('deco.tile.show', [self]);
 
-    var tiletype_name = el.attr('data-tiletype') || el.attr('data-tile');
-    self.tiletype = $.deco.tiletypes[tiletype_name.split('?')[0].split('@@')[1]];
+    // ## store style of tile to restore it later
+    self._originalStyles = self.el.attr('style');
 
-    self._base.init.apply(self, [el]);
-  },
-  activate: function() {
-    var self = this, waiting = false;
-
+    // ## make sure that cursor is in 'move' state when deco editor is on
     self.el.css({ 'cursor': 'move', 'position': 'relative' });
 
+    // ## for tiles that are already in grid, show edit button on hover
+    if (self.el.attr('data-tile') !== undefined) {
 
-    if (self.el.attr('data-tiletype') === undefined) {
-      // TODO: 
+      // TODO:  double click should also trigger click on editButton
       //self.el_view.off('dblclick').on('dblclick', function(e) {
-      //    self.el_button.trigger('click');
+      //    self.tiletype.editButton.trigger('click');
       //  });
 
-      self.el_button.css({
-        'color': '#333',
-        'cursor': 'pointer',
-        'z-index': '700',
-        'padding': '0.2em 0.4em',
-        'position': 'absolute',
-        'top': '0.3em',
-        'right': '0.5em',
-        'border': '1px solid #333',
-        'border-radius': '0.3em',
-        'background': '#eee'
-      });
-      $(':hover', self.el_button).css({ 'color': '#333' });
+      // TODO: use tiletype and create edit button
 
-      self.el_button.off('hover').on('hover', function(e) {
-        if (self.el_button.is(":visible")) {
-          self.el_button.hide();
+      var editButton = self._editButton;
+      if (editButton === undefined) {
+        editButton = self.tiletype.createEditButton();
+        editButton.hide().appendTo(self.el);
+        self._editButton = editButton;
+      }
+
+      editButton.off('hover').on('hover', function(e) {
+        if (editButton.is(":visible")) {
+          editButton.show();
         } else {
-          self.el_button.show();
+          editButton.hide();
         }
       });
-      self.el_view.off('hover').on('hover', function(e) {
-        if (self.el_button.is(":visible")) {
-          self.el_button.hide();
+      self.el.off('hover').on('hover', function(e) {
+        if (editButton.is(":visible")) {
+          editButton.hide();
         } else {
-          self.el_button.show();
+          editButton.show();
         }
       });
-
-      $(self.el_button, window.parent.document).on('click', function(e) {
+      $(editButton, window.parent.document).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        self.overlay.show();
       });
     }
 
     // ## draginit {{{
     //
     // This event is fired when a mouse button is pressed (mousedown)
-    // within the bound element. The handler can return false to cancel the
-    // rest of the drag interaction events, or can return elements to use
-    // as the drag targets for the rest of the drag interaction. This event
-    // will not fire unless the options "not", "handle", and "which" are
-    // all satisfied.
-    self.el.off('draginit').drag('init', function(e, dd) {
-      if ($(e.target).hasClass('deco-tile-edit') ||
-          $(e.target).parents('.deco-tile-edit').size() !== 0) {
-        return false;
-      }
-      $.plone.toolbar.iframe_stretch();
-    });
+    //   within the bound element. The handler can return false to cancel the
+    //   rest of the drag interaction events, or can return elements to use
+    //   as the drag targets for the rest of the drag interaction. This event
+    //   will not fire unless the options "not", "handle", and "which" are
+    //   all satisfied.
+    //
+    // Don't start dragging if tile is being edited.
+    // Stretch toolbar's iframe since dragging is being done inside iframe
+    //
+    //self.el.off('draginit').drag('init', function(e, dd) {
+    //  if ($(e.target).hasClass('tile-editing') ||
+    //      $(e.target).parents('.tile-editing').size() !== 0) {
+    //    return false;
+    //  }
+    //});
     // }}}
 
     // ## dragstart {{{
     //
     // This event fires after "draginit", once the mouse has moved
-    // a minimum "distance", which may be specificed in the options. The
-    // handler can return false to cancel the rest of the drag interaction
-    // events, or can return an element to set as the drag proxy for the
-    // rest of the drag interaction. If dragging multiple elements (from
-    // "draginit"), this event will fire uniquely on each element.
+    //   a minimum "distance", which may be specificed in the options. The
+    //   handler can return false to cancel the rest of the drag interaction
+    //   events, or can return an element to set as the drag proxy for the
+    //   rest of the drag interaction. If dragging multiple elements (from
+    //   "draginit"), this event will fire uniquely on each element.
+    //
+    // Don't dragg if tile is being edited.
+    //
     self.el.off('dragstart').drag('start', function(e, dd) {
+
       // tile is being edited, which means dblclick click happend and we
       // want to avoid dragging. return false will cancel rest of drag
       // interaction.
-      if ($(dd.drag).hasClass('tile-editing') || waiting === true) {
+      if ($(dd.drag).hasClass('tile-editing')) {
         return false;
       }
+      $.plone.toolbar.iframe_stretch();
 
       // TODO: check with setTimeout if its double click
 
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
-      var proxy = $.deco.create_proxy_tile().appendTo($('body'));
+      var proxy = self.tiletype.createProxy().appendTo($('body'));
 
       // if we are not dragging new tile from toolbar
-      if ($(dd.drag).attr('data-tiletype') === undefined) {
+      if ($(dd.drag).attr('data-tile') !== undefined) {
 
         // TODO: add description
         proxy.append($(dd.drag).clone());
@@ -395,7 +368,7 @@ $.deco.DecoTile = create('deco-tile', {
           var column = $(this).decoColumn(),
               column_items = $(column.items_selector, column.el);
           if (column_items.size() === 0) {
-            column.el.append($.deco.create_preview_tile());
+            column.el.append(self.tiletype.createPreview().addClass('tile-preview'));
 
           // calculate position if there are tiles already
           // existing
@@ -429,7 +402,7 @@ $.deco.DecoTile = create('deco-tile', {
             // a mouse) in upper half of tile we'll place tile
             // above tile we currently hovering and if below we'll
             // place it below this tile.
-            drop_el[drop_method]($.deco.create_preview_tile());
+            drop_el[drop_method](self.tiletype.createPreview().addClass('tile-preview'));
           }
         });
       }
@@ -455,177 +428,196 @@ $.deco.DecoTile = create('deco-tile', {
       // there is already existing tile-preview
       if ($(dd.drop).size() === 0 &&
         $('.tile-preview', window.parent.document).size() === 1) {
-        $.deco.drop_tile(e, dd);
+        $.deco.dropTile(e, dd);
       }
     });
     // }}}
 
-    var overlay= self.el_button.ploneOverlay({
-        loaded_data: self.el_form.clone()
-      });
-    $.plone.overlay.bootstrap_overlay_transform(overlay.el, overlay.loaded_data);
-    overlay.el.off('hide').off('hidden').off('show').off('shown')
-      .on('show', function(e) {
-          $.plone.toolbar.iframe_stretch();
-          overlay.el.addClass('tile-editing');
-          if (self.tiletype.on_load) {
-            self.tiletype.on_load(self, overlay);
-          }
-        })
-      .on('hidden', function(e) {
-          overlay.el.removeClass('tile-editing');
-          $.plone.toolbar.iframe_shrink();
-        });
-    $("input[name='buttons.save']", overlay.el).off('click')
-      .on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (self.tiletype.on_save) {
-          self.tiletype.on_save(self, overlay);
-        }
-        // TODO: persist tile by submitting form, do this async
-        overlay.el.modal('hide');
-      });
-    //var wysiwyg = $('#plone-app-texttile-text', overlay.el);
-    //if (wysiwyg.size() !== 0) {
-    //  wysiwyg.each(function(i, el) {
-    //    var id = 'wysiwyg-' + Math.floor(Math.random() * 1000000);
-    //    $(el).attr('id', id);
-    //    $(el).attr('title', '');
-    //    var config = new TinyMCEConfig(id);
-    //    config.init();
-    //  });
-    //}
-
-    self._base.activate.call(self);
+    // ## trigger deco.tile.shown event
+    $(document).trigger('deco.tile.shown', [self]);
   },
-  deactivate: function() {
+  hide: function() {
     var self = this;
 
-    // unregister from all drag event that we
-    $.each(['draginit','dragstart','drag','dragend'],
-      function(i, type) { self.el.off(type);
-    });
+    // trigger deco.tile.hide event
+    $(document).trigger('deco.tile.hide', [self]);
 
-    // remove styles from element if we added any
-    self.el.removeAttr('style');
+    // restore original styles
+    self.el.attr('style', self._originalStyles);
 
-    // disable dblclick
-    self.el_view.off('dblclick');
+    // remove edit button
+    if (self._editButton !== undefined) {
+      self._editButton.remove();
+    }
 
-    self._base.deactivate.call(self);
+    // trigger deco.tile.hidden event
+    $(document).trigger('deco.tile.hidden', [self]);
   }
-});
+};
+
 
 // # Column
-$.deco.DecoColumn = create('deco-column', {
-  items_selector: '[data-tile]:not(.tile-preview)',
-  items_name: 'tile',
-  activate: function() {
+$.deco.Column = function(el) { this.el = el; };
+$.deco.Column.prototype = {
+  show: function() {
     var self = this;
-    self.el.on('drop', $.deco.drop_tile);
-    self._base.activate.call(self);
+
+    // trigger deco.column.show event
+    $(document).trigger('deco.column.show', [self]);
+
+    // create drop place for tiles
+    self.el.on('drop', $.deco.dropTile);
+
+    // show tiles 
+    $.deco.getTiles(self.el, function(item) { item.show(); });
+
+    // trigger deco.column.shown event
+    $(document).trigger('deco.column.shown', [self]);
   },
-  deactivate: function() {
+  hide: function() {
     var self = this;
 
-    // unbind drop events
-    $.each(['dropinit','dropstart','drop','dropend'],
-      function(i, type) { self.el.off( type );
-    });
+    // trigger deco.column.hide event
+    $(document).trigger('deco.column.hide', [self]);
 
-    self._base.deactivate.call(self);
+    // hide tiles
+    $.deco.getTiles(self.el, function(item) { item.hide(); });
+
+    // trigger deco.column.hidden event
+    $(document).trigger('deco.column.hidden', [self]);
   }
-});
+};
+
 
 // # Row
-$.deco.DecoRow = create('deco-row', {
-  items_selector: '.deco-column',
-  items_name: 'column'
-});
+$.deco.Row = function(el) { this.el = el; };
+$.deco.Row.prototype = {
+  show: function() {
+    var self = this;
+
+    // trigger deco.row.show event
+    $(document).trigger('deco.row.show', [self]);
+
+    // show column
+    $.deco.getColumns(self.el, function(item) { item.show(); });
+
+    // trigger deco.row.shown event
+    $(document).trigger('deco.row.shown', [self]);
+  },
+  hide: function() {
+    var self = this;
+
+    // trigger deco.row.hide event
+    $(document).trigger('deco.row.hide', [self]);
+
+    // hide column
+    $.deco.getColumns(self.el, function(item) { item.hide(); });
+
+    // trigger deco.row.hidden event
+    $(document).trigger('deco.row.hidden', [self]);
+  }
+};
+
 
 // # Panel
-$.deco.DecoPanel = create('deco-panel', {
-  items_selector: '.deco-row',
-  items_name: 'row'
-});
+$.deco.Panel = function(el) { this.el = el; };
+$.deco.Panel.prototype = {
+  show: function() {
+    var self = this;
+
+    // trigger deco.panel.show event
+    $(document).trigger('deco.panel.show', [self]);
+
+    // show rows 
+    $.deco.getRows(self.el, function(item) { item.show(); });
+
+    // trigger deco.panel.shown event
+    $(document).trigger('deco.panel.shown', [self]);
+  },
+  hide: function() {
+    var self = this;
+
+    // trigger deco.panel.hide event
+    $(document).trigger('deco.panel.hide', [self]);
+
+    // hide rows 
+    $.deco.getRows(self.el, function(item) { item.hide(); });
+
+    // trigger deco.panel.hidden event
+    $(document).trigger('deco.panel.hidden', [self]);
+  }
+};
+
 
 // # Toolbar
-$.deco.DecoToolbar = create('deco-toolbar', {
-  items_selector: '[data-panel]',
-  items_name: 'panel',
-  init: function(el, el_parent) {
+$.deco.Toolbar = function(el) { this.el = el; };
+$.deco.Toolbar.prototype = {
+  show: function() {
     var self = this;
+    self._hidden = false;
 
-    // initialize tiletypes
-    self.tiletypes = $('[data-tiletype]', el);
-    self.tiletypes.each(function() {
-      $(this).decoTile();
-      $('[rel="tooltip"]', this).tooltip({ placement: 'right' });
-    });
+    // trigger deco.toolbar.show event
+    $(document).trigger('deco.toolbar.show', [self]);
 
-    self._base.init.apply(self, [el, window.parent.document]);
-  },
-  activate: function() {
-    var self = this;
-    self.tiletypes.each(function() { $(this).decoTile().activate(); });
-    self._base.activate.call(self);
+    // show toolbar tiles
+    $.deco.getTileTypes(self.el, function(item) { item.show(); });
+
+    // show panels
+    $.deco.getPanels(window.parent.document, function(item) { item.show(); });
+
+    // show toolbar
     $.plone.toolbar.iframe_stretch();
     self.el.slideDown('slow', function() {
       $.plone.toolbar.iframe_state.height = $('body').height();
       $.plone.toolbar.iframe_shrink();
     });
+
+    // trigger deco.toolbar.shown event
+    $(document).trigger('deco.toolbar.shown', [self]);
   },
-  deactivate: function() {
+  hide: function() {
     var self = this;
-    self.tiletypes.each(function() { $(this).decoTile().deactivate(); });
-    self._base.deactivate.call(self);
+    self._hidden = true;
+
+    // trigger deco.toolbar.hide event
+    $(document).trigger('deco.toolbar.hide', [self]);
+
+    // hide toolbar tiles
+    $.deco.getTileTypes(self.el, function(item) { item.hide(); });
+
+    // hide panels
+    $.deco.getPanels(self.el, function(item) { item.hide(); });
+
+    // hide toolbar
     self.el.slideUp('slow', function() {
       $.plone.toolbar.iframe_shrink();
     });
+    // trigger deco.toolbar.hidden event
+    $(document).trigger('deco.toolbar.hidden', [self]);
+  },
+  toggle: function() {
+    var self = this;
+    if (self._hidden === false) {
+      self.hide();
+    } else {
+      self.show();
+    }
   }
+};
+
+
+// jQuery integration for Toolbar, 
+$.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {
+  $.fn['deco' + name] = function() {
+    var el = $(this),
+        dataName = 'deco-' + name.toLowerCase(),
+        data = el.data(dataName);
+    if (data === undefined) {
+      data = new $.deco[name](el);
+      el.data(dataName, data);
+    }
+    return data;
+  };
 });
 
-
-// TODO: code below might be extracted to another script {{{
-
-// # Initialize
-$(document).ready(function() {
-  if ($('#deco-toolbar').size() !== 0) {
-    var deco_toolbar = $('#deco-toolbar').decoToolbar();
-    $('#plone-toolbar ul.nav > li#plone-action-deco > a').off()
-      .on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (deco_toolbar.activated === false) {
-          deco_toolbar.activate();
-        } else {
-          deco_toolbar.deactivate();
-        }
-      });
-  }
-});
-
-// Custom theme
-$(document).on('deco-panel.activated', function(e, panel) {
-  $.plone.mask.load();
-  panel.el.css({
-    'width': '100%',
-    'float': 'left',
-    'background': '#FFFFFF',
-    'min-height': '50px',
-    'position': 'relative',
-    'z-index': '450'
-  });
-});
-$(document).on('deco-panel.deactivated', function(e, panel) {
-  $.plone.mask.close();
-  panel.el.css({
-    'background': 'transparent',
-    'z-index': 'auto',
-    'min-height': '0'
-  });
-});
-
-// }}}
 }(jQuery));

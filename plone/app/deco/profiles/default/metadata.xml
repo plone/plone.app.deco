@@ -6,6 +6,8 @@
     <dependency>profile-plone.app.toolbar:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
+    <dependency>profile-plone.app.texttile:default</dependency>
+    <dependency>profile-plone.app.imagetile:default</dependency>
     <dependency>profile-plone.app.layoutpage:default</dependency>
     <dependency>profile-plone.app.deco:zbbb</dependency>
   </dependencies>

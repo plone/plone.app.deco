@@ -13,4 +13,8 @@
         enabled="True" inline="False" bundle="deco"
         id="++resource++plone.app.deco/src/deco.js" />
 
+    <javascript cacheable="False" compression="safe" cookable="False"
+        enabled="True" inline="False" bundle="deco"
+        id="++resource++plone.app.deco/src/plone.deco.js" />
+
 </object>

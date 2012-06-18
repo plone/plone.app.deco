@@ -13,11 +13,14 @@
   margin: 0;
 }
 
-#deco-toolbar-save {
+#deco-toolbar > ul > li > a.btn {
   margin: 1em;
 }
 #deco-toolbar-save:hover {
-  background-color: #0055CC;
+  background: #0055CC;
+}
+#deco-toolbar-cancel:hover {
+  background: #FFFFFF;
 }
 
 #deco-toolbar .field > label,
