@@ -1,12 +1,19 @@
-// TODO: write description
-// This script is used to create toolbar for deco, where all available tiles
-// are listed. It depends on TODO: list dependencies.
+// Deco Layout Editor
+// ==================
 //
+// Author: Rok Garbas
+// Contact: rok@garbas.si
+// Version: 1.0
+// Depends:
+//    - http://code.jquery.com/jquery.js
+//    - https://github.com/threedubmedia/jquery.threedubmedia/blob/master/event.drag/jquery.event.drag.js
+//    - https://github.com/threedubmedia/jquery.threedubmedia/blob/master/event.drop/jquery.event.drop.js
+// Description: 
+//    Initialize toolbar for deco, where all available tiles are listed.
+//    Initialize Deco Layout Editor for each element defining `data-panel`
+//    attribute.
 //
-// @author Rok Garbas
-// @version 1.0
-// @licstart  The following is the entire license notice for the JavaScript
-//            code in this page.
+// License:
 //
 // Copyright (C) 2010 Plone Foundation
 //
@@ -22,9 +29,6 @@
 // You should have received a copy of the GNU General Public License along with
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
-// @licend  The above is the entire license notice for the JavaScript code in
-//          this page.
 //
 
 /*jshint bitwise:true, curly:true, eqeqeq:true, immed:true, latedef:true,
