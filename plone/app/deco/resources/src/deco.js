@@ -5,9 +5,10 @@
 // Contact: rok@garbas.si
 // Version: 1.0
 // Depends:
-//    - http://code.jquery.com/jquery.js
-//    - https://github.com/threedubmedia/jquery.threedubmedia/blob/master/event.drag/jquery.event.drag.js
-//    - https://github.com/threedubmedia/jquery.threedubmedia/blob/master/event.drop/jquery.event.drop.js
+//    ++resource++plone.app.jquery.js
+//    ++resource++plone.app.deco/lib/jquery.event.drag.js
+//    ++resource++plone.app.deco/lib/jquery.event.drop.js
+//    ++resource=+plone.app.tiles/src/plone.tiletype.js
 // Description: 
 //    Initialize toolbar for deco, where all available tiles are listed.
 //    Initialize Deco Layout Editor for each element defining `data-panel`
@@ -56,42 +57,6 @@ $.drop({
   }
 });
 
-// # Drop Tile Helper
-$.deco.dropTile = function(e, dd) {
-  var tile_el = $(dd.drag),
-      preview_tile = $('.tile-preview', window.parent.document),
-      dragging_from_toolbar = $(dd.drag).attr('data-tile') === undefined;
-
-  // only drop tile if there is preview tile somewhere
-  if (preview_tile.size() > 0) {
-
-    // if we drag from tile from toolbar we should provide a copy of
-    // a tile button and remove all button specific data.
-    if (dragging_from_toolbar) {
-      tile_el = tile_el.clone();
-      tile_el.attr('class', 'deco-tile');
-      tile_el.attr('data-tile', '');
-      tile_el.html('');
-      tile_el.append($('<div/>').addClass('deco-tile-content'));
-    } else {
-      tile_el.show();
-    }
-
-    // move tile after preview tile and remove preview tile
-    preview_tile.after(tile_el);
-    preview_tile.remove();
-
-    // this initializes tile again if not yet initialized
-    var tile = tile_el.decoTile();
-    tile.show();
-
-    // if we moved tile from toolbar we have to show its content part
-    // which was hidden while being in toolbar
-    if (dragging_from_toolbar) {
-      tile._editButton.trigger('click');
-    }
-  }
-};
 
 // # Helper methods
 $.deco.getTiles = function(el, callback) {
@@ -114,102 +79,102 @@ $.deco.getPanels = function(el, callback) {
     callback($(this).decoPanel());
   });
 };
-$.deco.getTileTypes = function(el, callback) {
-  $('[data-tiletype]', el).each(function() {
+$.deco.getTileType= function(el, callback) {
+  $('.plone-tiletype', el).each(function() {
     callback($(this).decoTile());
   });
 };
 
-// Default TileType
-$.deco.TileType = function(tile) {
-  var self = this;
-  self.tile = tile;
-  self.name = tile.el.attr('data-tiletype');
-};
-$.deco.TileType.prototype = {
-  createAddTileUrl: function() {
-    return this.tile.el.attr('data-tile') || '@@add-tile/' + this.name;
-  },
-  createEditButton: function() {
-    var button = $('<a/>').html('Edit');
-    button.css("cssText", "color: #333333 !important;");
-    button.css({
-      'cursor': 'pointer',
-      'z-index': '700',
-      'position': 'absolute',
-      'top': '0.3em',
-      'right': '0.5em',
 
-      'text-align': 'center',
-      'text-shadow': '0 1px 1px rgba(255, 255, 255, 0.75)',
-      'font-size': '13px',
-      'vertical-align': 'middle',
+// # Drop Tile
+$.deco.dropTile = function(e, dd) {
+  var tile_el = $(dd.drag),
+      preview_tile = $('.deco-tile-preview', window.parent.document),
+      dragging_from_toolbar = $('[data-tile]', dd.drag).size() === 0;
 
-      'background-color': '#f5f5f5',
-      'background-image': 'linear-gradient(top, #ffffff, #e6e6e6)',
-      'background-repeat': 'repeat-x',
-      '-webkit-box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
-      '-moz-box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
-      'box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)',
+  // only drop tile if there is preview tile somewhere
+  if (preview_tile.size() > 0) {
 
-      'line-height': '18px',
-      'margin-bottom': '0',
-      'padding': '4px 10px 4px',
-      'border': '1px solid #cccccc',
-      'border-color': '#e6e6e6 #e6e6e6 #bfbfbf',
-      'border-bottom-color': '#b3b3b3',
-      '-webkit-border-radius': '4px',
-      '-moz-border-radius': '4px',
-      'border-radius': '4px'
-    });
-    return button;
-  },
-  createProxy: function() {
-    return $('<div/>').css({
-      'opacity': 0.75,
-      'z-index': 1000,
-      'position': 'absolute',
-      'border': '1px solid #89B',
-      'background': '#BCE',
-      'height': '58px',
-      'width': '258px'
-      });
-  },
-  createPreview: function() {
-    return $('<div/>').css({
-      'cursor': 'move',
-      'width': '100%',
-      'height': '50px',
-      'background': '#BCE',
-      'border': '1px solid #89B',
-      'border-radius': '3px'
-      });
+    // if we drag from tile from toolbar we should open add_tile form in an
+    // overlay. when sucessfully saved it should create new tile in deco grid
+    // and remove preview_tile.
+    if (dragging_from_toolbar) {
+      new $.plone.overlay.Overlay({
+        url: $(dd.drag).parents('form').attr('action') + '/' +
+                $('input[name="tiletype"]', dd.drag).attr('value'),
+        form: 'form#edit_tile,form#add_tile',
+        save: function(response, state, xhr, form) {
+          var overlay = this;
+
+          // create new tile, place it after preview_tile and initialize it
+          var tile = $('<div/>')
+            .addClass('deco-tile')
+            .append($('<div/>')
+              .addClass('plone-tile')
+              .attr('data-tile', '@@' +
+                  $('input[name="tiletype"]', dd.drag).attr('value') + '/' +
+                  xhr.getResponseHeader('X-Tile-Uid'))
+              .append(response.html()))
+            .insertAfter(preview_tile)
+            .decoTile();
+          tile.show();
+
+          // remove preview_tile
+          preview_tile.remove();
+
+          // destroy overlay
+          overlay.destroy();
+
+          // save deco layout as well
+          var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
+          decoToolbar._editformDontHideDecoToolbar = true;
+          $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
+
+        },
+        cancel:  function() {
+          var overlay = this;
+
+          // remove preview_tile
+          preview_tile.remove();
+
+          // destroy overlay
+          overlay.destroy();
+        }
+      }).show();
+
+    } else {
+
+      // move tile after preview tile and remove preview tile
+      preview_tile.after(tile_el);
+
+      // remove preview_tile
+      preview_tile.remove();
+
+      // TODO: reinitialize tile and show it
+      //tile_el.show();
+
+    }
   }
 };
 
 
 // # Tile
 $.deco.Tile = function(el) {
-  var self = this,
-      TileType = $.deco.tiletype[el.attr('data-tiletype')] || $.deco.TileType;
-
+  var self = this;
   self.el = el;
-  self.tiletype = new TileType(self);
 
-  // ## initialize tile's editform with ploneOverlay
-  self.overlay = new $.plone.overlay.Overlay({
-    url: el.attr('data-tile') || self.tiletype.createAddTileUrl(),
-    form: 'form#edit_tile,form#add_tile',
-    save: function(response) {
-      self.overlay.hide();
-    }
-  });
+  if ($('[data-tile]', el).size() !== 0) {
+    self.tile = $('[data-tile]', el).ploneTile({ wrapper: el });
+  } else {
+    self.tile = {};
+    self.tile.type = new ($.plone.tiletype.get(
+        $('input[name="tiletype"]', el).attr('value')))();
+  }
 
 };
 $.deco.Tile.prototype = {
   show: function() {
     var self = this;
-
     // ## trigger deco.tile.show event
     $(document).trigger('deco.tile.show', [self]);
 
@@ -217,44 +182,10 @@ $.deco.Tile.prototype = {
     self._originalStyles = self.el.attr('style');
 
     // ## make sure that cursor is in 'move' state when deco editor is on
-    self.el.css({ 'cursor': 'move', 'position': 'relative' });
+    self.el.css({ 'cursor': 'move' });
 
-    // ## for tiles that are already in grid, show edit button on hover
-    if (self.el.attr('data-tile') !== undefined) {
-
-      // TODO:  double click should also trigger click on editButton
-      //self.el_view.off('dblclick').on('dblclick', function(e) {
-      //    self.tiletype.editButton.trigger('click');
-      //  });
-
-      // TODO: use tiletype and create edit button
-
-      var editButton = self._editButton;
-      if (editButton === undefined) {
-        editButton = self.tiletype.createEditButton();
-        editButton.hide().appendTo(self.el);
-        self._editButton = editButton;
-      }
-
-      editButton.off('hover').on('hover', function(e) {
-        if (editButton.is(":visible")) {
-          editButton.show();
-        } else {
-          editButton.hide();
-        }
-      });
-      self.el.off('hover').on('hover', function(e) {
-        if (editButton.is(":visible")) {
-          editButton.hide();
-        } else {
-          editButton.show();
-        }
-      });
-      $(editButton, window.parent.document).on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        self.overlay.show();
-      });
+    if (self.tile.show) {
+      self.tile.show();
     }
 
     // ## draginit {{{
@@ -269,12 +200,19 @@ $.deco.Tile.prototype = {
     // Don't start dragging if tile is being edited.
     // Stretch toolbar's iframe since dragging is being done inside iframe
     //
-    //self.el.off('draginit').drag('init', function(e, dd) {
-    //  if ($(e.target).hasClass('tile-editing') ||
-    //      $(e.target).parents('.tile-editing').size() !== 0) {
-    //    return false;
-    //  }
-    //});
+    self.el.off('draginit').drag('init', function(e, dd) {
+
+      // if we click on tile action we dont intent to start draggin.g
+      if ($(e.target).parents('.plone-tiletype-actions').size() !== 0) {
+        return false;
+      }
+
+      if ($(e.target).hasClass('plone-tile-editing') ||
+          $(e.target).parents('.plone-tile-editing').size() !== 0) {
+        return false;
+      }
+      $.plone.toolbar.iframe_stretch();
+    });
     // }}}
 
     // ## dragstart {{{
@@ -293,16 +231,15 @@ $.deco.Tile.prototype = {
       // tile is being edited, which means dblclick click happend and we
       // want to avoid dragging. return false will cancel rest of drag
       // interaction.
-      if ($(dd.drag).hasClass('tile-editing')) {
+      if ($(dd.drag).hasClass('plone-tile-editing')) {
         return false;
       }
-      $.plone.toolbar.iframe_stretch();
 
       // TODO: check with setTimeout if its double click
 
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
-      var proxy = self.tiletype.createProxy().appendTo($('body'));
+      var proxy = self.tile.type.createProxy().appendTo($('body'));
 
       // if we are not dragging new tile from toolbar
       if ($(dd.drag).attr('data-tile') !== undefined) {
@@ -347,7 +284,7 @@ $.deco.Tile.prototype = {
       // that also 'drag' event will be fired up. if so we have to cancel
       // rest of drag interaction and remove proxy created at 'decostart'
       // event.
-      if ($(dd.drag).hasClass('tile-editing')) {
+      if ($(dd.drag).hasClass('plone-tile-editing')) {
         $(dd.proxy).remove();
         return false;
       }
@@ -365,14 +302,14 @@ $.deco.Tile.prototype = {
 
           // remove any previous tile because we are going to create
           // new one
-          $('.tile-preview', window.parent.document).remove();
+          $('.deco-tile-preview', window.parent.document).remove();
 
           // just append it to column if there is no tiles in
           // column yet
           var column = $(this).decoColumn(),
               column_items = $(column.items_selector, column.el);
           if (column_items.size() === 0) {
-            column.el.append(self.tiletype.createPreview().addClass('tile-preview'));
+            column.el.append(self.tile.type.createPreview().addClass('deco-tile-preview'));
 
           // calculate position if there are tiles already
           // existing
@@ -406,7 +343,7 @@ $.deco.Tile.prototype = {
             // a mouse) in upper half of tile we'll place tile
             // above tile we currently hovering and if below we'll
             // place it below this tile.
-            drop_el[drop_method](self.tiletype.createPreview().addClass('tile-preview'));
+            drop_el[drop_method](self.tile.type.createPreview().addClass('deco-tile-preview'));
           }
         });
       }
@@ -424,14 +361,14 @@ $.deco.Tile.prototype = {
       //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
       $(dd.proxy).remove();
 
-      if ($('.tile-editing').size() === 0) {
+      if ($('.plone-tile-editing').size() === 0) {
         $.plone.toolbar.iframe_shrink();
       }
 
       // above will execute when we are outside dropzone panels and when
-      // there is already existing tile-preview
+      // there is already existing deco-tile-preview
       if ($(dd.drop).size() === 0 &&
-        $('.tile-preview', window.parent.document).size() === 1) {
+        $('.deco-tile-preview', window.parent.document).size() === 1) {
         $.deco.dropTile(e, dd);
       }
     });
@@ -449,9 +386,8 @@ $.deco.Tile.prototype = {
     // restore original styles
     self.el.attr('style', self._originalStyles);
 
-    // remove edit button
-    if (self._editButton !== undefined) {
-      self._editButton.remove();
+    if (self.tile.hide) {
+      self.tile.hide();
     }
 
     // trigger deco.tile.hidden event
@@ -564,7 +500,7 @@ $.deco.Toolbar.prototype = {
     $(document).trigger('deco.toolbar.show', [self]);
 
     // show toolbar tiles
-    $.deco.getTileTypes(self.el, function(item) { item.show(); });
+    $.deco.getTileType(self.el, function(item) { item.show(); });
 
     // show panels
     $.deco.getPanels(window.parent.document, function(item) { item.show(); });
@@ -587,7 +523,7 @@ $.deco.Toolbar.prototype = {
     $(document).trigger('deco.toolbar.hide', [self]);
 
     // hide toolbar tiles
-    $.deco.getTileTypes(self.el, function(item) { item.hide(); });
+    $.deco.getTileType(self.el, function(item) { item.hide(); });
 
     // hide panels
     $.deco.getPanels(self.el, function(item) { item.hide(); });

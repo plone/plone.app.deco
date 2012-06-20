@@ -1,10 +1,16 @@
-// TODO: write description
+// Plone integration of Deco Layout Editor
+// =======================================
 //
-//
-// @author Rok Garbas
-// @version 1.0
-// @licstart  The following is the entire license notice for the JavaScript
-//            code in this page.
+// Author: Rok Garbas
+// Contact: rok@garbas.si
+// Version: 1.0
+// Depends:
+//    - http://code.jquery.com/jquery.js
+//    - https://github.com/malsup/form/blob/master/jquery.form.js
+//    - https://github.com/plone/plone.app.deco/blob/master/plone/app/deco/resources/src/deco.js
+//    - https://github.com/plone/plone.app.toolbar/blob/master/plone/app/toolbar/resources/src/plone.mask.js
+// Description: 
+// License:
 //
 // Copyright (C) 2010 Plone Foundation
 //
@@ -21,13 +27,10 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-// @licend  The above is the entire license notice for the JavaScript code in
-//          this page.
-//
 
 /*jshint bitwise:true, curly:true, eqeqeq:true, immed:true, latedef:true,
   newcap:true, noarg:true, noempty:true, nonew:true, plusplus:true,
-  regexp:true, undef:true, strict:true, trailing:true, browser:true */
+  undef:true, strict:true, trailing:true, browser:true */
 /*global jQuery:false */
 
 
@@ -72,22 +75,39 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   decoToolbar._editform = $('<div/>').hide().appendTo(decoToolbar.el)
       .load(decoToolbar._editformUrl + ' ' + defaults.form, function(data) {
         $('> form', decoToolbar._editform).ajaxForm({
+          beforeSerialize: function(form, options) {
+            var content = '';
+            $.deco.getPanels(window.parent.document, function(panel) {
+              panel.hide();
+              content += $('<div/>').append(panel.el.clone()).html();
+              if (decoToolbar._editformDontHideDecoToolbar) {
+                panel.show();
+              }
+            });
+            $('textarea[name="form.widgets.ILayoutAware.content"]', form).val(
+              $('textarea[name="form.widgets.ILayoutAware.content"]', form)
+                .val().replace(/(<body[^>]*>((.|[\n\r])*)<\/body>)/im,
+                  '<body>' + content + '</body>'));
+          },
           success: function(response, status, xhr, form) {
             var response_body = $('<div/>').html((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(response)[1]),
                 response_form = $(defaults.form, response_body);
             if (response_form.size() === 0) {
-              // hide deco toolbar
-              decoToolbar.hide();
-              // update panels in top frame
-              $.deco.getPanels(window.parent.document, function(panel) {
-                var response_panel = $('[data-panel="' +
-                        panel.attr('data-panel') + '"]', response_body);
-                if (response_panel.size() === 0) {
-                  panel.resplaceWith(response_panel);
-                } else {
-                  panel.remove();
-                }
-              });
+              if (!decoToolbar._editformDontHideDecoToolbar) {
+                // update panels in top frame
+                $.deco.getPanels(window.parent.document, function(panel) {
+                  var response_panel = $('[data-panel="' + panel.el.attr('data-panel') + '"]', response_body);
+                  if (response_panel.size() !== 0) {
+                    panel.el.html(response_panel.html());
+                  } else {
+                    panel.el.remove();
+                  }
+                });
+                // hide deco toolbar
+                decoToolbar.hide();
+              } else {
+                decoToolbar._editformDontHideDecoToolbar = false;
+              }
               // TODO: display notification (eg. "Deco page saved!")
             } else {
               // TODO: open overlay and focus on fireld with error

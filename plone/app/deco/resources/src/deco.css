@@ -14,7 +14,7 @@
 }
 
 #deco-toolbar > ul > li > a.btn {
-  margin: 1em;
+  margin: 1em 0.5em;
 }
 #deco-toolbar-save:hover {
   background: #0055CC;
@@ -28,7 +28,7 @@
   display: none;    
 }
 
-#deco-toolbar .tiletype {
+#deco-toolbar .plone-tiletype {
   border: 1px solid #CCCCCC;
   border-radius: 4px 4px 4px 4px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
@@ -36,4 +36,7 @@
   height: 40px;
   width: 40px;
   margin: 0.5em;
+}
+#deco-toolbar .plone-tiletype > * {
+  display: none;
 }
