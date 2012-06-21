@@ -150,9 +150,6 @@ $.deco.dropTile = function(e, dd) {
       // remove preview_tile
       preview_tile.remove();
 
-      // TODO: reinitialize tile and show it
-      //tile_el.show();
-
     }
   }
 };
@@ -242,7 +239,7 @@ $.deco.Tile.prototype = {
       var proxy = self.tile.type.createProxy().appendTo($('body'));
 
       // if we are not dragging new tile from toolbar
-      if ($(dd.drag).attr('data-tile') !== undefined) {
+      if ($('[data-tile]', dd.drag).size() !== 0) {
 
         // TODO: add description
         proxy.append($(dd.drag).clone());
@@ -251,13 +248,14 @@ $.deco.Tile.prototype = {
 
         // hide tile and mark it as being dragged, this will make sure
         // we dont take it into account when dropping in this column.
-        $(dd.drag).hide();
+        $(dd.drag).detach();
 
         // we place tile right in the center of our mouse.
         proxy.css({ // position tile under the mouse
           top: e.pageY - (proxy.outerHeight(true) / 2),
           left: e.pageX - (proxy.outerWidth(true) / 2)
         });
+
       }
 
       // returning an element from 'dragstart' event is what makes proxy,
@@ -307,8 +305,9 @@ $.deco.Tile.prototype = {
           // just append it to column if there is no tiles in
           // column yet
           var column = $(this).decoColumn(),
-              column_items = $(column.items_selector, column.el);
+              column_items = $('> .deco-tile', column.el);
           if (column_items.size() === 0) {
+
             column.el.append(self.tile.type.createPreview().addClass('deco-tile-preview'));
 
           // calculate position if there are tiles already
@@ -385,6 +384,7 @@ $.deco.Tile.prototype = {
 
     // restore original styles
     self.el.attr('style', self._originalStyles);
+    self.el.css({ 'cursor': 'inherit' });
 
     if (self.tile.hide) {
       self.tile.hide();
