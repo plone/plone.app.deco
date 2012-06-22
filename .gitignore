@@ -4,3 +4,4 @@
 
 plone.app.deco.egg-info/
 build/
+dist/
