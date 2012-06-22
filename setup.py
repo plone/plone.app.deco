@@ -21,7 +21,8 @@ setup(
     name='plone.app.deco',
     version=version,
     description="Package for Deco UI functionality",
-    long_description=open("README.rst").read() + open("CHANGELOG.rst").read(),
+    long_description=open("README.rst").read() + "\n" + \
+                     open("CHANGELOG.rst").read(),
     classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -30,7 +31,7 @@ setup(
     keywords='deco plone editor toolbar',
     author='Rob Gietema',
     author_email='rob@fourdigits.nl',
-    url='http://plone.org',
+    url='https://github.com/plone/plone.app.deco',
     license='GPL',
     packages=find_packages(),
     namespace_packages=['plone', 'plone.app'],
