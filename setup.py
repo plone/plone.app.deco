@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 import sys
 
 version = '1.0'
@@ -22,13 +21,13 @@ setup(
     name='plone.app.deco',
     version=version,
     description="Package for Deco UI functionality",
-    long_description=open("README.rst").read(),
+    long_description=open("README.rst").read() + open("CHANGELOG.rst").read(),
     classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-    keywords='deco plone4',
+    keywords='deco plone editor toolbar',
     author='Rob Gietema',
     author_email='rob@fourdigits.nl',
     url='http://plone.org',
