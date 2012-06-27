@@ -111,9 +111,7 @@ $.deco.dropTile = function(e, dd) {
             .addClass('deco-tile')
             .append($('<div/>')
               .addClass('plone-tile')
-              .attr('data-tile', '@@' +
-                  $('input[name="tiletype"]', dd.drag).attr('value') + '/' +
-                  xhr.getResponseHeader('X-Tile-Uid'))
+              .attr('data-tile', xhr.getResponseHeader('X-Tile-Url'))
               .append(response.html()))
             .insertAfter(preview_tile)
             .decoTile();
