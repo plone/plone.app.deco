@@ -466,6 +466,9 @@ $.deco.Panel.prototype = {
     // trigger deco.panel.show event
     $(document).trigger('deco.panel.show', [self]);
 
+    // mark panel as being in edit mode
+    self.el.addClass('deco-editing');
+
     // show rows 
     $.deco.getRows(self.el, function(item) { item.show(); });
 
@@ -477,6 +480,9 @@ $.deco.Panel.prototype = {
 
     // trigger deco.panel.hide event
     $(document).trigger('deco.panel.hide', [self]);
+
+    // remove marker class
+    self.el.removeClass('deco-editing');
 
     // hide rows 
     $.deco.getRows(self.el, function(item) { item.hide(); });
@@ -500,6 +506,9 @@ $.deco.Toolbar.prototype = {
     // show toolbar tiles
     $.deco.getTileType(self.el, function(item) { item.show(); });
 
+    // mark document as being edited
+    $('body').addClass('deco-toolbar-editing');
+
     // show panels
     $.deco.getPanels(window.parent.document, function(item) { item.show(); });
 
@@ -522,6 +531,9 @@ $.deco.Toolbar.prototype = {
 
     // hide toolbar tiles
     $.deco.getTileType(self.el, function(item) { item.hide(); });
+
+    // remove editing marker class
+    $('body').removeClass('deco-toolbar-editing');
 
     // hide panels
     $.deco.getPanels(self.el, function(item) { item.hide(); });
