@@ -418,6 +418,9 @@ $.deco.Column.prototype = {
     // trigger deco.column.hide event
     $(document).trigger('deco.column.hide', [self]);
 
+    // remove drop events
+    self.el.off('drop');
+
     // hide tiles
     $.deco.getTiles(self.el, function(item) { item.hide(); });
 
