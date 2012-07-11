@@ -120,7 +120,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
       });
 
   // bind save button of toolbar to click save button in edit form 
-  $(defaults.toolbar_save_btn, decoToolbar.el).on('click', function(e) {
+  $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -139,7 +139,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   });
 
   // bind cancel button of toolbar to cancel button in edit form 
-  $('#deco-toolbar-cancel', decoToolbar.el).on('click', function(e) {
+  $('#deco-toolbar-cancel', decoToolbar.el).off('click').on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
 
