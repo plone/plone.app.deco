@@ -7,15 +7,11 @@ from AccessControl import getSecurityManager
 
 from z3c.form.interfaces import IEditForm, IFieldWidget, DISPLAY_MODE, \
                                 HIDDEN_MODE
-from plone.supermodel.utils import mergedTaggedValueDict, mergedTaggedValueList
-from plone.autoform.interfaces import IFormFieldProvider
+from plone.supermodel.utils import mergedTaggedValueDict
 from plone.autoform.interfaces import OMITTED_KEY, WIDGETS_KEY, MODES_KEY
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY, \
                                       WRITE_PERMISSIONS_KEY
 from plone.autoform.utils import mergedTaggedValuesForIRO
-
-from plone.dexterity.interfaces import IDexterityFTI
-from plone.dexterity.utils import resolveDottedName
 
 from plone.app.blocks.interfaces import IOmittedField
 
@@ -80,7 +76,7 @@ def extractFieldInformation(schema, context, request, prefix):
             mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY),
             context,
         )
-    
+
     read_only = []
     for name, mode in modes.items():
         if mode == HIDDEN_MODE:
