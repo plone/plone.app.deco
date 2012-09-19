@@ -22,7 +22,8 @@
       </li>
     </ul>
 
-    <tal:tiletypes define="view python:context.restrictedTraverse('@@add-tile')">
+    <tal:tiletypes define="view nocall:context/@@add-tile|nothing"
+                   condition="nocall:view">
       <metal:block use-macro="context/@@add-tile/macros/tiletypes" />
     </tal:tiletypes>
 
