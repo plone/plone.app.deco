@@ -19,3 +19,26 @@ buster.testCase("Helper Methods", {
 //    'getTiles should call the callback on all tiles': function () {
 //    }
 });
+
+buster.testCase("Tile", {
+    setUp: function() {
+        $(document.body).html('<div id="tile"></div>');
+    },
+
+    tearDown: function() {
+        $('#tile').remove();
+    },
+
+    'Create a Tile': function () {
+        $.plone = $.plone || {};
+        $.plone.tiletype = $.plone.tiletype || {};
+        $.plone.tiletype.get = $.plone.tiletype.get || function () {
+            return function () {};
+        };
+
+        var tile = new $.deco.Tile($('#tile'));
+        assert.defined(tile.tile);
+        assert.defined(tile.tile.type);
+        assert.equals(tile.tile.type, {});
+    }
+});
