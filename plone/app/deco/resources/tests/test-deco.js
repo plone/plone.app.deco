@@ -227,3 +227,68 @@ buster.testCase("Row", {
     }
 });
 
+buster.testCase("Panel", {
+    setUp: function() {
+        $(document.body).html('<div id="panel"></div>');
+    },
+
+    tearDown: function() {
+        $('#panel').remove();
+    },
+
+    'Create a Panel': function () {
+        var panel = new $.deco.Panel($('#panel'));
+        assert.equals(panel.el, $('#panel'));
+    },
+
+    'When a panel is shown it should have the editing class': function () {
+        var panel = new $.deco.Panel($('#panel'));
+        assert.equals(panel.el.hasClass('deco-editing'), false);
+        panel.show();
+        assert(panel.el.hasClass('deco-editing'));
+        panel.hide();
+        assert.equals(panel.el.hasClass('deco-editing'), false);
+    },
+
+    'All rows in a panel should be shown when panel is shown': function () {
+        $('#panel').html('<div class="deco-row"></div>');
+        var panel = new $.deco.Panel($('#panel'));
+        var show = this.stub();
+        $(document).bind('deco.row.show', show);
+        panel.show();
+        assert(show.called);
+    },
+
+    'All rows in a panel should be hidden when panel is hidden': function () {
+        $('#panel').html('<div class="deco-row"></div>');
+        var panel = new $.deco.Row($('#panel'));
+        var hide = this.stub();
+        $(document).bind('deco.row.hide', hide);
+        panel.hide();
+        assert(hide.called);
+    },
+
+    'Check if events are fired when showing a panel': function () {
+        var panel = new $.deco.Panel($('#panel'));
+        var show = this.stub();
+        var shown = this.stub();
+        $(document).bind('deco.panel.show', show);
+        $(document).bind('deco.panel.shown', shown);
+        panel.show();
+        assert(show.called);
+        assert(shown.called);
+    },
+
+    'Check if events are fired when hiding a panel': function () {
+        var panel = new $.deco.Panel($('#panel'));
+        var hide = this.stub();
+        var hidden = this.stub();
+        $(document).bind('deco.panel.hide', hide);
+        $(document).bind('deco.panel.hidden', hidden);
+        panel.hide();
+        assert(hide.called);
+        assert(hidden.called);
+    }
+});
+
+
