@@ -394,4 +394,18 @@ buster.testCase("Toolbar", {
     }
 });
 
+buster.testCase("jQuery integration", {
+    setUp: function() {
+        $(document.body).html('<div id="tile"></div>');
+    },
+
+    tearDown: function() {
+        $('#tile').remove();
+    },
+
+    'Check handler': function () {
+        var tile = $('#tile').decoTile();
+        assert(tile instanceof $.deco.Tile);
+    }
+});
 
