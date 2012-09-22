@@ -305,7 +305,8 @@ buster.testCase("Toolbar", {
         $.plone.toolbar.iframe_state = this.stub();
         $.plone.toolbar.iframe_state.height = this.stub();
         $.plone.toolbar.iframe_state.height.returns(20);
-        $(document.body).html('<div id="toolbar"></div>');
+        $(document.body)
+            .html('<div id="toolbar"></div><div data-panel=""></div>');
     },
 
     tearDown: function() {
@@ -344,6 +345,24 @@ buster.testCase("Toolbar", {
         assert(hide.called);
     },
 
+    'All panels should be shown when toolbar is shown': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var show = this.stub();
+        $(document).bind('deco.panel.show', show);
+        window.parent = this.stub().returns(window);
+        toolbar.show();
+        assert(show.called);
+    },
+
+    'All panels should be hidden when toolbar is hidden': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var hide = this.stub();
+        $(document).bind('deco.panel.hide', hide);
+        window.parent = this.stub().returns(window);
+        toolbar.hide();
+        assert(hide.called);
+    },
+
     'Check if events are fired when showing the toolbar': function () {
         var toolbar = new $.deco.Toolbar($('#toolbar'));
         var show = this.stub();
@@ -364,6 +383,14 @@ buster.testCase("Toolbar", {
         toolbar.hide();
         assert(hide.called);
         assert(hidden.called);
+    },
+
+    'Check the toggle method for toolbar': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        toolbar.toggle();
+        assert.equals(toolbar._hidden, false);
+        toolbar.toggle();
+        assert(toolbar._hidden);
     }
 });
 

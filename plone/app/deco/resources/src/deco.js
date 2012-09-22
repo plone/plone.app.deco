@@ -539,12 +539,13 @@ $.deco.Toolbar.prototype = {
     $('body').removeClass('deco-toolbar-editing');
 
     // hide panels
-    $.deco.getPanels(self.el, function(item) { item.hide(); });
+    $.deco.getPanels(window.parent.document, function(item) { item.hide(); });
 
     // hide toolbar
     self.el.slideUp('slow', function() {
       $.plone.toolbar.iframe_shrink();
     });
+
     // trigger deco.toolbar.hidden event
     $(document).trigger('deco.toolbar.hidden', [self]);
   },
