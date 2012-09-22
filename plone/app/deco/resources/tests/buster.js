@@ -50,6 +50,9 @@ config["Deco"] = {
     tests: [
         "tests/test-deco.js"
     ],
-    extensions: [require('buster-lint')],
+    extensions: [
+        require('buster-lint'),
+//        require("buster-coverage")
+    ],
     "buster-lint": linterConf
 }
