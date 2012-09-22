@@ -1,0 +1,21 @@
+.deco-row {
+    width: 100%;
+    min-height: 100px;
+}
+.deco-column {
+    width: 100px;
+    min-height: 100px;
+    float: left;
+    outline: 1px dotted #ccc;
+}
+.deco-column-drop {
+    position: absolute;
+    width: 10px;
+    z-index: 900;
+    background: red;
+    outline: 1px solid red;
+}
+
+.deco-droppable{
+    background: black;
+}

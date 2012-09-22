@@ -10,7 +10,20 @@
 <body>
 
   <div id="deco-toolbar" style="display:none;">
-
+    <ul class="nav nav-pills pull-left">
+      <li>
+        <a class="btn btn-large" href="#"
+           id="plone-deco-addcolumn">
+          Add Column
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-large" href="#"
+           id="plone-deco-addrow">
+          Add Row
+        </a>
+      </li>
+    </ul>
     <ul class="nav nav-pills pull-right">
       <li class="pull-right">
         <a class="btn btn-primary btn-large" href="#"
