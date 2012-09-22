@@ -70,4 +70,14 @@ buster.testCase("Tile", {
         assert(tile.tile.show.called);
     },
 
+    'Check if events are fired when showing a tile': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        var show = this.stub();
+        var shown = this.stub();
+        $(document).bind('deco.tile.show', show);
+        $(document).bind('deco.tile.shown', shown);
+        tile.show();
+        assert(show.called);
+        assert(shown.called);
+    }
 });
