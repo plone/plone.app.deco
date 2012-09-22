@@ -63,7 +63,11 @@ buster.testCase("Tile", {
         assert.equals($('#tile').css('cursor'), 'move');
     },
 
-
-
+    'When a tile is shown it should call the show handler': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        tile.tile.show = tile.tile.show || this.spy();
+        tile.show();
+        assert(tile.tile.show.called);
+    },
 
 });
