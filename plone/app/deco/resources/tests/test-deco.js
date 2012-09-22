@@ -109,6 +109,11 @@ buster.testCase("Tile", {
 buster.testCase("Column", {
     setUp: function() {
         $(document.body).html('<div id="column"></div>');
+        $.plone = $.plone || {};
+        $.plone.tiletype = $.plone.tiletype || {};
+        $.plone.tiletype.get = $.plone.tiletype.get || function () {
+            return function () {};
+        };
     },
 
     tearDown: function() {
@@ -286,6 +291,77 @@ buster.testCase("Panel", {
         $(document).bind('deco.panel.hide', hide);
         $(document).bind('deco.panel.hidden', hidden);
         panel.hide();
+        assert(hide.called);
+        assert(hidden.called);
+    }
+});
+
+buster.testCase("Toolbar", {
+    setUp: function() {
+        $.plone = $.plone || {};
+        $.plone.toolbar = this.stub();
+        $.plone.toolbar.iframe_stretch = this.stub();
+        $.plone.toolbar.iframe_shrink = this.stub();
+        $.plone.toolbar.iframe_state = this.stub();
+        $.plone.toolbar.iframe_state.height = this.stub();
+        $.plone.toolbar.iframe_state.height.returns(20);
+        $(document.body).html('<div id="toolbar"></div>');
+    },
+
+    tearDown: function() {
+        $('#toolbar').remove();
+    },
+
+    'Create a Toolbar': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        assert.equals(toolbar.el, $('#toolbar'));
+    },
+
+    'When the toolbar is shown it should have the editing class': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        assert.equals($('body').hasClass('deco-toolbar'), false);
+        toolbar.show();
+        assert($('body').hasClass('deco-toolbar-editing'));
+        toolbar.hide();
+        assert.equals($('body').hasClass('deco-editing'), false);
+    },
+
+    'All types should be shown when toolbar is shown': function () {
+        $('#toolbar').html('<div class="plone-tiletype"></div>');
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var show = this.stub();
+        $(document).bind('deco.tile.show', show);
+        toolbar.show();
+        assert(show.called);
+    },
+
+    'All types should be hidden when toolbar is hidden': function () {
+        $('#toolbar').html('<div class="plone-tiletype"></div>');
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var hide = this.stub();
+        $(document).bind('deco.tile.hide', hide);
+        toolbar.hide();
+        assert(hide.called);
+    },
+
+    'Check if events are fired when showing the toolbar': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var show = this.stub();
+        var shown = this.stub();
+        $(document).bind('deco.toolbar.show', show);
+        $(document).bind('deco.toolbar.shown', shown);
+        toolbar.show();
+        assert(show.called);
+        assert(shown.called);
+    },
+
+    'Check if events are fired when hiding the toolbar': function () {
+        var toolbar = new $.deco.Toolbar($('#toolbar'));
+        var hide = this.stub();
+        var hidden = this.stub();
+        $(document).bind('deco.toolbar.hide', hide);
+        $(document).bind('deco.toolbar.hidden', hidden);
+        toolbar.hide();
         assert(hide.called);
         assert(hidden.called);
     }
