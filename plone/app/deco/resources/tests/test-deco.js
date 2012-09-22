@@ -10,14 +10,51 @@ buster.testCase("Namespace", {
 buster.testCase("Helper Methods", {
     setUp: function() {
         $(document.body).html('<div id="container"></div>');
+        $.plone = $.plone || {};
+        $.plone.tiletype = $.plone.tiletype || {};
+        $.plone.tiletype.get = $.plone.tiletype.get || function () {
+            return function () {};
+        };
     },
 
     tearDown: function() {
         $('#container').remove();
     },
 
-//    'getTiles should call the callback on all tiles': function () {
-//    }
+    'getTiles should call the callback on all tiles': function () {
+        $('#container').html('<div class="deco-tile"></div>');
+        var callback = this.stub();
+        $.deco.getTiles($('#container'), callback);
+        assert(callback.calledOnce);
+    },
+
+    'getColumns should call the callback on all columns': function () {
+        $('#container').html('<div class="deco-column"></div>');
+        var callback = this.stub();
+        $.deco.getColumns($('#container'), callback);
+        assert(callback.calledOnce);
+    },
+
+    'getRows should call the callback on all rows': function () {
+        $('#container').html('<div class="deco-row"></div>');
+        var callback = this.stub();
+        $.deco.getRows($('#container'), callback);
+        assert(callback.calledOnce);
+    },
+
+    'getPanels should call the callback on all panels': function () {
+        $('#container').html('<div data-panel=""></div>');
+        var callback = this.stub();
+        $.deco.getPanels($('#container'), callback);
+        assert(callback.calledOnce);
+    },
+
+    'getTileType should call the callback on all tiles': function () {
+        $('#container').html('<div class="plone-tiletype"></div>');
+        var callback = this.stub();
+        $.deco.getTileType($('#container'), callback);
+        assert(callback.calledOnce);
+    }
 });
 
 buster.testCase("Tile", {
