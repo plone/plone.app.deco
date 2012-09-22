@@ -63,6 +63,8 @@ buster.testCase("Tile", {
         var tile = new $.deco.Tile($('#tile'));
         tile.show();
         assert.equals($('#tile').css('cursor'), 'move');
+        tile.hide();
+        assert.match($('#tile').attr('style'), 'cursor: inherit');
     },
 
     'When a tile is shown it should call the show handler': function () {
@@ -70,6 +72,13 @@ buster.testCase("Tile", {
         tile.tile.show = tile.tile.show || this.spy();
         tile.show();
         assert(tile.tile.show.called);
+    },
+
+    'When a tile is hidden it should call the hide handler': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        tile.tile.hide = tile.tile.hide || this.spy();
+        tile.hide();
+        assert(tile.tile.hide.called);
     },
 
     'Check if events are fired when showing a tile': function () {
