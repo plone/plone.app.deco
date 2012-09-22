@@ -23,6 +23,12 @@ buster.testCase("Helper Methods", {
 buster.testCase("Tile", {
     setUp: function() {
         $(document.body).html('<div id="tile"></div>');
+        $.plone = $.plone || {};
+        $.plone.tiletype = $.plone.tiletype || {};
+        $.plone.tiletype.get = $.plone.tiletype.get || function () {
+            return function () {};
+        };
+        $.fn.ploneTile = $.fn.ploneTile || this.spy();
     },
 
     tearDown: function() {
@@ -30,12 +36,6 @@ buster.testCase("Tile", {
     },
 
     'Create a Tile': function () {
-        $.plone = $.plone || {};
-        $.plone.tiletype = $.plone.tiletype || {};
-        $.plone.tiletype.get = $.plone.tiletype.get || function () {
-            return function () {};
-        };
-
         var tile = new $.deco.Tile($('#tile'));
         assert.defined(tile.tile);
         assert.defined(tile.tile.type);
@@ -44,10 +44,16 @@ buster.testCase("Tile", {
     },
 
     'Create a Tile with data-tile attribute': function () {
-        $.fn.ploneTile = $.fn.ploneTile || this.spy();
         $('#tile').html('<div data-tile="test"></div>');
         var tile = new $.deco.Tile($('#tile'));
         assert($.fn.ploneTile.called);
         assert.equals(tile.el, $('#tile'));
+    },
+
+    'When a tile is shown all styles should be saved': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        $('#tile').css('color', 'black');
+        tile.show();
+        assert.equals(tile._originalStyles, 'color: black;');
     }
 });
