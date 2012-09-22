@@ -55,6 +55,8 @@ buster.testCase("Helper Methods", {
         $.deco.getTileType($('#container'), callback);
         assert(callback.calledOnce);
     }
+
+    // TODO: dropTile
 });
 
 buster.testCase("Tile", {
