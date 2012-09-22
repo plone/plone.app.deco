@@ -40,5 +40,14 @@ buster.testCase("Tile", {
         assert.defined(tile.tile);
         assert.defined(tile.tile.type);
         assert.equals(tile.tile.type, {});
+        assert.equals(tile.el, $('#tile'));
+    },
+
+    'Create a Tile with data-tile attribute': function () {
+        $.fn.ploneTile = $.fn.ploneTile || this.spy();
+        $('#tile').html('<div data-tile="test"></div>');
+        var tile = new $.deco.Tile($('#tile'));
+        assert($.fn.ploneTile.called);
+        assert.equals(tile.el, $('#tile'));
     }
 });
