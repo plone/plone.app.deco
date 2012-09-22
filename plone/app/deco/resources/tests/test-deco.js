@@ -55,5 +55,15 @@ buster.testCase("Tile", {
         $('#tile').css('color', 'black');
         tile.show();
         assert.equals(tile._originalStyles, 'color: black;');
-    }
+    },
+
+    'When a tile is shown it should have a move cursor': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        tile.show();
+        assert.equals($('#tile').css('cursor'), 'move');
+    },
+
+
+
+
 });
