@@ -55,12 +55,17 @@ $.drop({
           return 1;
         }
       }
-    }else{
-      if ((drop.contains(target, [e.pageX, e.pageY +
-          $(window.parent.document).scrollTop()]) === true) &&
-          (target.left < e.pageX) && (target.right > e.pageX)) {
-        return 1;
+    }else if($(proxy.elem).hasClass('deco-row-proxy')){
+      if($(target.elem).hasClass('deco-row-drop')){
+        if (e.pageX > target.left && e.pageX < target.right &&
+            e.pageY > target.top - 20 && e.pageY < target.bottom + 20){
+          return 1;
+        }
       }
+    }else if((drop.contains(target, [e.pageX, e.pageY +
+        $(window.parent.document).scrollTop()]) === true) &&
+        (target.left < e.pageX) && (target.right > e.pageX)) {
+      return 1;
     }
     return 0;
   }
@@ -181,6 +186,28 @@ $.deco.dropColumn = function(e, dd) {
 
 };
 
+$.deco.dropRow = function(e, dd){
+  // create new column, place it after drop target and initialize it
+  var row = $('<div/>')
+    .addClass('deco-row')
+    .insertAfter(dd.drop)
+    .decoRow();
+  row.show();
+  // add default column
+  var column = $('<div/>')
+    .addClass('deco-column')
+    .decoColumn();
+  column.show();
+  row.el.append(column.el);
+
+  // remove drop targets
+  $('.deco-row-drop', window.parent.document).remove();
+
+  // save deco layout as well
+  var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
+  decoToolbar._editformDontHideDecoToolbar = true;
+  $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click(); 
+}
 
 // # Tile
 $.deco.Tile = function(el) {
@@ -538,10 +565,73 @@ $.deco.Toolbar = function(el) {
   });
 };
 $.deco.Toolbar.prototype = {
+  setupDnD: function(el, options){
+    if(options == undefined){ options = {}; }
+    if(options.type == undefined){ options.type = 'column'; }
+    if(options.placeholdercss == undefined){
+      options.placeholdercss = function(el){ return {} }
+    }
+    if(options.drop == undefined){ options.drop = function(e, dd){}; }
+    if(options.last_sel == undefined){ options.last_sel = 'last-child'; }
+
+    var type = options.type;
+    var css = options.placeholdercss;
+    var doc = window.parent.document;
+
+    el.off('draginit').drag('init', function(e, dd) {
+      $.plone.toolbar.iframe_stretch();
+      // create drop targets
+      $('.deco-' + type, doc).each(function() {
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, false));
+        $(this).before(placeholder);
+      });
+      $('.deco-' + type + ':' + options.last_sel, doc).each(function() {
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
+        $(this).after(placeholder);
+      });
+      $('.deco-' + type + '-drop', doc).on('drop', options.drop);
+    });
+
+    el.off('dragstart').drag('start', function(e, dd) {
+
+      // create proxy element which is going to be dragged around append
+      // it to body of top frame.
+      var proxy = $('<div/>').css({
+        'opacity': 0.75,
+        'z-index': 1000,
+        'position': 'absolute',
+        'border': '1px solid #89B',
+        'background': '#BCE',
+        'height': '58px',
+        'width': '258px'
+      }).addClass('deco-' + type + '-proxy').appendTo($('body'));
+
+      // returning an element from 'dragstart' event is what makes proxy,
+      // otherwise original element is used.
+      return proxy;
+
+    }, { distance: 10 });
+
+    el.off('drag').drag(function(e, dd) {
+      $(dd.available).removeClass('deco-droppable');
+      $(dd.drop).addClass('deco-droppable');
+      // proxy tile follows mouse
+      $(dd.proxy).css({
+        top: dd.offsetY,
+        left: dd.offsetX
+      });
+    });
+
+    el.off('dragend').drag('end', function(e, dd) {
+      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
+      $(dd.proxy).remove();
+      $.plone.toolbar.iframe_shrink();
+      $('.deco-' + type + '-drop', doc).remove();
+    });
+  },
   show: function() {
     var self = this;
     self._hidden = false;
-    var doc = window.parent.document;
 
     // trigger deco.toolbar.show event
     $(document).trigger('deco.toolbar.show', [self]);
@@ -555,75 +645,47 @@ $.deco.Toolbar.prototype = {
     // show panels
     $.deco.getPanels(window.parent.document, function(item) { item.show(); });
 
-    // ## draginit {{{
-    //
-    self.add_column_btn.off('draginit').drag('init', function(e, dd) {
-      $.plone.toolbar.iframe_stretch();
-
-      // create column drop targets
-      $('.deco-column', doc).each(function() {
-        var placeholder = $('<div class="deco-column-drop"/>').css({
-          height: $(this).height(),
-          left: $(this).position().left,
-          top: $(this).position().top
-        });
-        $(this).before(placeholder);
-      });
-      $('.deco-column:last-child', doc).each(function() {
-        var placeholder = $('<div class="deco-column-drop"/>').css({
-          height: $(this).height(),
-          right: 0,
-          top: $(this).position().top
-        });
-        $(this).after(placeholder);
-      });
-      $('.deco-column-drop', doc).on('drop', $.deco.dropColumn);
+    self.setupDnD(self.add_column_btn, {
+      type: 'column',
+      drop: $.deco.dropColumn,
+      placeholdercss: function(el, last){
+        var el = $(el);
+        if(last){
+          return {
+            height: el.height(),
+            right: 0,
+            top: el.position().top
+          }
+        }else{
+          return {
+            height: el.height(),
+            left: el.position().left,
+            top: el.position().top
+          }
+        }
+      }
     });
 
-    self.add_column_btn.off('dragstart').drag('start', function(e, dd) {
-
-      // create proxy element which is going to be dragged around append
-      // it to body of top frame.
-      var proxy = $('<div/>').css({
-        'opacity': 0.75,
-        'z-index': 1000,
-        'position': 'absolute',
-        'border': '1px solid #89B',
-        'background': '#BCE',
-        'height': '58px',
-        'width': '258px'
-      }).addClass('deco-column-proxy').appendTo($('body'));
-
-      // returning an element from 'dragstart' event is what makes proxy,
-      // otherwise original element is used.
-      return proxy;
-
-    }, { distance: 10 });
-    // }}}
-    // ## drag {{{
-    self.add_column_btn.off('drag').drag(function(e, dd) {
-      $(dd.available).removeClass('deco-droppable');
-      $(dd.drop).addClass('deco-droppable');
-      // proxy tile follows mouse
-      $(dd.proxy).css({
-        top: dd.offsetY,
-        left: dd.offsetX
-      });
-    });
-    // }}}
-
-    // ## dragend {{{
-    //
-    // This event fires after "draginit" and "dragstart" and "drag" when
-    // the mouse button is released, or when a "drag" event is canceled.
-    // This event will always fire after any "drop" events. If dragging
-    // multiple elements (from "draginit"), this event will fire uniquely
-    // on each element.
-    self.add_column_btn.off('dragend').drag('end', function(e, dd) {
-      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
-      $(dd.proxy).remove();
-      $.plone.toolbar.iframe_shrink();
-      $('.deco-column-drop', doc).remove();
+    self.setupDnD(self.add_row_btn, {
+      type: 'row',
+      drop: $.deco.dropRow,
+      last_sel: 'last',
+      placeholdercss: function(el, last){
+        var el = $(el);
+        if(last){
+          return {
+            width: el.width(),
+            left: 0,
+            bottom: 0
+          }
+        }else{
+          return {
+            width: el.width(),
+            left: 0,
+            top: el.position().top
+          }
+        }
+      }
     });
 
     // show toolbar

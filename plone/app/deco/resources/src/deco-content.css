@@ -16,6 +16,14 @@
     outline: 1px solid red;
 }
 
+.deco-row-drop {
+    position: absolute;
+    height: 10px;
+    z-index: 900;
+    background: red;
+    outline: 1px solid red;   
+}
+
 .deco-droppable{
     background: black;
 }
