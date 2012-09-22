@@ -103,4 +103,53 @@ buster.testCase("Tile", {
         assert(hidden.called);
     }
 
+    // TODO: tests for dragstart, drag, dragend
+});
+
+buster.testCase("Column", {
+    setUp: function() {
+        $(document.body).html('<div id="column"></div>');
+    },
+
+    tearDown: function() {
+        $('#tile').remove();
+    },
+
+    'Create a Column': function () {
+        var column = new $.deco.Column($('#column'));
+        assert.equals(column.el, $('#column'));
+    },
+
+    'Drop event should be bound to a visible Column': function () {
+        this.stub($.deco, "dropTile");
+        var column = new $.deco.Column($('#column'));
+        column.show();
+        column.el.trigger('drop');
+        assert($.deco.dropTile.called);
+        column.hide();
+        column.el.trigger('drop');
+        assert($.deco.dropTile.calledOnce);
+    },
+
+    'Check if events are fired when showing a column': function () {
+        var column = new $.deco.Column($('#column'));
+        var show = this.stub();
+        var shown = this.stub();
+        $(document).bind('deco.column.show', show);
+        $(document).bind('deco.column.shown', shown);
+        column.show();
+        assert(show.called);
+        assert(shown.called);
+    },
+
+    'Check if events are fired when hiding a column': function () {
+        var column = new $.deco.Column($('#column'));
+        var hide = this.stub();
+        var hidden = this.stub();
+        $(document).bind('deco.column.hide', hide);
+        $(document).bind('deco.column.hidden', hidden);
+        column.hide();
+        assert(hide.called);
+        assert(hidden.called);
+    }
 });
