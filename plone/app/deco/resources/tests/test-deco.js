@@ -90,5 +90,17 @@ buster.testCase("Tile", {
         tile.show();
         assert(show.called);
         assert(shown.called);
+    },
+
+    'Check if events are fired when hiding a tile': function () {
+        var tile = new $.deco.Tile($('#tile'));
+        var hide = this.stub();
+        var hidden = this.stub();
+        $(document).bind('deco.tile.hide', hide);
+        $(document).bind('deco.tile.hidden', hidden);
+        tile.hide();
+        assert(hide.called);
+        assert(hidden.called);
     }
+
 });
