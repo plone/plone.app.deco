@@ -1,5 +1,40 @@
 var config = module.exports;
 
+var linterConf = {
+    linter: 'jshint',
+        linterOptions: {
+            asi: false,
+            bitwise: true,
+            boss: false,
+            browser: true,
+            curly: true,
+            devel: false,
+            eqeqeq: true,
+            evil: false,
+            expr: false,
+            forin: false,
+            immed: true,
+            jquery: true,
+            latedef: false,
+            mootools: false,
+            newcap: true,
+            node: false,
+            noempty: true,
+            nomen: false,
+            nonew: true,
+            onevar: false,
+            plusplus: false,
+            regexp: true,
+            strict: false,
+            supernew: true,
+            undef: true,
+            white: false
+        },
+        excludes: [
+            "jquery"
+       ]
+};
+
 config["Deco"] = {
     rootPath: "../",
     environment: "browser",
@@ -10,9 +45,11 @@ config["Deco"] = {
         "lib/jquerytools.expose-1.2.6.js"
     ],
     sources: [
-        "src/deco.js",
+        "src/deco.js"
     ],
     tests: [
         "tests/test-deco.js"
-    ]
+    ],
+    extensions: [require('buster-lint')],
+    "buster-lint": linterConf
 }

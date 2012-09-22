@@ -9,7 +9,7 @@
 //    ++resource++plone.app.deco/lib/jquery.event.drag.js
 //    ++resource++plone.app.deco/lib/jquery.event.drop.js
 //    ++resource=+plone.app.tiles/src/plone.tiletype.js
-// Description: 
+// Description:
 //    Initialize toolbar for deco, where all available tiles are listed.
 //    Initialize Deco Layout Editor for each element defining `data-panel`
 //    attribute.
@@ -406,7 +406,7 @@ $.deco.Column.prototype = {
     // create drop place for tiles
     self.el.on('drop', $.deco.dropTile);
 
-    // show tiles 
+    // show tiles
     $.deco.getTiles(self.el, function(item) { item.show(); });
 
     // trigger deco.column.shown event
@@ -472,7 +472,7 @@ $.deco.Panel.prototype = {
     // mark panel as being in edit mode
     self.el.addClass('deco-editing');
 
-    // show rows 
+    // show rows
     $.deco.getRows(self.el, function(item) { item.show(); });
 
     // trigger deco.panel.shown event
@@ -487,7 +487,7 @@ $.deco.Panel.prototype = {
     // remove marker class
     self.el.removeClass('deco-editing');
 
-    // hide rows 
+    // hide rows
     $.deco.getRows(self.el, function(item) { item.hide(); });
 
     // trigger deco.panel.hidden event
@@ -559,7 +559,7 @@ $.deco.Toolbar.prototype = {
 };
 
 
-// jQuery integration for Toolbar, 
+// jQuery integration for Toolbar,
 $.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {
   $.fn['deco' + name] = function() {
     var el = $(this),
