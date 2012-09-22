@@ -112,7 +112,7 @@ buster.testCase("Column", {
     },
 
     tearDown: function() {
-        $('#tile').remove();
+        $('#column').remove();
     },
 
     'Create a Column': function () {
@@ -129,6 +129,24 @@ buster.testCase("Column", {
         column.hide();
         column.el.trigger('drop');
         assert($.deco.dropTile.calledOnce);
+    },
+
+    'All tiles in column should be shown when column is shown': function () {
+        $('#column').html('<div class="deco-tile"></div>');
+        var column = new $.deco.Column($('#column'));
+        var show = this.stub();
+        $(document).bind('deco.tile.show', show);
+        column.show();
+        assert(show.called);
+    },
+
+    'All tiles in column should be hidden when column is hidden': function () {
+        $('#column').html('<div class="deco-tile"></div>');
+        var column = new $.deco.Column($('#column'));
+        var hide = this.stub();
+        $(document).bind('deco.tile.hide', hide);
+        column.hide();
+        assert(hide.called);
     },
 
     'Check if events are fired when showing a column': function () {
@@ -153,3 +171,59 @@ buster.testCase("Column", {
         assert(hidden.called);
     }
 });
+
+buster.testCase("Row", {
+    setUp: function() {
+        $(document.body).html('<div id="row"></div>');
+    },
+
+    tearDown: function() {
+        $('#row').remove();
+    },
+
+    'Create a Row': function () {
+        var row = new $.deco.Row($('#row'));
+        assert.equals(row.el, $('#row'));
+    },
+
+    'All columns in a row should be shown when row is shown': function () {
+        $('#row').html('<div class="deco-column"></div>');
+        var row = new $.deco.Row($('#row'));
+        var show = this.stub();
+        $(document).bind('deco.column.show', show);
+        row.show();
+        assert(show.called);
+    },
+
+    'All columns in a row should be hidden when row is hidden': function () {
+        $('#row').html('<div class="deco-column"></div>');
+        var row = new $.deco.Row($('#row'));
+        var hide = this.stub();
+        $(document).bind('deco.column.hide', hide);
+        row.hide();
+        assert(hide.called);
+    },
+
+    'Check if events are fired when showing a row': function () {
+        var row = new $.deco.Row($('#row'));
+        var show = this.stub();
+        var shown = this.stub();
+        $(document).bind('deco.row.show', show);
+        $(document).bind('deco.row.shown', shown);
+        row.show();
+        assert(show.called);
+        assert(shown.called);
+    },
+
+    'Check if events are fired when hiding a row': function () {
+        var row = new $.deco.Row($('#row'));
+        var hide = this.stub();
+        var hidden = this.stub();
+        $(document).bind('deco.row.hide', hide);
+        $(document).bind('deco.row.hidden', hidden);
+        row.hide();
+        assert(hide.called);
+        assert(hidden.called);
+    }
+});
+
