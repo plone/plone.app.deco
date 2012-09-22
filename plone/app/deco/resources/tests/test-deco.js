@@ -50,11 +50,13 @@ buster.testCase("Tile", {
         assert.equals(tile.el, $('#tile'));
     },
 
-    'When a tile is shown all styles should be saved': function () {
+    'Styles should be restored when a tile is shown and hidden': function () {
         var tile = new $.deco.Tile($('#tile'));
         $('#tile').css('color', 'black');
         tile.show();
         assert.equals(tile._originalStyles, 'color: black;');
+        tile.hide();
+        assert.match($('#tile').attr('style'), 'color: black');
     },
 
     'When a tile is shown it should have a move cursor': function () {
