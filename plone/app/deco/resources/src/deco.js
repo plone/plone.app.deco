@@ -176,6 +176,7 @@ $.deco.dropTile = function(e, dd) {
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
   if($(dd.proxy).hasClass('deco-layout-el')){
+
     $('.deco-preview', window.parent.document).removeClass('deco-preview');
     // trigger layout changed event
     $(document).trigger('deco.toolbar.layoutchange');
@@ -534,8 +535,6 @@ $.deco.Column.prototype = {
       item.addClass('deco-span' + newWidth);
     }
 
-    // make sure placeholders and handles get updated
-    $(document).trigger('deco.toolbar.layoutchange');
   }
 };
 
@@ -615,6 +614,8 @@ $.deco.Row.prototype = {
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
         $.plone.toolbar.iframe_shrink();
+        // make sure placeholders and handles get updated
+        $(document).trigger('deco.toolbar.layoutchange');
       });
 
     });
@@ -872,7 +873,7 @@ $.deco.Toolbar.prototype = {
       last_sel: 'last',
       create: function(dd, side) {
         var row = $('<div/>')
-          .addClass('deco-row deco-row-fluid  deco-preview');
+          .addClass('deco-row deco-row-fluid deco-preview');
         if(side === "after") {
           row.insertAfter($(dd.drop));
         } else {
