@@ -424,7 +424,10 @@ $.deco.Tile.prototype = {
 
 
 // # Column
-$.deco.Column = function(el) { this.el = el; };
+$.deco.Column = function(el) {
+  this.el = el;
+  this.doc = window.parent.document;
+};
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
@@ -440,6 +443,43 @@ $.deco.Column.prototype = {
 
     // trigger deco.column.shown event
     $(document).trigger('deco.column.shown', [self]);
+
+    // setup remove hover
+    self.el.hover(
+      function(){
+        // do not allow removing last column
+        if($('.deco-column', self.doc).length < 2){
+          return;
+        }
+        var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
+        $(this).prepend(del_el);
+        del_el.hover(function(){
+          $(this).parent().addClass('deco-predelete')
+        }, function(){
+          $(this).parent().removeClass('deco-predelete')
+        });
+        del_el.click(function(){
+          var column = $(this).parent('.deco-column');
+          var tiles = column.find('.deco-tile');
+          // find somewhere to place tiles, siblings first
+          var newcolumn = column.siblings('.deco-column');
+          var lastcolumn = false;
+          if(newcolumn.length == 0){
+            // if no siblings, look for other rows
+            newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column');
+            lastcolumn = true;
+          }
+          newcolumn.eq(0).append(tiles);
+          if(lastcolumn){
+            column.parent().remove();
+          }else{
+            column.remove();
+          }
+        })
+      },function(){
+        $(this).find('.deco-delete').remove();
+      }
+    );
   },
   hide: function() {
     var self = this;
@@ -536,6 +576,7 @@ $.deco.Toolbar = function(el) {
   this.add_row_btn.click(function(){
     return false; // or add to end?
   });
+  this.doc = window.parent.document;
 };
 $.deco.Toolbar.prototype = {
   setupDnD: function(el, options){
