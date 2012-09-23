@@ -1,4 +1,3 @@
-from plone.testing import z2
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import applyProfile
@@ -6,12 +5,10 @@ from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_ID
-
-from zope.configuration import xmlconfig
 from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing.layers import FunctionalTesting
-
-from plone.dexterity.utils import createContent
+from plone.dexterity.utils import createContentInContainer
+from plone.testing import z2
 
 
 class PADeco(PloneSandboxLayer):
@@ -20,7 +17,7 @@ class PADeco(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.app.deco
-        xmlconfig.file('configure.zcml', plone.app.deco, context=configurationContext)
+        self.loadZCML(package=plone.app.deco)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
@@ -32,16 +29,16 @@ class PADeco(PloneSandboxLayer):
                                               ['Manager'],
                                               [])
 
-        # add a plone.page type, where we can test with
-        page = createContent("page")
-        page.id = 'page'
-        portal._setObject('page', page)
-        
         # set up content required for acceptance tests
         login(portal, TEST_USER_NAME)
         setRoles(portal, TEST_USER_ID, ['Manager', ])
-        portal.invokeFactory(
-            'Folder','acceptance-test-folder', title='Acceptance Test Folder')
+        fid = portal.invokeFactory(
+            'Folder','test-folder', title='Test Folder')
+        self.folder = portal[fid]
+        self.page = createContentInContainer(self.folder,
+                                             'page',
+                                             checkConstraints=False,
+                                             title="Test Deco Page")
 
 
 DECO_FIXTURE = PADeco()
