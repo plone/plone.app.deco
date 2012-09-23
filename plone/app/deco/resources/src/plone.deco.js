@@ -79,7 +79,10 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
             var content = '';
             $.deco.getPanels(window.parent.document, function(panel) {
               panel.hide();
-              content += $('<div/>').append(panel.el.clone()).html();
+              var els = $('<div/>').append(panel.el.clone());
+              // perform some cleanup just in case...
+              els.find('.deco-row-drop,.deco-column-drop,.deco-delete').remove();
+              content += els.html();
               if (decoToolbar._editformDontHideDecoToolbar) {
                 panel.show();
               }

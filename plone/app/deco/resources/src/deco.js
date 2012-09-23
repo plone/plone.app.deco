@@ -9,7 +9,7 @@
 //    ++resource++plone.app.deco/lib/jquery.event.drag.js
 //    ++resource++plone.app.deco/lib/jquery.event.drop.js
 //    ++resource=+plone.app.tiles/src/plone.tiletype.js
-// Description: 
+// Description:
 //    Initialize toolbar for deco, where all available tiles are listed.
 //    Initialize Deco Layout Editor for each element defining `data-panel`
 //    attribute.
@@ -172,14 +172,7 @@ $.deco.dropTile = function(e, dd) {
 
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
-
   $('.deco-preview', window.parent.document).removeClass('deco-preview');
-
-  // save deco layout
-  var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
-  decoToolbar._editformDontHideDecoToolbar = true;
-  $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
-
 };
 
 // # Tile
@@ -424,7 +417,10 @@ $.deco.Tile.prototype = {
 
 
 // # Column
-$.deco.Column = function(el) { this.el = el; };
+$.deco.Column = function(el) {
+  this.el = el;
+  this.doc = window.parent.document;
+};
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
@@ -435,11 +431,49 @@ $.deco.Column.prototype = {
     // create drop place for tiles
     self.el.on('drop', $.deco.dropTile);
 
-    // show tiles 
+    // show tiles
     $.deco.getTiles(self.el, function(item) { item.show(); });
 
     // trigger deco.column.shown event
     $(document).trigger('deco.column.shown', [self]);
+
+    // setup remove hover
+    self.el.hover(
+      function(){
+        // do not allow removing last column
+        if($('.deco-column', self.doc).length < 2){
+          return;
+        }
+        var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
+        $(this).prepend(del_el);
+        del_el.hover(function(){
+          $(this).parent().addClass('deco-predelete')
+        }, function(){
+          $(this).parent().removeClass('deco-predelete')
+        });
+        del_el.click(function(){
+          var column = $(this).parent('.deco-column');
+          var tiles = column.find('.deco-tile');
+          tiles.detach();
+          // find somewhere to place tiles, siblings first
+          var newcolumn = column.siblings('.deco-column');
+          var lastcolumn = false;
+          if(newcolumn.length == 0){
+            // if no siblings, look for other rows
+            newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column');
+            lastcolumn = true;
+          }
+          newcolumn.eq(0).append(tiles);
+          if(lastcolumn){
+            column.parent().remove();
+          }else{
+            column.remove();
+          }
+        })
+      },function(){
+        $(this).find('.deco-delete').remove();
+      }
+    );
   },
   hide: function() {
     var self = this;
@@ -449,6 +483,9 @@ $.deco.Column.prototype = {
 
     // remove drop events
     self.el.off('drop');
+
+    // remove hover events
+    self.el.unbind('mouseenter mouseleave');
 
     // hide tiles
     $.deco.getTiles(self.el, function(item) { item.hide(); });
@@ -501,7 +538,7 @@ $.deco.Panel.prototype = {
     // mark panel as being in edit mode
     self.el.addClass('deco-editing');
 
-    // show rows 
+    // show rows
     $.deco.getRows(self.el, function(item) { item.show(); });
 
     // trigger deco.panel.shown event
@@ -516,7 +553,7 @@ $.deco.Panel.prototype = {
     // remove marker class
     self.el.removeClass('deco-editing');
 
-    // hide rows 
+    // hide rows
     $.deco.getRows(self.el, function(item) { item.hide(); });
 
     // trigger deco.panel.hidden event
@@ -529,13 +566,8 @@ $.deco.Panel.prototype = {
 $.deco.Toolbar = function(el) {
   this.el = el;
   this.add_column_btn = $('#plone-deco-addcolumn', el);
-  this.add_column_btn.click(function(){
-    return false; // or add to end?
-  })
   this.add_row_btn = $('#plone-deco-addrow', el);
-  this.add_row_btn.click(function(){
-    return false; // or add to end?
-  });
+  this.doc = window.parent.document;
 };
 $.deco.Toolbar.prototype = {
   setupDnD: function(el, options){
@@ -556,23 +588,19 @@ $.deco.Toolbar.prototype = {
     var halfcondition = options.halfcondition;
     var doc = window.parent.document;
 
-    el.off('draginit').drag('init', function(e, dd) {
+    $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
+
+    el.off('dragstart').drag('start', function(e, dd) {
       $.plone.toolbar.iframe_stretch();
       // create drop targets
       $('.deco-' + type, doc).each(function() {
-        $('<div class="deco-' + type + '-drop"/>')
-          .css(css(this, false))
-          .appendTo(this);
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, false));
+        $(this).before(placeholder);
       });
       $('.deco-' + type + ':' + options.last_sel, doc).each(function() {
-        $('<div class="deco-' + type + '-drop"/>')
-          .css(css(this, true))
-          .appendTo(this);
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
+        $(this).after(placeholder);
       });
-      $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
-    });
-
-    el.off('dragstart').drag('start', function(e, dd) {
 
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
@@ -721,12 +749,13 @@ $.deco.Toolbar.prototype = {
     $('body').removeClass('deco-toolbar-editing');
 
     // hide panels
-    $.deco.getPanels(self.el, function(item) { item.hide(); });
+    $.deco.getPanels(window.parent.document, function(item) { item.hide(); });
 
     // hide toolbar
     self.el.slideUp('slow', function() {
       $.plone.toolbar.iframe_shrink();
     });
+
     // trigger deco.toolbar.hidden event
     $(document).trigger('deco.toolbar.hidden', [self]);
   },
@@ -741,7 +770,7 @@ $.deco.Toolbar.prototype = {
 };
 
 
-// jQuery integration for Toolbar, 
+// jQuery integration for Toolbar,
 $.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {
   $.fn['deco' + name] = function() {
     var el = $(this),
