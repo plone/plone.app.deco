@@ -770,34 +770,27 @@ $.deco.Toolbar.prototype = {
         return;
       }
 
-      var preview;
       if ($(dd.drop).length === 1) {
         // we're on a drop target; figure out where to put the preview
         if (halfcondition(e, dd)) {
           // 2nd half; add if it's not there yet
-          if ($(dd.drop).next().is('.deco-preview')) {
-            preview = $(dd.drop).next();
-          } else {
-            preview = options.create(dd, "after");
+          if (!$(dd.drop).next().is('.deco-preview')) {
+            options.create(dd, "after");
           }
         } else {
           // 1st half; add if it's not there yet
-          if ($(dd.drop).prev().is('.deco-preview')) {
-            preview = $(dd.drop).prev();
-          } else {
-            preview = options.create(dd, "before");
+          if (!$(dd.drop).prev().is('.deco-preview')) {
+            options.create(dd, "before");
           }
         }
       }
 
-      // Remove any previous previews in other locations.
-      $('.deco-preview', doc).not(preview).remove();
       // Keep track of which column was temporarily shortened
       // to make way for the preview. If it's different than
       // before, restore the size of the previous one.
       if (type == 'column') {
         var lastDrop = $(window.document).data('deco-last-drop');
-        if (lastDrop !== undefined && lastDrop.length > 0 && !lastDrop.is(dd.drop)) {
+        if (lastDrop !== undefined && lastDrop.is !== undefined && !lastDrop.is(dd.drop)) {
           var decoCol = lastDrop.decoColumn();
           var width = decoCol.getWidth();
           if (width < 12) {
@@ -805,15 +798,6 @@ $.deco.Toolbar.prototype = {
           }
         }
         $(window.document).data('deco-last-drop', dd.drop);
-      }
-
-      // Make sure there's at least one column per row
-      if (preview !== undefined && type === 'row' && $('.deco-column', preview).length === 0) {
-        $('<div/>')
-          .addClass('deco-column deco-span12')
-          .appendTo(preview)
-          .decoColumn().show();
-        $(document).trigger('deco.toolbar.layoutchange');
       }
 
     });
@@ -846,8 +830,11 @@ $.deco.Toolbar.prototype = {
     self.setupDnD(self.add_column_btn, {
       type: 'column',
       create: function(dd, side) {
+        // Remove any previous previews.
+        $('.deco-preview', window.parent.document).remove();
+
         var newColumn = $('<div/>')
-          .addClass('deco-column  deco-preview deco-span1');
+          .addClass('deco-column deco-preview deco-span1');
 
         // calculate total width and find the biggest column        
         var totalSize = 0;
@@ -903,14 +890,25 @@ $.deco.Toolbar.prototype = {
       init: 'decoRow',
       last_sel: 'last',
       create: function(dd, side) {
+        // Remove any previous previews.
+        $('.deco-preview', window.parent.document).remove();
+
         var row = $('<div/>')
           .addClass('deco-row deco-row-fluid deco-preview');
+
         if(side === "after") {
           row.insertAfter($(dd.drop));
         } else {
           row.insertBefore($(dd.drop));
         }
         row.decoRow().show();
+
+        // Make sure there's a column in the row
+        $('<div/>')
+          .addClass('deco-column deco-span12')
+          .appendTo(row)
+          .decoColumn().show();
+
         $(document).trigger('deco.toolbar.layoutchange');
         return row;
       },
