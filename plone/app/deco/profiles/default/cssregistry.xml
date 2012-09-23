@@ -12,6 +12,12 @@
         enabled="True" bundle="default"
         id="++resource++plone.app.deco/src/deco-content.css"
         />
+    
+    <stylesheet
+        cacheable="False" compression="safe" cookable="True"
+        enabled="True" bundle="default"
+        id="++resource++plone.app.deco/src/deco-bootstrap.css"
+        />
 
 </object>
 
