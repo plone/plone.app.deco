@@ -5,6 +5,7 @@
             field="resourceBundlesForThemes">
         <value purge="false">
             <element key="toolbar">
+                <element>old</element>
                 <element>jquery</element>
                 <element>bootstrap</element>
                 <element>tinymce</element>
