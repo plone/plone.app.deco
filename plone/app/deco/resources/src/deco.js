@@ -140,7 +140,8 @@ $.deco.dropTile = function(e, dd) {
           // destroy overlay
           overlay.destroy();
 
-          // save deco layout as well
+          // We'll save the layout because adding
+          // new tile actually stores data to the zodb
           var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
           decoToolbar._editformDontHideDecoToolbar = true;
           $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
@@ -165,6 +166,8 @@ $.deco.dropTile = function(e, dd) {
       // remove preview_tile
       preview_tile.remove();
 
+      // notify user layout has changed and needs saving
+      $(document).trigger('deco.toolbar.layoutchange');
     }
   }
 };
