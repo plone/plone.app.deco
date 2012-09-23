@@ -116,7 +116,7 @@ $.deco.dropTile = function(e, dd) {
     // overlay. when sucessfully saved it should create new tile in deco grid
     // and remove preview_tile.
     if (dragging_from_toolbar) {
-      new $.plone.overlay.Overlay({
+      var modal = new $.plone.overlay.Overlay({
         url: $(dd.drag).parents('form').attr('action') + '/' +
                 $('input[name="tiletype"]', dd.drag).attr('value'),
         form: 'form#edit_tile,form#add_tile',
@@ -157,6 +157,11 @@ $.deco.dropTile = function(e, dd) {
           overlay.destroy();
         }
       }).show();
+      modal._el.on('hide', function(){
+        // make sure to remove proxy objects
+        // that can be left over from excaping adding new tile
+        $('.deco-tile-proxy', window.parent.document).remove();
+      });
 
     } else {
 
