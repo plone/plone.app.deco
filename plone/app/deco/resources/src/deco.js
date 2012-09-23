@@ -566,13 +566,7 @@ $.deco.Panel.prototype = {
 $.deco.Toolbar = function(el) {
   this.el = el;
   this.add_column_btn = $('#plone-deco-addcolumn', el);
-  this.add_column_btn.click(function(){
-    return false; // or add to end?
-  })
   this.add_row_btn = $('#plone-deco-addrow', el);
-  this.add_row_btn.click(function(){
-    return false; // or add to end?
-  });
   this.doc = window.parent.document;
 };
 $.deco.Toolbar.prototype = {
@@ -594,7 +588,9 @@ $.deco.Toolbar.prototype = {
     var halfcondition = options.halfcondition;
     var doc = window.parent.document;
 
-    el.off('draginit').drag('init', function(e, dd) {
+    $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
+
+    el.off('dragstart').drag('start', function(e, dd) {
       $.plone.toolbar.iframe_stretch();
       // create drop targets
       $('.deco-' + type, doc).each(function() {
@@ -605,10 +601,6 @@ $.deco.Toolbar.prototype = {
         var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
         $(this).after(placeholder);
       });
-      $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
-    });
-
-    el.off('dragstart').drag('start', function(e, dd) {
 
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
