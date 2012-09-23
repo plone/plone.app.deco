@@ -455,14 +455,14 @@ $.deco.Column.prototype = {
         var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
 
         // position delete button
-        if (!$(this).is(':first-child')){
+        if ($(this).is(':first-child')){
           del_el.css({
-            top: $(this).position().top - 14,
-            left: $(this).position().left + 23
+            top: $(this).position().top - 14
           });
         }else{
           del_el.css({
-            top: $(this).position().top - 14
+            top: $(this).position().top - 14,
+            left: $(this).position().left + 23
           });
         }
 
