@@ -42,6 +42,13 @@
   cursor: move;
 }
 
-#deco-toolbar .plone-tiletype > * {
+#deco-toolbar .deco-toolbar-btn > * {
   display: none;
+}
+
+#plone-deco-addrow{
+  background: url(++resource++plone.app.deco/src/add-row.png) 50% 50% no-repeat scroll white;
+}
+#plone-deco-addcolumn{
+  background: url(++resource++plone.app.deco/src/add-col.png) 50% 50% no-repeat scroll white;
 }

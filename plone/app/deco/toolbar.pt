@@ -13,12 +13,12 @@
     <ul class="nav nav-pills pull-left">
       <li>
         <div class="deco-toolbar-btn" id="plone-deco-addcolumn">
-          Add Column
+          <span>Add Column</span>
         </div>
       </li>
       <li>
         <div class="deco-toolbar-btn" id="plone-deco-addrow">
-          Add Row
+          <span>Add Row</span>
         </div>
       </li>
     </ul>

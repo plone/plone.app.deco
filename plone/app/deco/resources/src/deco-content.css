@@ -20,7 +20,7 @@
 }
 
 .deco-delete {
-    background-image: url(delete.png);
+    background-image: url(++resource++plone.app.deco/src/delete.png);
     position: absolute;
     left: -14px;
     top: -14px;
