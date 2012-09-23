@@ -449,7 +449,6 @@ $.deco.Column.prototype = {
     self.el.hover(
       function(){
         // do not allow removing last column
-        //debugger;
         if($('.deco-column', self.doc).length < 2){
           return;
         }
@@ -460,6 +459,10 @@ $.deco.Column.prototype = {
           del_el.css({
             top: $(this).position().top - 14,
             left: $(this).position().left + 23
+          });
+        }else{
+          del_el.css({
+            top: $(this).position().top - 14
           });
         }
 
