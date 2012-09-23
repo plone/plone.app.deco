@@ -28,7 +28,7 @@
   display: none;    
 }
 
-#deco-toolbar .plone-tiletype {
+#deco-toolbar .deco-toolbar-btn {
   border: 1px solid #CCCCCC;
   border-radius: 4px 4px 4px 4px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
@@ -37,6 +37,11 @@
   width: 40px;
   margin: 0.5em;
 }
+
+#deco-toolbar .deco-toolbar-btn:hover{
+  cursor: move;
+}
+
 #deco-toolbar .plone-tiletype > * {
   display: none;
 }
