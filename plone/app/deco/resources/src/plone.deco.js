@@ -128,7 +128,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
         $(document).trigger('plone.deco.editformLoaded');
       });
 
-  // bind save button of toolbar to click save button in edit form 
+  // bind save button of toolbar to click save button in edit form
   $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
     if($(this).hasClass('disabled')){
       // if disabled, click doesn't do anything.
@@ -151,7 +151,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
     }
   });
 
-  // bind cancel button of toolbar to cancel button in edit form 
+  // bind cancel button of toolbar to cancel button in edit form
   $('#deco-toolbar-cancel', decoToolbar.el).off('click').on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -175,7 +175,6 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
 });
 
-// # 
 $(document).on('deco.toolbar.hide', function(e, decoToolbar) {
 
   // close mask
