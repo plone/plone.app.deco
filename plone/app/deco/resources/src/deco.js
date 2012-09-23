@@ -175,8 +175,7 @@ $.deco.dropLayoutElement = function(e, dd) {
   if($(dd.proxy).hasClass('deco-layout-el')){
     $('.deco-preview', window.parent.document).removeClass('deco-preview');
     // trigger layout changed event
-    $(document).trigger('deco.toolbar.layoutchange',
-      [$($.plone.deco.defaults.toolbar).decoToolbar()]);
+    $(document).trigger('deco.toolbar.layoutchange');
   }
 };
 
@@ -475,6 +474,7 @@ $.deco.Column.prototype = {
           }else{
             column.remove();
           }
+          $(document).trigger('deco.toolbar.layoutchange');
         })
       },function(){
         $(this).find('.deco-delete').remove();

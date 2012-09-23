@@ -65,7 +65,7 @@ $(document).on('deco.panel.show', function(e, decoPanel) {
   });
 });
 
-$(document).on('deco.toolbar.layoutchange', function(e, decoToolbar){
+$(document).on('deco.toolbar.layoutchange', function(e){
   $($.plone.deco.defaults.toolbar_save_btn).removeClass('disabled');
 });
 
