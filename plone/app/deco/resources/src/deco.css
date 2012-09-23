@@ -49,6 +49,13 @@
 #plone-deco-addrow{
   background: url(++resource++plone.app.deco/src/add-row.png) 50% 50% no-repeat scroll white;
 }
+
 #plone-deco-addcolumn{
   background: url(++resource++plone.app.deco/src/add-col.png) 50% 50% no-repeat scroll white;
+}
+
+#deco-toolbar ul#deco-layout-buttons{
+  border-right: 2px solid #B1B0B2;
+  margin-right: 10px;
+  padding-right: 10px;
 }
