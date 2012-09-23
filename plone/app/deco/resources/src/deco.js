@@ -784,22 +784,26 @@ $.deco.Toolbar.prototype = {
             preview = options.create(dd, "before");
           }
         }
-      } else if (type == 'column') {
-        var changed = $($(window.document).data("row-changes"));
-
-        if(changed.length) {
-
-          var column = changed.decoColumn();
-          var width = column.getWidth();
-
-          if(width < 12) { 
-            column.setWidth(width+1);
-            $(window.document).data("row-changes", false);
-          }
-        }
       }
 
-      // make sure there's at least one column per row
+      // Remove any previous previews in other locations.
+      $('.deco-preview', doc).not(preview).remove();
+      // Keep track of which column was temporarily shortened
+      // to make way for the preview. If it's different than
+      // before, restore the size of the previous one.
+      if (type == 'column') {
+        var lastDrop = $(window.document).data('deco-last-drop');
+        if (lastDrop !== undefined && lastDrop.length > 0 && !lastDrop.is(dd.drop)) {
+          var decoCol = lastDrop.decoColumn();
+          var width = decoCol.getWidth();
+          if (width < 12) {
+            decoCol.setWidth(width + 1);
+          }
+        }
+        $(window.document).data('deco-last-drop', dd.drop);
+      }
+
+      // Make sure there's at least one column per row
       if (preview !== undefined && type === 'row' && $('.deco-column', preview).length === 0) {
         $('<div/>')
           .addClass('deco-column deco-span12')
@@ -807,13 +811,11 @@ $.deco.Toolbar.prototype = {
           .decoColumn().show();
         $(document).trigger('deco.toolbar.layoutchange');
       }
-      // remove any previous previews in other locations
-      $('.deco-preview', doc).not(preview).remove();
 
     });
 
     el.off('dragend').drag('end', function(e, dd) {
-      $(window.document).data("row-changes", false);
+      $(window.document).data("deco-last-drop", false);
       $('.deco-preview', doc).removeClass('deco-preview');
       $(dd.proxy).remove();
       $.plone.toolbar.iframe_shrink();
@@ -842,33 +844,30 @@ $.deco.Toolbar.prototype = {
       create: function(dd, side) {
         var newColumn = $('<div/>')
           .addClass('deco-column  deco-preview deco-span1');
-        
-        var columns = $(dd.drop).parent().children(".deco-column");
-        var totalColumns = 0;
-        var widths = [];
-        var bigger = null;
 
-        var index = columns.index(dd.drop);
-        columns.splice(index, newColumn);
-        columns.each(function(index) {
-            var actualColumn = $(this).decoColumn();
-
-            var width = actualColumn.getWidth();
-            totalColumns += width;
-            widths.push([index,width]);
+        // calculate total width and find the biggest column        
+        var totalSize = 0;
+        var biggestSize = 0;
+        var biggestCol = null;
+        var columns = $(dd.drop).parent().children(".deco-column")
+        columns.splice(columns.index(dd.drop), newColumn);
+        columns.each(function() {
+            var decoCol = $(this).decoColumn();
+            var width = decoCol.getWidth();
+            totalSize += width;
+            if (width > biggestSize) {
+              biggestCol = $(this);
+              biggestSize = width;
+            }
         });
         
-        if(totalColumns >= 12) {
-            widths.sort(function(a,b) {return a[1]-b[1]});
-            var biggest = widths[widths.length-1];
-            //All rows have 1 size.
-            if (biggest[1] !== 1) {
-                var bigColumn = columns[biggest[0]];
-                var column = $(bigColumn).decoColumn();
-
-                var width = column.getWidth();
-                column.setWidth(width - 1);
-                $(window.document).data("row-changes", bigColumn);
+        // decrease size of biggest column
+        if(totalSize >= 12) {
+            var lastDrop = $(window.document).data('deco-last-drop');
+            if (biggestSize > 1 && !biggestCol.is(lastDrop)) {
+                var decoCol = $(biggestCol).decoColumn();
+                var width = decoCol.getWidth();
+                decoCol.setWidth(width - 1);
             }
         }
         
