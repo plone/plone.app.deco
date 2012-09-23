@@ -452,9 +452,9 @@ $.deco.Column.prototype = {
         var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
         $(this).prepend(del_el);
         del_el.hover(function(){
-          $(this).parent().addClass('deco-predelete')
+          $(this).parent().addClass('deco-predelete');
         }, function(){
-          $(this).parent().removeClass('deco-predelete')
+          $(this).parent().removeClass('deco-predelete');
         });
         del_el.click(function(){
           var column = $(this).parent('.deco-column');
@@ -463,7 +463,7 @@ $.deco.Column.prototype = {
           // find somewhere to place tiles, siblings first
           var newcolumn = column.siblings('.deco-column');
           var lastcolumn = false;
-          if(newcolumn.length == 0){
+          if(newcolumn.length === 0){
             // if no siblings, look for other rows
             newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column');
             lastcolumn = true;
@@ -475,7 +475,7 @@ $.deco.Column.prototype = {
             column.remove();
           }
           $(document).trigger('deco.toolbar.layoutchange');
-        })
+        });
       },function(){
         $(this).find('.deco-delete').remove();
       }
@@ -577,17 +577,17 @@ $.deco.Toolbar = function(el) {
 };
 $.deco.Toolbar.prototype = {
   setupDnD: function(el, options){
-    if(options == undefined){ options = {}; }
-    if(options.type == undefined){ options.type = 'column'; }
-    if(options.placeholdercss == undefined){
-      options.placeholdercss = function(el){ return {} };
+    if(options === undefined){ options = {}; }
+    if(options.type === undefined){ options.type = 'column'; }
+    if(options.placeholdercss === undefined){
+      options.placeholdercss = function(el){ return {}; };
     }
-    if(options.halfcondition == undefined){
-      options.halfcondition = function(el){ return {} };
+    if(options.halfcondition === undefined){
+      options.halfcondition = function(el){ return {}; };
     }
-    if(options.init == undefined){ options.init = function(){}; };
-    if(options.drop == undefined){ options.drop = function(e, dd){}; }
-    if(options.last_sel == undefined){ options.last_sel = 'last-child'; }
+    if(options.init === undefined){ options.init = function(){}; }
+    if(options.drop === undefined){ options.drop = function(e, dd){}; }
+    if(options.last_sel === undefined){ options.last_sel = 'last-child'; }
 
     var type = options.type;
     var css = options.placeholdercss;
@@ -633,11 +633,12 @@ $.deco.Toolbar.prototype = {
         left: dd.offsetX
       });
 
-      if ($(dd.drop).hasClass('deco-preview'))
+      if ($(dd.drop).hasClass('deco-preview')){
         return;
+      }
 
       var preview;
-      if ($(dd.drop).length == 1) {
+      if ($(dd.drop).length === 1) {
         // we're on a drop target; figure out where to put the preview
         if (halfcondition(e, dd)) {
           // 2nd half; add if it's not there yet
@@ -662,7 +663,7 @@ $.deco.Toolbar.prototype = {
         }
       }
       // make sure there's at least one column per row
-      if (preview !== undefined && type == 'row' && $('.deco-column', preview).length == 0) {
+      if (preview !== undefined && type === 'row' && $('.deco-column', preview).length === 0) {
         $('<div/>')
           .addClass('deco-column')
           .appendTo(preview)
@@ -701,12 +702,12 @@ $.deco.Toolbar.prototype = {
       type: 'column',
       init: 'decoColumn',
       placeholdercss: function(el, last){
-        var el = $(el);
+        el = $(el);
         return {
           height: el.height(),
           left: el.position().left + (last ? el.width() : 0),
           top: el.position().top
-        }
+        };
       },
       halfcondition: function(e, dd) {
         return (e.pageX > $(dd.drop).offset().left + $(dd.drop).width() / 2);
@@ -719,12 +720,12 @@ $.deco.Toolbar.prototype = {
       init: 'decoRow',
       last_sel: 'last',
       placeholdercss: function(el, last){
-        var el = $(el);
+        el = $(el);
         return {
           width: el.width(),
           left: el.position().left,
           top: el.position().top + (last ? el.position().top : 0)
-        }
+        };
       },
       halfcondition: function(e, dd) {
         return (e.pageY > $(dd.drop).offset().top + $(dd.drop).height() / 2);
