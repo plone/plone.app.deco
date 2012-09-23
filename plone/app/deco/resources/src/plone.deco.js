@@ -88,6 +88,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               var els = $('<div/>').append(panel.el.clone());
               // perform some cleanup just in case...
               els.find('.deco-row-drop,.deco-column-drop,.deco-delete,.deco-column-drag').remove();
+              els.find('.plone-tile').html('');
               content += els.html();
               if (decoToolbar._editformDontHideDecoToolbar) {
                 panel.show();
