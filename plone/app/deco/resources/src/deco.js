@@ -47,25 +47,29 @@ $.deco = $.deco || {};
 // # Drop tolerance
 $.drop({
   tolerance: function(e, proxy, target ) {
-    var drop = $.event.special.drop;
-    if($(proxy.elem).hasClass('deco-column-proxy')){
-      if($(target.elem).hasClass('deco-column-drop')){
-        if (e.pageY > target.top && e.pageY < target.bottom &&
-            e.pageX > target.left - 20 && e.pageX < target.left + 20) {
+    var doc = window.parent.document;
+    var doctop = $(doc).scrollTop();
+    var docleft = $(doc).scrollLeft();
+    if ($(proxy.elem).hasClass('deco-column-proxy')) {
+      if($(target.elem).hasClass('deco-column')){
+        if (e.pageY + doctop > target.top && e.pageY + doctop < target.bottom &&
+            e.pageX + docleft > target.left && e.pageX + docleft < target.right) {
           return 1;
         }
       }
-    }else if($(proxy.elem).hasClass('deco-row-proxy')){
-      if($(target.elem).hasClass('deco-row-drop')){
-        if (e.pageX > target.left && e.pageX < target.right &&
-            e.pageY > target.top - 20 && e.pageY < target.bottom + 20){
+    } else if($(proxy.elem).hasClass('deco-row-proxy')) {
+      if ($(target.elem).hasClass('deco-row')) {
+        if (e.pageX + doctop > target.left && e.pageX + doctop < target.right &&
+            e.pageY + docleft > target.top - 20 && e.pageY + docleft < target.bottom + 20){
           return 1;
         }
       }
-    }else if((drop.contains(target, [e.pageX, e.pageY +
-        $(window.parent.document).scrollTop()]) === true) &&
-        (target.left < e.pageX) && (target.right > e.pageX)) {
-      return 1;
+    } else {
+      var drop = $.event.special.drop;
+      if ((drop.contains(target, [e.pageX, e.pageY + $(doc).scrollTop()]) === true) &&
+          (target.left < e.pageX) && (target.right > e.pageX)) {
+        return 1;
+      }
     }
     return 0;
   }
@@ -166,48 +170,17 @@ $.deco.dropTile = function(e, dd) {
 };
 
 
-// # Drop Column
-$.deco.dropColumn = function(e, dd) {
+// # Drop Column or Row
+$.deco.dropLayoutElement = function(e, dd) {
 
-  // create new column, place it after drop target and initialize it
-  var column = $('<div/>')
-    .addClass('deco-column')
-    .insertAfter(dd.drop)
-    .decoColumn();
-  column.show();
+  $('.deco-preview', window.parent.document).removeClass('deco-preview');
 
-  // remove drop targets
-  $('.deco-column-drop', window.parent.document).remove();
-
-  // save deco layout as well
+  // save deco layout
   var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
   decoToolbar._editformDontHideDecoToolbar = true;
   $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
 
 };
-
-$.deco.dropRow = function(e, dd){
-  // create new column, place it after drop target and initialize it
-  var row = $('<div/>')
-    .addClass('deco-row')
-    .insertAfter(dd.drop)
-    .decoRow();
-  row.show();
-  // add default column
-  var column = $('<div/>')
-    .addClass('deco-column')
-    .decoColumn();
-  column.show();
-  row.el.append(column.el);
-
-  // remove drop targets
-  $('.deco-row-drop', window.parent.document).remove();
-
-  // save deco layout as well
-  var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
-  decoToolbar._editformDontHideDecoToolbar = true;
-  $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click(); 
-}
 
 // # Tile
 $.deco.Tile = function(el) {
@@ -569,13 +542,18 @@ $.deco.Toolbar.prototype = {
     if(options == undefined){ options = {}; }
     if(options.type == undefined){ options.type = 'column'; }
     if(options.placeholdercss == undefined){
-      options.placeholdercss = function(el){ return {} }
+      options.placeholdercss = function(el){ return {} };
     }
+    if(options.halfcondition == undefined){
+      options.halfcondition = function(el){ return {} };
+    }
+    if(options.init == undefined){ options.init = function(){}; };
     if(options.drop == undefined){ options.drop = function(e, dd){}; }
     if(options.last_sel == undefined){ options.last_sel = 'last-child'; }
 
     var type = options.type;
     var css = options.placeholdercss;
+    var halfcondition = options.halfcondition;
     var doc = window.parent.document;
 
     el.off('draginit').drag('init', function(e, dd) {
@@ -589,7 +567,7 @@ $.deco.Toolbar.prototype = {
         var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
         $(this).after(placeholder);
       });
-      $('.deco-' + type + '-drop', doc).on('drop', options.drop);
+      $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
     });
 
     el.off('dragstart').drag('start', function(e, dd) {
@@ -613,17 +591,54 @@ $.deco.Toolbar.prototype = {
     }, { distance: 10 });
 
     el.off('drag').drag(function(e, dd) {
-      $(dd.available).removeClass('deco-droppable');
-      $(dd.drop).addClass('deco-droppable');
       // proxy tile follows mouse
       $(dd.proxy).css({
         top: dd.offsetY,
         left: dd.offsetX
       });
+
+      if ($(dd.drop).hasClass('deco-preview'))
+        return;
+
+      var preview;
+      if ($(dd.drop).length == 1) {
+        // we're on a drop target; figure out where to put the preview
+        if (halfcondition(e, dd)) {
+          // 2nd half; add if it's not there yet
+          if ($(dd.drop).next().is('.deco-preview')) {
+            preview = $(dd.drop).next();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-' + type + ' deco-preview')
+              .insertAfter($(dd.drop));
+            (preview[options.init])().show();
+          }
+        } else {
+          // 1st half; add if it's not there yet
+          if ($(dd.drop).prev().is('.deco-preview')) {
+            preview = $(dd.drop).prev();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-' + type + ' deco-preview')
+              .insertBefore($(dd.drop));
+            (preview[options.init])().show();
+          }
+        }
+      }
+      // make sure there's at least one column per row
+      if (preview !== undefined && type == 'row' && $('.deco-column', preview).length == 0) {
+        $('<div/>')
+          .addClass('deco-column')
+          .appendTo(preview)
+          .decoColumn().show();
+      }
+      // remove any previous previews in other locations
+      $('.deco-preview', doc).not(preview).remove();
+
     });
 
     el.off('dragend').drag('end', function(e, dd) {
-      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
+      $('.deco-preview', doc).removeClass('deco-preview');
       $(dd.proxy).remove();
       $.plone.toolbar.iframe_shrink();
       $('.deco-' + type + '-drop', doc).remove();
@@ -645,46 +660,38 @@ $.deco.Toolbar.prototype = {
     // show panels
     $.deco.getPanels(window.parent.document, function(item) { item.show(); });
 
+    // set up column drag/drop
     self.setupDnD(self.add_column_btn, {
       type: 'column',
-      drop: $.deco.dropColumn,
+      init: 'decoColumn',
       placeholdercss: function(el, last){
         var el = $(el);
-        if(last){
-          return {
-            height: el.height(),
-            right: 0,
-            top: el.position().top
-          }
-        }else{
-          return {
-            height: el.height(),
-            left: el.position().left,
-            top: el.position().top
-          }
+        return {
+          height: el.height(),
+          left: el.position().left + (last ? el.width() : 0),
+          top: el.position().top
         }
+      },
+      halfcondition: function(e, dd) {
+        return (e.pageX > $(dd.drop).offset().left + $(dd.drop).width() / 2);
       }
     });
 
+    // set up row drag/drop
     self.setupDnD(self.add_row_btn, {
       type: 'row',
-      drop: $.deco.dropRow,
+      init: 'decoRow',
       last_sel: 'last',
       placeholdercss: function(el, last){
         var el = $(el);
-        if(last){
-          return {
-            width: el.width(),
-            left: 0,
-            bottom: 0
-          }
-        }else{
-          return {
-            width: el.width(),
-            left: 0,
-            top: el.position().top
-          }
+        return {
+          width: el.width(),
+          left: el.position().left,
+          top: el.position().top + (last ? el.position().top : 0)
         }
+      },
+      halfcondition: function(e, dd) {
+        return (e.pageY > $(dd.drop).offset().top + $(dd.drop).height() / 2);
       }
     });
 

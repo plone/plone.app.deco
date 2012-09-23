@@ -10,20 +10,13 @@
 }
 .deco-column-drop {
     position: absolute;
-    width: 10px;
+    width: 0px;
     z-index: 900;
-    background: red;
-    outline: 1px solid red;
+    outline: 3px dashed blue;
 }
-
 .deco-row-drop {
     position: absolute;
-    height: 10px;
+    height: 0px;
     z-index: 900;
-    background: red;
-    outline: 1px solid red;   
-}
-
-.deco-droppable{
-    background: black;
+    outline: 3px dashed blue;
 }
