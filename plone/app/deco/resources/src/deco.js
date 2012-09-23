@@ -522,7 +522,12 @@ $.deco.Column.prototype = {
     var itemClass = item.attr("class");
     if (itemClass.length) {
       var regex_match = itemClass.match(/\bdeco-span(\d+)/);
-      return parseInt(regex_match[1], 10);
+      if (regex_match.length > 1){
+        return parseInt(regex_match[1], 10);
+      }else{
+        // perhaps it's missing, not sure, but let's not error.
+        return 1;
+      }
     }            
   },
 
