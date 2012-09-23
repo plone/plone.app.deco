@@ -560,12 +560,14 @@ $.deco.Toolbar.prototype = {
       $.plone.toolbar.iframe_stretch();
       // create drop targets
       $('.deco-' + type, doc).each(function() {
-        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, false));
-        $(this).before(placeholder);
+        $('<div class="deco-' + type + '-drop"/>')
+          .css(css(this, false))
+          .appendTo(this);
       });
       $('.deco-' + type + ':' + options.last_sel, doc).each(function() {
-        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
-        $(this).after(placeholder);
+        $('<div class="deco-' + type + '-drop"/>')
+          .css(css(this, true))
+          .appendTo(this);
       });
       $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
     });
