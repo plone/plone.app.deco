@@ -465,12 +465,12 @@ $.deco.Column.prototype = {
         // position delete button
         if ($(this).is(':first-child')){
           del_el.css({
-            top: $(this).position().top - 14
+            top: $(this).position().top - 10
           });
         }else{
           del_el.css({
-            top: $(this).position().top - 14,
-            left: $(this).position().left + 23
+            top: $(this).position().top - 10,
+            left: $(this).position().left + 27
           });
         }
 
