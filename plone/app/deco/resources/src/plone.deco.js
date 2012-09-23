@@ -88,6 +88,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               var els = $('<div/>').append(panel.el.clone());
               // perform some cleanup just in case...
               els.find('.deco-row-drop,.deco-column-drop,.deco-delete,.deco-column-drag').remove();
+              els.find('.deco-column').attr('style', '');
               els.find('.plone-tile').html('');
               content += els.html();
               if (decoToolbar._editformDontHideDecoToolbar) {
@@ -119,6 +120,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
                 decoToolbar._editformDontHideDecoToolbar = false;
                 // since we just saved, disable save button
               }
+              
               $($.plone.deco.defaults.toolbar_save_btn)
                   .removeClass('btn-primary')
                   .html('Close');

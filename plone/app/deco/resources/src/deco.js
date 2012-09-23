@@ -407,7 +407,6 @@ $.deco.Tile.prototype = {
   },
   hide: function() {
     var self = this;
-
     // trigger deco.tile.hide event
     $(document).trigger('deco.tile.hide', [self]);
 
@@ -433,6 +432,14 @@ $.deco.Column = function(el) {
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
+
+    // XXX setting default height here so we can drop elements
+    // XXX can't figure out a way to make this work with css
+    var row_height = self.el.parent().height();
+    if(self.el.height() < row_height){
+      // get row height and set to it.
+      self.el.css('height', row_height);
+    }
 
     // trigger deco.column.show event
     $(document).trigger('deco.column.show', [self]);
@@ -506,6 +513,10 @@ $.deco.Column.prototype = {
   },
   hide: function() {
     var self = this;
+
+    // XXX part of height hack
+    // XXX this is to clear height pixels
+    $('.deco-column', window.parent.document).attr('style', '');
 
     // trigger deco.column.hide event
     $(document).trigger('deco.column.hide', [self]);
