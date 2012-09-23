@@ -13,7 +13,9 @@ tests_require = [
     'z3c.form [test]',
     'unittest2',
     'plone.app.testing',
-    'selenium>=2.0a5'
+    'robotsuite',
+    'robotframework-selenium2library',
+    'plone.act',
 ]
 
 
