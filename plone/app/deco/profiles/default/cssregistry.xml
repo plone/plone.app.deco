@@ -12,6 +12,6 @@
         enabled="True" bundle="default"
         id="++resource++plone.app.deco/src/deco-content.css"
         />
-
+    
 </object>
 

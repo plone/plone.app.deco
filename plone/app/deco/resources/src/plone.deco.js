@@ -65,6 +65,12 @@ $(document).on('deco.panel.show', function(e, decoPanel) {
   });
 });
 
+$(document).on('deco.toolbar.layoutchange', function(e){
+  $($.plone.deco.defaults.toolbar_save_btn)
+    .addClass('btn-primary')
+    .html('Save');
+});
+
 // # Load edit form when Deco toolbar displays
 $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   var defaults = $.plone.deco.defaults,
@@ -81,7 +87,9 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               panel.hide();
               var els = $('<div/>').append(panel.el.clone());
               // perform some cleanup just in case...
-              els.find('.deco-row-drop,.deco-column-drop,.deco-delete').remove();
+              els.find('.deco-tile-proxy,.deco-row-drop,.deco-column-drop,.deco-delete,.deco-column-drag').remove();
+              els.find('.deco-column').attr('style', '');
+              els.find('.plone-tile').html('');
               content += els.html();
               if (decoToolbar._editformDontHideDecoToolbar) {
                 panel.show();
@@ -110,7 +118,12 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
                 decoToolbar.hide();
               } else {
                 decoToolbar._editformDontHideDecoToolbar = false;
+                // since we just saved, disable save button
               }
+              
+              $($.plone.deco.defaults.toolbar_save_btn)
+                  .removeClass('btn-primary')
+                  .html('Close');
               // TODO: display notification (eg. "Deco page saved!")
             } else {
               // TODO: open overlay and focus on fireld with error
@@ -122,8 +135,12 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
         $(document).trigger('plone.deco.editformLoaded');
       });
 
-  // bind save button of toolbar to click save button in edit form 
+  // bind save button of toolbar to click save button in edit form
   $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
+    if($(this).hasClass('btn-primary')){
+      // nothing to save, just close
+      decoToolbar.hide();
+    }
     e.preventDefault();
     e.stopPropagation();
 
@@ -141,7 +158,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
     }
   });
 
-  // bind cancel button of toolbar to cancel button in edit form 
+  // bind cancel button of toolbar to cancel button in edit form
   $('#deco-toolbar-cancel', decoToolbar.el).off('click').on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -165,7 +182,6 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
 });
 
-// # 
 $(document).on('deco.toolbar.hide', function(e, decoToolbar) {
 
   // close mask
