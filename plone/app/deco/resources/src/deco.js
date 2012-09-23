@@ -481,40 +481,44 @@ $.deco.Column.prototype = {
           $(this).parent().removeClass('deco-predelete');
         });
         del_el.click(function(){
-          var column = $(this).parent('.deco-column');
-          var tiles = column.find('.deco-tile');
-          tiles.detach();
-          // find somewhere to place tiles, siblings first
-          var newcolumn = column.siblings('.deco-column');
-          var lastcolumn = false;
-          if(newcolumn.length === 0){
-            // if no siblings, look for other rows
-            newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column').eq(0);
-            lastcolumn = true;
-          }else{
-            // has sibligs, we need to add to grid with so it fills in space
-            newcolumn = newcolumn.eq(0);
-            var newcolumnobj = newcolumn.decoColumn();
-            newcolumnobj.setWidth(column.decoColumn().getWidth() + newcolumnobj.getWidth());
-          }
-          newcolumn.eq(0).append(tiles);
-
-          if(lastcolumn){
-            column.parent().remove();
-          }else{
-            column.remove();
-          }
-          // This is done so we can re-calculate layout
-          $.deco.getPanels(window.parent.document, function(panel) {
-            panel.hide();
-            panel.show();
-          });
-          $(document).trigger('deco.toolbar.layoutchange');
+          $(this).parent('.deco-column').decoColumn().destroy();
         });
       },function(){
         $(this).find('.deco-delete').remove();
       }
     );
+  },
+  destroy: function(){
+    var self = this;
+    var tiles = self.el.find('.deco-tile');
+    var row = self.el.parent().decoRow();
+    tiles.detach();
+    // find somewhere to place tiles, siblings first
+    var newcolumn = self.el.siblings('.deco-column');
+    var lastcolumn = false;
+    if(newcolumn.length === 0){
+      // if no siblings, look for other rows
+      newcolumn = row.el.siblings('.deco-row').eq(0).find('.deco-column').eq(0);
+      lastcolumn = true;
+    }else{
+      // has sibligs, we need to add to grid with so it fills in space
+      newcolumn = newcolumn.eq(0);
+      var newcolumnobj = newcolumn.decoColumn();
+      newcolumnobj.setWidth(self.getWidth() + newcolumnobj.getWidth());
+    }
+    newcolumn.eq(0).append(tiles);
+
+    if(lastcolumn){
+      row.el.remove();
+    }else{
+      self.el.remove();
+    }
+    // This is done so we can re-calculate layout
+    $.deco.getPanels(window.parent.document, function(panel) {
+      panel.hide();
+      panel.show();
+    });
+    $(document).trigger('deco.toolbar.layoutchange');
   },
   hide: function() {
     var self = this;
