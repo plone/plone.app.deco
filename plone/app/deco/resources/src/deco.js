@@ -47,11 +47,29 @@ $.deco = $.deco || {};
 // # Drop tolerance
 $.drop({
   tolerance: function(e, proxy, target ) {
-    var drop = $.event.special.drop;
-    if ((drop.contains(target, [e.pageX, e.pageY +
-          $(window.parent.document).scrollTop()]) === true) &&
-        (target.left < e.pageX) && (target.right > e.pageX)) {
+    var doc = window.parent.document;
+    var doctop = $(doc).scrollTop();
+    var docleft = $(doc).scrollLeft();
+    if ($(proxy.elem).hasClass('deco-column-proxy')) {
+      if($(target.elem).hasClass('deco-column')){
+        if (e.pageY + doctop > target.top && e.pageY + doctop < target.bottom &&
+            e.pageX + docleft > target.left && e.pageX + docleft < target.right) {
+          return 1;
+        }
+      }
+    } else if($(proxy.elem).hasClass('deco-row-proxy')) {
+      if ($(target.elem).hasClass('deco-row')) {
+        if (e.pageX + doctop > target.left && e.pageX + doctop < target.right &&
+            e.pageY + docleft > target.top - 20 && e.pageY + docleft < target.bottom + 20){
+          return 1;
+        }
+      }
+    } else {
+      var drop = $.event.special.drop;
+      if ((drop.contains(target, [e.pageX, e.pageY + $(doc).scrollTop()]) === true) &&
+          (target.left < e.pageX) && (target.right > e.pageX)) {
         return 1;
+      }
     }
     return 0;
   }
@@ -79,12 +97,11 @@ $.deco.getPanels = function(el, callback) {
     callback($(this).decoPanel());
   });
 };
-$.deco.getTileType= function(el, callback) {
+$.deco.getTileType = function(el, callback) {
   $('.plone-tiletype', el).each(function() {
     callback($(this).decoTile());
   });
 };
-
 
 // # Drop Tile
 $.deco.dropTile = function(e, dd) {
@@ -152,6 +169,18 @@ $.deco.dropTile = function(e, dd) {
   }
 };
 
+
+// # Drop Column or Row
+$.deco.dropLayoutElement = function(e, dd) {
+
+  $('.deco-preview', window.parent.document).removeClass('deco-preview');
+
+  // save deco layout
+  var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
+  decoToolbar._editformDontHideDecoToolbar = true;
+  $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
+
+};
 
 // # Tile
 $.deco.Tile = function(el) {
@@ -497,8 +526,124 @@ $.deco.Panel.prototype = {
 
 
 // # Toolbar
-$.deco.Toolbar = function(el) { this.el = el; };
+$.deco.Toolbar = function(el) {
+  this.el = el;
+  this.add_column_btn = $('#plone-deco-addcolumn', el);
+  this.add_column_btn.click(function(){
+    return false; // or add to end?
+  })
+  this.add_row_btn = $('#plone-deco-addrow', el);
+  this.add_row_btn.click(function(){
+    return false; // or add to end?
+  });
+};
 $.deco.Toolbar.prototype = {
+  setupDnD: function(el, options){
+    if(options == undefined){ options = {}; }
+    if(options.type == undefined){ options.type = 'column'; }
+    if(options.placeholdercss == undefined){
+      options.placeholdercss = function(el){ return {} };
+    }
+    if(options.halfcondition == undefined){
+      options.halfcondition = function(el){ return {} };
+    }
+    if(options.init == undefined){ options.init = function(){}; };
+    if(options.drop == undefined){ options.drop = function(e, dd){}; }
+    if(options.last_sel == undefined){ options.last_sel = 'last-child'; }
+
+    var type = options.type;
+    var css = options.placeholdercss;
+    var halfcondition = options.halfcondition;
+    var doc = window.parent.document;
+
+    el.off('draginit').drag('init', function(e, dd) {
+      $.plone.toolbar.iframe_stretch();
+      // create drop targets
+      $('.deco-' + type, doc).each(function() {
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, false));
+        $(this).before(placeholder);
+      });
+      $('.deco-' + type + ':' + options.last_sel, doc).each(function() {
+        var placeholder = $('<div class="deco-' + type + '-drop"/>').css(css(this, true));
+        $(this).after(placeholder);
+      });
+      $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
+    });
+
+    el.off('dragstart').drag('start', function(e, dd) {
+
+      // create proxy element which is going to be dragged around append
+      // it to body of top frame.
+      var proxy = $('<div/>').css({
+        'opacity': 0.75,
+        'z-index': 1000,
+        'position': 'absolute',
+        'border': '1px solid #89B',
+        'background': '#BCE',
+        'height': '58px',
+        'width': '258px'
+      }).addClass('deco-' + type + '-proxy').appendTo($('body'));
+
+      // returning an element from 'dragstart' event is what makes proxy,
+      // otherwise original element is used.
+      return proxy;
+
+    }, { distance: 10 });
+
+    el.off('drag').drag(function(e, dd) {
+      // proxy tile follows mouse
+      $(dd.proxy).css({
+        top: dd.offsetY,
+        left: dd.offsetX
+      });
+
+      if ($(dd.drop).hasClass('deco-preview'))
+        return;
+
+      var preview;
+      if ($(dd.drop).length == 1) {
+        // we're on a drop target; figure out where to put the preview
+        if (halfcondition(e, dd)) {
+          // 2nd half; add if it's not there yet
+          if ($(dd.drop).next().is('.deco-preview')) {
+            preview = $(dd.drop).next();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-' + type + ' deco-preview')
+              .insertAfter($(dd.drop));
+            (preview[options.init])().show();
+          }
+        } else {
+          // 1st half; add if it's not there yet
+          if ($(dd.drop).prev().is('.deco-preview')) {
+            preview = $(dd.drop).prev();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-' + type + ' deco-preview')
+              .insertBefore($(dd.drop));
+            (preview[options.init])().show();
+          }
+        }
+      }
+      // make sure there's at least one column per row
+      if (preview !== undefined && type == 'row' && $('.deco-column', preview).length == 0) {
+        $('<div/>')
+          .addClass('deco-column')
+          .appendTo(preview)
+          .decoColumn().show();
+      }
+      // remove any previous previews in other locations
+      $('.deco-preview', doc).not(preview).remove();
+
+    });
+
+    el.off('dragend').drag('end', function(e, dd) {
+      $('.deco-preview', doc).removeClass('deco-preview');
+      $(dd.proxy).remove();
+      $.plone.toolbar.iframe_shrink();
+      $('.deco-' + type + '-drop', doc).remove();
+    });
+  },
   show: function() {
     var self = this;
     self._hidden = false;
@@ -514,6 +659,41 @@ $.deco.Toolbar.prototype = {
 
     // show panels
     $.deco.getPanels(window.parent.document, function(item) { item.show(); });
+
+    // set up column drag/drop
+    self.setupDnD(self.add_column_btn, {
+      type: 'column',
+      init: 'decoColumn',
+      placeholdercss: function(el, last){
+        var el = $(el);
+        return {
+          height: el.height(),
+          left: el.position().left + (last ? el.width() : 0),
+          top: el.position().top
+        }
+      },
+      halfcondition: function(e, dd) {
+        return (e.pageX > $(dd.drop).offset().left + $(dd.drop).width() / 2);
+      }
+    });
+
+    // set up row drag/drop
+    self.setupDnD(self.add_row_btn, {
+      type: 'row',
+      init: 'decoRow',
+      last_sel: 'last',
+      placeholdercss: function(el, last){
+        var el = $(el);
+        return {
+          width: el.width(),
+          left: el.position().left,
+          top: el.position().top + (last ? el.position().top : 0)
+        }
+      },
+      halfcondition: function(e, dd) {
+        return (e.pageY > $(dd.drop).offset().top + $(dd.drop).height() / 2);
+      }
+    });
 
     // show toolbar
     $.plone.toolbar.iframe_stretch();
