@@ -449,10 +449,20 @@ $.deco.Column.prototype = {
     self.el.hover(
       function(){
         // do not allow removing last column
+        //debugger;
         if($('.deco-column', self.doc).length < 2){
           return;
         }
         var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
+
+        // position delete button
+        if (!$(this).is(':first-child')){
+          del_el.css({
+            top: $(this).position().top - 14,
+            left: $(this).position().left + 23
+          });
+        }
+
         $(this).prepend(del_el);
         del_el.hover(function(){
           $(this).parent().addClass('deco-predelete');

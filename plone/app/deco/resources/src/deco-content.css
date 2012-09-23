@@ -4,7 +4,6 @@
 }
 
 .deco-column {
-    position: relative;
     height: 100px;
     outline: 1px dotted #ccc;
 }
