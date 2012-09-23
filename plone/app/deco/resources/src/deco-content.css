@@ -3,7 +3,7 @@
     min-height: 100px;
 }
 
-.deco-column {
+.deco-editing .deco-column {
     outline: 1px dotted #ccc;
 }
 
