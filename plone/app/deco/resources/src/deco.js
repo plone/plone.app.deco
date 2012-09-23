@@ -504,6 +504,11 @@ $.deco.Column.prototype = {
           }else{
             column.remove();
           }
+          // This is done so we can re-calculate layout
+          $.deco.getPanels(window.parent.document, function(panel) {
+            panel.hide();
+            panel.show();
+          });
           $(document).trigger('deco.toolbar.layoutchange');
         });
       },function(){
