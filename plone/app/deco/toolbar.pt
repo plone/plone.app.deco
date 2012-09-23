@@ -24,8 +24,8 @@
     </ul>
     <ul class="nav nav-pills pull-right">
       <li class="pull-right">
-        <a class="btn btn-primary btn-large disabled" href="#"
-           id="deco-toolbar-save">Save</a>
+        <a class="btn btn-large" href="#"
+           id="deco-toolbar-save">Close</a>
       </li>
       <li class="pull-right">
         <a class="btn btn-large" href="#"

@@ -66,7 +66,9 @@ $(document).on('deco.panel.show', function(e, decoPanel) {
 });
 
 $(document).on('deco.toolbar.layoutchange', function(e){
-  $($.plone.deco.defaults.toolbar_save_btn).removeClass('disabled');
+  $($.plone.deco.defaults.toolbar_save_btn)
+    .addClass('btn-primary')
+    .html('Save');
 });
 
 // # Load edit form when Deco toolbar displays
@@ -115,8 +117,10 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               } else {
                 decoToolbar._editformDontHideDecoToolbar = false;
                 // since we just saved, disable save button
-                $($.plone.deco.defaults.toolbar_save_btn).addClass('disabled');
               }
+              $($.plone.deco.defaults.toolbar_save_btn)
+                  .removeClass('btn-primary')
+                  .html('Close');
               // TODO: display notification (eg. "Deco page saved!")
             } else {
               // TODO: open overlay and focus on fireld with error
@@ -130,9 +134,9 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
   // bind save button of toolbar to click save button in edit form
   $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
-    if($(this).hasClass('disabled')){
-      // if disabled, click doesn't do anything.
-      return;
+    if($(this).hasClass('btn-primary')){
+      // nothing to save, just close
+      decoToolbar.hide();
     }
     e.preventDefault();
     e.stopPropagation();
