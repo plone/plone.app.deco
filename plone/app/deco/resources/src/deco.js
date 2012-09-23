@@ -566,7 +566,7 @@ $.deco.Toolbar.prototype = {
       $('.deco-column:last-child', doc).each(function() {
         var placeholder = $('<div class="deco-column-drop"/>').css({
           height: $(this).height(),
-          right: 0,
+          left: $(this).position().left + $(this).width(),
           top: $(this).position().top
         });
         $(this).after(placeholder);
