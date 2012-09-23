@@ -1,10 +1,17 @@
 .deco-row {
     width: 100%;
     min-height: 100px;
+    margin-bottom: 1em;
+}
+
+.deco-editing {
+    margin: -0.5em;
+    padding: 0.5em 0.5em 0 0.5em;
 }
 
 .deco-editing .deco-column {
     outline: 1px dotted #ccc;
+    -moz-outline-radius: 5px;
 }
 
 .deco-column-drag {
@@ -17,14 +24,14 @@
     position: absolute;
     width: 0px;
     z-index: 900;
-    outline: 3px dashed blue;
+    /* outline: 3px dashed blue; */
 }
 
 .deco-row-drop {
     position: absolute;
     height: 0px;
     z-index: 900;
-    outline: 3px dashed blue;
+    /* outline: 3px dashed blue; */
 }
 
 .deco-delete {
