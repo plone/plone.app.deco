@@ -172,14 +172,7 @@ $.deco.dropTile = function(e, dd) {
 
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
-
   $('.deco-preview', window.parent.document).removeClass('deco-preview');
-
-  // save deco layout
-  var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
-  decoToolbar._editformDontHideDecoToolbar = true;
-  $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
-
 };
 
 // # Tile
@@ -461,6 +454,7 @@ $.deco.Column.prototype = {
         del_el.click(function(){
           var column = $(this).parent('.deco-column');
           var tiles = column.find('.deco-tile');
+          tiles.detach();
           // find somewhere to place tiles, siblings first
           var newcolumn = column.siblings('.deco-column');
           var lastcolumn = false;
@@ -489,6 +483,9 @@ $.deco.Column.prototype = {
 
     // remove drop events
     self.el.off('drop');
+
+    // remove hover events
+    self.el.unbind('mouseenter mouseleave');
 
     // hide tiles
     $.deco.getTiles(self.el, function(item) { item.hide(); });
