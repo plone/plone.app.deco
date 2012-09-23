@@ -520,7 +520,7 @@ $.deco.Column.prototype = {
     var self = this;
 
     // XXX part of height hack
-    // XXX this is to clear height pixels
+    // XXX this is to clear height styles
     $('.deco-column', window.parent.document).attr('style', '');
 
     // trigger deco.column.hide event
