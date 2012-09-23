@@ -498,6 +498,21 @@ $.deco.Column.prototype = {
 
     // trigger deco.column.hidden event
     $(document).trigger('deco.column.hidden', [self]);
+  },
+  get_width: function() {
+    var klass = $(this.el).attr('class');
+    if (klass.length) {
+      var regex_match = klass.match(/\bdeco-span(\d+)/);
+      return parseInt(regex_match[1]);
+    }
+  },
+  set_width: function(value) {
+    var klass = $(this.el).attr("class");
+    if (klass) {
+      var regex_match = klass.match(/\bdeco-span(\d+)/);
+      $(this.el).removeClass(regex_match[0]);
+      $(this.el).addClass('deco-span' + value);
+    }
   }
 };
 
@@ -514,8 +529,73 @@ $.deco.Row.prototype = {
     // show column
     $.deco.getColumns(self.el, function(item) { item.show(); });
 
+    // update column drag handles when columns are added/removed
+    self.update();
+    $(self.el).on('deco.row.modified', function() {
+      self.update();
+    });
+
+    // update column drag handles if the window gets resized
+    $(parent).resize(function() {
+      self.update();
+    });
+
     // trigger deco.row.shown event
     $(document).trigger('deco.row.shown', [self]);
+  },
+  update: function() {
+    var self = this;
+
+    // update column drag handles
+    $('.deco-column-drag', self.el).remove();
+    $('.deco-column:not(:last)', self.el).each(function() {
+      var el = $('<div/>')
+        .addClass('deco-column-drag')
+        .css({
+          left: $(this).position().left + $(this).outerWidth(true)
+        })
+        .appendTo(self.el);
+
+      var prevcol = $(this).decoColumn();
+      var nextcol = $(this).next('.deco-column').decoColumn();
+
+      el.drag('init', function(e, dd) {
+        $.plone.toolbar.iframe_stretch();
+      }).drag('start', function(e, dd) {
+        var proxy = $('<div/>')
+          .css({
+            position: 'absolute',
+            top: el.offset().top - $(window.parent.document).scrollTop(),
+            left: el.offset().left,
+            width: el.width(),
+            height: el.height(),
+          })
+          .appendTo('body');
+        el.hide();
+        return proxy;
+      }).drag(function(e, dd) {
+        var old_prev_size = prevcol.get_width();
+        var old_next_size = nextcol.get_width();
+        var total_size = old_prev_size + old_next_size;
+        var total_width = prevcol.el.width() + nextcol.el.width();
+        var grid_width = Math.floor(total_width / total_size);
+        var new_prev_size = Math.round((e.pageX - prevcol.el.offset().left) / grid_width);
+        if ((new_prev_size) < 1)
+          new_prev_size = 1;
+        var new_next_size = total_size - new_prev_size;
+        prevcol.set_width(new_prev_size);
+        nextcol.set_width(new_next_size);
+
+        $(dd.proxy).css({
+          left: prevcol.el.offset().left + prevcol.el.width()
+        });
+      }).drag('end', function(e, dd) {
+        $(dd.proxy).remove();
+        $.plone.toolbar.iframe_shrink();
+        $(self.el).trigger('deco.row.modified');
+      });
+
+    });
   },
   hide: function() {
     var self = this;

@@ -9,6 +9,13 @@
     outline: 1px dotted #ccc;
 }
 
+.deco-column-drag {
+    position: absolute;
+    height: 100%;
+    cursor: ew-resize;
+    width: 2.127659574468085%;
+}
+
 .deco-column-drop {
     position: absolute;
     width: 0px;
