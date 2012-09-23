@@ -23,7 +23,7 @@
 }
 
 .deco-delete {
-    background-image: url(../../pb_close.png);
+    background-image: url(delete.png);
     position: absolute;
     left: -14px;
     top: -14px;
