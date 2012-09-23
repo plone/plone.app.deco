@@ -3,7 +3,7 @@
     min-height: 100px;
 }
 .deco-column {
-    min-height: 100px;
+    height: 100px;
     outline: 1px dotted #ccc;
 }
 .deco-column-drop {
@@ -159,7 +159,6 @@
 .deco-row-fluid [class*="span"] {
   display: block;
   width: 100%;
-  min-height: 30px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
