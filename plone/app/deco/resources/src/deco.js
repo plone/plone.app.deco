@@ -47,17 +47,19 @@ $.deco = $.deco || {};
 // # Drop tolerance
 $.drop({
   tolerance: function(e, proxy, target ) {
-    var drop = $.event.special.drop;
+    var doc = window.parent.document;
     if($(proxy.elem).hasClass('deco-column-proxy')){
-      if($(target.elem).hasClass('deco-column-drop')){
-        if (e.pageY > target.top && e.pageY < target.bottom &&
-            e.pageX > target.left - 20 && e.pageX < target.left + 20) {
+      if($(target.elem).hasClass('deco-column')){
+        var doctop = $(doc).scrollTop();
+        var docleft = $(doc).scrollLeft();
+        if (e.pageY + doctop > target.top && e.pageY + doctop < target.bottom &&
+            e.pageX + docleft > target.left && e.pageX + docleft < target.right) {
           return 1;
         }
       }
     }else{
-      if ((drop.contains(target, [e.pageX, e.pageY +
-          $(window.parent.document).scrollTop()]) === true) &&
+      var drop = $.event.special.drop;
+      if ((drop.contains(target, [e.pageX, e.pageY + $(doc).scrollTop()]) === true) &&
           (target.left < e.pageX) && (target.right > e.pageX)) {
         return 1;
       }
@@ -164,17 +166,9 @@ $.deco.dropTile = function(e, dd) {
 // # Drop Column
 $.deco.dropColumn = function(e, dd) {
 
-  // create new column, place it after drop target and initialize it
-  var column = $('<div/>')
-    .addClass('deco-column')
-    .insertAfter(dd.drop)
-    .decoColumn();
-  column.show();
+  $('.deco-preview', window.parent.document).removeClass('.deco-preview');
 
-  // remove drop targets
-  $('.deco-column-drop', window.parent.document).remove();
-
-  // save deco layout as well
+  // save deco layout
   var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
   decoToolbar._editformDontHideDecoToolbar = true;
   $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
@@ -560,7 +554,7 @@ $.deco.Toolbar.prototype = {
     self.add_column_btn.off('draginit').drag('init', function(e, dd) {
       $.plone.toolbar.iframe_stretch();
 
-      // create column drop targets
+      // create column drop indicators
       $('.deco-column', doc).each(function() {
         var placeholder = $('<div class="deco-column-drop"/>').css({
           height: $(this).height(),
@@ -577,7 +571,7 @@ $.deco.Toolbar.prototype = {
         });
         $(this).after(placeholder);
       });
-      $('.deco-column-drop', doc).on('drop', $.deco.dropColumn);
+      $('.deco-column', doc).on('drop', $.deco.dropColumn);
     });
 
     self.add_column_btn.off('dragstart').drag('start', function(e, dd) {
@@ -602,13 +596,43 @@ $.deco.Toolbar.prototype = {
     // }}}
     // ## drag {{{
     self.add_column_btn.off('drag').drag(function(e, dd) {
-      $(dd.available).removeClass('deco-droppable');
-      $(dd.drop).addClass('deco-droppable');
+
       // proxy tile follows mouse
       $(dd.proxy).css({
         top: dd.offsetY,
         left: dd.offsetX
       });
+
+      if ($(dd.drop).hasClass('deco-preview'))
+        return;
+
+      var preview;
+      if ($(dd.drop).length == 1) {
+        // we're on a drop target; figure out where to put the preview
+        if (e.pageX > $(dd.drop).offset().left + $(dd.drop).width() / 2) {
+          // right half; add if it's not there yet
+          if ($(dd.drop).next().is('.deco-preview')) {
+            preview = $(dd.drop).next();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-column deco-preview')
+              .insertAfter($(dd.drop))
+            preview.decoColumn().show();
+          }
+        } else {
+          // left half; add if it's not there yet
+          if ($(dd.drop).prev().is('.deco-preview')) {
+            preview = $(dd.drop).prev();
+          } else {
+            preview = $('<div/>')
+              .addClass('deco-column deco-preview')
+              .insertBefore($(dd.drop))
+            preview.decoColumn().show();
+          }
+        }
+      }
+      $('.deco-preview', doc).not(preview).remove();
+
     });
     // }}}
 
@@ -620,7 +644,7 @@ $.deco.Toolbar.prototype = {
     // multiple elements (from "draginit"), this event will fire uniquely
     // on each element.
     self.add_column_btn.off('dragend').drag('end', function(e, dd) {
-      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
+      $('.deco-preview', doc).removeClass('.deco-preview');
       $(dd.proxy).remove();
       $.plone.toolbar.iframe_shrink();
       $('.deco-column-drop', doc).remove();
