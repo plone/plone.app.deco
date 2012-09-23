@@ -585,7 +585,8 @@ $.deco.Row.prototype = {
       var el = $('<div/>')
         .addClass('deco-column-drag')
         .css({
-          left: $(this).position().left + $(this).outerWidth(true)
+          left: $(this).position().left + $(this).outerWidth(true),
+          height: $(this).height()
         })
         .appendTo(self.el);
 
@@ -613,8 +614,8 @@ $.deco.Row.prototype = {
         var total_width = prevcol.el.width() + nextcol.el.width();
         var grid_width = Math.floor(total_width / total_size);
         var new_prev_size = Math.round((e.pageX - prevcol.el.offset().left) / grid_width);
-        if ((new_prev_size) < 1)
-          new_prev_size = 1;
+        if (new_prev_size < 1) new_prev_size = 1;
+        if (new_prev_size > total_size - 1) new_prev_size = total_size - 1;
         var new_next_size = total_size - new_prev_size;
         prevcol.setWidth(new_prev_size);
         nextcol.setWidth(new_next_size);
@@ -767,7 +768,7 @@ $.deco.Toolbar.prototype = {
             preview = options.create(dd, "before");
           }
         }
-      } else {
+      } else if (type == 'column') {
         var changed = $($(window.document).data("row-changes"));
 
         if(changed.length) {
