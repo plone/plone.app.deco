@@ -1,0 +1,60 @@
+*** Settings ***
+
+Library  plone.act.PloneLibrary
+Library  Selenium2Library  run_on_failure=Capture Page Screenshot
+Variables  plone/app/testing/interfaces.py
+Resource  plone/act/keywords.txt
+
+Suite Setup  Open browser  ${PLONE_URL}
+
+Suite Teardown  Close All Browsers
+
+
+*** Variables ***
+
+${PORT} =  55001
+${ZOPE_URL} =  http://localhost:${PORT}
+${PLONE_URL} =  ${ZOPE_URL}/plone
+${BROWSER} =  Firefox
+${TEST_FOLDER} =  ${PLONE_URL}/test-folder
+${TEST_PAGE} =  ${TEST_FOLDER}/test-deco-page
+
+
+*** Test cases ***
+# Test integration of deco into the p.a.toolbar UI
+
+Deco page has toolbar
+    Log in as site owner
+
+    Go to  ${TEST_PAGE}
+    Wait Until Page Contains Element  id=toolbar
+
+    Page Should Contain Element  id=plone-toolbar
+
+Deco page has deco toolbar
+    Log in as site owner
+
+    Go to  ${TEST_PAGE}
+    Wait Until Page Contains Element  id=toolbar
+
+    Page Should Contain Element  id=deco-toolbar
+    Element Should Not Be Visible  id=deco-toolbar
+
+Edit button toggles deco toolbar
+    Log in as site owner
+    Go to  ${TEST_PAGE}
+    Wait Until Page Contains Element  id=toolbar
+    Select Frame  id=toolbar
+    Wait Until Keyword Succeeds  3  5  Current Frame Contains  Edit
+
+    Click Element  xpath=id('plone-action-deco')/a
+    
+    # we should not be at the usual edit url
+    Location Should Be  ${TEST_PAGE}
+    Element Should Be Visible  id=deco-toolbar
+
+    Click Element  xpath=id('plone-action-deco')/a
+
+    # still no change in URL, deco tools should disappear
+    Location Should Be  ${TEST_PAGE}
+    Wait Until Keyword Succeeds  3  5  Element Should Not Be Visible  id=deco-toolbar
