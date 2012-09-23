@@ -10,8 +10,12 @@
 }
 
 .deco-editing .deco-column {
-    outline: 1px dotted #ccc;
-    -moz-outline-radius: 5px;
+    box-shadow: 0px 0px 2pt 1pt #ccc;
+    -webkit-box-shadow: 0px 0px 2pt 1pt #ccc;
+    -moz-box-shadow: 0px 0px 2pt 1pt #ccc;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
 }
 
 .deco-column-drag {
@@ -47,7 +51,9 @@
 
 .deco-editing .deco-predelete{
     opacity: 0.7;
-    outline: 3px dashed red;
+    box-shadow: 0px 0px 3px 5px red;
+    -webkit-box-shadow: 0px 0px 3px 5px red;
+    -moz-box-shadow: 0px 0px 3px 5px red;
 }
 
 
