@@ -52,7 +52,11 @@ config["Deco"] = {
     ],
     extensions: [
         require('buster-lint'),
-//        require("buster-coverage")
+        require("buster-coverage")
     ],
-    "buster-lint": linterConf
+    "buster-lint": linterConf,
+    "buster-coverage": {
+        format: "cobertura",
+        combinedResultsOnly: true
+    }
 }
