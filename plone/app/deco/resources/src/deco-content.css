@@ -32,7 +32,7 @@
 
 .deco-predelete{
     opacity: 0.7;
-    background-color: red;
+    outline: 3px dashed red;
 }
 
 
