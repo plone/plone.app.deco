@@ -793,7 +793,7 @@ $.deco.Toolbar.prototype = {
       // before, restore the size of the previous one.
       if (type == 'column') {
         var lastDrop = $(window.document).data('deco-last-drop');
-        if (lastDrop !== undefined && lastDrop.length > 0 && !lastDrop.is(dd.drop)) {
+        if (lastDrop !== undefined && lastDrop.is !== undefined && !lastDrop.is(dd.drop)) {
           var decoCol = lastDrop.decoColumn();
           var width = decoCol.getWidth();
           if (width < 12) {
@@ -843,7 +843,7 @@ $.deco.Toolbar.prototype = {
       type: 'column',
       create: function(dd, side) {
         var newColumn = $('<div/>')
-          .addClass('deco-column  deco-preview deco-span1');
+          .addClass('deco-column deco-preview deco-span1');
 
         // calculate total width and find the biggest column        
         var totalSize = 0;
