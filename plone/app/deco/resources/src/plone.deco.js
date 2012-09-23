@@ -65,6 +65,10 @@ $(document).on('deco.panel.show', function(e, decoPanel) {
   });
 });
 
+$(document).on('deco.toolbar.layoutchange', function(e, decoToolbar){
+  $($.plone.deco.defaults.toolbar_save_btn).removeClass('disabled');
+});
+
 // # Load edit form when Deco toolbar displays
 $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   var defaults = $.plone.deco.defaults,
@@ -110,6 +114,8 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
                 decoToolbar.hide();
               } else {
                 decoToolbar._editformDontHideDecoToolbar = false;
+                // since we just saved, disable save button
+                $($.plone.deco.defaults.toolbar_save_btn).addClass('disabled');
               }
               // TODO: display notification (eg. "Deco page saved!")
             } else {
@@ -124,6 +130,10 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
   // bind save button of toolbar to click save button in edit form 
   $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
+    if($(this).hasClass('disabled')){
+      // if disabled, click doesn't do anything.
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
 

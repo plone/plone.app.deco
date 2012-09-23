@@ -64,7 +64,7 @@ $.drop({
           return 1;
         }
       }
-    } else {
+    } else if($(proxy.elem).hasClass('deco-tile-proxy')){
       var drop = $.event.special.drop;
       if ((drop.contains(target, [e.pageX, e.pageY + $(doc).scrollTop()]) === true) &&
           (target.left < e.pageX) && (target.right > e.pageX)) {
@@ -172,7 +172,12 @@ $.deco.dropTile = function(e, dd) {
 
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
-  $('.deco-preview', window.parent.document).removeClass('deco-preview');
+  if($(dd.proxy).hasClass('deco-layout-el')){
+    $('.deco-preview', window.parent.document).removeClass('deco-preview');
+    // trigger layout changed event
+    $(document).trigger('deco.toolbar.layoutchange',
+      [$($.plone.deco.defaults.toolbar).decoToolbar()]);
+  }
 };
 
 // # Tile
@@ -257,6 +262,7 @@ $.deco.Tile.prototype = {
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
       var proxy = self.tile.type.createProxy().appendTo($('body'));
+      proxy.addClass('deco-tile-proxy');
 
       // if we are not dragging new tile from toolbar
       if ($('[data-tile]', dd.drag).size() !== 0) {
@@ -612,7 +618,7 @@ $.deco.Toolbar.prototype = {
         'background': '#BCE',
         'height': '58px',
         'width': '258px'
-      }).addClass('deco-' + type + '-proxy').appendTo($('body'));
+      }).addClass('deco-' + type + '-proxy').addClass('deco-layout-el').appendTo($('body'));
 
       // returning an element from 'dragstart' event is what makes proxy,
       // otherwise original element is used.
