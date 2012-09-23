@@ -530,6 +530,9 @@ $.deco.Column.prototype = {
       item.removeClass(regex_match[0]);
       item.addClass('deco-span' + newWidth);
     }
+
+    // make sure placeholders and handles get updated
+    $(document).trigger('deco.toolbar.layoutchange');
   }
 };
 
@@ -546,9 +549,9 @@ $.deco.Row.prototype = {
     // show column
     $.deco.getColumns(self.el, function(item) { item.show(); });
 
-    // update column drag handles when columns are added/removed
+    // update column drag handles when layout is modified
     self.update();
-    $(self.el).on('deco.row.modified', function() {
+    $(document).on('deco.toolbar.layoutchange', function() {
       self.update();
     });
 
@@ -609,7 +612,6 @@ $.deco.Row.prototype = {
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
         $.plone.toolbar.iframe_shrink();
-        $(self.el).trigger('deco.row.modified');
       });
 
     });
@@ -750,20 +752,20 @@ $.deco.Toolbar.prototype = {
             preview = options.create(dd, "before");
           }
         }
-      }  else {
-          var changed = $($(window.document).data("row-changes"));
+      } else {
+        var changed = $($(window.document).data("row-changes"));
 
-          if(changed.length) {
+        if(changed.length) {
 
-            var column = changed.decoColumn();
-            var width = column.getWidth();
+          var column = changed.decoColumn();
+          var width = column.getWidth();
 
-            if(width < 12) { 
-              column.setWidth(width+1);
-              $(window.document).data("row-changes", false);
-            }
+          if(width < 12) { 
+            column.setWidth(width+1);
+            $(window.document).data("row-changes", false);
           }
         }
+      }
 
       // make sure there's at least one column per row
       if (preview !== undefined && type === 'row' && $('.deco-column', preview).length === 0) {
@@ -771,6 +773,7 @@ $.deco.Toolbar.prototype = {
           .addClass('deco-column deco-span12')
           .appendTo(preview)
           .decoColumn().show();
+        $(document).trigger('deco.toolbar.layoutchange');
       }
       // remove any previous previews in other locations
       $('.deco-preview', doc).not(preview).remove();
@@ -843,6 +846,7 @@ $.deco.Toolbar.prototype = {
           newColumn.insertBefore($(dd.drop));
         }
         newColumn.decoColumn().show();
+        $(document).trigger('deco.toolbar.layoutchange');
         return newColumn;
       },
       placeholdercss: function(el, last){
@@ -871,7 +875,8 @@ $.deco.Toolbar.prototype = {
         } else {
           row.insertBefore($(dd.drop));
         }
-        row.decoColumn().show();
+        row.decoRow().show();
+        $(document).trigger('deco.toolbar.layoutchange');
         return row;
       },
       placeholdercss: function(el, last){
