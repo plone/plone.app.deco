@@ -482,10 +482,16 @@ $.deco.Column.prototype = {
           var lastcolumn = false;
           if(newcolumn.length === 0){
             // if no siblings, look for other rows
-            newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column');
+            newcolumn = column.parent().siblings('.deco-row').eq(0).find('.deco-column').eq(0);
             lastcolumn = true;
+          }else{
+            // has sibligs, we need to add to grid with so it fills in space
+            newcolumn = newcolumn.eq(0);
+            var newcolumnobj = newcolumn.decoColumn();
+            newcolumnobj.setWidth(column.decoColumn().getWidth() + newcolumnobj.getWidth());
           }
           newcolumn.eq(0).append(tiles);
+
           if(lastcolumn){
             column.parent().remove();
           }else{
