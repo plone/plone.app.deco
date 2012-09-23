@@ -157,11 +157,6 @@ $.deco.dropTile = function(e, dd) {
           overlay.destroy();
         }
       }).show();
-      modal._el.on('hide', function(){
-        // make sure to remove proxy objects
-        // that can be left over from excaping adding new tile
-        $('.deco-tile-proxy', window.parent.document).remove();
-      });
 
     } else {
 
