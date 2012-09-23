@@ -38,7 +38,7 @@
     z-index: 901;
 }
 
-.deco-predelete{
+.deco-editing .deco-predelete{
     opacity: 0.7;
     outline: 3px dashed red;
 }
