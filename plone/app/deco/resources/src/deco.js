@@ -446,9 +446,8 @@ $.deco.Column.prototype = {
       $(document).on('deco-tile-drag-start', function(){
         self.removeColumnInfo();
       });
-      $(document).on('deco-tile-drag-end deco-tile-add-canceled', function(){
-        self.clearHeight();
-        self.calculateHeight();
+      $(document).on('deco-tile-drag-end', function(){
+        self.addColumnInfo();
       });
     }
 
@@ -491,7 +490,6 @@ $.deco.Column.prototype = {
   clearHeight: function(){
     // XXX part of height hack
     // XXX this is to clear height styles
-    //$('.deco-column', window.parent.document).attr('style', '');
     this.el.attr('style', '');
   },
   calculateHeight: function(){
@@ -607,6 +605,16 @@ $.deco.Row.prototype = {
       self.el.events_registered = true;
       $(document).on('deco.toolbar.layoutchange', function() {
         self.update();
+      });
+      $(document).on('deco-tile-drag-end deco-tile-add-canceled', function(){
+        // XXX because of weird edge cases...
+        // XXX clear all columns
+        self.el.find('.deco-column').each(function(){
+          $(this).decoColumn().clearHeight();
+        })
+        self.el.find('.deco-column').each(function(){
+          $(this).decoColumn().calculateHeight();
+        });
       });
     }
 
