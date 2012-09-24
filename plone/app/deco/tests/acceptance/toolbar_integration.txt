@@ -45,13 +45,13 @@ Edit button toggles deco toolbar
     Go to  ${TEST_PAGE}
     Wait For Toolbar
 
-    Click Element  xpath=id('plone-action-deco')/a
+    Click Element  xpath=//*[@id="plone-action-deco"]/a
     
     # we should not be at the usual edit url
     Location Should Be  ${TEST_PAGE}
     Element Should Be Visible  id=deco-toolbar
 
-    Click Element  xpath=id('plone-action-deco')/a
+    Click Element  xpath=//*[@id="plone-action-deco"]/a
 
     # still no change in URL, deco tools should disappear
     Location Should Be  ${TEST_PAGE}
@@ -60,8 +60,6 @@ Edit button toggles deco toolbar
 Deco toolbar contains save button
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
-
     Open Deco Editor
 
     Element Should Be Visible  id=deco-toolbar-save
@@ -69,8 +67,6 @@ Deco toolbar contains save button
 Deco toolbar contains cancel button
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
-
     Open Deco Editor
 
     Element Should Be Visible  id=deco-toolbar-cancel
@@ -78,8 +74,6 @@ Deco toolbar contains cancel button
 Deco toolbar contains add-column button
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
-
     Open Deco Editor
 
     Element Should Be Visible  id=plone-deco-addcolumn
@@ -87,8 +81,6 @@ Deco toolbar contains add-column button
 Deco toolbar contains add-row button
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
-
     Open Deco Editor
 
     Element Should Be Visible  id=plone-deco-addrow
@@ -96,8 +88,6 @@ Deco toolbar contains add-row button
 Deco toolbar contains add-tile form
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
-
     Open Deco Editor
 
     Element Should Be Visible  name=add-tile
@@ -105,11 +95,8 @@ Deco toolbar contains add-tile form
 Tile can be dragged to column
     Log in as site owner
     Go to  ${TEST_PAGE}
-    Wait For Toolbar
     Open Deco Editor
-    
-    Drag And Drop By Offset  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  60  200
-    Sleep  10
+    Drag From Toolbar And Drop On Content  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  xpath=//*[@id="content"]/div/div/div
     Wait Until Page Contains Element  id=add_tile
     Element Should Contain  id=add_tile  Add Text tile
 

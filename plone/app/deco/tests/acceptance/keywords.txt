@@ -19,6 +19,7 @@ Wait For Toolbar
     Wait Until Keyword Succeeds  3  5  Current Frame Contains  Edit
 
 Open Deco Editor
+    Wait For Toolbar
     Element Should Be Visible  id=plone-toolbar
     Element Should Not Be Visible  id=deco-toolbar
     Click Element  xpath=id('plone-action-deco')/a
@@ -29,3 +30,27 @@ Close Deco Editor
     Element Should Be Visible  id=deco-toolbar
     Click Element  xpath=id('plone-action-deco')/a
     Wait Until Keyword Succeeds  1  5  Element Should Not Be Visible  id=deco-toolbar
+
+Get XOffset From Toolbar To Content
+    [arguments]  ${toolbarsrc}  ${contentdest}
+    ${srcxpos} =  Get Horizontal Position  ${toolbarsrc}
+    Unselect Frame
+    ${destxpos} =  Get Horizontal Position  ${contentdest}
+    ${xoffset} =  Get Offset Difference  ${srcxpos}  ${destxpos}  25
+    [Return]  ${xoffset}
+
+Get YOffset From Toolbar To Content
+    [arguments]  ${toolbarsrc}  ${contentdest}
+    ${srcypos} =  Get Vertical Position  ${toolbarsrc}
+    Unselect Frame
+    ${destypos} =  Get Vertical Position  ${contentdest}
+    ${yoffset} =  Get Offset Difference  ${srcypos}  ${destypos}  25
+    [Return]  ${yoffset}
+
+Drag From Toolbar And Drop On Content
+    [arguments]  ${src}  ${dest}
+    ${xoffset} =  Get XOffset From Toolbar To Content  ${src}  ${dest}
+    Select Frame  id=toolbar
+    ${yoffset} =  Get YOffset From Toolbar To Content  ${src}  ${dest}
+    Select Frame  id=toolbar
+    Drag And Drop By Offset  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  ${xoffset}  ${yoffset}
