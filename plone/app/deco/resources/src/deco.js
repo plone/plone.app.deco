@@ -178,7 +178,6 @@ $.deco.dropTile = function(e, dd) {
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
   if($(dd.proxy).hasClass('deco-layout-el')){
-
     $('.deco-preview', window.parent.document).removeClass('deco-preview');
     // trigger layout changed event
     $(document).trigger('deco.toolbar.layoutchange');
