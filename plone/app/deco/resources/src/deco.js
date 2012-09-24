@@ -105,6 +105,7 @@ $.deco.getTileType = function(el, callback) {
 
 // # Drop Tile
 $.deco.dropTile = function(e, dd) {
+  $(document).trigger('deco-tile-drag-dropped');
   var tile_el = $(dd.drag),
       preview_tile = $('.deco-tile-preview', window.parent.document),
       dragging_from_toolbar = $('[data-tile]', dd.drag).size() === 0;
@@ -121,6 +122,7 @@ $.deco.dropTile = function(e, dd) {
                 $('input[name="tiletype"]', dd.drag).attr('value'),
         form: 'form#edit_tile,form#add_tile',
         save: function(response, state, xhr, form) {
+          $(document).trigger('deco-tile-add-save');
           var overlay = this;
 
           // create new tile, place it after preview_tile and initialize it
@@ -145,9 +147,9 @@ $.deco.dropTile = function(e, dd) {
           var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
           decoToolbar._editformDontHideDecoToolbar = true;
           $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
-
         },
         cancel:  function() {
+          $(document).trigger('deco-tile-add-canceled');
           var overlay = this;
 
           // remove preview_tile
@@ -176,7 +178,6 @@ $.deco.dropTile = function(e, dd) {
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
   if($(dd.proxy).hasClass('deco-layout-el')){
-
     $('.deco-preview', window.parent.document).removeClass('deco-preview');
     // trigger layout changed event
     $(document).trigger('deco.toolbar.layoutchange');
@@ -252,6 +253,7 @@ $.deco.Tile.prototype = {
     // Don't dragg if tile is being edited.
     //
     self.el.off('dragstart').drag('start', function(e, dd) {
+      $(document).trigger('deco-tile-drag-start');
 
       // tile is being edited, which means dblclick click happend and we
       // want to avoid dragging. return false will cancel rest of drag
@@ -386,17 +388,18 @@ $.deco.Tile.prototype = {
     // multiple elements (from "draginit"), this event will fire uniquely
     // on each element.
     self.el.off('dragend').drag('end', function(e, dd) {
-      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
       $(dd.proxy).remove();
+      $(document).trigger('deco-tile-drag-end');
 
       if ($('.plone-tile-editing').size() === 0) {
         $.plone.toolbar.iframe_shrink();
+        $(document).trigger('deco-tile-drag-cancel');
       }
 
       // above will execute when we are outside dropzone panels and when
       // there is already existing deco-tile-preview
       if ($(dd.drop).size() === 0 &&
-        $('.deco-tile-preview', window.parent.document).size() === 1) {
+          $('.deco-tile-preview', window.parent.document).size() === 1) {
         $.deco.dropTile(e, dd);
       }
     });
@@ -426,19 +429,26 @@ $.deco.Tile.prototype = {
 
 // # Column
 $.deco.Column = function(el) {
-  this.el = el;
-  this.doc = window.parent.document;
+  var self = this;
+  self.el = el;
+  self.doc = window.parent.document;
+  self.del_container = null;
+  self.del_el = null;
+  self.el.events_registered = false;
 };
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
 
-    // XXX setting default height here so we can drop elements
-    // XXX can't figure out a way to make this work with css
-    var row_height = self.el.parent().height();
-    if(self.el.height() < row_height){
-      // get row height and set to it.
-      self.el.css('height', row_height);
+    self.calculateHeight();
+    if(!self.el.events_registered){
+      self.el.events_registered = true;
+      $(document).on('deco-tile-drag-start', function(){
+        self.removeColumnInfo();
+      });
+      $(document).on('deco-tile-drag-end', function(){
+        self.addColumnInfo();
+      });
     }
 
     // trigger deco.column.show event
@@ -453,69 +463,12 @@ $.deco.Column.prototype = {
     // trigger deco.column.shown event
     $(document).trigger('deco.column.shown', [self]);
 
-    // setup remove hover
-    self.el.hover(
-      function(){
-        // can only remove column if empty
-        if($('.plone-tile', self.el).length !== 0){
-          return;
-        }
-        var del_container = $('<div class="deco-delete">Drag tiles here </div>');
-        self.el.addClass('deco-predelete');
-        if($('.deco-column', self.doc).length > 1){
-          var del_el = $('<a href="#" title="delete column">or delete</a>');
-          del_container.append(del_el);
-          del_el.click(function(){
-            $(this).parents('.deco-column').decoColumn().destroy();
-            return false;
-          });
-        }
-
-        $(this).prepend(del_container);
-      },function(){
-        $(this).find('.deco-delete').remove();
-        self.el.removeClass('deco-predelete');
-      }
-    );
-  },
-  destroy: function(){
-    var self = this;
-    var tiles = self.el.find('.deco-tile');
-    var row = self.el.parent().decoRow();
-    tiles.detach();
-    // find somewhere to place tiles, siblings first
-    var newcolumn = self.el.siblings('.deco-column');
-    var lastcolumn = false;
-    if(newcolumn.length === 0){
-      // if no siblings, look for other rows
-      newcolumn = row.el.siblings('.deco-row').eq(0).find('.deco-column').eq(0);
-      lastcolumn = true;
-    }else{
-      // has sibligs, we need to add to grid with so it fills in space
-      newcolumn = newcolumn.eq(0);
-      var newcolumnobj = newcolumn.decoColumn();
-      newcolumnobj.setWidth(self.getWidth() + newcolumnobj.getWidth());
-    }
-    newcolumn.eq(0).append(tiles);
-
-    if(lastcolumn){
-      row.el.remove();
-    }else{
-      self.el.remove();
-    }
-    // This is done so we can re-calculate layout
-    $.deco.getPanels(window.parent.document, function(panel) {
-      panel.hide();
-      panel.show();
-    });
-    $(document).trigger('deco.toolbar.layoutchange');
+    self.addColumnInfo();
   },
   hide: function() {
     var self = this;
 
-    // XXX part of height hack
-    // XXX this is to clear height styles
-    $('.deco-column', window.parent.document).attr('style', '');
+    self.clearHeight();
 
     // trigger deco.column.hide event
     $(document).trigger('deco.column.hide', [self]);
@@ -531,8 +484,86 @@ $.deco.Column.prototype = {
 
     // trigger deco.column.hidden event
     $(document).trigger('deco.column.hidden', [self]);
-  },
 
+    self.removeColumnInfo();
+  },
+  clearHeight: function(){
+    // XXX part of height hack
+    // XXX this is to clear height styles
+    this.el.attr('style', '');
+  },
+  calculateHeight: function(){
+    var self = this;
+    // XXX setting default height here so we can drop elements
+    // XXX can't figure out a way to make this work with css
+    var row_height = self.el.parent().height();
+    var column_height = self.el.height();
+    if((column_height < row_height) ||
+       (self.el.attr('height') && column_height > row_height)){
+      // get row height and set to it.
+      self.el.css('height', row_height);
+    }
+  },
+  removeColumnInfo: function(){
+    var self = this;
+    if (self.del_container !== null){
+      self.del_container.remove();
+    }
+    self.el.removeClass('deco-predelete');
+    self.el.removeClass('deco-column-empty');
+  },
+  addColumnInfo: function(){
+    var self = this;
+    if(self.el.find('.deco-tile-preview').length > 0){
+      return;
+    }
+    if($('.plone-tile', self.el).length === 0){
+      self.del_container = $('<div class="deco-delete">Drag tiles here </div>');
+      if($('.deco-column', self.doc).length > 1){
+        self.del_el = $('<a href="#" title="delete column">or delete</a>');
+        self.del_container.append(self.del_el);
+        self.del_el.click(function(){
+          $(this).parents('.deco-column').decoColumn().destroy();
+          return false;
+        });
+        self.del_el.hover(function(){
+          self.el.addClass('deco-predelete');
+        }, function(){
+          self.el.removeClass('deco-predelete');
+        });
+        self.el.append(self.del_container);
+        self.el.addClass('deco-column-empty');
+      }
+    }
+  },
+  destroy: function(){
+    var self = this;
+    var row = self.el.parent().decoRow();
+
+    // check if we need to delete row
+    var newcolumn = self.el.siblings('.deco-column');
+    var lastcolumn = false;
+    if(newcolumn.length === 0){
+      lastcolumn = true;
+    }else{
+      // has sibligs, we need to add to grid with so it fills in space
+      newcolumn = newcolumn.eq(0);
+      var newcolumnobj = newcolumn.decoColumn();
+      newcolumnobj.setWidth(self.getWidth() + newcolumnobj.getWidth());
+    }
+
+    if(lastcolumn){
+      row.el.remove();
+    }else{
+      self.el.remove();
+    }
+    // This is done so we can re-calculate layout
+    $.deco.getPanels(window.parent.document, function(panel) {
+      panel.hide();
+      panel.show();
+    });
+    $(document).trigger('deco.toolbar.layoutchange');
+  },
   getWidth: function() {
     var item = $(this.el);
     var itemClass = item.attr("class");
@@ -561,10 +592,31 @@ $.deco.Column.prototype = {
 
 
 // # Row
-$.deco.Row = function(el) { this.el = el; };
+$.deco.Row = function(el) {
+  var self = this;
+  self.el = el;
+  self.el.events_registered = false;
+};
 $.deco.Row.prototype = {
   show: function() {
     var self = this;
+
+    if(!self.el.events_registered){
+      self.el.events_registered = true;
+      $(document).on('deco.toolbar.layoutchange', function() {
+        self.update();
+      });
+      $(document).on('deco-tile-drag-end deco-tile-add-canceled', function(){
+        // XXX because of weird edge cases...
+        // XXX clear all columns
+        self.el.find('.deco-column').each(function(){
+          $(this).decoColumn().clearHeight();
+        })
+        self.el.find('.deco-column').each(function(){
+          $(this).decoColumn().calculateHeight();
+        });
+      });
+    }
 
     // trigger deco.row.show event
     $(document).trigger('deco.row.show', [self]);
@@ -574,9 +626,6 @@ $.deco.Row.prototype = {
 
     // update column drag handles when layout is modified
     self.update();
-    $(document).on('deco.toolbar.layoutchange', function() {
-      self.update();
-    });
 
     // update column drag handles if the window gets resized
     $(parent).resize(function() {
@@ -609,13 +658,13 @@ $.deco.Row.prototype = {
         var proxy = $('<div/>')
           .css({
             position: 'absolute',
-            top: el.offset().top - $(window.parent.document).scrollTop(),
-            left: el.offset().left,
-            width: el.width(),
-            height: el.height(),
+            top: e.pageY - $(window.parent.document).scrollTop() - 10,
+            left: e.pageX - $(window.parent.document).scrollLeft() - 10,
+            width: 20,
+            height: 20,
+            cursor: 'ew-resize'
           })
           .appendTo('body');
-        el.hide();
         return proxy;
       }).drag(function(e, dd) {
         var old_prev_size = prevcol.getWidth();
@@ -631,7 +680,8 @@ $.deco.Row.prototype = {
         nextcol.setWidth(new_next_size);
 
         $(dd.proxy).css({
-          left: prevcol.el.offset().left + prevcol.el.width()
+          top: e.pageY - $(window.parent.document).scrollTop() - 10,
+          left: e.pageX - $(window.parent.document).scrollLeft() - 10,
         });
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
