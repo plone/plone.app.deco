@@ -30,6 +30,7 @@ Deco page has toolbar
     Wait For Toolbar
 
     Page Should Contain Element  id=plone-toolbar
+    Capture Page Screenshot  filename=../../../../docs/_images/selenium-screenshot-test.png
 
 Deco page has deco toolbar
     Log in as site owner
@@ -46,7 +47,7 @@ Edit button toggles deco toolbar
     Wait For Toolbar
 
     Click Element  xpath=id('plone-action-deco')/a
-    
+
     # we should not be at the usual edit url
     Location Should Be  ${TEST_PAGE}
     Element Should Be Visible  id=deco-toolbar
@@ -107,7 +108,7 @@ Tile can be dragged to column
     Go to  ${TEST_PAGE}
     Wait For Toolbar
     Open Deco Editor
-    
+
     Drag And Drop By Offset  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  60  200
     Sleep  10
     Wait Until Page Contains Element  id=add_tile
