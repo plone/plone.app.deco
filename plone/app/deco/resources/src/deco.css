@@ -68,3 +68,13 @@
   margin-right: 10px;
   padding-right: 10px;
 }
+
+.deco-layout-el {
+  opacity: 0.75;
+  z-index: 1000;
+  position: absolute;
+  border: 1px solid #89B;
+  background: #BCE;
+  height: 58px;
+  width: 258px;
+}

@@ -37,6 +37,8 @@
   regexp:true, undef:true, strict:true, trailing:true, browser:true */
 /*global jQuery:false */
 
+var NUM_GRID_COLUMNS = 12;
+
 (function ($) {
 "use strict";
 
@@ -44,6 +46,8 @@
 $.deco = $.deco || {};
 
 // # Drop tolerance
+// Every dnd action runs through this to notify if they
+// can drop over the current area
 $.drop({
   tolerance: function(e, proxy, target ) {
     var doc = window.parent.document;
@@ -207,7 +211,7 @@ $.deco.Tile.prototype = {
     self._originalStyles = self.el.attr('style');
 
     // ## make sure that cursor is in 'move' state when deco editor is on
-    self.el.css({ 'cursor': 'move' });
+    self.el.css({cursor: 'move'});
 
     if (self.tile.show) {
       self.tile.show();
@@ -414,7 +418,7 @@ $.deco.Tile.prototype = {
 
     // restore original styles
     self.el.attr('style', self._originalStyles);
-    self.el.css({ 'cursor': 'inherit' });
+    self.el.css({cursor: 'inherit' });
 
     if (self.tile.hide) {
       self.tile.hide();
@@ -440,7 +444,7 @@ $.deco.Column.prototype = {
     var self = this;
 
     self.calculateHeight();
-    if(!self.el.events_registered){
+    if (!self.el.events_registered) {
       self.el.events_registered = true;
       $(document).on('deco-tile-drag-start', function(){
         self.removeColumnInfo();
@@ -497,23 +501,25 @@ $.deco.Column.prototype = {
     // XXX can't figure out a way to make this work with css
     var row_height = self.el.parent().height();
     var column_height = self.el.height();
-    if((column_height < row_height) ||
-       (self.el.attr('height') && column_height > row_height)){
+    if ((column_height < row_height) ||
+        (self.el.attr('height') && column_height > row_height)) {
       // get row height and set to it.
       self.el.css('height', row_height);
     }
   },
   removeColumnInfo: function(){
+    /* remove delete column info */
     var self = this;
-    if (self.del_container !== null){
+    if (self.del_container !== null) {
       self.del_container.remove();
     }
     self.el.removeClass('deco-predelete');
     self.el.removeClass('deco-column-empty');
   },
   addColumnInfo: function(){
+    /* for adding delete column info to column if needed */
     var self = this;
-    if(self.el.find('.deco-tile-preview').length > 0){
+    if (self.el.find('.deco-tile-preview').length > 0) {
       return;
     }
     if($('.plone-tile', self.el).length === 0){
@@ -542,18 +548,18 @@ $.deco.Column.prototype = {
     // check if we need to delete row
     var newcolumn = self.el.siblings('.deco-column');
     var lastcolumn = false;
-    if(newcolumn.length === 0){
+    if (newcolumn.length === 0) {
       lastcolumn = true;
-    }else{
+    } else {
       // has sibligs, we need to add to grid with so it fills in space
       newcolumn = newcolumn.eq(0);
       var newcolumnobj = newcolumn.decoColumn();
       newcolumnobj.setWidth(self.getWidth() + newcolumnobj.getWidth());
     }
 
-    if(lastcolumn){
+    if (lastcolumn) {
       row.el.remove();
-    }else{
+    } else {
       self.el.remove();
     }
     // This is done so we can re-calculate layout
@@ -568,15 +574,14 @@ $.deco.Column.prototype = {
     var itemClass = item.attr("class");
     if (itemClass.length) {
       var regex_match = itemClass.match(/\bdeco-span(\d+)/);
-      if (regex_match.length > 1){
+      if (regex_match.length > 1) {
         return parseInt(regex_match[1], 10);
-      }else{
+      } else {
         // perhaps it's missing, not sure, but let's not error.
         return 1;
       }
     }
   },
-
   setWidth: function (newWidth) {
     var item = $(this.el);
     var itemClass = item.attr("class");
@@ -600,7 +605,7 @@ $.deco.Row.prototype = {
   show: function() {
     var self = this;
 
-    if(!self.el.events_registered){
+    if (!self.el.events_registered) {
       self.el.events_registered = true;
       $(document).on('deco.toolbar.layoutchange', function() {
         self.update();
@@ -608,11 +613,12 @@ $.deco.Row.prototype = {
       $(document).on('deco-tile-drag-end deco-tile-add-canceled', function(){
         // XXX because of weird edge cases...
         // XXX clear all columns
-        self.el.find('.deco-column').each(function(){
-          $(this).decoColumn().clearHeight();
+        $.deco.getColumns(self.el, function(column){
+          column.clearHeight();
         });
-        self.el.find('.deco-column').each(function(){
-          $(this).decoColumn().calculateHeight();
+        // after all were cleared, then set on all
+        $.deco.getColumns(self.el, function(column){
+          column.calculateHeight();
         });
       });
     }
@@ -672,10 +678,10 @@ $.deco.Row.prototype = {
         var total_width = prevcol.el.width() + nextcol.el.width();
         var grid_width = Math.floor(total_width / total_size);
         var new_prev_size = Math.round((e.pageX - prevcol.el.offset().left) / grid_width);
-        if (new_prev_size < 1){
+        if (new_prev_size < 1) {
           new_prev_size = 1;
         }
-        if (new_prev_size > total_size - 1){
+        if (new_prev_size > total_size - 1) {
           new_prev_size = total_size - 1;
         }
         var new_next_size = total_size - new_prev_size;
@@ -755,17 +761,17 @@ $.deco.Toolbar = function(el) {
 };
 $.deco.Toolbar.prototype = {
   setupDnD: function(el, options){
-    if(options === undefined){ options = {}; }
-    if(options.type === undefined){ options.type = 'column'; }
-    if(options.placeholdercss === undefined){
-      options.placeholdercss = function(el){ return {}; };
+    if (options === undefined) {
+      options = {};
     }
-    if(options.halfcondition === undefined){
-      options.halfcondition = function(el){ return {}; };
-    }
-    if(options.create === undefined){ options.create = function(dd){}; }
-    if(options.drop === undefined){ options.drop = function(e, dd){}; }
-    if(options.last_sel === undefined){ options.last_sel = 'last-child'; }
+    options = $.extend({
+      type: 'column',
+      placeholdercss: function(el){ return {}; },
+      halfcondition: function(el){ return {}; },
+      create: function(dd){},
+      drop: function(e, dd){},
+      last_sel: 'last-child'
+    }, options);
   
     var type = options.type;
     var css = options.placeholdercss;
@@ -778,23 +784,22 @@ $.deco.Toolbar.prototype = {
       $.plone.toolbar.iframe_stretch();
       // create drop targets
       $('.deco-' + type, doc).each(function() {
-        $('<div class="deco-' + type + '-drop"/>').css(css(this, false)).insertAfter(this);
+        $('<div class="deco-' + type + '-drop"/>')
+          .css(css(this, false))
+          .insertAfter(this);
       });
       $('.deco-' + type + ':' + options.last_sel, doc).each(function() {
-        $('<div class="deco-' + type + '-drop"/>').css(css(this, true)).insertAfter(this);
+        $('<div class="deco-' + type + '-drop"/>')
+          .css(css(this, true))
+          .insertAfter(this);
       });
 
       // create proxy element which is going to be dragged around append
       // it to body of top frame.
-      var proxy = $('<div/>').css({
-        'opacity': 0.75,
-        'z-index': 1000,
-        'position': 'absolute',
-        'border': '1px solid #89B',
-        'background': '#BCE',
-        'height': '58px',
-        'width': '258px'
-      }).addClass('deco-' + type + '-proxy').addClass('deco-layout-el').appendTo($('body'));
+      var proxy = $('<div/>')
+        .addClass('deco-' + type + '-proxy')
+        .addClass('deco-layout-el')
+        .appendTo($('body'));
 
       // returning an element from 'dragstart' event is what makes proxy,
       // otherwise original element is used.
@@ -809,7 +814,7 @@ $.deco.Toolbar.prototype = {
         left: dd.offsetX
       });
 
-      if ($(dd.drop).hasClass('deco-preview')){
+      if ($(dd.drop).hasClass('deco-preview')) {
         return;
       }
 
@@ -836,7 +841,7 @@ $.deco.Toolbar.prototype = {
         if (lastDrop !== undefined && lastDrop.is !== undefined && !lastDrop.is(dd.drop)) {
           var decoCol = lastDrop.decoColumn();
           var width = decoCol.getWidth();
-          if (width < 12) {
+          if (width < NUM_GRID_COLUMNS) {
             decoCol.setWidth(width + 1);
           }
         }
@@ -896,7 +901,7 @@ $.deco.Toolbar.prototype = {
         });
         
         // decrease size of biggest column
-        if(totalSize >= 12) {
+        if (totalSize >= NUM_GRID_COLUMNS) {
             var lastDrop = $(window.document).data('deco-last-drop');
             if (biggestSize > 1 && !biggestCol.is(lastDrop)) {
                 var decoCol = $(biggestCol).decoColumn();
@@ -905,7 +910,7 @@ $.deco.Toolbar.prototype = {
             }
         }
         
-        if(side === "after") {
+        if (side === "after") {
           newColumn.insertAfter($(dd.drop));
         } else {
           newColumn.insertBefore($(dd.drop));
@@ -939,7 +944,7 @@ $.deco.Toolbar.prototype = {
         var row = $('<div/>')
           .addClass('deco-row deco-row-fluid deco-preview');
 
-        if(side === "after") {
+        if (side === "after") {
           row.insertAfter($(dd.drop));
         } else {
           row.insertBefore($(dd.drop));
@@ -948,7 +953,7 @@ $.deco.Toolbar.prototype = {
 
         // Make sure there's a column in the row
         $('<div/>')
-          .addClass('deco-column deco-span12')
+          .addClass('deco-column deco-span' + NUM_GRID_COLUMNS)
           .appendTo(row)
           .decoColumn().show();
 

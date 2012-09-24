@@ -54,14 +54,14 @@
     background-color: #E4E3E5;
 }
 
-.deco-editing .deco-predelete{
+.deco-editing .deco-predelete {
     opacity: 0.8;
     box-shadow: 0px 0px 1px 3px red;
     -webkit-box-shadow: 0px 0px 1px 3px red;
     -moz-box-shadow: 0px 0px 1px 3px red;
 }
 
-.deco-column-empty.deco-preview .deco-delete{
+.deco-column-empty.deco-preview .deco-delete {
   display:none !important;
 }
 
