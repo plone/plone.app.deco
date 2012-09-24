@@ -45,13 +45,8 @@ Edit button toggles deco toolbar
     Go to  ${TEST_PAGE}
     Wait For Toolbar
 
-<<<<<<< HEAD
     Click Element  xpath=//*[@id="plone-action-deco"]/a
-    
-=======
-    Click Element  xpath=id('plone-action-deco')/a
 
->>>>>>> 37684ac1f43067029425a804d84cb880add7719c
     # we should not be at the usual edit url
     Location Should Be  ${TEST_PAGE}
     Element Should Be Visible  id=deco-toolbar
@@ -102,8 +97,7 @@ Tile can be dragged to column
     Go to  ${TEST_PAGE}
     Open Deco Editor
 
-    Drag From Toolbar And Drop On Content  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  xpath=//*[@id="content"]/div/div/div
+    Drag From Toolbar And Drop On Content  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  xpath=//*[@id="content"]/div/div/div  25  25
     Wait Until Page Contains Element  id=add_tile
 
     Element Should Contain  id=add_tile  Add Text tile
-

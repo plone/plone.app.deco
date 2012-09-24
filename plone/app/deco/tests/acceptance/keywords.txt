@@ -32,25 +32,25 @@ Close Deco Editor
     Wait Until Keyword Succeeds  1  5  Element Should Not Be Visible  id=deco-toolbar
 
 Get XOffset From Toolbar To Content
-    [arguments]  ${toolbarsrc}  ${contentdest}
+    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}
     ${srcxpos} =  Get Horizontal Position  ${toolbarsrc}
     Unselect Frame
     ${destxpos} =  Get Horizontal Position  ${contentdest}
-    ${xoffset} =  Get Offset Difference  ${srcxpos}  ${destxpos}  25
+    ${xoffset} =  Get Offset Difference  ${srcxpos}  ${destxpos}  ${adjust}
     [Return]  ${xoffset}
 
 Get YOffset From Toolbar To Content
-    [arguments]  ${toolbarsrc}  ${contentdest}
+    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}
     ${srcypos} =  Get Vertical Position  ${toolbarsrc}
     Unselect Frame
     ${destypos} =  Get Vertical Position  ${contentdest}
-    ${yoffset} =  Get Offset Difference  ${srcypos}  ${destypos}  25
+    ${yoffset} =  Get Offset Difference  ${srcypos}  ${destypos}  ${adjust}
     [Return]  ${yoffset}
 
 Drag From Toolbar And Drop On Content
-    [arguments]  ${src}  ${dest}
-    ${xoffset} =  Get XOffset From Toolbar To Content  ${src}  ${dest}
+    [arguments]  ${src}  ${dest}  ${xadjust}  ${yadjust}
+    ${xoffset} =  Get XOffset From Toolbar To Content  ${src}  ${dest}  ${xadjust}
     Select Frame  id=toolbar
-    ${yoffset} =  Get YOffset From Toolbar To Content  ${src}  ${dest}
+    ${yoffset} =  Get YOffset From Toolbar To Content  ${src}  ${dest}  ${yadjust}
     Select Frame  id=toolbar
     Drag And Drop By Offset  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  ${xoffset}  ${yoffset}
