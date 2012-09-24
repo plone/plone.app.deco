@@ -122,6 +122,7 @@ $.deco.dropTile = function(e, dd) {
                 $('input[name="tiletype"]', dd.drag).attr('value'),
         form: 'form#edit_tile,form#add_tile',
         save: function(response, state, xhr, form) {
+          $(document).trigger('deco-tile-add-save');
           var overlay = this;
 
           // create new tile, place it after preview_tile and initialize it
@@ -146,9 +147,9 @@ $.deco.dropTile = function(e, dd) {
           var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
           decoToolbar._editformDontHideDecoToolbar = true;
           $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
-
         },
         cancel:  function() {
+          $(document).trigger('deco-tile-add-canceled');
           var overlay = this;
 
           // remove preview_tile
@@ -177,7 +178,6 @@ $.deco.dropTile = function(e, dd) {
 // # Drop Column or Row
 $.deco.dropLayoutElement = function(e, dd) {
   if($(dd.proxy).hasClass('deco-layout-el')){
-
     $('.deco-preview', window.parent.document).removeClass('deco-preview');
     // trigger layout changed event
     $(document).trigger('deco.toolbar.layoutchange');
@@ -389,6 +389,7 @@ $.deco.Tile.prototype = {
     // on each element.
     self.el.off('dragend').drag('end', function(e, dd) {
       $(dd.proxy).remove();
+      $(document).trigger('deco-tile-drag-end');
 
       if ($('.plone-tile-editing').size() === 0) {
         $.plone.toolbar.iframe_shrink();
@@ -428,25 +429,28 @@ $.deco.Tile.prototype = {
 
 // # Column
 $.deco.Column = function(el) {
-  this.el = el;
-  this.doc = window.parent.document;
-  this.del_container = null;
-  this.del_el = null;
+  var self = this;
+  self.el = el;
+  self.doc = window.parent.document;
+  self.del_container = null;
+  self.del_el = null;
+  self.el.events_registered = false;
 };
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
 
     self.calculateHeight();
-
-    $(document).on('deco-tile-drag-start', function(){
-      self.removeColumnInfo();
-    });
-    $(document).on('deco-tile-drag-dropped', function(){
-      self.clearHeight();
-      self.calculateHeight();
-      self.addColumnInfo();
-    });
+    if(!self.el.events_registered){
+      self.el.events_registered = true;
+      $(document).on('deco-tile-drag-start', function(){
+        self.removeColumnInfo();
+      });
+      $(document).on('deco-tile-drag-end deco-tile-add-canceled', function(){
+        self.clearHeight();
+        self.calculateHeight();
+      });
+    }
 
     // trigger deco.column.show event
     $(document).trigger('deco.column.show', [self]);
@@ -487,7 +491,8 @@ $.deco.Column.prototype = {
   clearHeight: function(){
     // XXX part of height hack
     // XXX this is to clear height styles
-    $('.deco-column', window.parent.document).attr('style', '');
+    //$('.deco-column', window.parent.document).attr('style', '');
+    this.el.attr('style', '');
   },
   calculateHeight: function(){
     var self = this;
@@ -589,10 +594,21 @@ $.deco.Column.prototype = {
 
 
 // # Row
-$.deco.Row = function(el) { this.el = el; };
+$.deco.Row = function(el) {
+  var self = this;
+  self.el = el;
+  self.el.events_registered = false;
+};
 $.deco.Row.prototype = {
   show: function() {
     var self = this;
+
+    if(!self.el.events_registered){
+      self.el.events_registered = true;
+      $(document).on('deco.toolbar.layoutchange', function() {
+        self.update();
+      });
+    }
 
     // trigger deco.row.show event
     $(document).trigger('deco.row.show', [self]);
@@ -602,9 +618,6 @@ $.deco.Row.prototype = {
 
     // update column drag handles when layout is modified
     self.update();
-    $(document).on('deco.toolbar.layoutchange', function() {
-      self.update();
-    });
 
     // update column drag handles if the window gets resized
     $(parent).resize(function() {
