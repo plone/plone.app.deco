@@ -18,6 +18,10 @@
     -moz-border-radius: 2px;
 }
 
+.deco-editing .deco-tile:hover {
+    outline: 1px dotted #ccc;
+}
+
 .deco-column-drag {
     position: absolute;
     cursor: ew-resize;
@@ -46,14 +50,24 @@
     height: 100%;
 }
 
-.deco-editing .deco-predelete{
+.deco-column-empty {
     background-color: #E4E3E5;
-    opacity: 0.7;
-    box-shadow: 0px 0px 3px 5px red;
-    -webkit-box-shadow: 0px 0px 3px 5px red;
-    -moz-box-shadow: 0px 0px 3px 5px red;
 }
 
+.deco-editing .deco-predelete{
+    opacity: 0.8;
+    box-shadow: 0px 0px 1px 3px red;
+    -webkit-box-shadow: 0px 0px 1px 3px red;
+    -moz-box-shadow: 0px 0px 1px 3px red;
+}
+
+.deco-column-empty.deco-preview .deco-delete{
+  display:none !important;
+}
+
+.deco-column-empty.deco-preview {
+  background-color: #BCE;
+}
 
 /* The following is based on the Bootstrap grid. */
  
