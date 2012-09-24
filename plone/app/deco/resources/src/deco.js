@@ -105,6 +105,7 @@ $.deco.getTileType = function(el, callback) {
 
 // # Drop Tile
 $.deco.dropTile = function(e, dd) {
+  $(document).trigger('deco-tile-drag-dropped');
   var tile_el = $(dd.drag),
       preview_tile = $('.deco-tile-preview', window.parent.document),
       dragging_from_toolbar = $('[data-tile]', dd.drag).size() === 0;
@@ -373,7 +374,6 @@ $.deco.Tile.prototype = {
             // above tile we currently hovering and if below we'll
             // place it below this tile.
             drop_el[drop_method](self.tile.type.createPreview().addClass('deco-tile-preview'));
-            $(document).trigger('deco-tile-drag-dropped');
           }
         });
       }
@@ -388,8 +388,6 @@ $.deco.Tile.prototype = {
     // multiple elements (from "draginit"), this event will fire uniquely
     // on each element.
     self.el.off('dragend').drag('end', function(e, dd) {
-
-      //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
       $(dd.proxy).remove();
 
       if ($('.plone-tile-editing').size() === 0) {
@@ -439,17 +437,16 @@ $.deco.Column.prototype = {
   show: function() {
     var self = this;
 
+    self.calculateHeight();
+
     $(document).on('deco-tile-drag-start', function(){
       self.removeColumnInfo();
     });
-
-    // XXX setting default height here so we can drop elements
-    // XXX can't figure out a way to make this work with css
-    var row_height = self.el.parent().height();
-    if(self.el.height() < row_height){
-      // get row height and set to it.
-      self.el.css('height', row_height);
-    }
+    $(document).on('deco-tile-drag-dropped', function(){
+      self.clearHeight();
+      self.calculateHeight();
+      self.addColumnInfo();
+    });
 
     // trigger deco.column.show event
     $(document).trigger('deco.column.show', [self]);
@@ -468,9 +465,7 @@ $.deco.Column.prototype = {
   hide: function() {
     var self = this;
 
-    // XXX part of height hack
-    // XXX this is to clear height styles
-    $('.deco-column', window.parent.document).attr('style', '');
+    self.clearHeight();
 
     // trigger deco.column.hide event
     $(document).trigger('deco.column.hide', [self]);
@@ -488,6 +483,23 @@ $.deco.Column.prototype = {
     $(document).trigger('deco.column.hidden', [self]);
 
     self.removeColumnInfo();
+  },
+  clearHeight: function(){
+    // XXX part of height hack
+    // XXX this is to clear height styles
+    $('.deco-column', window.parent.document).attr('style', '');
+  },
+  calculateHeight: function(){
+    var self = this;
+    // XXX setting default height here so we can drop elements
+    // XXX can't figure out a way to make this work with css
+    var row_height = self.el.parent().height();
+    var column_height = self.el.height();
+    if((column_height < row_height) ||
+       (self.el.attr('height') && column_height > row_height)){
+      // get row height and set to it.
+      self.el.css('height', row_height);
+    }
   },
   removeColumnInfo: function(){
     var self = this;
