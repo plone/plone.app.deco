@@ -1,3 +1,6 @@
+#-----------------------------------------------------------------------------
+# Test integration of Deco UI elements into plone.app.toolbar
+#-----------------------------------------------------------------------------
 *** Settings ***
 
 Library  plone.act.PloneLibrary
@@ -91,13 +94,3 @@ Deco toolbar contains add-tile form
     Open Deco Editor
 
     Element Should Be Visible  name=add-tile
-
-Tile can be dragged to column
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
-
-    Drag From Toolbar And Drop On Content  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  xpath=//*[@id="content"]/div/div/div  25  25
-    Wait Until Page Contains Element  id=add_tile
-
-    Element Should Contain  id=add_tile  Add Text tile
