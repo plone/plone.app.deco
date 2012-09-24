@@ -32,7 +32,7 @@ Close Deco Editor
     Wait Until Keyword Succeeds  1  5  Element Should Not Be Visible  id=deco-toolbar
 
 Get XOffset From Toolbar To Content
-    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}
+    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}=0
     ${srcxpos} =  Get Horizontal Position  ${toolbarsrc}
     Unselect Frame
     ${destxpos} =  Get Horizontal Position  ${contentdest}
@@ -40,7 +40,7 @@ Get XOffset From Toolbar To Content
     [Return]  ${xoffset}
 
 Get YOffset From Toolbar To Content
-    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}
+    [arguments]  ${toolbarsrc}  ${contentdest}  ${adjust}=0
     ${srcypos} =  Get Vertical Position  ${toolbarsrc}
     Unselect Frame
     ${destypos} =  Get Vertical Position  ${contentdest}
@@ -48,7 +48,7 @@ Get YOffset From Toolbar To Content
     [Return]  ${yoffset}
 
 Drag From Toolbar And Drop On Content
-    [arguments]  ${src}  ${dest}  ${xadjust}  ${yadjust}
+    [arguments]  ${src}  ${dest}  ${xadjust}=0  ${yadjust}=0
     ${xoffset} =  Get XOffset From Toolbar To Content  ${src}  ${dest}  ${xadjust}
     Select Frame  id=toolbar
     ${yoffset} =  Get YOffset From Toolbar To Content  ${src}  ${dest}  ${yadjust}
