@@ -36,6 +36,7 @@
   height: 40px;
   width: 40px;
   margin: 0.5em;
+  background-color: #FFFFFF;
 }
 
 #deco-toolbar .deco-toolbar-btn:hover{
@@ -44,6 +45,14 @@
 
 #deco-toolbar .deco-toolbar-btn > * {
   display: none;
+}
+
+#deco-toolbar .deco-toolbar-btn > img {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 6px;
+  width: 30px;
 }
 
 #plone-deco-addrow{
