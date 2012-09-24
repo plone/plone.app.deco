@@ -629,13 +629,13 @@ $.deco.Row.prototype = {
         var proxy = $('<div/>')
           .css({
             position: 'absolute',
-            top: el.offset().top - $(window.parent.document).scrollTop(),
-            left: el.offset().left,
-            width: el.width(),
-            height: el.height(),
+            top: e.pageY - $(window.parent.document).scrollTop() - 10,
+            left: e.pageX - $(window.parent.document).scrollLeft() - 10,
+            width: 20,
+            height: 20,
+            cursor: 'ew-resize'
           })
           .appendTo('body');
-        el.hide();
         return proxy;
       }).drag(function(e, dd) {
         var old_prev_size = prevcol.getWidth();
@@ -651,7 +651,8 @@ $.deco.Row.prototype = {
         nextcol.setWidth(new_next_size);
 
         $(dd.proxy).css({
-          left: prevcol.el.offset().left + prevcol.el.width()
+          top: e.pageY - $(window.parent.document).scrollTop() - 10,
+          left: e.pageX - $(window.parent.document).scrollLeft() - 10,
         });
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
