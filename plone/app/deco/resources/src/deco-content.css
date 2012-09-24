@@ -18,6 +18,10 @@
     -moz-border-radius: 2px;
 }
 
+.deco-editing .deco-tile:hover {
+    outline: 1px dotted #ccc;
+}
+
 .deco-column-drag {
     position: absolute;
     cursor: ew-resize;
