@@ -1,0 +1,47 @@
+#-----------------------------------------------------------------------------
+# Test UI interactions for layout elements in the deco toolbar
+#   - Drag-and-drop add column
+#   - Drag column borders to resize
+#   - Drag-and-drop add row
+#   - Drag rows to re-order
+#   - Remove empty columns
+#   - Cannot remove columns which contain tiles
+#   - Removing last column in row removes row
+#   - Cannot remove last column in layout
+#   - Layout changes are persisted across save/reopen
+#-----------------------------------------------------------------------------
+*** Settings ***
+
+Library  plone.act.PloneLibrary
+Library  Selenium2Library  run_on_failure=Capture Page Screenshot
+Variables  plone/app/testing/interfaces.py
+Resource  plone/act/keywords.txt
+Resource  keywords.txt
+
+Suite Setup  Open Plone Root
+Suite Teardown  Close All Browsers
+
+
+*** Variables ***
+
+${PORT} =  55001
+${ZOPE_URL} =  http://localhost:${PORT}
+${PLONE_URL} =  ${ZOPE_URL}/plone
+${BROWSER} =  Firefox
+${TEST_FOLDER} =  ${PLONE_URL}/acceptance-test-folder
+${TEST_PAGE} =  ${TEST_FOLDER}/test-deco-page
+
+#-----------------------------------------------------------------------------
+# XXX: This test is only here to ensure we have a test.  Remove it once real
+#      tests are added
+#-----------------------------------------------------------------------------
+*** Test cases ***
+Tile can be dragged to column
+    Log in as site owner
+    Go to  ${TEST_PAGE}
+    Open Deco Editor
+
+    Drag From Toolbar And Drop On Content  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  xpath=//*[@id="content"]/div/div/div  25  25
+    Wait Until Page Contains Element  id=add_tile
+
+    Element Should Contain  id=add_tile  Add Text tile
