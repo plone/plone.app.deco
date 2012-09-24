@@ -64,7 +64,7 @@ $.drop({
           return 1;
         }
       }
-    } else if($(proxy.elem).hasClass('deco-tile-proxy')){
+    } else if($(proxy.elem).hasClass('deco-tile-proxy') && $(target.elem).hasClass('deco-column')) {
       var drop = $.event.special.drop;
       if ((drop.contains(target, [e.pageX, e.pageY + $(doc).scrollTop()]) === true) &&
           (target.left < e.pageX) && (target.right > e.pageX)) {
