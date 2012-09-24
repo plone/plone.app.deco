@@ -523,15 +523,12 @@ $.deco.Column.prototype = {
   },
   destroy: function(){
     var self = this;
-    var tiles = self.el.find('.deco-tile');
     var row = self.el.parent().decoRow();
-    tiles.detach();
-    // find somewhere to place tiles, siblings first
+
+    // check if we need to delete row
     var newcolumn = self.el.siblings('.deco-column');
     var lastcolumn = false;
     if(newcolumn.length === 0){
-      // if no siblings, look for other rows
-      newcolumn = row.el.siblings('.deco-row').eq(0).find('.deco-column').eq(0);
       lastcolumn = true;
     }else{
       // has sibligs, we need to add to grid with so it fills in space
@@ -539,7 +536,6 @@ $.deco.Column.prototype = {
       var newcolumnobj = newcolumn.decoColumn();
       newcolumnobj.setWidth(self.getWidth() + newcolumnobj.getWidth());
     }
-    newcolumn.eq(0).append(tiles);
 
     if(lastcolumn){
       row.el.remove();
