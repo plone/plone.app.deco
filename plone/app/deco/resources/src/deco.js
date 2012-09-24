@@ -31,12 +31,11 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
+ 
 /*jshint bitwise:true, curly:true, eqeqeq:true, immed:true, latedef:true,
   newcap:true, noarg:true, noempty:true, nonew:true, plusplus:true,
   regexp:true, undef:true, strict:true, trailing:true, browser:true */
 /*global jQuery:false */
-
 
 (function ($) {
 "use strict";
@@ -117,7 +116,7 @@ $.deco.dropTile = function(e, dd) {
     // overlay. when sucessfully saved it should create new tile in deco grid
     // and remove preview_tile.
     if (dragging_from_toolbar) {
-      var modal = new $.plone.overlay.Overlay({
+      new $.plone.overlay.Overlay({
         url: $(dd.drag).parents('form').attr('action') + '/' +
                 $('input[name="tiletype"]', dd.drag).attr('value'),
         form: 'form#edit_tile,form#add_tile',
@@ -575,7 +574,7 @@ $.deco.Column.prototype = {
         // perhaps it's missing, not sure, but let's not error.
         return 1;
       }
-    }            
+    }
   },
 
   setWidth: function (newWidth) {
@@ -611,7 +610,7 @@ $.deco.Row.prototype = {
         // XXX clear all columns
         self.el.find('.deco-column').each(function(){
           $(this).decoColumn().clearHeight();
-        })
+        });
         self.el.find('.deco-column').each(function(){
           $(this).decoColumn().calculateHeight();
         });
@@ -673,15 +672,19 @@ $.deco.Row.prototype = {
         var total_width = prevcol.el.width() + nextcol.el.width();
         var grid_width = Math.floor(total_width / total_size);
         var new_prev_size = Math.round((e.pageX - prevcol.el.offset().left) / grid_width);
-        if (new_prev_size < 1) new_prev_size = 1;
-        if (new_prev_size > total_size - 1) new_prev_size = total_size - 1;
+        if (new_prev_size < 1){
+          new_prev_size = 1;
+        }
+        if (new_prev_size > total_size - 1){
+          new_prev_size = total_size - 1;
+        }
         var new_next_size = total_size - new_prev_size;
         prevcol.setWidth(new_prev_size);
         nextcol.setWidth(new_next_size);
 
         $(dd.proxy).css({
           top: e.pageY - $(window.parent.document).scrollTop() - 10,
-          left: e.pageX - $(window.parent.document).scrollLeft() - 10,
+          left: e.pageX - $(window.parent.document).scrollLeft() - 10
         });
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
@@ -760,9 +763,9 @@ $.deco.Toolbar.prototype = {
     if(options.halfcondition === undefined){
       options.halfcondition = function(el){ return {}; };
     }
-    if(options.create == undefined){ options.create = function(dd){}; };
-    if(options.drop == undefined){ options.drop = function(e, dd){}; }
-    if(options.last_sel == undefined){ options.last_sel = 'last-child'; }
+    if(options.create === undefined){ options.create = function(dd){}; }
+    if(options.drop === undefined){ options.drop = function(e, dd){}; }
+    if(options.last_sel === undefined){ options.last_sel = 'last-child'; }
   
     var type = options.type;
     var css = options.placeholdercss;
@@ -828,7 +831,7 @@ $.deco.Toolbar.prototype = {
       // Keep track of which column was temporarily shortened
       // to make way for the preview. If it's different than
       // before, restore the size of the previous one.
-      if (type == 'column') {
+      if (type === 'column') {
         var lastDrop = $(window.document).data('deco-last-drop');
         if (lastDrop !== undefined && lastDrop.is !== undefined && !lastDrop.is(dd.drop)) {
           var decoCol = lastDrop.decoColumn();
@@ -876,11 +879,11 @@ $.deco.Toolbar.prototype = {
         var newColumn = $('<div/>')
           .addClass('deco-column deco-preview deco-span1');
 
-        // calculate total width and find the biggest column        
+        // calculate total width and find the biggest column
         var totalSize = 0;
         var biggestSize = 0;
         var biggestCol = null;
-        var columns = $(dd.drop).parent().children(".deco-column")
+        var columns = $(dd.drop).parent().children(".deco-column");
         columns.splice(columns.index(dd.drop), newColumn);
         columns.each(function() {
             var decoCol = $(this).decoColumn();
