@@ -252,6 +252,7 @@ $.deco.Tile.prototype = {
     // Don't dragg if tile is being edited.
     //
     self.el.off('dragstart').drag('start', function(e, dd) {
+      $(document).trigger('deco-tile-drag-start');
 
       // tile is being edited, which means dblclick click happend and we
       // want to avoid dragging. return false will cancel rest of drag
@@ -372,6 +373,7 @@ $.deco.Tile.prototype = {
             // above tile we currently hovering and if below we'll
             // place it below this tile.
             drop_el[drop_method](self.tile.type.createPreview().addClass('deco-tile-preview'));
+            $(document).trigger('deco-tile-drag-dropped');
           }
         });
       }
@@ -386,17 +388,19 @@ $.deco.Tile.prototype = {
     // multiple elements (from "draginit"), this event will fire uniquely
     // on each element.
     self.el.off('dragend').drag('end', function(e, dd) {
+
       //$(this).animate({top: dd.offsetY, left: dd.offset}, 420);
       $(dd.proxy).remove();
 
       if ($('.plone-tile-editing').size() === 0) {
         $.plone.toolbar.iframe_shrink();
+        $(document).trigger('deco-tile-drag-cancel');
       }
 
       // above will execute when we are outside dropzone panels and when
       // there is already existing deco-tile-preview
       if ($(dd.drop).size() === 0 &&
-        $('.deco-tile-preview', window.parent.document).size() === 1) {
+          $('.deco-tile-preview', window.parent.document).size() === 1) {
         $.deco.dropTile(e, dd);
       }
     });
@@ -428,10 +432,16 @@ $.deco.Tile.prototype = {
 $.deco.Column = function(el) {
   this.el = el;
   this.doc = window.parent.document;
+  this.del_container = null;
+  this.del_el = null;
 };
 $.deco.Column.prototype = {
   show: function() {
     var self = this;
+
+    $(document).on('deco-tile-drag-start', function(){
+      self.removeColumnInfo();
+    });
 
     // XXX setting default height here so we can drop elements
     // XXX can't figure out a way to make this work with css
@@ -453,30 +463,63 @@ $.deco.Column.prototype = {
     // trigger deco.column.shown event
     $(document).trigger('deco.column.shown', [self]);
 
-    // setup remove hover
-    self.el.hover(
-      function(){
-        // can only remove column if empty
-        if($('.plone-tile', self.el).length !== 0){
-          return;
-        }
-        var del_container = $('<div class="deco-delete">Drag tiles here </div>');
-        self.el.addClass('deco-predelete');
-        if($('.deco-column', self.doc).length > 1){
-          var del_el = $('<a href="#" title="delete column">or delete</a>');
-          del_container.append(del_el);
-          del_el.click(function(){
-            $(this).parents('.deco-column').decoColumn().destroy();
-            return false;
-          });
-        }
+    self.addColumnInfo();
+  },
+  hide: function() {
+    var self = this;
 
-        $(this).prepend(del_container);
-      },function(){
-        $(this).find('.deco-delete').remove();
-        self.el.removeClass('deco-predelete');
+    // XXX part of height hack
+    // XXX this is to clear height styles
+    $('.deco-column', window.parent.document).attr('style', '');
+
+    // trigger deco.column.hide event
+    $(document).trigger('deco.column.hide', [self]);
+
+    // remove drop events
+    self.el.off('drop');
+
+    // remove hover events
+    self.el.unbind('mouseenter mouseleave');
+
+    // hide tiles
+    $.deco.getTiles(self.el, function(item) { item.hide(); });
+
+    // trigger deco.column.hidden event
+    $(document).trigger('deco.column.hidden', [self]);
+
+    self.removeColumnInfo();
+  },
+  removeColumnInfo: function(){
+    var self = this;
+    if (self.del_container !== null){
+      self.del_container.remove();
+    }
+    self.el.removeClass('deco-predelete');
+    self.el.removeClass('deco-column-empty');
+  },
+  addColumnInfo: function(){
+    var self = this;
+    if(self.el.find('.deco-tile-preview').length > 0){
+      return;
+    }
+    if($('.plone-tile', self.el).length === 0){
+      self.del_container = $('<div class="deco-delete">Drag tiles here </div>');
+      if($('.deco-column', self.doc).length > 1){
+        self.del_el = $('<a href="#" title="delete column">or delete</a>');
+        self.del_container.append(self.del_el);
+        self.del_el.click(function(){
+          $(this).parents('.deco-column').decoColumn().destroy();
+          return false;
+        });
+        self.del_el.hover(function(){
+          self.el.addClass('deco-predelete');
+        }, function(){
+          self.el.removeClass('deco-predelete');
+        });
+        self.el.append(self.del_container);
+        self.el.addClass('deco-column-empty');
       }
-    );
+    }
   },
   destroy: function(){
     var self = this;
@@ -510,29 +553,6 @@ $.deco.Column.prototype = {
     });
     $(document).trigger('deco.toolbar.layoutchange');
   },
-  hide: function() {
-    var self = this;
-
-    // XXX part of height hack
-    // XXX this is to clear height styles
-    $('.deco-column', window.parent.document).attr('style', '');
-
-    // trigger deco.column.hide event
-    $(document).trigger('deco.column.hide', [self]);
-
-    // remove drop events
-    self.el.off('drop');
-
-    // remove hover events
-    self.el.unbind('mouseenter mouseleave');
-
-    // hide tiles
-    $.deco.getTiles(self.el, function(item) { item.hide(); });
-
-    // trigger deco.column.hidden event
-    $(document).trigger('deco.column.hidden', [self]);
-  },
-
   getWidth: function() {
     var item = $(this.el);
     var itemClass = item.attr("class");

@@ -46,9 +46,12 @@
     height: 100%;
 }
 
-.deco-editing .deco-predelete{
+.deco-column-empty{
     background-color: #E4E3E5;
-    opacity: 0.7;
+}
+
+.deco-editing .deco-predelete{
+    opacity: 0.8;
     box-shadow: 0px 0px 3px 5px red;
     -webkit-box-shadow: 0px 0px 3px 5px red;
     -moz-box-shadow: 0px 0px 3px 5px red;
