@@ -6,8 +6,7 @@ Variables  plone/app/testing/interfaces.py
 Resource  plone/act/keywords.txt
 Resource  keywords.txt
 
-Suite Setup  Open browser  ${PLONE_URL}
-
+Suite Setup  Open Plone Root
 Suite Teardown  Close All Browsers
 
 
