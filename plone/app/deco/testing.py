@@ -33,7 +33,7 @@ class PADeco(PloneSandboxLayer):
         login(portal, TEST_USER_NAME)
         setRoles(portal, TEST_USER_ID, ['Manager', ])
         fid = portal.invokeFactory(
-            'Folder','test-folder', title='Test Folder')
+            'Folder','acceptance-test-folder', title='Acceptance Test Folder')
         self.folder = portal[fid]
         self.page = createContentInContainer(self.folder,
                                              'page',

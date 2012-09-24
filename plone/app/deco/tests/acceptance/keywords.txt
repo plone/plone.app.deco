@@ -1,0 +1,31 @@
+*** Settings ***
+Library  plone.act.Zope2ServerLibrary
+Library  plone.act.PloneLibrary
+Library  Selenium2Library  run_on_failure=Capture Page Screenshot
+
+Resource  plone/act/keywords.txt
+
+
+
+*** Keywords ***
+
+# ----------------------------------------------------------------------------
+# Deco Editor Interaction
+# ----------------------------------------------------------------------------
+
+Wait For Toolbar
+    Wait Until Page Contains Element  id=toolbar
+    Select Frame  id=toolbar
+    Wait Until Keyword Succeeds  3  5  Current Frame Contains  Edit
+
+Open Deco Editor
+    Element Should Be Visible  id=plone-toolbar
+    Element Should Not Be Visible  id=deco-toolbar
+    Click Element  xpath=id('plone-action-deco')/a
+    Wait Until Keyword Succeeds  1  5  Element Should Be Visible  id=deco-toolbar
+
+Close Deco Editor
+    Element Should Be Visible  id=plone-toolbar
+    Element Should Be Visible  id=deco-toolbar
+    Click Element  xpath=id('plone-action-deco')/a
+    Wait Until Keyword Succeeds  1  5  Element Should Not Be Visible  id=deco-toolbar
