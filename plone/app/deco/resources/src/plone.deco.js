@@ -87,7 +87,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               panel.hide();
               var els = $('<div/>').append(panel.el.clone());
               // perform some cleanup just in case...
-              els.find('.deco-tile-proxy,.deco-row-drop,.deco-column-drop,.deco-delete,.deco-column-drag').remove();
+              els.find('.deco-tile-preview,.deco-tile-proxy,.deco-row-drop,.deco-column-drop,.deco-delete,.deco-column-drag').remove();
               els.find('.deco-column').attr('style', '');
               els.find('.plone-tile').html('');
               content += els.html();

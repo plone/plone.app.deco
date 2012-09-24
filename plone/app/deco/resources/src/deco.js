@@ -456,35 +456,25 @@ $.deco.Column.prototype = {
     // setup remove hover
     self.el.hover(
       function(){
-        // do not allow removing last column
-        if($('.deco-column', self.doc).length < 2){
+        // can only remove column if empty
+        if($('.plone-tile', self.el).length !== 0){
           return;
         }
-        var del_el = $('<div class="deco-delete"><a href="#" title="Close this box"></a></div>');
-
-        // position delete button
-        if ($(this).is(':first-child')){
-          del_el.css({
-            top: $(this).position().top - 10
-          });
-        }else{
-          del_el.css({
-            top: $(this).position().top - 10,
-            left: $(this).position().left + 27
+        var del_container = $('<div class="deco-delete">Drag tiles here </div>');
+        self.el.addClass('deco-predelete');
+        if($('.deco-column', self.doc).length > 1){
+          var del_el = $('<a href="#" title="delete column">or delete</a>');
+          del_container.append(del_el);
+          del_el.click(function(){
+            $(this).parents('.deco-column').decoColumn().destroy();
+            return false;
           });
         }
 
-        $(this).prepend(del_el);
-        del_el.hover(function(){
-          $(this).parent().addClass('deco-predelete');
-        }, function(){
-          $(this).parent().removeClass('deco-predelete');
-        });
-        del_el.click(function(){
-          $(this).parent('.deco-column').decoColumn().destroy();
-        });
+        $(this).prepend(del_container);
       },function(){
         $(this).find('.deco-delete').remove();
+        self.el.removeClass('deco-predelete');
       }
     );
   },
@@ -759,7 +749,7 @@ $.deco.Toolbar.prototype = {
 
     }, { distance: 10 });
 
-    el.off('drag').drag(function(e, dd) {
+    el.drag(function(e, dd) {
       // proxy tile follows mouse
       $(dd.proxy).css({
         top: dd.offsetY,
