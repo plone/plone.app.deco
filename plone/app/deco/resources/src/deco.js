@@ -942,7 +942,7 @@ $.deco.Toolbar.prototype = {
         $('.deco-preview', window.parent.document).remove();
 
         var row = $('<div/>')
-          .addClass('deco-row deco-row-fluid deco-preview');
+          .addClass('deco-row deco-preview');
 
         if (side === "after") {
           row.insertAfter($(dd.drop));
