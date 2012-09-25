@@ -838,11 +838,14 @@ $.deco.Toolbar.prototype = {
       // before, restore the size of the previous one.
       if (type === 'column') {
         var lastDrop = $(window.document).data('deco-last-drop');
-        if (lastDrop !== undefined && lastDrop.is !== undefined && !lastDrop.is(dd.drop)) {
-          var decoCol = lastDrop.decoColumn();
-          var width = decoCol.getWidth();
-          if (width < NUM_GRID_COLUMNS) {
-            decoCol.setWidth(width + 1);
+        if ($(lastDrop).hasClass('deco-column') && (!$(dd.drop).length) || !$(lastDrop).is(dd.drop)) {
+          $('.deco-preview', window.parent.document).remove();
+          if ($(lastDrop).hasClass('deco-column')) {
+            var decoCol = $(lastDrop).decoColumn();
+            var width = decoCol.getWidth();
+            if (width < NUM_GRID_COLUMNS) {
+              decoCol.setWidth(width + 1);
+            }
           }
         }
         $(window.document).data('deco-last-drop', dd.drop);

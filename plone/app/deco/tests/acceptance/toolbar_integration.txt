@@ -61,36 +61,26 @@ Edit button toggles deco toolbar
     Wait Until Keyword Succeeds  3  5  Element Should Not Be Visible  id=deco-toolbar
 
 Deco toolbar contains save button
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
+    Open Deco Editor on  ${TEST_PAGE}
 
     Element Should Be Visible  id=deco-toolbar-save
 
 Deco toolbar contains cancel button
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
+    Open Deco Editor on  ${TEST_PAGE}
 
     Element Should Be Visible  id=deco-toolbar-cancel
 
 Deco toolbar contains add-column button
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
+    Open Deco Editor on  ${TEST_PAGE}
 
     Element Should Be Visible  id=plone-deco-addcolumn
 
 Deco toolbar contains add-row button
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
+    Open Deco Editor on  ${TEST_PAGE}
 
     Element Should Be Visible  id=plone-deco-addrow
 
 Deco toolbar contains add-tile form
-    Log in as site owner
-    Go to  ${TEST_PAGE}
-    Open Deco Editor
+    Open Deco Editor on  ${TEST_PAGE}
 
     Element Should Be Visible  name=add-tile

@@ -18,7 +18,12 @@ Wait For Toolbar
     Select Frame  id=toolbar
     Wait Until Keyword Succeeds  3  5  Current Frame Contains  Edit
 
-Open Deco Editor
+Open Deco Editor on
+    [Arguments]  ${page_url}
+
+    Log in as site owner
+    Go to  ${page_url}
+
     Wait For Toolbar
     Element Should Be Visible  id=plone-toolbar
     Element Should Not Be Visible  id=deco-toolbar
@@ -53,4 +58,4 @@ Drag From Toolbar And Drop On Content
     Select Frame  id=toolbar
     ${yoffset} =  Get YOffset From Toolbar To Content  ${src}  ${dest}  ${yadjust}
     Select Frame  id=toolbar
-    Drag And Drop By Offset  xpath=//*[@id="plone-tiletype-plone-app-texttile"]  ${xoffset}  ${yoffset}
+    Drag And Drop By Offset  ${src}  ${xoffset}  ${yoffset}
