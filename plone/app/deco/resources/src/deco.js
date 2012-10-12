@@ -443,7 +443,12 @@ $.deco.Column.prototype = {
   show: function() {
     var self = this;
 
+    // initialize height on column otherwise empty
+    // column will have no height and can't be dropped on
     self.calculateHeight();
+
+    // Make sure to register these events only once by element
+    // This add and remove column delete, drop info on drag
     if (!self.el.events_registered) {
       self.el.events_registered = true;
       $(document).on('deco-tile-drag-start', function(){
@@ -478,9 +483,6 @@ $.deco.Column.prototype = {
 
     // remove drop events
     self.el.off('drop');
-
-    // remove hover events
-    self.el.unbind('mouseenter mouseleave');
 
     // hide tiles
     $.deco.getTiles(self.el, function(item) { item.hide(); });
@@ -525,6 +527,7 @@ $.deco.Column.prototype = {
     if($('.plone-tile', self.el).length === 0){
       self.del_container = $('<div class="deco-delete">Drag tiles here </div>');
       if($('.deco-column', self.doc).length > 1){
+        // not able to delete last column
         self.del_el = $('<a href="#" title="delete column">or delete</a>');
         self.del_container.append(self.del_el);
         self.del_el.click(function(){
@@ -605,6 +608,7 @@ $.deco.Row.prototype = {
   show: function() {
     var self = this;
 
+    // only register events once for the element
     if (!self.el.events_registered) {
       self.el.events_registered = true;
       $(document).on('deco.toolbar.layoutchange', function() {
