@@ -46,6 +46,7 @@ setup(
         'plone.app.registry',
         'plone.app.texttile',
         'plone.app.imagetile',
+        'plone.app.contenttile',
         'plone.app.layoutpage',
         'plone.app.toolbar',
         'plone.app.jquery',
