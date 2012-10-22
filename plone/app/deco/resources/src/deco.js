@@ -240,7 +240,7 @@ $.deco.Tile.prototype = {
           $(e.target).parents('.plone-tile-editing').size() !== 0) {
         return false;
       }
-      $.plone.toolbar.iframe_stretch();
+      $.iframe.stretch();
     });
     // }}}
 
@@ -395,7 +395,7 @@ $.deco.Tile.prototype = {
       $(document).trigger('deco-tile-drag-end');
 
       if ($('.plone-tile-editing').size() === 0) {
-        $.plone.toolbar.iframe_shrink();
+        $.iframe.shrink();
         $(document).trigger('deco-tile-drag-cancel');
       }
 
@@ -662,7 +662,7 @@ $.deco.Row.prototype = {
       var nextcol = $(this).next('.deco-column').decoColumn();
 
       el.drag('init', function(e, dd) {
-        $.plone.toolbar.iframe_stretch();
+        $.iframe.stretch();
       }).drag('start', function(e, dd) {
         var proxy = $('<div/>')
           .css({
@@ -698,7 +698,7 @@ $.deco.Row.prototype = {
         });
       }).drag('end', function(e, dd) {
         $(dd.proxy).remove();
-        $.plone.toolbar.iframe_shrink();
+        $.iframe.shrink();
         // make sure placeholders and handles get updated
         $(document).trigger('deco.toolbar.layoutchange');
       });
@@ -785,7 +785,7 @@ $.deco.Toolbar.prototype = {
     $('.deco-' + type, doc).on('drop', $.deco.dropLayoutElement);
 
     el.off('dragstart').drag('start', function(e, dd) {
-      $.plone.toolbar.iframe_stretch();
+      $.iframe.stretch();
       // create drop targets
       $('.deco-' + type, doc).each(function() {
         $('<div class="deco-' + type + '-drop"/>')
@@ -861,7 +861,7 @@ $.deco.Toolbar.prototype = {
       $(window.document).data("deco-last-drop", false);
       $('.deco-preview', doc).removeClass('deco-preview');
       $(dd.proxy).remove();
-      $.plone.toolbar.iframe_shrink();
+      $.iframe.shrink();
       $('.deco-' + type + '-drop', doc).remove();
     });
   },
@@ -981,10 +981,10 @@ $.deco.Toolbar.prototype = {
     });
 
     // show toolbar
-    $.plone.toolbar.iframe_stretch();
+    $.iframe.stretch();
     self.el.slideDown('slow', function() {
-      $.plone.toolbar.iframe_state.height = $('body').height();
-      $.plone.toolbar.iframe_shrink();
+      $.iframe.state.height = $('body').height();
+      $.iframe.shrink();
     });
 
     // trigger deco.toolbar.shown event
@@ -1008,7 +1008,7 @@ $.deco.Toolbar.prototype = {
 
     // hide toolbar
     self.el.slideUp('slow', function() {
-      $.plone.toolbar.iframe_shrink();
+      $.iframe.shrink();
     });
 
     // trigger deco.toolbar.hidden event
