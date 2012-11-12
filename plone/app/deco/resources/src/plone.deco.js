@@ -8,7 +8,7 @@
 //    - http://code.jquery.com/jquery.js
 //    - https://github.com/malsup/form/blob/master/jquery.form.js
 //    - https://github.com/plone/plone.app.deco/blob/master/plone/app/deco/resources/src/deco.js
-//    - https://github.com/plone/plone.app.toolbar/blob/master/plone/app/toolbar/resources/src/plone.mask.js
+//    - https://github.com/plone/plone.app.toolbar/blob/master/plone/app/toolbar/resources/src/jquery.mask.js
 // Description: 
 // License:
 //
@@ -178,14 +178,14 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   });
 
   // load mask
-  $.plone.mask.load();
+  $.mask.load();
 
 });
 
 $(document).on('deco.toolbar.hide', function(e, decoToolbar) {
 
   // close mask
-  $.plone.mask.close();
+  $.mask.close();
 
 });
 
