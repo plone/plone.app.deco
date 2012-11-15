@@ -124,43 +124,43 @@ $.deco.dropTile = function(e, dd) {
                 $('input[name="tiletype"]', dd.drag).attr('value');
       var overlay = $.fn.ploneOverlay.fromUrl(url, {
         show: true,
-        form: 'form#edit_tile,form#add_tile',
+        formButtons: {
+          'input[name="buttons.save"]': $.fn.ploneOverlay.defaultFormButton,
+          'input[name="buttons.cancel"]': $.fn.ploneOverlay.defaultFormButton
+        },
         onAjaxSave: function(response, state, xhr, form) {
-          $(document).trigger('deco-tile-add-save');
           var overlay = this;
+          if(form.prevObject.attr('name') === 'buttons.cancel'){
+            //cancel
+            $(document).trigger('deco-tile-add-canceled');
+          }else{
+            $(document).trigger('deco-tile-add-save');
+            // create new tile, place it after preview_tile and initialize it
+            var tile = $('<div/>')
+              .addClass('deco-tile')
+              .append($('<div/>')
+                .addClass('plone-tile')
+                .attr('data-tile', xhr.getResponseHeader('X-Tile-Url'))
+                .append(response.html()))
+              .insertAfter(preview_tile)
+              .decoTile();
+            tile.show();
 
-          // create new tile, place it after preview_tile and initialize it
-          var tile = $('<div/>')
-            .addClass('deco-tile')
-            .append($('<div/>')
-              .addClass('plone-tile')
-              .attr('data-tile', xhr.getResponseHeader('X-Tile-Url'))
-              .append(response.html()))
-            .insertAfter(preview_tile)
-            .decoTile();
-          tile.show();
-
-          // remove preview_tile
-          preview_tile.remove();
+            // We'll save the layout because adding
+            // new tile actually stores data to the zodb
+            var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
+            decoToolbar._editformDontHideDecoToolbar = true;
+            $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
+          }
 
           // destroy overlay
           overlay.destroy();
-
-          // We'll save the layout because adding
-          // new tile actually stores data to the zodb
-          var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
-          decoToolbar._editformDontHideDecoToolbar = true;
-          $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
         },
         onHide:  function() {
-          $(document).trigger('deco-tile-add-canceled');
           var overlay = this;
 
           // remove preview_tile
           preview_tile.remove();
-
-          // destroy overlay
-          overlay.destroy();
         }
       });
 
