@@ -31,7 +31,7 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
- 
+
 /*jshint bitwise:true, curly:true, eqeqeq:true, immed:true, latedef:true,
   newcap:true, noarg:true, noempty:true, nonew:true, plusplus:true,
   regexp:true, undef:true, strict:true, trailing:true, browser:true */
@@ -120,40 +120,40 @@ $.deco.dropTile = function(e, dd) {
     // overlay. when sucessfully saved it should create new tile in deco grid
     // and remove preview_tile.
     if (dragging_from_toolbar) {
-      new $.plone.overlay.Overlay({
-        url: $(dd.drag).parents('form').attr('action') + '/' +
-                $('input[name="tiletype"]', dd.drag).attr('value'),
-        form: 'form#edit_tile,form#add_tile',
-        save: function(response, state, xhr, form) {
-          $(document).trigger('deco-tile-add-save');
+      $('<div/>').ploneOverlay({
+        show: true,
+        el: $(dd.drag).parents('form').attr('action') + '/' +
+                  $('input[name="tiletype"]', dd.drag).attr('value'),
+        formButtons: {
+            '.modal-body input[name="buttons.save"]': $.fn.ploneOverlay.defaultFormButton,
+            '.modal-body input[name="buttons.cancel"]': $.fn.ploneOverlay.defaultFormButton
+          },
+        onAjaxSave: function(response, state, xhr, form, button) {
           var overlay = this;
 
-          // create new tile, place it after preview_tile and initialize it
-          var tile = $('<div/>')
-            .addClass('deco-tile')
-            .append($('<div/>')
-              .addClass('plone-tile')
-              .attr('data-tile', xhr.getResponseHeader('X-Tile-Url'))
-              .append(response.html()))
-            .insertAfter(preview_tile)
-            .decoTile();
-          tile.show();
+          if (button.attr('name') === 'buttons.save') {
+            $(document).trigger('deco-tile-add-save');
 
-          // remove preview_tile
-          preview_tile.remove();
+            // create new tile, place it after preview_tile and initialize it
+            var tile = $('<div/>')
+              .addClass('deco-tile')
+              .append($('<div/>')
+                .addClass('plone-tile')
+                .attr('data-tile', xhr.getResponseHeader('X-Tile-Url'))
+                .append(response.html()))
+              .insertAfter(preview_tile)
+              .decoTile();
+            tile.show();
 
-          // destroy overlay
-          overlay.destroy();
+            // We'll save the layout because adding
+            // new tile actually stores data to the zodb
+            var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
+            decoToolbar._editformDontHideDecoToolbar = true;
+            $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
 
-          // We'll save the layout because adding
-          // new tile actually stores data to the zodb
-          var decoToolbar = $($.plone.deco.defaults.toolbar).decoToolbar();
-          decoToolbar._editformDontHideDecoToolbar = true;
-          $($.plone.deco.defaults.form_save_btn, decoToolbar._editform).click();
-        },
-        cancel:  function() {
-          $(document).trigger('deco-tile-add-canceled');
-          var overlay = this;
+          } else if (button.attr('name') === 'buttons.cancel') {
+            $(document).trigger('deco-tile-add-canceled');
+          }
 
           // remove preview_tile
           preview_tile.remove();
@@ -161,7 +161,7 @@ $.deco.dropTile = function(e, dd) {
           // destroy overlay
           overlay.destroy();
         }
-      }).show();
+      });
 
     } else {
 
@@ -983,7 +983,7 @@ $.deco.Toolbar.prototype = {
     // show toolbar
     $.iframe.stretch();
     self.el.slideDown('slow', function() {
-      $.iframe.state.height = $('body').height();
+      $.iframe._state.height = $('body').height();
       $.iframe.shrink();
     });
 

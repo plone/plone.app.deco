@@ -178,14 +178,14 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   });
 
   // load mask
-  $.plone.mask.load();
+  $.mask.load();
 
 });
 
 $(document).on('deco.toolbar.hide', function(e, decoToolbar) {
 
   // close mask
-  $.plone.mask.close();
+  $.mask.close();
 
 });
 
