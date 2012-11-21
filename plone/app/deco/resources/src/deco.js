@@ -125,7 +125,7 @@ $.deco.dropTile = function(e, dd) {
         el: $(dd.drag).parents('form').attr('action') + '/' +
                   $('input[name="tiletype"]', dd.drag).attr('value'),
         formButtons: {
-          '.modal-body input[name="buttons.cancel"]': $.fn.ploneOverlay.defaultFormButton({
+          '.modal-body input[name="buttons.cancel"]': $.fn.ploneOverlay.defaultAjaxSubmit({
               onSave: function(response, state, xhr, form, button) {
                 var overlay = this;
                 $(document).trigger('deco-tile-add-canceled');
@@ -135,7 +135,7 @@ $.deco.dropTile = function(e, dd) {
                 overlay.destroy();
               }
             }),
-          '.modal-body input[name="buttons.save"]': $.fn.ploneOverlay.defaultFormButton({
+          '.modal-body input[name="buttons.save"]': $.fn.ploneOverlay.defaultAjaxSubmit({
               onSave: function(response, state, xhr, form, button) {
                 var overlay = this;
 
