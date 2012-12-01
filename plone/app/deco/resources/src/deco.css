@@ -16,7 +16,7 @@
 #deco-toolbar > ul > li > a.btn {
   margin: 1em 0.5em;
 }
-#deco-toolbar-save.btn-primary:hover {
+#deco-toolbar-save.btn-primary:hover,#deco-toolbar-properties.btn-primary:hover {
   background: #0055CC;
 }
 #deco-toolbar-cancel:hover {

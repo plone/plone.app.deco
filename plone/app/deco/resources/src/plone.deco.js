@@ -69,6 +69,7 @@ $(document).on('deco.toolbar.layoutchange', function(e){
   $($.plone.deco.defaults.toolbar_save_btn)
     .addClass('btn-primary')
     .html('Save');
+  $($.plone.deco.defaults.toolbar_cancel_btn).show();
 });
 
 // # Load edit form when Deco toolbar displays
@@ -78,7 +79,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
   // edit form
   // TODO: redo ajaxForm with "new $.plone.overlay.Overlay"
-  decoToolbar._editform = $('<div/>').hide().appendTo(decoToolbar.el)
+  decoToolbar._editform = $('<div/>').hide().appendTo($('body', window.parent.document))
       .load(decoToolbar._editformUrl + ' ' + defaults.form, function(data) {
         $('> form', decoToolbar._editform).ajaxForm({
           beforeSerialize: function(form, options) {
@@ -124,6 +125,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
               $($.plone.deco.defaults.toolbar_save_btn)
                   .removeClass('btn-primary')
                   .html('Close');
+              $($.plone.deco.defaults.toolbar_cancel_btn).hide();
               // TODO: display notification (eg. "Deco page saved!")
             } else {
               // TODO: open overlay and focus on fireld with error
@@ -201,6 +203,25 @@ $(document).ready(function() {
       decoToolbar.toggle();
     });
   }
+
+  $('#deco-toolbar-properties').ploneOverlay({
+    onShow: function() {
+      $(this).dropdown('toggle');
+      // let's hide this since you're supposed to edit with GUI
+      $('#formfield-form-widgets-ILayoutAware-content').hide();
+    },
+    formButtons: {
+      '.modal-body input[name="form.buttons.cancel"]': $.fn.ploneOverlay.defaultAjaxSubmit(),
+      '.modal-body input[name="form.buttons.save"]':
+          $.fn.ploneOverlay.defaultAjaxSubmit({
+            onSave: function(response, state, xhr, form, button) {
+              // need redirect to different url after successfull submitting
+              debugger;
+              window.parent.location.href = $.fn.getBaseTag(xhr.responseText);
+            }
+          })
+    }
+  });
 });
 
 }(jQuery));

@@ -28,8 +28,13 @@
            id="deco-toolbar-save">Close</a>
       </li>
       <li class="pull-right">
-        <a class="btn btn-large" href="#"
+        <a class="btn btn-large" href="#" style="display:none"
           id="deco-toolbar-cancel">Cancel</a>
+      </li>
+      <li>
+        <a class="btn btn-large btn-primary" href="#"
+           id="deco-toolbar-properties"
+           tal:attributes="href string:${context/absolute_url}/edit">Properties</a>
       </li>
     </ul>
 
