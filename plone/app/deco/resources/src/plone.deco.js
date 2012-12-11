@@ -216,8 +216,7 @@ $(document).ready(function() {
           $.fn.ploneOverlay.defaultAjaxSubmit({
             onSave: function(response, state, xhr, form, button) {
               // need redirect to different url after successfull submitting
-              debugger;
-              window.parent.location.href = $.fn.getBaseTag(xhr.responseText);
+              window.parent.location.href = this.getBaseURL(xhr.responseText);
             }
           })
     }
