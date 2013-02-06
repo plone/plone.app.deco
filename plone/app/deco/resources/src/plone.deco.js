@@ -44,7 +44,7 @@ $.plone.deco = $.plone.deco || {};
 
 // # Defaults
 $.plone.deco.defaults = $.extend({
-  trigger: '#plone-toolbar ul.nav > li#plone-action-deco > a',
+  trigger: '#plone-toolbar li#plone-action-deco > a',
   toolbar: '#deco-toolbar',
   toolbar_save_btn: '#deco-toolbar-save',
   toolbar_cancel_btn: '#deco-toolbar-cancel',
@@ -180,20 +180,21 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
   });
 
   // load mask
-  $.mask.load();
+  // $.mask.load();
 
 });
 
 $(document).on('deco.toolbar.hide', function(e, decoToolbar) {
 
   // close mask
-  $.mask.close();
+  // $.mask.close();
 
 });
 
 // # Initialize Deco
 $(document).ready(function() {
   var defaults = $.plone.deco.defaults;
+
   if ($(defaults.toolbar).size() !== 0) {
     var decoToolbar = $(defaults.toolbar).decoToolbar();
     $(defaults.trigger).off().on('click', function(e) {
@@ -204,23 +205,23 @@ $(document).ready(function() {
     });
   }
 
-  $('#deco-toolbar-properties').ploneOverlay({
-    onShow: function() {
-      $(this).dropdown('toggle');
-      // let's hide this since you're supposed to edit with GUI
-      $('#formfield-form-widgets-ILayoutAware-content').hide();
-    },
-    formButtons: {
-      '.modal-body input[name="form.buttons.cancel"]': $.fn.ploneOverlay.defaultAjaxSubmit(),
-      '.modal-body input[name="form.buttons.save"]':
-          $.fn.ploneOverlay.defaultAjaxSubmit({
-            onSave: function(response, state, xhr, form, button) {
-              // need redirect to different url after successfull submitting
-              window.parent.location.href = this.getBaseURL(xhr.responseText);
-            }
-          })
-    }
-  });
+  // $('#deco-toolbar-properties').ploneOverlay({
+  //   onShow: function() {
+  //     $(this).dropdown('toggle');
+  //     // let's hide this since you're supposed to edit with GUI
+  //     $('#formfield-form-widgets-ILayoutAware-content').hide();
+  //   },
+  //   formButtons: {
+  //     '.modal-body input[name="form.buttons.cancel"]': $.fn.ploneOverlay.defaultAjaxSubmit(),
+  //     '.modal-body input[name="form.buttons.save"]':
+  //         $.fn.ploneOverlay.defaultAjaxSubmit({
+  //           onSave: function(response, state, xhr, form, button) {
+  //             // need redirect to different url after successfull submitting
+  //             window.parent.location.href = this.getBaseURL(xhr.responseText);
+  //           }
+  //         })
+  //   }
+  // });
 });
 
 }(jQuery));

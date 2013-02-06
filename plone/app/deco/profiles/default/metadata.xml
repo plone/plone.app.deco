@@ -10,6 +10,7 @@
     <dependency>profile-plone.app.deco:zbbb</dependency>
     <dependency>profile-plone.app.texttile:default</dependency>
     <dependency>profile-plone.app.imagetile:default</dependency>
+    <dependency>profile-plone.app.toolbar:default</dependency>
     <!--dependency>profile-plone.app.contenttile:default</dependency>
     <dependency>profile-plone.app.contentlistingtile:default</dependency-->
   </dependencies>
