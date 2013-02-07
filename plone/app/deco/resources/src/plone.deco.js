@@ -151,7 +151,9 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
       return;
     }
 
-    var saveToolbar = $(defaults.form_save_btn, decoToolbar._editform).click;
+    function saveToolbar() {
+      $(defaults.form_save_btn, decoToolbar._editform).click();
+    }
     if (editformLoaded === true) {
       saveToolbar();
     } else {
