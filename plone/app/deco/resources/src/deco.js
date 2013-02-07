@@ -1012,6 +1012,7 @@ $.deco.Toolbar.prototype = {
 
     // hide toolbar
     self.el.slideUp('slow', function() {
+      $.iframe.is_stretched = true;
       $.iframe.shrink();
     });
 

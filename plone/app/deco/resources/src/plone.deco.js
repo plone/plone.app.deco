@@ -153,6 +153,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
     function saveToolbar() {
       $(defaults.form_save_btn, decoToolbar._editform).click();
+      decoToolbar.hide();
     }
     if (editformLoaded === true) {
       saveToolbar();
