@@ -987,7 +987,6 @@ $.deco.Toolbar.prototype = {
     // show toolbar
     $.iframe.stretch();
     self.el.slideDown('slow', function() {
-      $.iframe._state.height = $('body').height();
       $.iframe.shrink();
     });
 
