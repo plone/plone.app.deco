@@ -9,7 +9,7 @@
 //    - https://github.com/malsup/form/blob/master/jquery.form.js
 //    - https://github.com/plone/plone.app.deco/blob/master/plone/app/deco/resources/src/deco.js
 //    - https://github.com/plone/plone.app.toolbar/blob/master/plone/app/toolbar/resources/src/jquery.mask.js
-// Description: 
+// Description:
 // License:
 //
 // Copyright (C) 2010 Plone Foundation
@@ -121,7 +121,7 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
                 decoToolbar._editformDontHideDecoToolbar = false;
                 // since we just saved, disable save button
               }
-              
+
               $($.plone.deco.defaults.toolbar_save_btn)
                   .removeClass('btn-primary')
                   .html('Close');
@@ -139,17 +139,19 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
 
   // bind save button of toolbar to click save button in edit form
   $(defaults.toolbar_save_btn, decoToolbar.el).off('click').on('click', function(e) {
-    if($(this).hasClass('btn-primary')){
-      // nothing to save, just close
-      decoToolbar.hide();
-    }
     e.preventDefault();
     e.stopPropagation();
 
-    function saveToolbar() {
-      $(defaults.form_save_btn, decoToolbar._editform).click();
+    // if there have been no changes, then the save button displays 'Close' and
+    // should not need to perform any further actions, and should behave the
+    // same as a cancel
+    if(!$(this).hasClass('btn-primary')){
+      decoToolbar.hide();
+      $(defaults.form_cancel_btn, decoToolbar._editform).click();
+      return;
     }
 
+    var saveToolbar = $(defaults.form_save_btn, decoToolbar._editform).click;
     if (editformLoaded === true) {
       saveToolbar();
     } else {

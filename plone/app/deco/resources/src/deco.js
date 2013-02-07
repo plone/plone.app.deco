@@ -988,6 +988,7 @@ $.deco.Toolbar.prototype = {
     $.iframe.stretch();
     self.el.slideDown('slow', function() {
       $.iframe.shrink();
+      $.iframe.is_stretched = true;
     });
 
     // trigger deco.toolbar.shown event
