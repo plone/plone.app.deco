@@ -119,7 +119,33 @@ $.deco.dropTile = function(e, dd) {
     // if we drag from tile from toolbar we should open add_tile form in an
     // overlay. when sucessfully saved it should create new tile in deco grid
     // and remove preview_tile.
-    if (dragging_from_toolbar) {
+    if(dragging_from_toolbar) {
+      var modal = $(dd.drag).data('patternModal');
+      if(typeof(modal) !== "undefined") {
+        modal.on('shown', function(ev) {
+          $.iframe.stretch();
+        });
+        modal.on('hidden', function(ev) {
+          preview_tile.remove();
+          $.deco.getColumns(window.parent.document, function(col) {
+            col.removeColumnInfo();
+            col.addColumnInfo();
+          });
+        });
+        $(document).ajaxSuccess(function(event, xhr, settings){
+          if(typeof modal.$modal !== "function" && settings.url == $('#add_form', modal.$modal).attr('action')) {
+            // blah
+          }
+        });
+        modal.show();
+        modal.on('after-ajax', function(ev) {
+            $('#add_tile', modal.$modal).ajaxForm({
+            //  target: '#output',
+              delegation: true
+            });
+        });
+      }
+      /*
       $('<div/>').ploneOverlay({
         show: true,
         el: $(dd.drag).parents('form').attr('action') + '/' +
@@ -166,6 +192,7 @@ $.deco.dropTile = function(e, dd) {
             })
         }
       });
+      */
 
     } else {
 
@@ -780,7 +807,7 @@ $.deco.Toolbar.prototype = {
       drop: function(e, dd){},
       last_sel: 'last-child'
     }, options);
-  
+
     var type = options.type;
     var css = options.placeholdercss;
     var halfcondition = options.halfcondition;
@@ -910,7 +937,7 @@ $.deco.Toolbar.prototype = {
               biggestSize = width;
             }
         });
-        
+
         // decrease size of biggest column
         if (totalSize >= NUM_GRID_COLUMNS) {
             var lastDrop = $(window.document).data('deco-last-drop');
@@ -920,7 +947,7 @@ $.deco.Toolbar.prototype = {
                 decoCol.setWidth(width - 1);
             }
         }
-        
+
         if (side === "after") {
           newColumn.insertAfter($(dd.drop));
         } else {
@@ -1045,3 +1072,6 @@ $.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {
 });
 
 }(jQuery));
+
+
+

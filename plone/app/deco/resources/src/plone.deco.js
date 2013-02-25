@@ -184,6 +184,33 @@ $(document).on('deco.toolbar.show', function(e, decoToolbar) {
     }
   });
 
+  $('#deco-toolbar-properties').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var modal = $(e.target).data('patternModal');
+    modal.on('after-ajax', function(ev) {
+      var hidechrome = function() {
+          $('#portal-top', modal.$modal).hide();
+          $('#portal-footer-wrapper', modal.$modal).hide();
+          $('#viewlet-above-content', modal.$modal).hide();
+          $('#viewlet-below-content', modal.$modal).hide();
+          $('#edit-bar' , modal.$modal).hide();
+          $('h1.documentFirstHeading' , modal.$modal).hide();
+          $('p.discreet' , modal.$modal).hide();
+      };
+
+      hidechrome();
+
+      $(document).ajaxSuccess(function(event, xhr, settings){
+        if(typeof modal.$modal !== "function" && settings.url == $('#form', modal.$modal).attr('action')) {
+          // blah
+        }
+      });
+    });
+  });
+
+
   // load mask
   // $.mask.load();
 
@@ -209,6 +236,25 @@ $(document).ready(function() {
       decoToolbar.toggle();
     });
   }
+
+  require(['jquery', 'js/patterns/modal.js'], function($) {
+    $('#deco-toolbar-properties').modal();
+    /*$('.module #from').ajaxForm({
+      delegation: true
+    });
+    */
+
+    $('#deco-toolbar div.plone-tiletype').each(function(i, el) {
+      var elidsel = '#' + $(el).attr('id');
+      var aurl = $(el).parents('form').attr('action')
+                  + '/' + $('input[name="tiletype"]', el).attr('value');
+      $(elidsel).modal({ajaxUrl:aurl});
+    });
+    /*$('.module #add_form').ajaxForm({
+      delegation: true
+    });
+    */
+  });
 
   // $('#deco-toolbar-properties').ploneOverlay({
   //   onShow: function() {

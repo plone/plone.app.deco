@@ -78,3 +78,33 @@
   height: 58px;
   width: 258px;
 }
+
+
+
+
+div.modal div.row {
+  margin-left: 0px;
+}
+
+div.modal div.field input[type='text'],
+div.modal div.field textarea
+{
+    width: 95%;
+}
+
+div.modal div.field input[type='text'].datetime-field {
+    width: auto;
+}
+
+div.modal fieldset {
+    margin-left: 5px;
+}
+
+div.modal .formControls {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+div.modal #form-buttons-cancel {
+    margin-left: 5px;
+}
