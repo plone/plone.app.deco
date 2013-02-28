@@ -1,0 +1,33 @@
+SETUP DECO JAVASCRIPTS
+======================
+Deco uses requirejs[1] and almondjs[2] via plone.app.toolbar/plone.app.widgets.
+
+As such, several parts of the code are broken down into AMD (Asynchronous
+Module Definition) style modules, which are later combined to form a single
+bundle.
+
+The bundle is created as:
+
+    plone/app/deco/resources/src/deco.js
+
+The bundle is created by issuing a make command from the
+_plone/app/deco/resources/src/_ directory, like so:
+
+    $ cd /path/to/plone/app/deco/resources/src/
+    $ make bootstrap
+    $ make
+
+Note: it is expected that you have npm/nodejs installed at the moment
+
+The `make bootstrap` command downloads all the appropriate node modules and
+sets up all the appropriate commands needed (mostly testing related). If you
+create a 'build' directory manually, then you'd only need to issue the `make`
+command to actually combine all the separate modules.
+
+After you issue the `make` command you'll need to copy the resulting deco.js
+from the _plone/app/deco/resources/src/build/_ directory into the 
+_plone/app/deco/resources/src/_ directory, overwritting any existing file.
+
+
+[1] http://requirejs.org
+[2] https://github.com/jrburke/almond

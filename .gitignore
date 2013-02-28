@@ -5,3 +5,8 @@
 plone.app.deco.egg-info/
 build/
 dist/
+
+plone/app/deco/resources/src/build
+plone/app/deco/resources/src/jam
+plone/app/deco/resources/src/node_modules
+
