@@ -1,7 +1,6 @@
 define(
-"deco.row",
-["jquery", "deco"],
-function($) {
+["js/deco"],
+function() {
 
   $.deco.Row = function(el) {
     var self = this;

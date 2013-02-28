@@ -1,7 +1,6 @@
 define(
-"deco.toolbar",
-["jquery", "deco"],
-function($) {
+["js/deco"],
+function() {
 
   $.deco.Toolbar = function(el) {
     this.el = el;

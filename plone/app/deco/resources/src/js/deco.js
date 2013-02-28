@@ -1,12 +1,10 @@
 define(
-"deco",
-["jquery"],
-function($) {
+function() {
 
   // create a namespace for deco functionality
   $.deco = {
-    NUM_GRID_COLUMNS = 12;
-  }
+    NUM_GRID_COLUMNS: 12
+  };
 
 
   $.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {

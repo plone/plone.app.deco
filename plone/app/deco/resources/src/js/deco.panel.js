@@ -1,7 +1,6 @@
 define(
-"deco.panel",
-["jquery", "deco"],
-function($) {
+["js/deco"],
+function() {
 
   $.deco.Panel = function(el) {
     this.el = el;

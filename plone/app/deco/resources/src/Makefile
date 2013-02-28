@@ -33,8 +33,8 @@ deco: clean_deco $(DECO)
 	# ----------------------------------------------------------------------- #
 
 build/deco.full.js:
-	$(JAM) compile -i js/toolbar -e jquery --no-minify --almond $@
-	echo "require(['deco']);" >> $@
+	$(JAM) compile -i js/deco.init -e jquery --no-minify --almond $@
+	echo "require(['deco.init']);" >> $@
 
 build/deco.min.js: build/deco.full.js
 	$(UGLIFYJS) build/deco.full.js > $@
