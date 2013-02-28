@@ -4,7 +4,10 @@
     <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings"
             field="resourceBundlesForThemes">
         <value purge="false">
-            <element key="Toolbar Theme">
+            <element key="Toolbar Theme" purge="false">
+                <element>jquery</element>
+                <element>tinymce</element>
+                <element>toolbar</element>
                 <element>deco</element>
             </element>
         </value>
