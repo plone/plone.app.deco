@@ -1,6 +1,7 @@
 define(
-["js/deco"],
-function() {
+'deco.tile',
+['jquery', 'deco'],
+function($) {
 
   $.deco.Tile = function(el) {
     var self = this;

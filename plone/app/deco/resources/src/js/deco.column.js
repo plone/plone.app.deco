@@ -1,6 +1,7 @@
 define(
-["js/deco"],
-function() {
+'deco.column',
+['jquery', 'deco'],
+function($) {
 
   $.deco.Column = function(el) {
     var self = this;
