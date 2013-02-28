@@ -1,6 +1,6 @@
 define(
 'deco.init',
-['jquery', 'deco', 'deco.toolbar', 'deco.panel', 'deco.row', 'deco.column', 'deco.tile'],
+['jquery', 'deco', 'deco.dragdrop', 'deco.toolbar', 'deco.panel', 'deco.row', 'deco.column', 'deco.tile'],
 function($){
 
   $.each(['Toolbar','Panel','Row','Column','Tile'], function(i, name) {
