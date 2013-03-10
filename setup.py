@@ -45,7 +45,7 @@ setup(
         'plone.app.blocks',
         'plone.app.tiles',
         'plone.app.toolbar',
-        'plone.app.registry>=1.2.2'
+        'plone.app.registry>=1.2.2',
         'plone.app.layoutpage',
         'plone.app.texttile',
         'plone.app.imagetile',
